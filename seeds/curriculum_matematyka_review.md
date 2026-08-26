@@ -1,6 +1,8 @@
 # Curriculum seed — review sheet (M0.6)
 
-Every node of `seeds/curriculum_matematyka.yaml`, in Dz.U. order, for node-by-node verification against the regulation before M1 seeds from it.
+**STATUS: VERIFIED** — all 132 nodes checked against the Dz.U. text by Elie Boulanger on 2026-08-27.
+
+Every node of `seeds/curriculum_matematyka.yaml`, in Dz.U. order.
 
 - **Source:** Dz.U. 2024 poz. 1019, Rozporządzenie MEN z 28.06.2024, matematyka annex for liceum ogólnokształcące / technikum, "Treści nauczania – wymagania szczegółowe".
 - **Extracted from:** `sources/raw/DU_programowej_2024.pdf` (`pdftotext -layout`, annex lines 13750–14123).

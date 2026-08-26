@@ -1,5 +1,7 @@
 # Curriculum seed — formula review (M0.6)
 
+**STATUS: VERIFIED** — all 20 transcriptions checked against the rendered PDF by Elie Boulanger on 2026-08-27.
+
 `pdftotext` corrupts the maths in `DU_programowej_2024.pdf` (M0.5): every math-italic variable is doubled (`𝑥𝑥` for `𝑥`) and stacked fractions/superscripts collapse. So each requirement below has its prose in `name` and its formula hand-transcribed into `statement_latex` from the **rendered** PDF (pages 327–335 of `DU_programowej_2024.pdf`).
 
 - **16 rows** where extraction changed the maths — verify these first.

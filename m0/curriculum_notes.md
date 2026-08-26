@@ -115,6 +115,9 @@ Everything else in the 20 rows — `\binom`, `\tfrac`, `\begin{cases}`, `\land`,
 standard `amsmath` / base LaTeX. Only `\tg` is used in the current rows (VII.2);
 `\ctg` is listed because downstream trigonometry content will need it.
 
+`tests/test_seed_latex.py` compiles all 20 with `pdflatex` and this preamble on
+every run (it skips where TeX is not installed).
+
 ### Review sheets
 
 * `seeds/curriculum_matematyka_review.md` — all 132 nodes in Dz.U. order,

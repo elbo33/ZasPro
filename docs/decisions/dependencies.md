@@ -20,7 +20,8 @@ load-bearing, not paperwork.
 | tool | licence | role | notes |
 |---|---|---|---|
 | pandoc | GPL-2.0-or-later | DOCX→LaTeX (ADR 0001) | subprocess only; GPL does not reach our code. v3.10.2 |
-| poppler (`pdftotext`, `pdfinfo`, `pdffonts`) | GPL-2.0 | marking-scheme text for the M0.2 gate; M0.5 text-layer / diacritic / ToUnicode audit | subprocess only. v26.08 |
+| poppler (`pdftotext`, `pdfinfo`, `pdffonts`) | GPL-2.0 | marking-scheme text for the M0.2 gate; M0.5 text-layer / diacritic / math-character audit | subprocess only. v26.08 |
+| TeX (`pdflatex`) | LPPL / mixed | `test_seed_latex.py` compiles every `statement_latex` in the curriculum seed | subprocess only, dev/CI. Test **skips** if absent, so not a hard dependency; run it where TeX exists to get the guarantee. |
 | LibreOffice headless (`soffice`) | MPL-2.0 | M0.4 figure work: WMF render, DOCX→PDF for Word-drawn shapes | installed; not yet exercised (M0.4) |
 | uv | Apache-2.0 OR MIT | env + dependency manager, standalone CPython 3.12 (ADR 0002) | single static binary, no services |
 

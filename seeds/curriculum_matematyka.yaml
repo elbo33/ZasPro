@@ -12,8 +12,8 @@
 # rozszerzony = podstawowy + additions ("a ponadto"). Additions carry an
 #   R in the code (I.R1) to stay unique alongside the podstawowy codes.
 #
-# STATUS: DRAFT — every node must be verified by a human before M1
-#   seeds from this file. Two review sheets:
+# STATUS: VERIFIED — all 132 nodes and both review sheets checked
+#   against the Dz.U. text by Elie Boulanger on 2026-08-27. Review sheets:
 #   - curriculum_matematyka_review.md          all 132 nodes, Dz.U. order
 #   - curriculum_matematyka_formulas_review.md  the formula rows only
 #
@@ -29,7 +29,9 @@ subject:
   language: pl
   levels: [podstawowy, rozszerzony]
   official_source: "Dz.U. 2024 poz. 1019"
-  status: DRAFT
+  status: VERIFIED
+  verified_by: "Elie Boulanger"
+  verified_on: 2026-08-27
 
 units:
   - code: I

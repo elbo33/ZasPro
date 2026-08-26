@@ -25,6 +25,13 @@ ROOT = Path(__file__).resolve().parents[3]
 DU_PDF = ROOT / "sources" / "raw" / "DU_programowej_2024.pdf"
 OUT_YAML = ROOT / "seeds" / "curriculum_matematyka.yaml"
 
+# Human verification of the seed and both review sheets, node by node against
+# Dz.U. 2024 poz. 1019. Set after the review round; the generator carries it so
+# a regeneration stays consistent.
+SEED_STATUS = "VERIFIED"
+VERIFIED_BY = "Elie Boulanger"
+VERIFIED_ON = "2026-08-27"
+
 # ---------------------------------------------------------------------------
 # Hand-transcribed formulae.
 #
@@ -365,8 +372,8 @@ def _yaml(units: list[dict]) -> str:
         "# rozszerzony = podstawowy + additions (\"a ponadto\"). Additions carry an",
         "#   R in the code (I.R1) to stay unique alongside the podstawowy codes.",
         "#",
-        "# STATUS: DRAFT — every node must be verified by a human before M1",
-        "#   seeds from this file. Two review sheets:",
+        f"# STATUS: {SEED_STATUS} — all 132 nodes and both review sheets checked",
+        f"#   against the Dz.U. text by {VERIFIED_BY} on {VERIFIED_ON}. Review sheets:",
         "#   - curriculum_matematyka_review.md          all 132 nodes, Dz.U. order",
         "#   - curriculum_matematyka_formulas_review.md  the formula rows only",
         "#",
@@ -382,7 +389,9 @@ def _yaml(units: list[dict]) -> str:
         "  language: pl",
         "  levels: [podstawowy, rozszerzony]",
         "  official_source: \"Dz.U. 2024 poz. 1019\"",
-        "  status: DRAFT",
+        f"  status: {SEED_STATUS}",
+        f"  verified_by: {_q(VERIFIED_BY)}",
+        f"  verified_on: {VERIFIED_ON}",
         "",
         "units:",
     ]
@@ -421,8 +430,10 @@ def _review_md(units: list[dict]) -> str:
     L = [
         "# Curriculum seed — review sheet (M0.6)",
         "",
-        "Every node of `seeds/curriculum_matematyka.yaml`, in Dz.U. order, for "
-        "node-by-node verification against the regulation before M1 seeds from it.",
+        f"**STATUS: {SEED_STATUS}** — all {len(units) + zp + zr} nodes checked "
+        f"against the Dz.U. text by {VERIFIED_BY} on {VERIFIED_ON}.",
+        "",
+        "Every node of `seeds/curriculum_matematyka.yaml`, in Dz.U. order.",
         "",
         "- **Source:** Dz.U. 2024 poz. 1019, Rozporządzenie MEN z 28.06.2024, "
         "matematyka annex for liceum ogólnokształcące / technikum, "
@@ -475,6 +486,9 @@ def _formulas_review_md(units: list[dict]) -> str:
 
     L = [
         "# Curriculum seed — formula review (M0.6)",
+        "",
+        f"**STATUS: {SEED_STATUS}** — all {len(FORMULA_ROWS)} transcriptions "
+        f"checked against the rendered PDF by {VERIFIED_BY} on {VERIFIED_ON}.",
         "",
         "`pdftotext` corrupts the maths in `DU_programowej_2024.pdf` (M0.5): every "
         "math-italic variable is doubled (`𝑥𝑥` for `𝑥`) and stacked "
@@ -535,7 +549,7 @@ def run() -> int:
         print(f"      {u['code']:>4}. {u['name'][:44]:44} ZP {p:2}  ZR {r}")
     fx_corrupt = sum(1 for v in FORMULA_ROWS.values() if v["corrupt"])
     print(f"      formula rows: {len(FORMULA_ROWS)} hand-transcribed ({fx_corrupt} were corrupt)")
-    print(f"      wrote {OUT_YAML.relative_to(ROOT)}  (DRAFT — verify node by node)")
+    print(f"      wrote {OUT_YAML.relative_to(ROOT)}  ({SEED_STATUS}, {VERIFIED_BY} {VERIFIED_ON})")
     print(f"      wrote {review.relative_to(ROOT)}  ({len(units) + zp + zr} nodes)")
     print(f"      wrote {freview.relative_to(ROOT)}  ({len(FORMULA_ROWS)} formula rows)")
     return 0

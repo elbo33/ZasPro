@@ -41,8 +41,11 @@ def test_codes_are_well_formed():
         assert re.fullmatch(r"(I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII|XIII)(\.(R?\d+))?", c), c
 
 
-def test_draft_status_is_flagged():
-    assert "status: DRAFT" in SEED.read_text(encoding="utf-8")
+def test_status_is_verified_and_attributed():
+    text = SEED.read_text(encoding="utf-8")
+    assert "status: VERIFIED" in text
+    assert re.search(r"verified_by: \S", text)
+    assert re.search(r"verified_on: \d{4}-\d{2}-\d{2}", text)
 
 
 def test_no_doubled_math_alphanumeric_survived_into_the_seed():
