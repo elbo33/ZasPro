@@ -2,3 +2,15 @@ sources/raw/
 *.pdf
 *.docx
 .env
+.DS_Store
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# M0 pipeline intermediates (derived from read-only sources; not committed).
+# Reviewable M0 artifacts under m0/ (reports, seed files, segmentation JSONL)
+# ARE committed.
+m0/_work/

@@ -79,8 +79,18 @@ Measured, not assumed. These numbers are the basis for M0 and for several decisi
 
 | document | oMath | display (`oMathPara`) | drawings | media files |
 |---|---|---|---|---|
-| `Informator_EM2024_matematyka_pp_660.docx` | 1386 | 392 | 25 | 0 |
-| `MMAP-P0-660-A-2605-arkusz.docx` | 298 | not measured | 18 | 5 |
+| `Informator_EM2024_matematyka_pp_660.docx` | 994 | 212 | 25 | 0 |
+| `MMAP-P0-660-A-2605-arkusz.docx` | 284 | 9 | 18 | 5 |
+
+Corrected 2026-08-26 during M0.1. The original figures (informator 1386 / 392;
+arkusz oMath 298) came from a raw `<m:oMath` substring count, which also matches
+the `<m:oMathPara` and `<m:oMathParaPr` prefixes, so display equations and
+paragraph-property elements were folded into the `oMath` column. The table now
+holds element counts from `word/document.xml` matching `<m:oMath[ >]` and
+`<m:oMathPara[ >]`, open/close tags verified balanced. Old minus new checks out:
+`1386 − 392 = 994`, `298 − 14 = 284`. The corrected numbers do not change any
+decision in section 2 or the M0 plan; the "carries a lot of native OMML"
+finding is unaffected.
 
 Findings:
 
