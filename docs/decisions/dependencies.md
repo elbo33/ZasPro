@@ -15,6 +15,18 @@ load-bearing, not paperwork.
 | pytest | 9.x | MIT | tests | dev-only |
 | hatchling | (build) | MIT | build backend | build-only |
 
+## Python packages (M1)
+
+All four are named in the SPEC §3 stack; these are the concrete versions.
+
+| package | version | licence | role | notes |
+|---|---|---|---|---|
+| SQLAlchemy | 2.0.x | MIT | typed ORM (SPEC §3) | — |
+| Alembic | 1.19.x | MIT | migrations (SPEC §3) | Mako (MIT) for templates |
+| psycopg[binary] | 3.3.x | LGPL-3.0 | PostgreSQL driver for SQLAlchemy | LGPL, used unmodified as a library — no copyleft reach into our code. `-binary` ships the libpq wheel. |
+| pydantic-settings | 2.15.x | MIT | env / `.env` config (SPEC §3: "Secrets in environment variables") | python-dotenv (BSD) |
+| PyYAML | 6.x | MIT | load `seeds/curriculum_matematyka.yaml` | — |
+
 ## System tools (M0, invoked as subprocesses)
 
 | tool | licence | role | notes |
