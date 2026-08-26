@@ -29,11 +29,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install TeX (for the curriculum statement_latex compile test)
+      - name: System tools (pandoc for ingestion, poppler for PDF, TeX for the
+              curriculum statement_latex compile test)
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
-            texlive-latex-base texlive-latex-recommended
+            pandoc poppler-utils texlive-latex-base texlive-latex-recommended
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6

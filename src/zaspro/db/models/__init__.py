@@ -9,6 +9,23 @@ from zaspro.db.models.curriculum import (
     TopicStatus,
     Unit,
 )
+from zaspro.db.models.exercises import (
+    Exercise,
+    ExerciseFigure,
+    ExerciseOrigin,
+    VerificationStatus,
+)
+from zaspro.db.models.ingestion import (
+    ContentType,
+    ExtractionMethod,
+    ExtractionStatus,
+    Figure,
+    RenderStatus,
+    SourceChunk,
+    SourceDocument,
+    SourceFormat,
+)
+from zaspro.db.models.jobs import Job, JobStatus, JobType
 from zaspro.db.models.sources import (
     LicenceStatus,
     ProcessingStatus,
@@ -17,15 +34,16 @@ from zaspro.db.models.sources import (
 )
 
 __all__ = [
-    "Subject",
-    "Unit",
-    "Topic",
-    "TopicPrerequisite",
-    "TopicLevel",
-    "TopicStatus",
-    "PrerequisiteImportance",
-    "Source",
-    "SourceType",
-    "LicenceStatus",
-    "ProcessingStatus",
+    # curriculum
+    "Subject", "Unit", "Topic", "TopicPrerequisite",
+    "TopicLevel", "TopicStatus", "PrerequisiteImportance",
+    # sources / ingestion
+    "Source", "SourceType", "LicenceStatus", "ProcessingStatus",
+    "SourceDocument", "SourceChunk", "Figure",
+    "ExtractionStatus", "ContentType", "ExtractionMethod",
+    "SourceFormat", "RenderStatus",
+    # exercises
+    "Exercise", "ExerciseFigure", "ExerciseOrigin", "VerificationStatus",
+    # jobs
+    "Job", "JobType", "JobStatus",
 ]
