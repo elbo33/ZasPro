@@ -97,16 +97,28 @@ Findings:
 1. **CKE's `_660.docx` accessibility exports carry native OMML mathematics.** Not images, not flattened text. The transform to LaTeX is deterministic.
 2. **Pandoc 3.10.2 converts both files correctly.** Polish diacritics survive intact, hyperlinks are preserved, equations are accurate.
 3. **Exercise structure survives as parseable text**: `Zadanie N. (0--M)` with point values inline, subtasks as `Zadanie N.M. (0--M)` under an unpointed parent heading that carries the shared stem.
-4. **Figure formats differ by document type.** The arkusz carries raster (`.jpeg`, `.png`) plus vector (`.wmf`) in `word/media/`. The informator carries zero media files and 25 Word-drawn vector shapes, which are not files at all.
+4. **Task figures are Word-drawn shapes, one route not three.** Measured in M0.4 across both `_660.docx` files: every figure attached to an exercise is a `<w:drawing>` DrawingML shape, which pandoc drops silently. The raster (`.jpeg`, `.png`) and vector (`.wmf`) media that do exist in `word/media/` are all page furniture — cover security notice, running-footer graphic, header barcode — never an exercise figure. The recovery route that matters is DOCX→PDF via LibreOffice plus region cropping. Raster (`--extract-media`) and WMF (LibreOffice) routes are confirmed working and documented, but M2 must not carry a three-pipeline assumption. See section 5 and M0.4.
 5. **Pandoc's LaTeX is visually faithful and semantically unsafe.** Real output from Zadanie 4:
 
    ```latex
    \log_{8}{4 - \log_{8}32}
    ```
 
-   This renders as log₈4 − log₈32, which is correct. Parsed as an expression it reads as log₈(4 − log₈32), which is not. The grouping braces are invisible when rendered and wrong when evaluated. This is the single most dangerous finding in the spike, because it fails silently in exactly the place that matters.
+   This renders as log₈4 − log₈32, which is correct. Parsed as an expression it reads as log₈(4 − log₈32), which is not. The grouping braces are invisible when rendered and wrong when evaluated. It fails silently in exactly the place that matters.
 
-Consequence: rendering is the correct check for extraction fidelity and the wrong check for verification input. These are separate concerns needing separate artifacts.
+6. **Naive-parse failure rate: 37%** (M0.3, `m0/normalisation_study.md`). 30 equations sampled from 314 structured ones across both conversions, stratified over fractions, radicals, logs, powers, systems/piecewise and `\text{}`-wrapped forms, three named cases pinned. Each fed raw to `sympy.parsing.latex.parse_latex(backend="lark")` with no normalisation:
+
+   | class | count | nature |
+   |---|---|---|
+   | OK | 19 | parses to the intended expression (rationalisation / eager eval is value-equal) |
+   | PARSE_ERROR | 7 | does not parse — **fails loudly**, ordinary normaliser work |
+   | NOT_MACHINE_CHECKABLE | 2 | notation, not an expression (set literals, `\|BC\|` segment length) |
+   | AMBIGUOUS | 1 | parser returns an unresolved `_ambig` tree (`\log{K(t)}`) |
+   | WRONG_SILENT | 1 | parses to a **different** expression with no error — the `\log_{8}{…}` case |
+
+   **11/30 do not yield the intended expression.** Only the single WRONG_SILENT case is dangerous: it is the one that reaches a solver looking correct. The 7 parse errors and 1 ambiguity fail visibly and route to review by construction; handling them is the normalisation layer's normal job, not a threat. M5's scope and its auto-verification-rate expectations derive from this number.
+
+Consequence: rendering is the correct check for extraction fidelity and the wrong check for verification input. These are separate concerns needing separate artifacts. The normalisation layer (M5) must convert a documented ~37% of raw expressions before they are trustworthy, and must never let a WRONG_SILENT parse through unflagged.
 
 ---
 
@@ -119,7 +131,7 @@ Consequence: rendering is the correct check for extraction fidelity and the wron
 * **Pydantic v2** for all AI input and output schemas and all ingestion contracts.
 * **FastAPI** for the internal API.
 * **Pandoc** for DOCX to LaTeX conversion, invoked as a subprocess. Do not build a custom OMML converter; see section 2a.
-* **LibreOffice headless** for vector figure rendering, if the M0 figure work confirms it.
+* **LibreOffice headless** — M0.4 confirmed it. It is the primary figure route: DOCX→PDF, then crop the `WORD_SHAPE` region. Also handles WMF. Not optional.
 * **A job runner**: start with a Postgres-backed queue table plus a worker loop. Do not add Celery, Redis, or RabbitMQ until the simple version is provably insufficient.
 * **Next.js (App Router) dashboard**, read-mostly, calling the FastAPI backend. The dashboard does not own or migrate the schema and does not talk to Postgres directly.
 * **Local filesystem** for source documents, extracted media, and rendered images in development, behind a storage interface with an S3-compatible implementation available.
@@ -191,7 +203,7 @@ Design the full schema up front but **create tables in migration batches per pha
 
 `extraction_method` ∈ `pandoc_omml | pdf_text | pdf_vision | manual`
 
-`source_format` on figures ∈ `RASTER | WMF | WORD_SHAPE`
+`source_format` on figures ∈ `RASTER | WMF | WORD_SHAPE`. M0.4 measured the Track A corpus: **every exercise figure is `WORD_SHAPE`**; the `RASTER` and `WMF` media present are page furniture (cover notice, footer graphic, header barcode), not task figures. `render_status` therefore matters almost entirely for the `WORD_SHAPE` route (DOCX→PDF via LibreOffice, then crop). Keep the other two values — they cost nothing and a future source may use them — but the ingestion pipeline has one figure route to get right, not three.
 
 `variant_code` ∈ `100` standard, `200` autism/Asperger adaptation, `660` blind, `700` deaf. `paper_version` is A or B. `session_code` is the CKE session, for example `2605`.
 
@@ -224,7 +236,7 @@ Every chunk keeps its page and section. Provenance loss at ingestion time is unr
 
 `final_answer_repr` is a machine-checkable representation of the answer: a SymPy-parseable expression, a numeric value with tolerance, or an explicit `NOT_MACHINE_CHECKABLE` marker. See section 7.
 
-Geometry and statistics exercises are meaningless without their diagrams. An exercise whose source region contained a figure and which has no linked figure row is a data error, not an acceptable state.
+Geometry and statistics exercises are meaningless without their diagrams. An exercise whose source region contained a figure and which has no linked figure row is a data error, not an acceptable state. Because pandoc drops `WORD_SHAPE` figures silently and they are the only kind the corpus uses for exercises, this must be caught structurally: count `<w:drawing>` elements in each task's DOCX range and record it (`ExerciseChunk.expected_figure_count` in M0), so a lost figure surfaces as `expected > linked` rather than as nothing.
 
 ### Attribution
 
@@ -640,9 +652,11 @@ Tests: curriculum hierarchy, prerequisite cycle detection against a deliberately
 
 ### M2. Ingestion
 
-Source documents, the Track A pipeline productionised from the M0 wrapper, semantic chunking, figure extraction across all three formats, provenance preservation, job system with a worker, synthetic fixture corpus, tests.
+Source documents, the Track A pipeline productionised from the M0 wrapper, semantic chunking, figure extraction, provenance preservation, job system with a worker, synthetic fixture corpus, tests.
 
-Gate: one real arkusz ingests end to end with exercise numbers, point values, parent/subtask relationships, and figures intact, and its exercise count matches its marking scheme exactly. Stop.
+Figure extraction means the `WORD_SHAPE` route productionised from the M0.4 scaffold (`figures_render.py`): DOCX→PDF via LibreOffice, then crop each task's figure region, cleaning up the failure modes named in `docs/decisions/0004-figure-routes.md`. The `RASTER` and `WMF` routes stay in as thin handlers for completeness — they are page furniture in this corpus — but they are not where the work is. Do not build three parallel pipelines.
+
+Gate: one real arkusz ingests end to end with exercise numbers, point values, parent/subtask relationships, and figures intact (every `expected_figure_count > 0` task has a linked, rendered figure), and its exercise count matches its marking scheme exactly. Stop.
 
 ---
 

@@ -58,6 +58,12 @@ szczegółowe", liceum ogólnokształcące / technikum):
 regulation text. Every node still needs node-by-node human verification before
 M1 seeds the `units` / `topics` tables from it.
 
+`seeds/curriculum_matematyka_review.md` is the review sheet: one numbered line
+per node in Dz.U. order, with the cleaned seed value and the verbatim
+`pdftotext` span side by side (136 lines = 132 nodes + 4 sub-points). Formula
+statements are text-extraction-mangled and flagged `⚠fx` — verify those against
+the PDF page; the tree structure (code, name, level, order) is what M1 consumes.
+
 ## Manifest
 
 `podstawa_matematyka.pdf` / `matematyka.pdf` should **not** be listed in

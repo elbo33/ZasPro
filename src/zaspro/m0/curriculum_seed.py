@@ -47,7 +47,14 @@ def _annex_lines() -> list[str]:
 
 
 def _clean(text: str) -> str:
-    return re.sub(r"\s+", " ", text).strip().rstrip(";.").strip()
+    t = re.sub(r"\s+", " ", text).strip()
+    # pdftotext -layout floats stacked-fraction fragments from the NEXT numbered
+    # item up between lines; they land after this item's terminal ';'. Drop a
+    # trailing segment that carries no real word.
+    head, sep, tail = t.rpartition(";")
+    if sep and tail and not re.search(r"[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]{4,}", tail):
+        t = head
+    return t.strip().rstrip(";.").strip()
 
 
 def parse() -> list[dict]:
@@ -61,8 +68,10 @@ def parse() -> list[dict]:
     def flush_item() -> None:
         nonlocal cur
         if cur is not None:
+            cur["raw"] = re.sub(r"\s+", " ", cur["statement"]).strip()
             cur["statement"] = _clean(cur["statement"])
             for sp in cur.get("subpoints", []):
+                sp["raw"] = re.sub(r"\s+", " ", sp["statement"]).strip()
                 sp["statement"] = _clean(sp["statement"])
             items.append(cur)
             cur = None
@@ -73,7 +82,12 @@ def parse() -> list[dict]:
             "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII",
         }:
             flush_item()
-            unit = {"code": s.group(1), "name": _clean(s.group(2)), "topics": []}
+            unit = {
+                "code": s.group(1),
+                "name": _clean(s.group(2)),
+                "raw": re.sub(r"\s+", " ", ln).strip(),
+                "topics": [],
+            }
             units.append(unit)
             level = None
             items = unit["topics"]
@@ -85,11 +99,11 @@ def parse() -> list[dict]:
         if _ZP.match(ln):
             flush_item()
             level = "podstawowy"
-            # "Zakres podstawowy. Uczeń <inline single requirement>."
+            # "Zakres podstawowy. Uczeń <inline single requirement>." — keep cur
+            # open so continuation lines are appended; it flushes at the next marker.
             tail = ln.split("Uczeń", 1)[1].strip().lstrip(":").strip()
             if tail and not tail.endswith(":"):
                 cur = {"code": f"{unit['code']}.1", "level": level, "statement": tail}
-                flush_item()
             continue
 
         z = _ZR.match(ln)
@@ -103,8 +117,8 @@ def parse() -> list[dict]:
             elif "a ponadto" in tail:
                 body = tail.split("a ponadto", 1)[1].strip()
                 if body:
+                    # inline single ZR requirement — keep cur open for continuation
                     cur = {"code": f"{unit['code']}.R1", "level": level, "statement": body}
-                    flush_item()
                     inline_zr_pending = False
                 else:
                     inline_zr_pending = True
@@ -121,7 +135,6 @@ def parse() -> list[dict]:
                 inline_zr_pending = False
                 continue
             cur = {"code": f"{unit['code']}.R1", "level": "rozszerzony", "statement": body}
-            flush_item()
             inline_zr_pending = False
             continue
 
@@ -167,7 +180,14 @@ def _yaml(units: list[dict]) -> str:
         "#   R in the code (I.R1) to stay unique alongside the podstawowy codes.",
         "#",
         "# STATUS: DRAFT — every node must be verified against the Dz.U. text",
-        "#   before M1 seeds from this file.",
+        "#   before M1 seeds from this file. Review sheet (one line per node, in",
+        "#   Dz.U. order, with the verbatim pdftotext span):",
+        "#   seeds/curriculum_matematyka_review.md",
+        "#",
+        "# Formulae in statements are pdftotext-mangled (aˣ shows as ax, fractions",
+        "#   collapse). They are illustrative in the regulation, not structural;",
+        "#   verify the ⚠fx rows against the PDF. The tree itself — codes, names,",
+        "#   levels, order — is what M1 seeds from.",
         "",
         "subject:",
         "  name: Matematyka",
@@ -198,10 +218,78 @@ def _q(s: str) -> str:
     return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
+def _md_cell(s: str) -> str:
+    return s.replace("|", "\\|")
+
+
+def _review_md(units: list[dict]) -> str:
+    """One line per node, in the order the regulation lists them, with the
+    verbatim pdftotext span beside the cleaned seed value — for human
+    verification of all ~132 nodes (SPEC M0.6)."""
+
+    zp = sum(1 for u in units for t in u["topics"] if t["level"] == "podstawowy")
+    zr = sum(1 for u in units for t in u["topics"] if t["level"] == "rozszerzony")
+    L = [
+        "# Curriculum seed — review sheet (M0.6)",
+        "",
+        "Every node of `seeds/curriculum_matematyka.yaml`, in Dz.U. order, for "
+        "node-by-node verification against the regulation before M1 seeds from it.",
+        "",
+        "- **Source:** Dz.U. 2024 poz. 1019, Rozporządzenie MEN z 28.06.2024, "
+        "matematyka annex for liceum ogólnokształcące / technikum, "
+        '"Treści nauczania – wymagania szczegółowe".',
+        "- **Extracted from:** `sources/raw/DU_programowej_2024.pdf` "
+        f"(`pdftotext -layout`, annex lines {ANNEX_FIRST_LINE}–{ANNEX_LAST_LINE}).",
+        f"- **Nodes:** {len(units)} units + {zp} podstawowy + {zr} rozszerzony = "
+        f"{len(units) + zp + zr}. The 4 sub-points (I.2 a/b, XI.2 a/b) are extra "
+        f"rows, so the sheet has {len(units) + zp + zr + 4} numbered lines.",
+        "- **seed** is the cleaned value in the YAML; **Dz.U. verbatim** is the "
+        "raw `pdftotext` span (formulae are mangled by text extraction in both — "
+        "check the PDF for exact notation). They should differ only in trailing "
+        "punctuation and line-join whitespace.",
+        "- Formula sections where pdftotext mangles maths badly are flagged `⚠fx`; "
+        "verify those against the PDF page directly.",
+        "",
+        "| # | code | level | seed | Dz.U. verbatim |",
+        "|---|---|---|---|---|",
+    ]
+    i = 0
+    for u in units:
+        i += 1
+        L.append(f"| {i} | **{u['code']}** | *unit* | **{_md_cell(u['name'])}** | {_md_cell(u['raw'])} |")
+        for level in ("podstawowy", "rozszerzony"):
+            for t in (x for x in u["topics"] if x["level"] == level):
+                i += 1
+                fx = " ⚠fx" if _looks_formula_heavy(t["raw"]) else ""
+                L.append(
+                    f"| {i} | {t['code']} | {level}{fx} | {_md_cell(t['statement'])} "
+                    f"| {_md_cell(t['raw'])} |"
+                )
+                for sp in t.get("subpoints", []):
+                    i += 1
+                    L.append(
+                        f"| {i} | {sp['code']} | ↳ sub | {_md_cell(sp['statement'])} "
+                        f"| {_md_cell(sp['raw'])} |"
+                    )
+    L.append("")
+    return "\n".join(L)
+
+
+def _looks_formula_heavy(s: str) -> bool:
+    # crude: lots of single letters / digits / operators relative to words
+    tokens = s.split()
+    if not tokens:
+        return False
+    shorty = sum(1 for t in tokens if len(t) <= 2)
+    return shorty / len(tokens) > 0.45 and len(tokens) > 6
+
+
 def run() -> int:
     units = parse()
     OUT_YAML.parent.mkdir(exist_ok=True)
     OUT_YAML.write_text(_yaml(units), encoding="utf-8")
+    review = OUT_YAML.with_name("curriculum_matematyka_review.md")
+    review.write_text(_review_md(units), encoding="utf-8")
 
     zp = sum(1 for u in units for t in u["topics"] if t["level"] == "podstawowy")
     zr = sum(1 for u in units for t in u["topics"] if t["level"] == "rozszerzony")
@@ -212,6 +300,7 @@ def run() -> int:
         r = sum(1 for t in u["topics"] if t["level"] == "rozszerzony")
         print(f"      {u['code']:>4}. {u['name'][:44]:44} ZP {p:2}  ZR {r}")
     print(f"      wrote {OUT_YAML.relative_to(ROOT)}  (DRAFT — verify node by node)")
+    print(f"      wrote {review.relative_to(ROOT)}  ({len(units) + zp + zr} nodes for review)")
     return 0
 
 

@@ -13,7 +13,14 @@
 #   R in the code (I.R1) to stay unique alongside the podstawowy codes.
 #
 # STATUS: DRAFT — every node must be verified against the Dz.U. text
-#   before M1 seeds from this file.
+#   before M1 seeds from this file. Review sheet (one line per node, in
+#   Dz.U. order, with the verbatim pdftotext span):
+#   seeds/curriculum_matematyka_review.md
+#
+# Formulae in statements are pdftotext-mangled (aˣ shows as ax, fractions
+#   collapse). They are illustrative in the regulation, not structural;
+#   verify the ⚠fx rows against the PDF. The tree itself — codes, names,
+#   levels, order — is what M1 seeds from.
 
 subject:
   name: Matematyka
@@ -90,7 +97,7 @@ units:
         statement: "stosuje podstawowe własności trójkąta Pascala oraz następujące własności współczynnika dwumianowego (symbolu Newtona): (𝑛𝑛0) = 1, (𝑛𝑛1) = 𝑛𝑛, 𝑛𝑛 (𝑛𝑛−1 ) = 𝑛𝑛, (𝑛𝑛𝑘𝑘) = (𝑛𝑛−𝑘𝑘 𝑛𝑛 ), (𝑛𝑛𝑘𝑘) + (𝑘𝑘+1 𝑛𝑛 ) = (𝑛𝑛+1 𝑘𝑘+1 )"
       - code: II.R5
         level: rozszerzony
-        statement: "korzysta ze wzorów na: a3 + b3, a3 − b3, an − bn, (a + b)n i (a − b)n; 1 1 1 1 1 𝑥𝑥 + 1 𝑥𝑥 − 1"
+        statement: "korzysta ze wzorów na: a3 + b3, a3 − b3, an − bn, (a + b)n i (a − b)n"
       - code: II.R6
         level: rozszerzony
         statement: "dodaje i odejmuje wyrażenia wymierne, np.: 𝑥𝑥 +1 − 𝑥𝑥, 𝑥𝑥 + 𝑥𝑥 2 + 𝑥𝑥 3, 𝑥𝑥 + 2 + 𝑥𝑥 + 1"
@@ -146,7 +153,7 @@ units:
         statement: "stosuje układy równań do rozwiązywania zadań tekstowych"
       - code: IV.R1
         level: rozszerzony
-        statement: "rozwiązuje układy równań liniowych i kwadratowych z dwiema niewiadomymi, które można"
+        statement: "rozwiązuje układy równań liniowych i kwadratowych z dwiema niewiadomymi, które można sprowadzić do równania kwadratowego lub liniowego, a które nie są trudniejsze niż 𝑥𝑥 2 + 𝑦𝑦 2 + 𝑎𝑎𝑎𝑎 + 𝑏𝑏𝑏𝑏 = 𝑐𝑐 { . 𝑥𝑥 2 + 𝑦𝑦 2 + 𝑑𝑑𝑑𝑑 + 𝑒𝑒𝑒𝑒 = 𝑓𝑓"
   - code: V
     name: "Funkcje"
     order_index: 5
@@ -186,7 +193,7 @@ units:
         statement: "wykorzystuje własności funkcji liniowej i kwadratowej do interpretacji zagadnień geometrycznych, fizycznych itp., także osadzonych w kontekście praktycznym"
       - code: V.12
         level: podstawowy
-        statement: "na podstawie wykresu funkcji 𝑦𝑦 = 𝑓𝑓(𝑥𝑥) szkicuje wykresy funkcji 𝑦𝑦 = 𝑓𝑓(𝑥𝑥 − 𝑎𝑎), 𝑦𝑦 = 𝑓𝑓(𝑥𝑥) + 𝑏𝑏; 𝑎𝑎"
+        statement: "na podstawie wykresu funkcji 𝑦𝑦 = 𝑓𝑓(𝑥𝑥) szkicuje wykresy funkcji 𝑦𝑦 = 𝑓𝑓(𝑥𝑥 − 𝑎𝑎), 𝑦𝑦 = 𝑓𝑓(𝑥𝑥) + 𝑏𝑏"
       - code: V.13
         level: podstawowy
         statement: "posługuje się funkcją 𝑓𝑓(𝑥𝑥) = 𝑥𝑥, w tym jej wykresem, do opisu i interpretacji zagadnień związanych z wielkościami odwrotnie proporcjonalnymi, również w zastosowaniach praktycznych"
@@ -239,10 +246,10 @@ units:
     topics:
       - code: VII.1
         level: podstawowy
-        statement: "wykorzystuje definicje funkcji: sinus, cosinus i tangens dla kątów od 0° do 180°, w szczególności wyznacza wartości funkcji trygonometrycznych dla kątów 30°, 45°, 60°; sin 𝛼𝛼"
+        statement: "wykorzystuje definicje funkcji: sinus, cosinus i tangens dla kątów od 0° do 180°, w szczególności wyznacza wartości funkcji trygonometrycznych dla kątów 30°, 45°, 60°"
       - code: VII.2
         level: podstawowy
-        statement: "korzysta z wzorów sin2 𝛼𝛼 + cos 2 𝛼𝛼 = 1, tg 𝛼𝛼 = cos 𝛼𝛼; 1"
+        statement: "korzysta z wzorów sin2 𝛼𝛼 + cos 2 𝛼𝛼 = 1, tg 𝛼𝛼 = cos 𝛼𝛼"
       - code: VII.3
         level: podstawowy
         statement: "stosuje twierdzenie cosinusów oraz wzór na pole trójkąta 𝑃𝑃 = 2 ⋅ 𝑎𝑎 ⋅ 𝑏𝑏 ⋅ sin 𝛾𝛾"
@@ -418,7 +425,7 @@ units:
     topics:
       - code: XIII.1
         level: podstawowy
-        statement: "rozwiązuje zadania optymalizacyjne w sytuacjach dających się"
+        statement: "rozwiązuje zadania optymalizacyjne w sytuacjach dających się opisać funkcją kwadratową"
       - code: XIII.R1
         level: rozszerzony
         statement: "oblicza granice funkcji (w tym jednostronne)"
