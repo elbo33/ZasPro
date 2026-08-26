@@ -88,15 +88,15 @@
 
 ### V.R3 (rozszerzony) — Funkcje
 
-- **seed name:** dowodzi monotoniczności funkcji zadanej wzorem, jak w podanym przykładzie
-- **statement_latex:** `\text{wykaż, że } f(x)=\frac{x-1}{x+2} \text{ jest monotoniczna w przedziale } (-\infty,\,-2)`
+- **seed name:** dowodzi monotoniczności funkcji zadanej wzorem, jak w przykładzie: wykazanie, że dana funkcja wymierna jest monotoniczna w podanym przedziale
+- **statement_latex:** `f(x)=\frac{x-1}{x+2} \quad \text{monotoniczna w} \quad (-\infty,\,-2)`
 - **rendered in PDF:** „wykaż, że funkcja f(x) = (x−1)/(x+2) jest monotoniczna w przedziale (−∞, −2)” — (x−1) stacked over (x+2)
 - **pdftotext gave:** `wykaż, że funkcja 𝑥𝑥−1 𝑓𝑓(𝑥𝑥) = 𝑥𝑥+2 jest monotoniczna w przedziale (−∞, −2)`
 
 ### VI.R1 (rozszerzony) — Ciągi
 
-- **seed name:** oblicza granice ciągów, korzystając z granic ciągów wzorcowych oraz twierdzeń o granicy sumy, różnicy, iloczynu i ilorazu ciągów zbieżnych, a także twierdzenia o trzech ciągach
-- **statement_latex:** `\text{typu } \tfrac{1}{n}, \; \sqrt[n]{a}`
+- **seed name:** oblicza granice ciągów, korzystając z granic ciągów wzorcowych (typu 1/n oraz n-tego pierwiastka z a) oraz twierdzeń o granicy sumy, różnicy, iloczynu i ilorazu ciągów zbieżnych, a także twierdzenia o trzech ciągach
+- **statement_latex:** `\tfrac{1}{n}, \quad \sqrt[n]{a}`
 - **rendered in PDF:** „granic ciągów typu 1/n, ⁿ√a” — 1 stacked over n; and an n-th root of a (small n above the radical)
 - **pdftotext gave:** `granic ciągów typu 𝑛𝑛, 𝑛𝑛√𝑎𝑎   [the ‘1’ numerator is GONE; ⁿ√a lost its index]`
 

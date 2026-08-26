@@ -224,8 +224,8 @@ units:
         name: "posługuje się złożeniami funkcji"
       - code: V.R3
         level: rozszerzony
-        name: "dowodzi monotoniczności funkcji zadanej wzorem, jak w podanym przykładzie"
-        statement_latex: "\\text{wykaż, że } f(x)=\\frac{x-1}{x+2} \\text{ jest monotoniczna w przedziale } (-\\infty,\\,-2)"
+        name: "dowodzi monotoniczności funkcji zadanej wzorem, jak w przykładzie: wykazanie, że dana funkcja wymierna jest monotoniczna w podanym przedziale"
+        statement_latex: "f(x)=\\frac{x-1}{x+2} \\quad \\text{monotoniczna w} \\quad (-\\infty,\\,-2)"
   - code: VI
     name: "Ciągi"
     order_index: 6
@@ -253,8 +253,8 @@ units:
         name: "wykorzystuje własności ciągów, w tym arytmetycznych i geometrycznych, do rozwiązywania zadań, również osadzonych w kontekście praktycznym"
       - code: VI.R1
         level: rozszerzony
-        name: "oblicza granice ciągów, korzystając z granic ciągów wzorcowych oraz twierdzeń o granicy sumy, różnicy, iloczynu i ilorazu ciągów zbieżnych, a także twierdzenia o trzech ciągach"
-        statement_latex: "\\text{typu } \\tfrac{1}{n}, \\; \\sqrt[n]{a}"
+        name: "oblicza granice ciągów, korzystając z granic ciągów wzorcowych (typu 1/n oraz n-tego pierwiastka z a) oraz twierdzeń o granicy sumy, różnicy, iloczynu i ilorazu ciągów zbieżnych, a także twierdzenia o trzech ciągach"
+        statement_latex: "\\tfrac{1}{n}, \\quad \\sqrt[n]{a}"
       - code: VI.R2
         level: rozszerzony
         name: "rozpoznaje zbieżne szeregi geometryczne i oblicza ich sumę"
