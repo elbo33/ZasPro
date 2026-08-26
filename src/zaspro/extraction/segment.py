@@ -92,6 +92,7 @@ def segment_arkusz(
                 statement_latex_raw=text,
                 stem_latex_raw=stem,
                 media_refs=_media_refs(text),
+                own_figure_count=own_figs,
                 expected_figure_count=own_figs + inherited_figs,
             )
         )

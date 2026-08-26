@@ -77,8 +77,11 @@ class ExerciseChunk(BaseModel):
     stem_latex_raw: str | None = None  # parent stem, attached to every child
 
     media_refs: list[str] = Field(default_factory=list)
-    # <w:drawing> elements in this task's DOCX range. Pandoc drops Word-drawn
-    # shapes silently, so expected > extracted means a figure was lost.
+    # <w:drawing> elements in this task's OWN DOCX range (a distinct figure
+    # region). A subtask usually has 0 here and inherits its parent's figure.
+    own_figure_count: int = 0
+    # own + inherited. Pandoc drops Word-drawn shapes silently, so
+    # expected > extracted means a figure was lost.
     expected_figure_count: int = 0
 
     extraction_method: ExtractionMethod = ExtractionMethod.pandoc_omml

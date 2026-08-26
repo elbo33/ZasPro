@@ -49,12 +49,19 @@ def run(arkusz: str = DEFAULT_ARKUSZ, marking: str = DEFAULT_MARKING) -> int:
         doc_id = ingest.output["source_document_id"]
         rep = build_report(s, doc_id)
         print()
-        print(f"document        : {rep.document}  ({rep.extraction_status})")
-        print(f"chunks          : {rep.chunks}")
-        print(f"exercises       : {rep.exercises}  ({rep.parents} parents + {rep.leaf_tasks} leaf)")
-        print(f"points total    : {rep.points_total}")
-        print(f"figures         : {rep.figures_rendered} rendered / {rep.figures_expected_tasks} figure-bearing tasks")
-        print(f"incomplete      : {rep.incomplete or 'none'}")
+        print(f"document          : {rep.document}  ({rep.extraction_status})")
+        print(f"chunks            : {rep.chunks}")
+        print(f"exercises         : {rep.exercises}  ({rep.parents} parents + {rep.leaf_tasks} leaf)")
+        print(f"points total      : {rep.points_total}")
+        print(
+            f"figure regions    : {rep.figure_regions_rendered} rendered / "
+            f"{rep.figure_regions_expected} expected"
+        )
+        print(
+            f"figure-bearing ex : {rep.figure_bearing_exercises}  "
+            f"({'all satisfied' if not rep.incomplete else str(len(rep.incomplete)) + ' INCOMPLETE'})"
+        )
+        print(f"incomplete        : {rep.incomplete or 'none'}")
         return 0 if (rep.complete and not failed) else 1
 
 

@@ -76,7 +76,9 @@ class Exercise(Base, TimestampMixin):
     verbatim_ok: Mapped[bool] = mapped_column(default=False)
     variant_group_id: Mapped[str | None] = mapped_column(String(64))
     points_available: Mapped[int | None] = mapped_column(Integer)  # NULL for a parent
-    # <w:drawing> elements in this task's DOCX range (M0.4). incomplete if it
+    # <w:drawing> elements in this task's OWN range — a distinct figure region.
+    own_figure_count: Mapped[int] = mapped_column(Integer, default=0)
+    # own + inherited from the parent (M0.4). The task is incomplete if this
     # exceeds the number of linked, rendered figures.
     expected_figure_count: Mapped[int] = mapped_column(Integer, default=0)
 

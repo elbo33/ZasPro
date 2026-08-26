@@ -37,14 +37,30 @@ independently. `pipeline.py` is split into `segment_document` +
 
 ### 3. Figure loss is structural, not silent (the M0.4 finding)
 
-`exercises.expected_figure_count` is populated during segmentation from the
-per-task `<w:drawing>` count. A subtask inherits its parent's count (the figure
-sits in the parent's range). `RENDER_VECTOR_FIGURE` links the one `Figure` to
-the task **and its subtasks** (SPEC §5: a figure can serve several subtasks).
-`build_report` lists any exercise where `expected_figure_count` exceeds its
-count of linked `render_status = COMPLETE` figures; the M2 gate requires that
-list to be empty. A render that never succeeds leaves the exercise visibly
-incomplete — it is never an empty success.
+Two figure quantities that are **not** the same, split across two columns so a
+report can never make them look contradictory (migration `0003`):
+
+* `exercises.own_figure_count` — `<w:drawing>` count in the exercise's *own*
+  DOCX range. `> 0` marks a distinct **figure region**; each yields one
+  `Figure` row.
+* `exercises.expected_figure_count` — own + inherited. A subtask inherits its
+  parent's count (the figure sits in the parent's range), so it needs a figure
+  attached without being its own region.
+
+`RENDER_VECTOR_FIGURE` links the one `Figure` to the region task **and its
+subtasks** (SPEC §5). `build_report` reports `figure_regions_expected`
+(`own_figure_count > 0`) vs `figure_regions_rendered` (`Figure` rows,
+`COMPLETE`) as one comparable pair, `figure_bearing_exercises`
+(`expected_figure_count > 0`) as a separate count, and `incomplete` as the list
+of exercises where `expected_figure_count` exceeds linked-and-`COMPLETE`
+figures. The gate requires `regions rendered == regions expected` **and**
+`incomplete == []`. For the reference arkusz: 8 regions, 8 rendered, 12
+figure-bearing exercises (8 + 4 inheriting), 0 incomplete.
+
+A render that never succeeds leaves its exercise in `incomplete` with a
+`FAILED` job carrying the traceback — never an empty success. Exercised end to
+end by `test_ingestion_incomplete_e2e.py` (a synthetic arkusz with an empty
+`<w:drawing>` that LibreOffice renders as no ink, so the crop genuinely fails).
 
 ### 4. `source_chunks.confidence` is nullable, no default
 

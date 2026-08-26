@@ -108,6 +108,7 @@ def persist_ingestion(session: Session, result: IngestionResult) -> SourceDocume
                 f"{group_prefix}-{chunk.exercise_number}" if group_prefix else None
             ),
             points_available=chunk.points_available,
+            own_figure_count=chunk.own_figure_count,
             expected_figure_count=chunk.expected_figure_count,
             verification_status=VerificationStatus.DRAFT,
         )

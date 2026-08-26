@@ -59,7 +59,10 @@ def test_real_arkusz_ingests_end_to_end(db):
     # 41 = 4 parents (12, 13, 24, 33) + 37 leaf tasks
     assert rep.exercises == 41 and rep.parents == 4
     assert rep.chunks == 41
-    # every figure-bearing task has a rendered, linked figure — nothing silently empty
-    assert rep.figures_rendered == 8
+    # 8 distinct drawing regions, all rendered; 12 exercises need one
+    # (8 own + 4 subtasks of 12 and 13 that inherit); none incomplete.
+    assert rep.figure_regions_expected == 8
+    assert rep.figure_regions_rendered == 8
+    assert rep.figure_bearing_exercises == 12
     assert rep.incomplete == []
-    assert rep.complete
+    assert rep.figures_ok and rep.complete

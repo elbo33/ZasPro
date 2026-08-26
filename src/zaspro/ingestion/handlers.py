@@ -26,7 +26,13 @@ from zaspro.db.models import (
     SourceFormat,
 )
 from zaspro.extraction.figures_render import crop_task_figure, docx_to_pdf, task_page_map
-from zaspro.ingestion.pipeline import run_pipeline
+from zaspro.extraction.marking_scheme import parse_marking_scheme
+from zaspro.extraction.models import MarkingSchemeTask
+from zaspro.ingestion.pipeline import (
+    IngestionResult,
+    segment_document,
+    validate_against_marking,
+)
 from zaspro.ingestion.persist import persist_ingestion
 from zaspro.jobs import enqueue, register
 from zaspro.storage import get_storage
@@ -34,20 +40,48 @@ from zaspro.storage import get_storage
 RAW = Path(__file__).resolve().parents[3] / "sources" / "raw"
 
 
+def _resolve(ref: str) -> Path:
+    """A bare filename resolves under sources/raw/; an absolute path is used as-is
+    (tests pass a tmp-dir DOCX)."""
+
+    p = Path(ref)
+    return p if p.is_absolute() else RAW / ref
+
+
 @register(JobType.INGEST_DOCUMENT)
 def handle_ingest_document(session: Session, job: Job) -> dict:
     payload = job.input
-    docx = RAW / payload["source_file_ref"]
-    marking = RAW / payload["marking_scheme_file_ref"]
+    docx = _resolve(payload["source_file_ref"])
     if not docx.is_file():
         raise FileNotFoundError(docx)
-    if not marking.is_file():
-        raise FileNotFoundError(marking)
+
+    # Marking scheme: a structured list in the payload, else parse the PDF.
+    if payload.get("marking_tasks") is not None:
+        marking_tasks = [MarkingSchemeTask(**t) for t in payload["marking_tasks"]]
+        marking_name = payload.get("marking_scheme_file_ref", "payload")
+        marking_deterministic = True
+    else:
+        marking_pdf = _resolve(payload["marking_scheme_file_ref"])
+        if not marking_pdf.is_file():
+            raise FileNotFoundError(marking_pdf)
+        marking_tasks = parse_marking_scheme(marking_pdf)
+        marking_name = marking_pdf.name
+        marking_deterministic = False
 
     storage = get_storage()
     with tempfile.TemporaryDirectory() as td:
         work = Path(td)
-        result = run_pipeline(docx, marking, work / "convert")
+        seg = segment_document(docx, work / "convert")
+        gate = validate_against_marking(
+            seg, marking_tasks,
+            marking_scheme=marking_name,
+            marking_scheme_is_deterministic=marking_deterministic,
+        )
+        result = IngestionResult(
+            source_file=seg.source_file, conversion=seg.conversion, body=seg.body,
+            chunks=seg.chunks, figures_by_task=seg.figures_by_task,
+            figure_chrome=seg.figure_chrome, figure_total=seg.figure_total, gate=gate,
+        )
         doc = persist_ingestion(session, result)
 
         pdf = docx_to_pdf(docx, work / "pdf")
