@@ -18,13 +18,17 @@ OUT = ROOT / "m2" / "corpus_track_a_summary.md"
 # Written after the fixing round: what actually had to change, vs what was
 # predicted before the corpus arrived.
 FIXING_NOTES = """\
-**Nothing in `strip_boilerplate` or `segment_arkusz` needed changing.** The
-maj-2024, maj-2025 and maj-2026 podstawowy czarnodruk papers are structurally
-identical for both: same cover `\\begin{figure}` + three `longtable` blocks,
-same `Zadanie N. (0--M)` / `Zadanie N.` / `Zadanie N.M. (0--M)` markers, same
-`Koniec` sentinel, en-dash point markers rendered as `--`. The predicted
-session-to-session drift (`a)`/`b)` subtasks, different point punctuation, a
-moved sentinel) did not appear across these three.
+**Predicted risk — session-to-session formatting drift — checked and did not
+materialise.** Before the corpus arrived we expected the stripper or segmenter
+to need work for older sessions: `a)`/`b)` subtasks instead of `Zadanie N.M`,
+different point-marker punctuation, a moved or renamed `Koniec` sentinel,
+different cover boilerplate. **None of it appeared.** The maj-2024, maj-2025 and
+maj-2026 podstawowy czarnodruk papers are structurally identical for both
+`strip_boilerplate` and `segment_arkusz`: same cover `\\begin{figure}` + three
+`longtable` blocks, same `Zadanie N. (0--M)` / `Zadanie N.` / `Zadanie N.M.
+(0--M)` markers, same `Koniec` sentinel, en-dash point markers rendered as
+`--`. **Zero changes to either function.** The risk was real enough to budget a
+fixing round; the check retired it rather than leaving it assumed.
 
 Independently cross-checked: each arkusz's own cover states `Liczba punktów do
 uzyskania: 46 / 50 / 50`, which matches both the segmented leaf-task point sum

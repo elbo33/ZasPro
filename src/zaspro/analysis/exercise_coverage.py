@@ -1,0 +1,143 @@
+"""Rough exercise-per-topic coverage for podstawowy.
+
+Signal: the `zasady oceniania` cites, per task, the podstawa requirement codes
+it tests ("Wymaganie szczegółowe: I.4) …"). That is CKE's own mapping — free,
+and good enough to answer "how many topics have >= 5 exercises, and can this
+corpus ever support the EXERCISES episode format (5 per topic)?".
+
+Caveats (this is not the mapping agent):
+* maj-2024 cites the superseded `wymagania egzaminacyjne 2024`, whose item
+  numbering mostly but not exactly matches Dz.U. 2024. Codes are matched by
+  string; a few 2024 rows may land on the wrong requirement.
+* a task testing several requirements counts toward each.
+"""
+
+from __future__ import annotations
+
+import re
+from collections import Counter
+from dataclasses import dataclass, field
+from pathlib import Path
+
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from zaspro.db.models import Exercise, SourceDocument, Topic, TopicLevel
+
+ROOT = Path(__file__).resolve().parents[3]
+RAW = ROOT / "sources" / "raw"
+
+_ZAD = re.compile(r"^Zadanie\s+(\d+(?:\.\d+)?)\.\s*\(0", re.MULTILINE)
+_CODE = re.compile(r"\b((?:XIII|XII|XI|X|IX|VIII|VII|VI|IV|V|III|II|I)\.\d+)\)")
+_REQ_SECTION_END = re.compile(r"Zasady oceniania|Rozwiązanie|Przykładowe|Schemat")
+
+
+def _zasady_text(session_code: str) -> str:
+    import subprocess
+
+    for name in (
+        f"MMAP-P0-660-{session_code}-zasady.pdf",
+        f"MMAP-P0-100-{session_code}-zasady.pdf",
+    ):
+        p = RAW / name
+        if p.is_file():
+            return subprocess.run(
+                ["pdftotext", "-layout", str(p), "-"],
+                capture_output=True, text=True, check=True,
+            ).stdout
+    raise FileNotFoundError(f"no zasady for session {session_code}")
+
+
+def codes_by_task(session_code: str) -> dict[str, list[str]]:
+    """Task number -> podstawa codes cited in its 'Wymaganie szczegółowe' box."""
+
+    text = _zasady_text(session_code)
+    marks = list(_ZAD.finditer(text))
+    out: dict[str, list[str]] = {}
+    for i, m in enumerate(marks):
+        start = m.end()
+        end = marks[i + 1].start() if i + 1 < len(marks) else len(text)
+        block = text[start:end]
+        # the requirement box is the run before "Zasady oceniania" / "Rozwiązanie"
+        cut = _REQ_SECTION_END.search(block)
+        box = block[: cut.start()] if cut else block
+        codes = []
+        for c in _CODE.findall(box):
+            if c not in codes:
+                codes.append(c)
+        out[m.group(1)] = codes
+    return out
+
+
+@dataclass
+class Coverage:
+    session_codes: list[str]
+    podstawowy_topics: int
+    per_topic: Counter  # official_requirement_code -> exercise count
+    unmatched_codes: Counter  # code cited by zasady but not a podstawowy topic
+    tasks_with_no_code: int = 0
+    matched_task_code_pairs: int = 0
+
+    @property
+    def histogram(self) -> dict[str, int]:
+        buckets = {"0": 0, "1-2": 0, "3-4": 0, "5+": 0}
+        counts = self.per_topic
+        # per_topic only holds topics with >= 1; add the zeros
+        covered = set(counts)
+        buckets["0"] = self.podstawowy_topics - len(covered)
+        for n in counts.values():
+            if n <= 2:
+                buckets["1-2"] += 1
+            elif n <= 4:
+                buckets["3-4"] += 1
+            else:
+                buckets["5+"] += 1
+        return buckets
+
+
+def analyse(session: Session) -> Coverage:
+    topic_codes = set(
+        session.scalars(
+            select(Topic.official_requirement_code).where(Topic.level == TopicLevel.PODSTAWOWY)
+        )
+    )
+
+    docs = session.scalars(
+        select(SourceDocument).where(SourceDocument.file_ref.like("MMAP-P0-660-A-%.docx"))
+    ).all()
+
+    per_topic: Counter = Counter()
+    unmatched: Counter = Counter()
+    no_code = 0
+    pairs = 0
+    sessions: list[str] = []
+
+    for doc in sorted(docs, key=lambda d: d.session_code or ""):
+        sessions.append(doc.session_code)
+        by_task = codes_by_task(doc.session_code)
+        leaves = session.scalars(
+            select(Exercise).where(
+                Exercise.source_document_id == doc.id,
+                Exercise.points_available.is_not(None),
+            )
+        ).all()
+        for ex in leaves:
+            codes = by_task.get(ex.exercise_number, [])
+            if not codes:
+                no_code += 1
+                continue
+            for code in codes:
+                pairs += 1
+                if code in topic_codes:
+                    per_topic[code] += 1
+                else:
+                    unmatched[code] += 1
+
+    return Coverage(
+        session_codes=sessions,
+        podstawowy_topics=len(topic_codes),
+        per_topic=per_topic,
+        unmatched_codes=unmatched,
+        tasks_with_no_code=no_code,
+        matched_task_code_pairs=pairs,
+    )

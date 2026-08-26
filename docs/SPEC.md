@@ -68,6 +68,7 @@ These follow from a source-and-tooling research pass and an extraction spike com
 6. **Exercise boundary recovery outranks formula fidelity.** An exercise with a slightly imperfect equation is repairable. An exercise whose boundaries dissolved into the next one is not.
 7. **Extraction from CKE material is deterministic, not model-based.** See section 2a. Pandoc converts the DOCX accessibility exports directly.
 8. **Rendered LaTeX and parseable LaTeX are different artifacts.** See section 2a and section 7. Never feed display LaTeX to a solver without normalisation.
+9. **Podstawowy only, for now.** Settled 27 Aug 2026 after the M2 corpus went in. Every Matura candidate sits the podstawowy exam; the deterministic Track A path works end to end for it (3/3 corpus arkusze pass with no fixing round). Rozszerzony has **no czarnodruk DOCX in any Formuła 2023 session** — it is entirely Track B (PDF, non-deterministic), which stays deferred (ADR 0005). A complete single-level course beats a half-populated two-level one. The 46 rozszerzony topics stay in the curriculum tree, seeded and correct, carrying no content; the rozszerzony informator and arkusze stay in the manifest as future material. See ADR 0008.
 
 The verified source inventory and extraction tooling research live in `docs/sources.md`. Read it before M0.
 
