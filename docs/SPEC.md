@@ -1,6 +1,6 @@
 # ZasPro: Polish Matura Knowledge Base and Episode Planning System
 
-Authoritative specification. Version 2, 26 August 2026.
+Authoritative specification. Version 3, 26 August 2026.
 
 Supersedes all earlier drafts. Where this document and any other file disagree, this document wins.
 
@@ -58,7 +58,7 @@ EVERYTHING ELSE IS SOMEONE ELSE'S PROBLEM
 
 ## 2. SETTLED DECISIONS
 
-These follow from a source-and-tooling research pass completed 26 August 2026. They are decided. Do not reopen one without telling me why.
+These follow from a source-and-tooling research pass and an extraction spike completed 26 August 2026. They are decided. Do not reopen one without telling me why.
 
 1. **The curriculum ground truth is the 2024 podstawa programowa** (Dz.U. 2024 poz. 1019), not the `wymagania egzaminacyjne`. The latter applied only to the 2023 and 2024 exams and is superseded. Many secondary sources still cite it. Do not seed from a secondary source or from model recollection.
 2. **Formuła 2023 only.** Formuła 2015 material is recorded in the source manifest but not ingested. Revisit only if exercise volume becomes a constraint.
@@ -66,22 +66,53 @@ These follow from a source-and-tooling research pass completed 26 August 2026. T
 4. **Parallel paper versions (A/B) are separate exercise rows**, joined by `variant_group_id`. Deduplication must never merge across a variant group.
 5. **The `zasady oceniania` marking scheme is both a validation oracle and a knowledge source.** It independently enumerates every exercise with point values, and its partial-credit breakdown maps onto `solution_steps`.
 6. **Exercise boundary recovery outranks formula fidelity.** An exercise with a slightly imperfect equation is repairable. An exercise whose boundaries dissolved into the next one is not.
+7. **Extraction from CKE material is deterministic, not model-based.** See section 2a. Pandoc converts the DOCX accessibility exports directly.
+8. **Rendered LaTeX and parseable LaTeX are different artifacts.** See section 2a and section 7. Never feed display LaTeX to a solver without normalisation.
 
 The verified source inventory and extraction tooling research live in `docs/sources.md`. Read it before M0.
 
 ---
 
+## 2a. SPIKE RESULTS
+
+Measured, not assumed. These numbers are the basis for M0 and for several decisions above.
+
+| document | oMath | display (`oMathPara`) | drawings | media files |
+|---|---|---|---|---|
+| `Informator_EM2024_matematyka_pp_660.docx` | 1386 | 392 | 25 | 0 |
+| `MMAP-P0-660-A-2605-arkusz.docx` | 298 | not measured | 18 | 5 |
+
+Findings:
+
+1. **CKE's `_660.docx` accessibility exports carry native OMML mathematics.** Not images, not flattened text. The transform to LaTeX is deterministic.
+2. **Pandoc 3.10.2 converts both files correctly.** Polish diacritics survive intact, hyperlinks are preserved, equations are accurate.
+3. **Exercise structure survives as parseable text**: `Zadanie N. (0--M)` with point values inline, subtasks as `Zadanie N.M. (0--M)` under an unpointed parent heading that carries the shared stem.
+4. **Figure formats differ by document type.** The arkusz carries raster (`.jpeg`, `.png`) plus vector (`.wmf`) in `word/media/`. The informator carries zero media files and 25 Word-drawn vector shapes, which are not files at all.
+5. **Pandoc's LaTeX is visually faithful and semantically unsafe.** Real output from Zadanie 4:
+
+   ```latex
+   \log_{8}{4 - \log_{8}32}
+   ```
+
+   This renders as log₈4 − log₈32, which is correct. Parsed as an expression it reads as log₈(4 − log₈32), which is not. The grouping braces are invisible when rendered and wrong when evaluated. This is the single most dangerous finding in the spike, because it fails silently in exactly the place that matters.
+
+Consequence: rendering is the correct check for extraction fidelity and the wrong check for verification input. These are separate concerns needing separate artifacts.
+
+---
+
 ## 3. STACK
 
-* **Python 3.12** owns the schema, migrations, ingestion, extraction, verification, and job execution. PDF parsing and symbolic maths are Python-native and this is not negotiable.
+* **Python 3.12** owns the schema, migrations, ingestion, extraction, verification, and job execution. Document parsing and symbolic maths are Python-native and this is not negotiable.
 * **PostgreSQL 16** as the single source of truth. `pgvector` is added only when a retrieval task actually needs it, not in the first migration.
 * **Alembic** for migrations. One migration system only.
 * **SQLAlchemy 2.x** typed ORM models, modern declarative style with `Mapped[]` annotations and a `type_annotation_map` for reused domain types.
 * **Pydantic v2** for all AI input and output schemas and all ingestion contracts.
 * **FastAPI** for the internal API.
+* **Pandoc** for DOCX to LaTeX conversion, invoked as a subprocess. Do not build a custom OMML converter; see section 2a.
+* **LibreOffice headless** for vector figure rendering, if the M0 figure work confirms it.
 * **A job runner**: start with a Postgres-backed queue table plus a worker loop. Do not add Celery, Redis, or RabbitMQ until the simple version is provably insufficient.
 * **Next.js (App Router) dashboard**, read-mostly, calling the FastAPI backend. The dashboard does not own or migrate the schema and does not talk to Postgres directly.
-* **Local filesystem** for source documents and rendered page images in development, behind a storage interface with an S3-compatible implementation available. Only source documents, page images, and extracted figures are stored, nothing else.
+* **Local filesystem** for source documents, extracted media, and rendered images in development, behind a storage interface with an S3-compatible implementation available.
 
 Secrets in environment variables. Expected: `DATABASE_URL`, `ANTHROPIC_API_KEY`, `STORAGE_ROOT`. Nothing else yet.
 
@@ -128,7 +159,7 @@ Design the full schema up front but **create tables in migration batches per pha
 
 * `subjects`: id, name, slug, description, language, level, timestamps
 * `units`: id, subject_id, name, slug, description, order_index
-* `topics`: id, unit_id, name, slug, description, level, order_index, official_requirement_code, status, timestamps
+* `topics`: id, unit_id, parent_id, name, slug, description, level, order_index, official_requirement_code, status, timestamps
 * `topic_prerequisites`: topic_id, prerequisite_topic_id, importance, reason
 
 `official_requirement_code` is the link back to the podstawa programowa numbering and is unique where present.
@@ -142,27 +173,33 @@ Design the full schema up front but **create tables in migration batches per pha
 * `sources`: id, title, author, publisher, year, source_type, licence_status, verbatim_ok, reuse_notes, url, file_ref, notes, processing_status
 * `source_documents`: id, source_id, file_ref, page_count, extraction_status, variant_code, paper_version, session_code, sibling_docx_ref
 * `source_chunks`: id, source_document_id, page, chapter, section, heading, content_type, text, latex, order_index, extraction_method, confidence
-* `figures`: id, source_document_id, page, bbox, image_ref, caption
+* `figures`: id, source_document_id, page, bbox, image_ref, source_format, render_status, caption
 
 `source_type` ∈ `PODSTAWA_PROGRAMOWA | OFFICIAL_CKE | EXAM | MARKING_SCHEME | FORMULA_SHEET | TEXTBOOK | OPEN_EDUCATIONAL_RESOURCE | USER_PROVIDED | OTHER`
 
 `content_type` ∈ `EXPLANATION | DEFINITION | FORMULA | EXAMPLE | EXERCISE | SOLUTION | THEOREM | NOTE | WARNING`
 
+`extraction_method` ∈ `pandoc_omml | pdf_text | pdf_vision | manual`
+
+`source_format` on figures ∈ `RASTER | WMF | WORD_SHAPE`
+
 `variant_code` ∈ `100` standard, `200` autism/Asperger adaptation, `660` blind, `700` deaf. `paper_version` is A or B. `session_code` is the CKE session, for example `2605`.
 
-Do not ingest the 200, 660 and 700 adaptation variants as separate exercises. They are content-equivalent to the standard version. Record their existence on the document row so the DOCX siblings remain reachable.
+**`confidence` is nullable, and null means deterministic.** Pandoc conversion has no confidence to record. Review triage must treat null as "deterministic, no review needed", never as "unknown, review everything". This distinction is what turns the spike finding into less review work rather than the same amount.
 
-Chunk semantically, following document structure (chapter → section → subsection → concept → example → exercise). Fixed-token chunking is a fallback for unstructured documents only, and when used it must be recorded in `extraction_method`.
+The `_660.docx` variants are the *extraction source* for their `100` counterparts, not separate content. One exercise row per logical exercise, with `sibling_docx_ref` recording where the text actually came from.
+
+Chunk semantically, following document structure. Fixed-token chunking is a fallback for unstructured documents only, and when used it must be recorded in `extraction_method`.
 
 Every chunk keeps its page and section. Provenance loss at ingestion time is unrecoverable later.
 
 ### Knowledge
 
 * `concepts`: id, topic_id, name, description, explanation, difficulty, order_index, verification_status
-* `formulas`: id, topic_id, name, latex, description, conditions, order_index, verification_status
+* `formulas`: id, topic_id, name, latex_raw, latex_normalised, description, conditions, order_index, verification_status
 * `methods`: id, topic_id, name, when_to_use, steps (structured), verification_status
 * `examples`: id, topic_id, concept_id, statement, worked_solution, difficulty, verification_status
-* `exercises`: id, topic_id, statement, statement_latex, difficulty, exercise_type, solution, solution_steps, final_answer_repr, skills_required, origin, verbatim_ok, variant_group_id, points_available, verification_status, timestamps
+* `exercises`: id, topic_id, parent_exercise_id, exercise_number, statement, statement_latex_raw, statement_latex_normalised, difficulty, exercise_type, solution, solution_steps, final_answer_repr, skills_required, origin, verbatim_ok, variant_group_id, points_available, verification_status, timestamps
 * `misconceptions`: id, topic_id, name, description, incorrect_reasoning, correct_reasoning, example, severity, verification_status
 * `learning_objectives`: id, topic_id, statement, bloom_level, order_index
 * `exercise_figures`: many-to-many between exercises and figures, since a figure can serve several subtasks
@@ -170,6 +207,10 @@ Every chunk keeps its page and section. Provenance loss at ingestion time is unr
 `origin` ∈ `OFFICIAL | LICENSED | OPEN | HUMAN_CREATED | AI_GENERATED`
 
 `verification_status` ∈ `DRAFT | AI_GENERATED | PENDING_REVIEW | AUTO_VERIFIED | APPROVED | REJECTED`
+
+**Raw and normalised LaTeX are separate fields and are not interchangeable.** `*_raw` is pandoc output, used for display. `*_normalised` is the re-parsed unambiguous form, used for verification. See section 2a for why. A row with raw LaTeX and no normalised form is valid; it simply cannot be auto-verified.
+
+`parent_exercise_id` models the `Zadanie 12` / `Zadanie 12.1` relationship. A parent carries the shared stem and usually has no point value of its own. The stem must be attached to every child at read time, since a subtask read alone is generally incomplete.
 
 `final_answer_repr` is a machine-checkable representation of the answer: a SymPy-parseable expression, a numeric value with tolerance, or an explicit `NOT_MACHINE_CHECKABLE` marker. See section 7.
 
@@ -215,6 +256,8 @@ Rules:
 * every emitted scene plan validates against the committed schema in CI
 * `scripts/export_scene_spec.py` writes a sample scene plan and the schema to `contracts/`, so the rendering repo can develop against it without this repo running
 
+Equations crossing this boundary carry the **raw** LaTeX, since the renderer displays rather than evaluates them.
+
 Also produce `contracts/README.md` explaining the contract in prose for whoever is building the renderer.
 
 ---
@@ -223,7 +266,20 @@ Also produce `contracts/README.md` explaining the contract in prose for whoever 
 
 Verification is real but partial. Do not build a trust model that assumes everything can be checked.
 
-Pipeline for any exercise or worked example:
+### Normalisation comes first
+
+**Nothing reaches SymPy unnormalised.** Pandoc's LaTeX is visually faithful and semantically ambiguous; see section 2a for the worked example. The normalisation layer is a real component, not a helper function.
+
+```text
+pandoc LaTeX (raw, for display)
+→ normalise and re-parse
+→ unambiguous expression (for verification)
+→ or NOT_MACHINE_CHECKABLE
+```
+
+An expression that does not normalise unambiguously is marked `NOT_MACHINE_CHECKABLE` and routed to human review. It is never guessed at, and a plausible-looking parse is not evidence of a correct one.
+
+### Verification
 
 ```text
 Generate or extract
@@ -241,7 +297,7 @@ Requirements:
 * the verifier runs in a sandboxed subprocess with a timeout, since parsed expressions are effectively untrusted input
 * anything not machine-checkable (geometry constructions, proofs, word problems with modelling steps, conceptual explanations) is marked `NOT_MACHINE_CHECKABLE` and routed to human review
 
-Expect roughly half of the corpus to land in human review. That is an expected outcome and not a bug. Track the auto-verification rate per topic as a dashboard metric, because it shows where the pipeline is actually weak.
+Expect a substantial fraction of the corpus to land in human review. That is an expected outcome and not a bug. Track the auto-verification rate per topic as a dashboard metric, because it shows where the pipeline is actually weak.
 
 Where an exercise comes from a paper with a `zasady oceniania`, the marking scheme's point breakdown is an independent check on both the answer and the number of solution steps. Use it.
 
@@ -253,11 +309,13 @@ Multiple sources will describe the same formula, the same misconception, and nea
 
 Build a merge step in the extraction pipeline:
 
-* candidate detection by normalized name, then by LaTeX normalization for formulas, then by embedding similarity for prose
+* candidate detection by normalized name, then by normalised LaTeX for formulas, then by embedding similarity for prose
 * merges preserve all source links from all merged rows
 * merges are recorded in a `merge_events` table and are reversible
 * an automatic merge above a high confidence threshold is allowed; anything below becomes a review task
 * **never merge across a `variant_group_id`.** Parallel A and B papers contain structurally similar exercises with different values. They are distinct exercises.
+
+Compare on `latex_normalised`, never on `latex_raw`. Raw forms differ by invisible grouping artifacts that have nothing to do with whether two formulas are the same.
 
 Never delete a source link during a merge. Provenance accumulates.
 
@@ -269,8 +327,9 @@ Review throughput, not generation throughput, limits this system. Treat review t
 
 Requirements:
 
-* a single review queue with typed items (formula, exercise, misconception, curriculum mapping, merge candidate, extraction conflict)
+* a single review queue with typed items (formula, exercise, misconception, curriculum mapping, merge candidate, extraction conflict, normalisation failure)
 * items sorted by risk and confidence, so the reviewer sees the doubtful things first
+* **deterministically extracted content (null confidence) does not enter the queue by default.** It is already trustworthy at the extraction step. Only its downstream classification and knowledge extraction need review.
 * keyboard-driven approve, reject, edit; one item per screen; no page reloads between items
 * batch approval for items sharing high confidence and the same topic and source
 * every decision records reviewer, timestamp, and prior status
@@ -285,6 +344,8 @@ The dashboard's home page is the review queue with its depth and per-type breakd
 After ingestion, map source chunks to the curriculum: subject, unit, topic, concept, difficulty, content type.
 
 Mapping is AI-assisted and always records `confidence` and `mapping_status` ∈ `AI_SUGGESTED | REVIEW_REQUIRED | APPROVED | REJECTED`.
+
+Note that mapping confidence is separate from extraction confidence. A chunk can be deterministically extracted and still be uncertainly mapped.
 
 An unmapped chunk is a normal state and must be visible in the dashboard as a count. Silently dropping unmappable material is not acceptable, because unmapped volume is the signal that the curriculum tree is incomplete.
 
@@ -309,13 +370,13 @@ Conflicts and gaps become review queue items. This is the point where quality is
 
 Five agents, each with a narrow contract, strict Pydantic input and output schemas, and access only to the data it needs:
 
-1. **Ingestion Agent**: page images and text → structured chunks with content types
+1. **Ingestion Agent**: unstructured documents → structured chunks with content types. **Not used for Track A**, which is deterministic and needs no model.
 2. **Mapping Agent**: chunk → curriculum location with confidence
 3. **Knowledge Agent**: topic chunks → structured knowledge items with source references
 4. **Exercise Agent**: topic knowledge spec → exercises with independent answer representations
 5. **Planner Agent**: knowledge spec plus episode type → episode plan and scene plan
 
-Do not add agents beyond these until the five work. Verification is code, not an agent. QA is code, not an agent.
+Do not add agents beyond these until the five work. Extraction from DOCX is code, not an agent. Normalisation is code, not an agent. Verification is code, not an agent. QA is code, not an agent.
 
 Every agent call follows:
 
@@ -369,7 +430,7 @@ Automated checks run before an episode plan is marked ready for the renderer.
 
 **Structure**: all required scene types present in order, no empty narration, no empty visual intent, estimated duration at or above 8 minutes, scene plan validates against the committed Scene Spec schema, no renderer-specific leakage in `visual_intent`.
 
-**Assets**: every exercise requiring a figure has one linked.
+**Assets**: every exercise requiring a figure has one linked, and every linked figure has `render_status` complete.
 
 QA failures block the episode and create a review item. No unverified content reaches a ready state silently.
 
@@ -381,10 +442,14 @@ Job types for this scope only:
 
 ```text
 INGEST_DOCUMENT
-EXTRACT_PAGES
+CONVERT_DOCX
+EXTRACT_MEDIA
+RENDER_VECTOR_FIGURE
+SEGMENT_EXERCISES
+NORMALISE_LATEX
+EXTRACT_PDF_TEXT
 CHUNK_DOCUMENT
 CLASSIFY_CHUNK
-EXTRACT_FIGURES
 MAP_CHUNK
 EXTRACT_KNOWLEDGE
 MERGE_CANDIDATES
@@ -411,7 +476,9 @@ Prompts live in versioned files, not inline strings. Changing a prompt increment
 ### Failure modes
 
 * knowledge extraction fails → topic marked `KNOWLEDGE_EXTRACTION_FAILED`, no episodes generated
+* normalisation fails → expression marked `NOT_MACHINE_CHECKABLE`, routed to review, never guessed
 * exercise verification fails → exercise unusable, not silently included
+* figure render fails → exercise blocked if the figure is required
 * scene plan fails → retry that scene, not the episode
 * QA fails → episode blocked
 
@@ -427,7 +494,7 @@ Read-mostly, minimal, functional over pretty.
 * **Source page**: documents, extraction status, chunk counts, unmapped chunk count
 * **Production board**: `PLANNED | EXTRACTING | KNOWLEDGE_READY | PLANNING | SCENES_READY | QA_FAILED | READY_FOR_RENDER`
 * **Episode page**: plan, scenes, QA results, versions, the exported scene plan JSON with a download button
-* **Pipeline health**: job failures, auto-verification rate by topic, unmapped volume, review queue growth rate
+* **Pipeline health**: job failures, auto-verification rate by topic, normalisation failure rate, unmapped volume, review queue growth rate
 
 `READY_FOR_RENDER` is the terminal state in this repository.
 
@@ -437,22 +504,74 @@ Read-mostly, minimal, functional over pretty.
 
 Work through these in order. **Stop at the end of each milestone, summarize what exists, and wait for my confirmation before continuing.** Do not run ahead.
 
-### M0. Extraction spike
+---
 
-#### M0.0 The DOCX question, before anything else
+### M0. Extraction pipeline foundations
 
-CKE publishes accessibility versions of the informatory and of every exam paper as native Word files, suffixed `_660.docx`. If these carry mathematics as OMML, the transform to LaTeX is deterministic and no extraction model is needed for that portion of the corpus.
+The spike in section 2a already answered the question this milestone originally existed to ask. The corpus splits:
 
-I will have run the basic check before you start and will give you the numbers. Your job is to go deeper:
+**Track A, structured.** Any CKE document with a `_660.docx` sibling. Deterministic pandoc conversion, no model, no confidence score. Expected to cover the informatory, exam papers, and marking schemes, which is most of what M1 through M5 need.
 
-1. Convert a sample of OMML to LaTeX and check fidelity by rendering, not by string comparison.
-2. Check whether exercise numbering survives as Word list structure or heading styles.
-3. Check whether figures survive as embedded images with usable positioning.
-4. Establish which documents in the corpus have DOCX siblings and which do not.
+**Track B, unstructured.** The podstawa programowa and any textbooks that arrive later. Deferred.
 
-If OMML is present, M0 becomes "DOCX-first with a PDF fallback for sources with no DOCX sibling", and the comparison below narrows accordingly. Report before continuing.
+Build Track A.
 
-#### M0.1 Corpus audit
+#### M0.1 Corpus split table
+
+For every document in `sources/MANIFEST.md`, establish whether a `_660.docx` sibling exists. The convention is systematic: variant code `100` becomes `660`, extension becomes `.docx`.
+
+Produce a table: document, has DOCX sibling, oMath count, drawing count, media count, track.
+
+Check whether marking schemes (`-zasady`) have DOCX siblings too. They are the validation oracle and a `solution_steps` source, so a structured version is worth having.
+
+#### M0.2 The pandoc pipeline
+
+Use pandoc. Do not build a custom OMML converter. Record this in an ADR with the evidence from section 2a.
+
+Always pass `--extract-media`. Without it pandoc emits `\includegraphics{media/imageN.jpeg}` referring to files it never writes, silently producing broken asset references.
+
+Build a thin wrapper that:
+
+1. converts DOCX to LaTeX with media extracted to a per-document directory
+2. strips cover boilerplate (the security notice image, the invigilator answer grid rendered as a wide `longtable`) before parsing
+3. segments on `Zadanie N.` and `Zadanie N.M`, capturing `points_available` from the `(0--M)` marker
+4. writes chunks with `extraction_method = 'pandoc_omml'` and `confidence = NULL`
+
+Segmentation pattern, confirmed against a real paper:
+
+```
+Zadanie 7. (0--2)          → exercise, 2 points
+Zadanie 12.                → parent, no points, holds shared stem
+Zadanie 12.1. (0--2)       → subtask
+```
+
+A parent with no point marker carries the shared stem for its subtasks, and that stem must attach to every child, since a subtask read alone is usually incomplete.
+
+**Validation gate.** Cross-check the extracted exercise list against the paper's own `zasady oceniania`, which independently enumerates every task with its point values. Counts and point values must match exactly. This is a hard gate, not a report line.
+
+#### M0.3 LaTeX normalisation study
+
+Characterise the problem described in section 2a. Do not solve it yet; the normalisation layer itself is M5 work, but M5 cannot be scoped without this number.
+
+Sample 30 equations spanning fractions, radicals, logs, powers, systems and piecewise definitions. For each, record whether the pandoc LaTeX parses to the intended expression. Report the failure rate and the failure patterns.
+
+Store both forms from the start: raw for display, normalised (or null) for verification.
+
+#### M0.4 Figures
+
+Three routes, all present in the corpus:
+
+* **Raster** (`image1.jpeg`, `image5.png`): extracted directly by `--extract-media`. Attach to the exercise containing the reference.
+* **Vector WMF** (`image2.wmf`): a Windows Metafile, not usable as-is. Establish a conversion route, most likely LibreOffice headless or `libwmf`, and verify output quality on a real geometry diagram.
+* **Word-drawn shapes** (the informator's 25 drawings with zero media entries): not files at all. These need a render pass, probably DOCX to PDF via LibreOffice followed by region cropping.
+
+Geometry and statistics exercises are unusable without their figures, so this is not optional. Report which route works for each format and what fails.
+
+#### M0.5 Track B: minimal audit only
+
+Two questions, then stop.
+
+**1. Text layer and diacritics on the PDF-only sources.**
 
 ```bash
 for f in sources/raw/*.pdf; do
@@ -464,61 +583,44 @@ done
 
 Under roughly 100 characters per page means image-only.
 
-Add a Polish diacritic assertion to the same pass. Extract text and compute the ratio of `ą ć ę ł ń ó ś ź ż` to total letters. Polish prose runs roughly 8 to 12 percent. A near-zero ratio means silent encoding corruption from a missing or wrong `ToUnicode` CMap, not a document without diacritics. Use `ł` (U+0142) as the primary canary since it has no unaccented visual fallback.
+Assert on Polish diacritics: the ratio of `ą ć ę ł ń ó ś ź ż` to total letters runs roughly 8 to 12 percent in Polish prose. A near-zero ratio means silent encoding corruption from a missing `ToUnicode` CMap, not a document without diacritics. Use `ł` as the canary. This failure raises no exception, so assert on it explicitly.
 
-This failure is silent by nature. Nothing raises an exception. Assert on it explicitly or it surfaces in month three.
+**2. Nothing else.** Do not run an extractor comparison. It is work for whenever textbooks arrive, and the landscape will have moved. Record the deferral in an ADR, pointing at the survey in `docs/sources.md` as the starting point.
 
-#### M0.2 Fixed rendering parameters
+#### M0.6 Curriculum tree
 
-Fix these before any comparison and record them in the spike README:
+The informator links to a mathematics-only extract of the podstawa programowa:
 
-* page raster DPI and maximum pixel dimension on the longest edge
-* whether anchor text from the text layer is supplied alongside the image
-* colour or greyscale
+```
+https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Formula_2023/podstawa_programowa/matematyka.pdf
+```
 
-Varying these between extractors means comparing preprocessing pipelines rather than extractors. Normalise first, compare second.
+Check this first. A maths-only document is a far better source than the full Dz.U. regulation, which covers every subject.
 
-#### M0.3 The comparison
+**Verify it reflects the 2024 amendment** before using it. The URL sits under a `_OD_2015` path, which is suspicious. Cross-check several requirement numbers against Dz.U. 2024 poz. 1019. If they diverge, the Dz.U. text wins and this shortcut is discarded.
 
-Fixed sample: 20 pages spanning one arkusz PP and pages from the informator containing worked examples. Same pages for every method.
+Either way, **this is a one-off, hand-verified job, not a pipeline.** The tree is on the order of 100 nodes. Extract semi-manually, present it for node-by-node verification, and commit the result as a checked-in seed file. Every episode this system ever produces rests on this tree being correct.
 
-Methods, narrowed by the M0.0 result:
-
-1. text layer alone (PyMuPDF or pdfplumber)
-2. geometric rules over pdfplumber character boxes, for structure only
-3. one open document parser, chosen and justified from the survey in `docs/sources.md`
-4. one commercial maths OCR service on the same pages
-5. page image plus vision model with a schema-constrained JSON response
-
-#### M0.4 Success metric
-
-Three numbers per method. The first is the gate.
-
-1. **Exercise boundary recovery**, validated against the paper's own `zasady oceniania`, which independently lists every exercise and its point value. Target 95 percent or above. This cross-validation is automatic and free; make it a hard gate.
-2. **Formula fidelity**, judged by rendering both the extracted LaTeX and the reference and comparing visually. Not by edit distance. Textually dissimilar LaTeX frequently renders identically.
-3. **Cost and latency per page.** The whole Formuła 2023 maths corpus is roughly 1,200 pages, so commercial per-page pricing is a rounding error at this scale. Do not reject a method on cost grounds without doing that arithmetic.
-
-Also record per method: Polish diacritic integrity, whether figure regions were detected with usable bounding boxes, and whether reading order survived.
-
-#### M0.5 Curriculum annex extraction
-
-The maths annex of Dz.U. 2024 poz. 1019 must be extracted into a clean tree.
-
-Before parsing the ISAP PDF, check whether a Word or HTML edition exists on `zpe.gov.pl` or `gov.pl`. A structured source would make this trivial.
-
-Either way, **this is a one-off, hand-verified job, not a pipeline.** The tree is on the order of 100 nodes. Extract semi-manually, present it to me for node-by-node verification, and commit the result as a checked-in seed file. Every episode this system ever produces rests on this tree being correct.
-
-Preserve the official numbering as `official_requirement_code`. Cover both `poziom podstawowy` and `poziom rozszerzony`, noting that rozszerzony is defined as podstawowy plus additions rather than as a separate tree.
+Preserve official numbering as `official_requirement_code`. Cover both levels, noting that rozszerzony is podstawowy plus additions rather than a separate tree.
 
 #### M0 deliverable
 
-A written comparison with three numbers per method, a recommendation, and the extracted curriculum seed file. Stop and wait.
+1. the corpus split table
+2. a working pandoc wrapper with media extraction, boilerplate stripping, and `Zadanie` segmentation
+3. one exam paper segmented and cross-validated against its marking scheme, counts and points matching exactly
+4. the 30-equation normalisation study with its failure rate and patterns
+5. figure extraction working for raster, WMF, and Word shapes, with any failures named
+6. the text-layer and diacritic audit for PDF-only sources
+7. the hand-verified curriculum seed file
+8. ADRs for: pandoc chosen over custom conversion, figure routes per format, Track B deferral
+
+Stop and wait.
 
 ---
 
 ### M1. Foundation
 
-Repo structure, Docker Compose with Postgres, Alembic wired, config and secrets, curriculum tables, seeding from the hand-verified M0.5 file, `sources` seeded from `sources/MANIFEST.md`.
+Repo structure, Docker Compose with Postgres, Alembic wired, config and secrets, curriculum tables, seeding from the hand-verified M0.6 file, `sources` seeded from `sources/MANIFEST.md`.
 
 Seeding is idempotent and re-runnable. Do not have a model generate or infer licensing metadata; it comes from the manifest, which is authored by hand.
 
@@ -528,9 +630,9 @@ Tests: curriculum hierarchy, prerequisite cycle detection against a deliberately
 
 ### M2. Ingestion
 
-Source documents, the extraction pipeline in whichever form M0 justified, semantic chunking, figure extraction, provenance preservation, job system with a worker, synthetic fixture corpus, tests.
+Source documents, the Track A pipeline productionised from the M0 wrapper, semantic chunking, figure extraction across all three formats, provenance preservation, job system with a worker, synthetic fixture corpus, tests.
 
-Gate: one real arkusz ingests end to end with page numbers, exercise numbers, and figures intact, and its exercise count matches its marking scheme. Stop.
+Gate: one real arkusz ingests end to end with exercise numbers, point values, parent/subtask relationships, and figures intact, and its exercise count matches its marking scheme exactly. Stop.
 
 ---
 
@@ -538,7 +640,7 @@ Gate: one real arkusz ingests end to end with page numbers, exercise numbers, an
 
 Mapping agent with confidence, review queue backend, review UI, dashboard skeleton with curriculum tree and source pages.
 
-Gate: I can approve and reject mappings by keyboard without touching the mouse. Stop.
+Gate: I can approve and reject mappings by keyboard without touching the mouse, and deterministically extracted chunks do not clutter the queue. Stop.
 
 ---
 
@@ -550,7 +652,7 @@ Knowledge agent, concepts, formulas, methods, examples, objectives, misconceptio
 
 ### M5. Exercises and verification
 
-Exercise extraction and generation, SymPy verification in a sandboxed subprocess, answer representations, marking-scheme cross-checks, auto-verification rate metrics. Stop.
+The LaTeX normalisation layer, scoped from the M0.3 findings. Exercise extraction and generation, SymPy verification in a sandboxed subprocess, answer representations, marking-scheme cross-checks, auto-verification and normalisation-failure rate metrics. Stop.
 
 ---
 
@@ -564,7 +666,7 @@ Planner agent, four episode structures, duration model, scene plans, Scene Spec 
 
 One topic taken from raw source to a QA-passing scene plan for all four episode types, using the synthetic corpus plus one real arkusz.
 
-Produce a preprocessing report: documents, pages, chunks, topics, concepts, formulas, exercises, misconceptions, figures, source references, unmapped material, ambiguous material, conflicts, and items requiring review.
+Produce a preprocessing report: documents, pages, chunks, topics, concepts, formulas, exercises, misconceptions, figures, source references, unmapped material, ambiguous material, conflicts, normalisation failures, and items requiring review.
 
 Only after M7 do we discuss mass processing of textbooks.
 
@@ -572,7 +674,7 @@ Only after M7 do we discuss mass processing of textbooks.
 
 ## 18. TESTING
 
-Automated tests for: curriculum hierarchy and prerequisite cycles, seed idempotency, source reference integrity, chunk provenance survival, Polish diacritic assertion against a deliberately corrupted fixture, extraction schema conformance, mapping status transitions, merge reversibility including the variant-group exclusion, exercise verification including deliberately wrong answers that must be caught, knowledge spec assembly and hash stability, episode and scene generation, duration estimation, QA rules, job retry semantics, and Scene Spec schema conformance.
+Automated tests for: curriculum hierarchy and prerequisite cycles, seed idempotency, source reference integrity, chunk provenance survival, Polish diacritic assertion against a deliberately corrupted fixture, `Zadanie` segmentation including the parent/subtask case, marking-scheme cross-validation, LaTeX normalisation including the `\log_{8}{4 - \log_{8}32}` case as a regression test, extraction schema conformance, mapping status transitions, merge reversibility including the variant-group exclusion, exercise verification including deliberately wrong answers that must be caught, knowledge spec assembly and hash stability, episode and scene generation, duration estimation, QA rules, job retry semantics, and Scene Spec schema conformance.
 
 Build a small synthetic curriculum fixture with three topics and fake source documents. Tests must run without network access and without real source material. AI calls are mocked in tests; a separate, small, manually-run suite covers live model behaviour.
 
