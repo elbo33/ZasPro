@@ -25,7 +25,6 @@ PDFLATEX = shutil.which("pdflatex")
 # are not standard LaTeX.
 PREAMBLE = r"""\documentclass{article}
 \usepackage{amsmath}
-\usepackage[T1]{fontenc}
 \DeclareMathOperator{\tg}{tg}
 \DeclareMathOperator{\ctg}{ctg}
 \begin{document}
