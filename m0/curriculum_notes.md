@@ -82,6 +82,39 @@ with it. Measured damage in the curriculum text:
   (`DU_programowej_2024.pdf` pages 327–335), not from the extracted text.
   20 rows have one; a `name` with no `statement_latex` carries no formula.
 
+### Transcription convention for `statement_latex`
+
+`statement_latex` is the notation reference every downstream episode inherits,
+so it is written to parse unambiguously, not merely to render. Applied to all
+20 formula rows:
+
+| rule | write | not |
+|---|---|---|
+| delimiters that enclose an operator are explicit and sized | `\left\| x+4 \right\|`, `\left( a+b \right)^{2}` | `\|x+4\|`, `(a+b)^{2}` |
+| fractions | `\frac{a}{x}` | `a/x` |
+| roots | `\sqrt[n]{a}` | `ⁿ√a` |
+| Newton symbol | `\binom{n}{k}` | `(n over k)` ad hoc |
+| Polish function names | `\tg`, `\ctg` | `\tan`, `\cot` |
+| explicit multiplication | `\cdot` | `·`, thin space |
+| inline half-height fraction | `\tfrac{1}{2}` | `\frac` |
+
+Bare pipes are valid but ambiguous to a parser — the M0.3 study hit exactly
+this with `|BC|`. Plain `(x)` is kept only for a single-symbol function
+argument (`f(x)`, `W(x)`); anything enclosing an operator gets `\left…\right`.
+
+**Renderer preamble.** `\tg` and `\ctg` are **not** standard LaTeX. A renderer
+consuming `statement_latex` must declare:
+
+```latex
+\DeclareMathOperator{\tg}{tg}
+\DeclareMathOperator{\ctg}{ctg}
+```
+
+Everything else in the 20 rows — `\binom`, `\tfrac`, `\begin{cases}`, `\land`,
+`\Rightarrow`, `\longrightarrow`, `\sqrt[n]`, `\le`, `\ge`, `\cdot` — is
+standard `amsmath` / base LaTeX. Only `\tg` is used in the current rows (VII.2);
+`\ctg` is listed because downstream trigonometry content will need it.
+
 ### Review sheets
 
 * `seeds/curriculum_matematyka_review.md` — all 132 nodes in Dz.U. order,

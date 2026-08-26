@@ -39,61 +39,67 @@ OUT_YAML = ROOT / "seeds" / "curriculum_matematyka.yaml"
 #   extracted        -- what pdftotext produced, to show the delta
 #   corrupt          -- True if extraction changed the maths (not just noise)
 #
+# statement_latex follows the transcription convention in m0/curriculum_notes.md:
+#   \left...\right around any delimiter that encloses an operator; \frac not '/';
+#   \sqrt[n]{} not superscript-root; \binom{n}{k}; \tg / \ctg (Polish) not
+#   \tan / \cot; \cdot not '·'. \tg and \ctg need \DeclareMathOperator in the
+#   renderer preamble; only \tg is used below.
+#
 # Verified by a human in seeds/curriculum_matematyka_formulas_review.md.
 # ---------------------------------------------------------------------------
 FORMULA_ROWS: dict[str, dict[str, object]] = {
     "I.5": {
         "name": "stosuje monotoniczność potęgowania, w szczególności własności dla podstawy większej niż 1 oraz z przedziału (0, 1)",
-        "statement_latex": r"x<y \,\land\, a>1 \;\Rightarrow\; a^{x}<a^{y}; \qquad x<y \,\land\, 0<a<1 \;\Rightarrow\; a^{x}>a^{y}",
+        "statement_latex": r"x < y \,\land\, a > 1 \;\Rightarrow\; a^{x} < a^{y}; \qquad x < y \,\land\, 0 < a < 1 \;\Rightarrow\; a^{x} > a^{y}",
         "rendered": "inline: „jeśli x < y oraz a > 1, to aˣ < aʸ, zaś gdy x < y i 0 < a < 1, to aˣ > aʸ” — x, y, a italic; the a-terms have raised superscript exponents x and y",
         "extracted": "… to ax < ay, zaś gdy x < y i 0 < a < 1, to ax > ay",
         "corrupt": True,
     },
     "I.7": {
         "name": "stosuje interpretację geometryczną i algebraiczną wartości bezwzględnej, rozwiązuje proste równania z wartością bezwzględną",
-        "statement_latex": r"|x + 4| = 5",
+        "statement_latex": r"\left| x + 4 \right| = 5",
         "rendered": "„rozwiązuje równania typu: |x + 4| = 5”",
         "extracted": "rozwiązuje równania typu: |x + 4| = 5",
         "corrupt": False,
     },
     "II.1": {
         "name": "stosuje wzory skróconego mnożenia na kwadrat sumy, kwadrat różnicy i różnicę kwadratów",
-        "statement_latex": r"(a+b)^{2}, \quad (a-b)^{2}, \quad a^{2}-b^{2}",
+        "statement_latex": r"\left( a + b \right)^{2}, \quad \left( a - b \right)^{2}, \quad a^{2} - b^{2}",
         "rendered": "„(a + b)², (a − b)², a² − b²” — superscript 2",
         "extracted": "(a + b)2, (a − b)2, a2 − b2",
         "corrupt": True,
     },
     "II.R1": {
         "name": "dzieli wielomian jednej zmiennej przez dwumian postaci x minus a",
-        "statement_latex": r"W(x) : (x - a)",
+        "statement_latex": r"W(x) : \left( x - a \right)",
         "rendered": "„dzieli wielomian jednej zmiennej W(x) przez dwumian postaci x − a”",
         "extracted": "dzieli wielomian jednej zmiennej W(x) przez dwumian postaci x − a",
         "corrupt": False,
     },
     "II.R4": {
         "name": "stosuje podstawowe własności trójkąta Pascala oraz następujące własności współczynnika dwumianowego (symbolu Newtona)",
-        "statement_latex": r"\binom{n}{0}=1, \quad \binom{n}{1}=n, \quad \binom{n}{n-1}=n, \quad \binom{n}{k}=\binom{n}{n-k}, \quad \binom{n}{k}+\binom{n}{k+1}=\binom{n+1}{k+1}",
+        "statement_latex": r"\binom{n}{0} = 1, \quad \binom{n}{1} = n, \quad \binom{n}{n-1} = n, \quad \binom{n}{k} = \binom{n}{n-k}, \quad \binom{n}{k} + \binom{n}{k+1} = \binom{n+1}{k+1}",
         "rendered": "five identities, each with binomial coefficients written vertically as (n over k) inside round brackets",
         "extracted": "(𝑛𝑛0) = 1, (𝑛𝑛1) = 𝑛𝑛, 𝑛𝑛 (𝑛𝑛−1 ) = 𝑛𝑛, (𝑛𝑛𝑘𝑘) = (𝑛𝑛−𝑘𝑘 𝑛𝑛 ), (𝑛𝑛𝑘𝑘) + (𝑘𝑘+1 𝑛𝑛 ) = (𝑛𝑛+1 𝑘𝑘+1 )",
         "corrupt": True,
     },
     "II.R5": {
         "name": "korzysta ze wzorów na sumę i różnicę sześcianów, różnicę n-tych potęg oraz n-tą potęgę sumy i różnicy",
-        "statement_latex": r"a^{3}+b^{3}, \quad a^{3}-b^{3}, \quad a^{n}-b^{n}, \quad (a+b)^{n}, \quad (a-b)^{n}",
+        "statement_latex": r"a^{3} + b^{3}, \quad a^{3} - b^{3}, \quad a^{n} - b^{n}, \quad \left( a + b \right)^{n}, \quad \left( a - b \right)^{n}",
         "rendered": "„a³ + b³, a³ − b³, aⁿ − bⁿ, (a + b)ⁿ i (a − b)ⁿ” — superscript 3 and n",
         "extracted": "a3 + b3, a3 − b3, an − bn, (a + b)n i (a − b)n  [+ fragments of R6 bled in]",
         "corrupt": True,
     },
     "II.R6": {
         "name": "dodaje i odejmuje wyrażenia wymierne w przypadkach nie trudniejszych niż podane przykłady",
-        "statement_latex": r"\frac{1}{x+1}-\frac{1}{x}; \qquad \frac{1}{x}+\frac{1}{x^{2}}+\frac{1}{x^{3}}; \qquad \frac{x+1}{x+2}+\frac{x-1}{x+1}",
+        "statement_latex": r"\frac{1}{x+1} - \frac{1}{x}; \qquad \frac{1}{x} + \frac{1}{x^{2}} + \frac{1}{x^{3}}; \qquad \frac{x+1}{x+2} + \frac{x-1}{x+1}",
         "rendered": "three example expressions, each a sum/difference of proper fractions (numerator stacked over denominator)",
         "extracted": "𝑥𝑥 +1 − 𝑥𝑥, 𝑥𝑥 + 𝑥𝑥 2 + 𝑥𝑥 3, 𝑥𝑥 + 2 + 𝑥𝑥 + 1",
         "corrupt": True,
     },
     "III.1": {
         "name": "przekształca równania i nierówności w sposób równoważny, w tym równania wymierne prowadzące do równania liniowego",
-        "statement_latex": r"\frac{5}{x+1}=\frac{x+3}{2x-1}",
+        "statement_latex": r"\frac{5}{x+1} = \frac{x+3}{2x-1}",
         "rendered": "„przekształca równoważnie równanie 5/(x+1) = (x+3)/(2x−1)” — two proper fractions either side of the equals sign",
         "extracted": "przekształca 5 𝑥𝑥 + 3 równoważnie równanie 𝑥𝑥 + 1 = 2𝑥𝑥−1",
         "corrupt": True,
@@ -107,7 +113,7 @@ FORMULA_ROWS: dict[str, dict[str, object]] = {
     },
     "III.R1": {
         "name": "rozwiązuje równania i nierówności wielomianowe dla wielomianów doprowadzonych do postaci iloczynowej (także przez wyłączanie czynnika lub grupowanie)",
-        "statement_latex": r"W(x)=0; \qquad W(x)>0,\; W(x)\ge 0,\; W(x)<0,\; W(x)\le 0",
+        "statement_latex": r"W(x) = 0; \qquad W(x) > 0, \; W(x) \ge 0, \; W(x) < 0, \; W(x) \le 0",
         "rendered": "„W(x) = 0 oraz nierówności wielomianowe typu: W(x) > 0, W(x) ≥ 0, W(x) < 0, W(x) ≤ 0”",
         "extracted": "W(x) = 0 oraz nierówności wielomianowe typu: W(x) > 0, W(x) ≥ 0, W(x) < 0, W(x) ≤ 0",
         "corrupt": False,
@@ -121,35 +127,35 @@ FORMULA_ROWS: dict[str, dict[str, object]] = {
     },
     "IV.R1": {
         "name": "rozwiązuje układy równań liniowych i kwadratowych z dwiema niewiadomymi, które można sprowadzić do równania kwadratowego lub liniowego i które nie są trudniejsze niż podany przykład",
-        "statement_latex": r"\begin{cases} x^{2}+y^{2}+ax+by=c \\ x^{2}+y^{2}+dx+ey=f \end{cases}",
+        "statement_latex": r"\begin{cases} x^{2} + y^{2} + ax + by = c \\ x^{2} + y^{2} + dx + ey = f \end{cases}",
         "rendered": "a two-equation system in a large brace, each equation of the form x² + y² + (linear terms) = const",
         "extracted": "𝑥𝑥 2 + 𝑦𝑦 2 + 𝑎𝑎𝑎𝑎 + 𝑏𝑏𝑏𝑏 = 𝑐𝑐  {  .  𝑥𝑥 2 + 𝑦𝑦 2 + 𝑑𝑑𝑑𝑑 + 𝑒𝑒𝑒𝑒 = 𝑓𝑓",
         "corrupt": True,
     },
     "V.12": {
         "name": "na podstawie wykresu funkcji y = f(x) szkicuje wykresy funkcji powstałych przez przesunięcie wzdłuż osi",
-        "statement_latex": r"y=f(x) \;\longrightarrow\; y=f(x-a), \quad y=f(x)+b",
+        "statement_latex": r"y = f(x) \;\longrightarrow\; y = f\left( x - a \right), \quad y = f(x) + b",
         "rendered": "„y = f(x) szkicuje wykresy funkcji y = f(x − a), y = f(x) + b”",
         "extracted": "𝑦𝑦 = 𝑓𝑓(𝑥𝑥) szkicuje wykresy funkcji 𝑦𝑦 = 𝑓𝑓(𝑥𝑥 − 𝑎𝑎), 𝑦𝑦 = 𝑓𝑓(𝑥𝑥) + 𝑏𝑏",
         "corrupt": True,
     },
     "V.13": {
         "name": "posługuje się funkcją odwrotnie proporcjonalną, w tym jej wykresem, do opisu i interpretacji zagadnień związanych z wielkościami odwrotnie proporcjonalnymi",
-        "statement_latex": r"f(x)=\frac{a}{x}",
+        "statement_latex": r"f(x) = \frac{a}{x}",
         "rendered": "„posługuje się funkcją f(x) = a/x” — a stacked over x as a fraction",
         "extracted": "posługuje się funkcją 𝑓𝑓(𝑥𝑥) = 𝑥𝑥   [the ‘a’ and the fraction bar are GONE]",
         "corrupt": True,
     },
     "V.R1": {
         "name": "na podstawie wykresu funkcji y = f(x) rysuje wykresy funkcji powstałych przez odbicie względem osi",
-        "statement_latex": r"y=f(x) \;\longrightarrow\; y=-f(x), \quad y=f(-x)",
+        "statement_latex": r"y = f(x) \;\longrightarrow\; y = -f(x), \quad y = f\left( -x \right)",
         "rendered": "„y = f(x) rysuje wykresy funkcji y = −f(x), y = f(−x)”",
         "extracted": "𝑦𝑦 = 𝑓𝑓(𝑥𝑥) rysuje wykresy funkcji 𝑦𝑦 = −𝑓𝑓(𝑥𝑥), 𝑦𝑦 = 𝑓𝑓(−𝑥𝑥)",
         "corrupt": True,
     },
     "V.R3": {
         "name": "dowodzi monotoniczności funkcji zadanej wzorem, jak w przykładzie: wykazanie, że dana funkcja wymierna jest monotoniczna w podanym przedziale",
-        "statement_latex": r"f(x)=\frac{x-1}{x+2} \quad \text{monotoniczna w} \quad (-\infty,\,-2)",
+        "statement_latex": r"f(x) = \frac{x-1}{x+2} \quad \text{monotoniczna w} \quad \left( -\infty,\, -2 \right)",
         "rendered": "„wykaż, że funkcja f(x) = (x−1)/(x+2) jest monotoniczna w przedziale (−∞, −2)” — (x−1) stacked over (x+2)",
         "extracted": "wykaż, że funkcja 𝑥𝑥−1 𝑓𝑓(𝑥𝑥) = 𝑥𝑥+2 jest monotoniczna w przedziale (−∞, −2)",
         "corrupt": True,
@@ -163,21 +169,21 @@ FORMULA_ROWS: dict[str, dict[str, object]] = {
     },
     "VII.2": {
         "name": "korzysta z jedynki trygonometrycznej oraz z definicji tangensa jako ilorazu sinusa i cosinusa",
-        "statement_latex": r"\sin^{2}\alpha+\cos^{2}\alpha=1; \qquad \operatorname{tg}\alpha=\frac{\sin\alpha}{\cos\alpha}",
+        "statement_latex": r"\sin^{2}\alpha + \cos^{2}\alpha = 1; \qquad \tg\alpha = \frac{\sin\alpha}{\cos\alpha}",
         "rendered": "„sin²α + cos²α = 1, tg α = sin α / cos α” — the tangent identity has sin α stacked over cos α",
         "extracted": "sin2 𝛼𝛼 + cos 2 𝛼𝛼 = 1, tg 𝛼𝛼 = cos 𝛼𝛼   [the ‘sin α’ numerator is GONE]",
         "corrupt": True,
     },
     "VII.3": {
         "name": "stosuje twierdzenie cosinusów oraz wzór na pole trójkąta wyrażone przez dwa boki i sinus kąta między nimi",
-        "statement_latex": r"P=\tfrac{1}{2}\,a\,b\,\sin\gamma",
+        "statement_latex": r"P = \tfrac{1}{2} \cdot a \cdot b \cdot \sin\gamma",
         "rendered": "„wzór na pole trójkąta P = ½ · a · b · sin γ” — one-half as a fraction",
         "extracted": "wzór na pole trójkąta 𝑃𝑃 = 2 ⋅ 𝑎𝑎 ⋅ 𝑏𝑏 ⋅ sin 𝛾𝛾   [½ became 2 — the formula is now wrong]",
         "corrupt": True,
     },
     "IX.4": {
         "name": "posługuje się równaniem okręgu w postaci kanonicznej",
-        "statement_latex": r"(x-a)^{2}+(y-b)^{2}=r^{2}",
+        "statement_latex": r"\left( x - a \right)^{2} + \left( y - b \right)^{2} = r^{2}",
         "rendered": "„(x − a)² + (y − b)² = r²” — superscript 2 throughout",
         "extracted": "(𝑥𝑥 − 𝑎𝑎)2 + (𝑦𝑦 − 𝑏𝑏)2 = 𝑟𝑟 2",
         "corrupt": True,
@@ -481,6 +487,13 @@ def _formulas_review_md(units: list[dict]) -> str:
         "given its own `statement_latex` for schema consistency.",
         "- Verify each `statement_latex` against the **rendered appearance** column; "
         "open the PDF only if that is not enough.",
+        "",
+        "**Notation convention** (full version in `m0/curriculum_notes.md`): "
+        "`\\left…\\right` around any delimiter enclosing an operator; `\\frac` not "
+        "`/`; `\\sqrt[n]{}`; `\\binom{n}{k}`; `\\tg` / `\\ctg` (Polish) not "
+        "`\\tan` / `\\cot`; `\\cdot` not `·`. **`\\tg` and `\\ctg` are not "
+        "standard LaTeX** — the renderer must `\\DeclareMathOperator{\\tg}{tg}` "
+        "and `\\DeclareMathOperator{\\ctg}{ctg}`. Only `\\tg` is used here (VII.2).",
         "",
     ]
     for bucket, codes, title in (

@@ -53,14 +53,14 @@ units:
       - code: I.5
         level: podstawowy
         name: "stosuje monotoniczność potęgowania, w szczególności własności dla podstawy większej niż 1 oraz z przedziału (0, 1)"
-        statement_latex: "x<y \\,\\land\\, a>1 \\;\\Rightarrow\\; a^{x}<a^{y}; \\qquad x<y \\,\\land\\, 0<a<1 \\;\\Rightarrow\\; a^{x}>a^{y}"
+        statement_latex: "x < y \\,\\land\\, a > 1 \\;\\Rightarrow\\; a^{x} < a^{y}; \\qquad x < y \\,\\land\\, 0 < a < 1 \\;\\Rightarrow\\; a^{x} > a^{y}"
       - code: I.6
         level: podstawowy
         name: "posługuje się pojęciem przedziału liczbowego, zaznacza przedziały na osi liczbowej"
       - code: I.7
         level: podstawowy
         name: "stosuje interpretację geometryczną i algebraiczną wartości bezwzględnej, rozwiązuje proste równania z wartością bezwzględną"
-        statement_latex: "|x + 4| = 5"
+        statement_latex: "\\left| x + 4 \\right| = 5"
       - code: I.8
         level: podstawowy
         name: "wykorzystuje własności potęgowania i pierwiastkowania w sytuacjach praktycznych, w tym do obliczania procentów składanych, zysków z lokat i kosztów kredytów"
@@ -77,7 +77,7 @@ units:
       - code: II.1
         level: podstawowy
         name: "stosuje wzory skróconego mnożenia na kwadrat sumy, kwadrat różnicy i różnicę kwadratów"
-        statement_latex: "(a+b)^{2}, \\quad (a-b)^{2}, \\quad a^{2}-b^{2}"
+        statement_latex: "\\left( a + b \\right)^{2}, \\quad \\left( a - b \\right)^{2}, \\quad a^{2} - b^{2}"
       - code: II.2
         level: podstawowy
         name: "dodaje, odejmuje i mnoży wielomiany jednej i wielu zmiennych"
@@ -90,7 +90,7 @@ units:
       - code: II.R1
         level: rozszerzony
         name: "dzieli wielomian jednej zmiennej przez dwumian postaci x minus a"
-        statement_latex: "W(x) : (x - a)"
+        statement_latex: "W(x) : \\left( x - a \\right)"
       - code: II.R2
         level: rozszerzony
         name: "rozkłada wielomiany na czynniki metodą wyłączania wspólnego czynnika przed nawias oraz metodą grupowania wyrazów"
@@ -100,15 +100,15 @@ units:
       - code: II.R4
         level: rozszerzony
         name: "stosuje podstawowe własności trójkąta Pascala oraz następujące własności współczynnika dwumianowego (symbolu Newtona)"
-        statement_latex: "\\binom{n}{0}=1, \\quad \\binom{n}{1}=n, \\quad \\binom{n}{n-1}=n, \\quad \\binom{n}{k}=\\binom{n}{n-k}, \\quad \\binom{n}{k}+\\binom{n}{k+1}=\\binom{n+1}{k+1}"
+        statement_latex: "\\binom{n}{0} = 1, \\quad \\binom{n}{1} = n, \\quad \\binom{n}{n-1} = n, \\quad \\binom{n}{k} = \\binom{n}{n-k}, \\quad \\binom{n}{k} + \\binom{n}{k+1} = \\binom{n+1}{k+1}"
       - code: II.R5
         level: rozszerzony
         name: "korzysta ze wzorów na sumę i różnicę sześcianów, różnicę n-tych potęg oraz n-tą potęgę sumy i różnicy"
-        statement_latex: "a^{3}+b^{3}, \\quad a^{3}-b^{3}, \\quad a^{n}-b^{n}, \\quad (a+b)^{n}, \\quad (a-b)^{n}"
+        statement_latex: "a^{3} + b^{3}, \\quad a^{3} - b^{3}, \\quad a^{n} - b^{n}, \\quad \\left( a + b \\right)^{n}, \\quad \\left( a - b \\right)^{n}"
       - code: II.R6
         level: rozszerzony
         name: "dodaje i odejmuje wyrażenia wymierne w przypadkach nie trudniejszych niż podane przykłady"
-        statement_latex: "\\frac{1}{x+1}-\\frac{1}{x}; \\qquad \\frac{1}{x}+\\frac{1}{x^{2}}+\\frac{1}{x^{3}}; \\qquad \\frac{x+1}{x+2}+\\frac{x-1}{x+1}"
+        statement_latex: "\\frac{1}{x+1} - \\frac{1}{x}; \\qquad \\frac{1}{x} + \\frac{1}{x^{2}} + \\frac{1}{x^{3}}; \\qquad \\frac{x+1}{x+2} + \\frac{x-1}{x+1}"
   - code: III
     name: "Równania i nierówności"
     order_index: 3
@@ -116,7 +116,7 @@ units:
       - code: III.1
         level: podstawowy
         name: "przekształca równania i nierówności w sposób równoważny, w tym równania wymierne prowadzące do równania liniowego"
-        statement_latex: "\\frac{5}{x+1}=\\frac{x+3}{2x-1}"
+        statement_latex: "\\frac{5}{x+1} = \\frac{x+3}{2x-1}"
       - code: III.2
         level: podstawowy
         name: "interpretuje równania i nierówności liniowe sprzeczne oraz tożsamościowe"
@@ -133,7 +133,7 @@ units:
       - code: III.R1
         level: rozszerzony
         name: "rozwiązuje równania i nierówności wielomianowe dla wielomianów doprowadzonych do postaci iloczynowej (także przez wyłączanie czynnika lub grupowanie)"
-        statement_latex: "W(x)=0; \\qquad W(x)>0,\\; W(x)\\ge 0,\\; W(x)<0,\\; W(x)\\le 0"
+        statement_latex: "W(x) = 0; \\qquad W(x) > 0, \\; W(x) \\ge 0, \\; W(x) < 0, \\; W(x) \\le 0"
       - code: III.R2
         level: rozszerzony
         name: "rozwiązuje równania i nierówności wymierne, które dadzą się sprowadzić do równania lub nierówności liniowej lub kwadratowej"
@@ -166,7 +166,7 @@ units:
       - code: IV.R1
         level: rozszerzony
         name: "rozwiązuje układy równań liniowych i kwadratowych z dwiema niewiadomymi, które można sprowadzić do równania kwadratowego lub liniowego i które nie są trudniejsze niż podany przykład"
-        statement_latex: "\\begin{cases} x^{2}+y^{2}+ax+by=c \\\\ x^{2}+y^{2}+dx+ey=f \\end{cases}"
+        statement_latex: "\\begin{cases} x^{2} + y^{2} + ax + by = c \\\\ x^{2} + y^{2} + dx + ey = f \\end{cases}"
   - code: V
     name: "Funkcje"
     order_index: 5
@@ -207,25 +207,25 @@ units:
       - code: V.12
         level: podstawowy
         name: "na podstawie wykresu funkcji y = f(x) szkicuje wykresy funkcji powstałych przez przesunięcie wzdłuż osi"
-        statement_latex: "y=f(x) \\;\\longrightarrow\\; y=f(x-a), \\quad y=f(x)+b"
+        statement_latex: "y = f(x) \\;\\longrightarrow\\; y = f\\left( x - a \\right), \\quad y = f(x) + b"
       - code: V.13
         level: podstawowy
         name: "posługuje się funkcją odwrotnie proporcjonalną, w tym jej wykresem, do opisu i interpretacji zagadnień związanych z wielkościami odwrotnie proporcjonalnymi"
-        statement_latex: "f(x)=\\frac{a}{x}"
+        statement_latex: "f(x) = \\frac{a}{x}"
       - code: V.14
         level: podstawowy
         name: "posługuje się funkcjami wykładniczą i logarytmiczną, w tym ich wykresami, do opisu i interpretacji zagadnień związanych z zastosowaniami praktycznymi"
       - code: V.R1
         level: rozszerzony
         name: "na podstawie wykresu funkcji y = f(x) rysuje wykresy funkcji powstałych przez odbicie względem osi"
-        statement_latex: "y=f(x) \\;\\longrightarrow\\; y=-f(x), \\quad y=f(-x)"
+        statement_latex: "y = f(x) \\;\\longrightarrow\\; y = -f(x), \\quad y = f\\left( -x \\right)"
       - code: V.R2
         level: rozszerzony
         name: "posługuje się złożeniami funkcji"
       - code: V.R3
         level: rozszerzony
         name: "dowodzi monotoniczności funkcji zadanej wzorem, jak w przykładzie: wykazanie, że dana funkcja wymierna jest monotoniczna w podanym przedziale"
-        statement_latex: "f(x)=\\frac{x-1}{x+2} \\quad \\text{monotoniczna w} \\quad (-\\infty,\\,-2)"
+        statement_latex: "f(x) = \\frac{x-1}{x+2} \\quad \\text{monotoniczna w} \\quad \\left( -\\infty,\\, -2 \\right)"
   - code: VI
     name: "Ciągi"
     order_index: 6
@@ -268,11 +268,11 @@ units:
       - code: VII.2
         level: podstawowy
         name: "korzysta z jedynki trygonometrycznej oraz z definicji tangensa jako ilorazu sinusa i cosinusa"
-        statement_latex: "\\sin^{2}\\alpha+\\cos^{2}\\alpha=1; \\qquad \\operatorname{tg}\\alpha=\\frac{\\sin\\alpha}{\\cos\\alpha}"
+        statement_latex: "\\sin^{2}\\alpha + \\cos^{2}\\alpha = 1; \\qquad \\tg\\alpha = \\frac{\\sin\\alpha}{\\cos\\alpha}"
       - code: VII.3
         level: podstawowy
         name: "stosuje twierdzenie cosinusów oraz wzór na pole trójkąta wyrażone przez dwa boki i sinus kąta między nimi"
-        statement_latex: "P=\\tfrac{1}{2}\\,a\\,b\\,\\sin\\gamma"
+        statement_latex: "P = \\tfrac{1}{2} \\cdot a \\cdot b \\cdot \\sin\\gamma"
       - code: VII.4
         level: podstawowy
         name: "oblicza kąty trójkąta prostokątnego i długości jego boków przy odpowiednich danych (rozwiązuje trójkąty prostokątne, w tym z wykorzystaniem funkcji trygonometrycznych)"
@@ -362,7 +362,7 @@ units:
       - code: IX.4
         level: podstawowy
         name: "posługuje się równaniem okręgu w postaci kanonicznej"
-        statement_latex: "(x-a)^{2}+(y-b)^{2}=r^{2}"
+        statement_latex: "\\left( x - a \\right)^{2} + \\left( y - b \\right)^{2} = r^{2}"
       - code: IX.5
         level: podstawowy
         name: "wyznacza obrazy okręgów i wielokątów w symetriach osiowych względem osi układu współrzędnych, symetrii środkowej (o środku w początku układu współrzędnych)"
