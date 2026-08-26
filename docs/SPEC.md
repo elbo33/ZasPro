@@ -118,6 +118,8 @@ Findings:
 
    **11/30 do not yield the intended expression.** Only the single WRONG_SILENT case is dangerous: it is the one that reaches a solver looking correct. The 7 parse errors and 1 ambiguity fail visibly and route to review by construction; handling them is the normalisation layer's normal job, not a threat. M5's scope and its auto-verification-rate expectations derive from this number.
 
+7. **`pdftotext` corrupts maths in the podstawa programowa PDF, silently** (M0.5, `m0/pdf_audit.md`). `DU_programowej_2024.pdf` and the superseded `matematyka.pdf` set their maths in a font whose ToUnicode maps each Mathematical Alphanumeric Symbol (U+1D400–U+1D7FF, the italic variables) to a **two-codepoint sequence**: 54% and 56% of math-italic characters come out **doubled** (`𝑥𝑥` for `𝑥`). Stacked fractions and superscripts collapse with it — measured examples from the curriculum text: `½·a·b·sin γ` → `2·a·b·sin γ` (halving becomes doubling), `f(x) = a/x` → `f(x) = x` (coefficient gone), `sin α / cos α` → `cos α` (numerator gone). The M0.5 diacritic check passed on the same files because the **prose** font has a correct ToUnicode — the two live in one PDF. Consequence: the M0.6 curriculum seed's formulae are hand-transcribed from the rendered PDF (`seeds/curriculum_matematyka_formulas_review.md`), and `topics.statement_latex` (section 5) exists to hold them separately from the prose. Any Track B source must pass the math-character assertion before M2 text-mines it.
+
 Consequence: rendering is the correct check for extraction fidelity and the wrong check for verification input. These are separate concerns needing separate artifacts. The normalisation layer (M5) must convert a documented ~37% of raw expressions before they are trustworthy, and must never let a WRONG_SILENT parse through unflagged.
 
 ---
@@ -181,10 +183,12 @@ Design the full schema up front but **create tables in migration batches per pha
 
 * `subjects`: id, name, slug, description, language, level, timestamps
 * `units`: id, subject_id, name, slug, description, order_index
-* `topics`: id, unit_id, parent_id, name, slug, description, level, order_index, official_requirement_code, status, timestamps
+* `topics`: id, unit_id, parent_id, name, slug, description, statement_latex, level, order_index, official_requirement_code, status, timestamps
 * `topic_prerequisites`: topic_id, prerequisite_topic_id, importance, reason
 
 `official_requirement_code` is the link back to the podstawa programowa numbering and is unique where present.
+
+**`name` / `description` hold prose only; `statement_latex` holds the maths.** A podstawa requirement often embeds a formula (`aˣ < aʸ`, `½·a·b·sin γ`, the binomial-coefficient identities). The prose part — the verb, the scope — goes in `name`/`description` in plain text with single-letter variables as ordinary italics. The formula goes in `statement_latex` as valid LaTeX. This split exists because the seed's own source proved extraction cannot be trusted for it: `DU_programowej_2024.pdf` sets its maths in a font whose ToUnicode doubles every italic variable (`𝑥𝑥` for `𝑥`) and collapses stacked fractions, so `pdftotext` turned `½·a·b` into `2·a·b` and `sin α / cos α` into `cos α` — plausible, wrong, silent (M0.5, `m0/pdf_audit.md`). `statement_latex` is therefore hand-transcribed from the rendered PDF, not extracted; a `NULL` value means the requirement carries no formula.
 
 **Representation.** Adjacency list with a `parent_id` self-foreign-key. The tree is small, shallow and effectively read-only after seeding, so the performance arguments for materialized paths and `ltree` do not apply. Adjacency is the only representation where reparenting is a single-row update that cannot leave the tree inconsistent. Add a generated materialized path column later if the same recursive CTE gets written repeatedly. Consider `ltree` only if its pattern-matching operators are wanted, which is a different motivation from performance.
 

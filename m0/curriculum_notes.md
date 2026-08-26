@@ -58,11 +58,38 @@ szczegółowe", liceum ogólnokształcące / technikum):
 regulation text. Every node still needs node-by-node human verification before
 M1 seeds the `units` / `topics` tables from it.
 
-`seeds/curriculum_matematyka_review.md` is the review sheet: one numbered line
-per node in Dz.U. order, with the cleaned seed value and the verbatim
-`pdftotext` span side by side (136 lines = 132 nodes + 4 sub-points). Formula
-statements are text-extraction-mangled and flagged `⚠fx` — verify those against
-the PDF page; the tree structure (code, name, level, order) is what M1 consumes.
+### Extraction of the formulae cannot be trusted
+
+`pdftotext` corrupts the maths in `DU_programowej_2024.pdf` (M0.5,
+`m0/pdf_audit.md`): the maths font's ToUnicode maps every italic variable to a
+two-codepoint sequence, so 54% of Mathematical Alphanumeric Symbols come out
+**doubled** (`𝑥𝑥` for `𝑥`), and stacked fractions and superscripts collapse
+with it. Measured damage in the curriculum text:
+
+| code | rendered in PDF | pdftotext gave | effect |
+|---|---|---|---|
+| VII.3 | `P = ½ · a · b · sin γ` | `P = 2 · a · b · sin γ` | ½ → 2, **formula now wrong** |
+| V.13 | `f(x) = a/x` | `f(x) = x` | coefficient and bar gone |
+| VI.R1 | `typu 1/n, ⁿ√a` | `typu n, n√a` | `1` numerator gone |
+| VII.2 | `tg α = sin α / cos α` | `tg α = cos α` | numerator gone |
+| I.5 | `aˣ < aʸ` | `ax < ay` | superscripts flattened |
+| II.R4 | five `(n over k)` identities | `(𝑛𝑛0) = 1, …` | structure destroyed |
+
+**Consequence.** The seed separates prose from maths:
+
+* `name` — the requirement prose, plain text (M1 seeds the tree from this).
+* `statement_latex` — the formula, **hand-transcribed from the rendered PDF**
+  (`DU_programowej_2024.pdf` pages 327–335), not from the extracted text.
+  20 rows have one; a `name` with no `statement_latex` carries no formula.
+
+### Review sheets
+
+* `seeds/curriculum_matematyka_review.md` — all 132 nodes in Dz.U. order,
+  seed `name` beside the `pdftotext` span; formula rows marked **⚑**.
+* `seeds/curriculum_matematyka_formulas_review.md` — the 20 formula rows only:
+  `statement_latex`, a description of the rendered PDF appearance, and the
+  corrupt extraction, so the transcriptions can be checked without opening the
+  PDF per line. 16 of the 20 were corrupted; verify those first.
 
 ## Manifest
 

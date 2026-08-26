@@ -8,9 +8,12 @@ curriculum-tree tests come in M1.
 import re
 from pathlib import Path
 
+from zaspro.m0.curriculum_seed import FORMULA_ROWS
+
 SEED = Path(__file__).resolve().parents[1] / "seeds" / "curriculum_matematyka.yaml"
 
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII"]
+MAS = range(0x1D400, 0x1D800)
 
 
 def _codes() -> list[str]:
@@ -40,3 +43,26 @@ def test_codes_are_well_formed():
 
 def test_draft_status_is_flagged():
     assert "status: DRAFT" in SEED.read_text(encoding="utf-8")
+
+
+def test_no_doubled_math_alphanumeric_survived_into_the_seed():
+    text = SEED.read_text(encoding="utf-8")
+    assert not any(ord(ch) in MAS for ch in text), "corrupted math chars in seed"
+
+
+def test_every_formula_row_has_statement_latex():
+    text = SEED.read_text(encoding="utf-8")
+    for code in FORMULA_ROWS:
+        # the code line is followed by level then name then statement_latex
+        block = text.split(f"- code: {code}\n", 1)[1].split("- code:", 1)[0]
+        assert "statement_latex:" in block, f"{code} missing statement_latex"
+
+
+def test_formula_row_names_are_plain_prose():
+    # Inline notation like "y = f(x)" may stay in the name as plain text
+    # (the user's instruction); LaTeX and corrupted math chars may not.
+    for code, fx in FORMULA_ROWS.items():
+        name = fx["name"]
+        assert not any(ord(c) in MAS for c in name), f"{code} name has corrupted math chars"
+        assert "\\" not in name, f"{code} name contains LaTeX"
+        assert "statement_latex" in fx and fx["statement_latex"]
