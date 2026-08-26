@@ -85,6 +85,40 @@ rendered PDF go through it (`STORAGE_ROOT`). An S3 implementation is a new class
 behind the same protocol; deferred until something needs it (SPEC §3 — "the
 smallest thing"). No object storage for video/audio (SPEC scope).
 
+### 7. Batch ingestion of the Track A corpus
+
+`zaspro.ingestion.batch` discovers Track A from `sources` (EXAM rows with a
+`.docx` file), resolves each one's marking scheme, ingests it via the job
+system one document at a time (`enqueue` + `Worker().drain()`), and writes
+`m2/corpus_track_a_summary.md`.
+
+`resolve_marking_scheme` handles the naming variation: it drops the `-A`/`-B`
+version letter and tries `MMAP-{lvl}-660-{session}-zasady.pdf` (czarnodruk,
+maj-2025 only) then `MMAP-{lvl}-100-{session}-zasady.pdf`. Upstream the file
+sits under different directories per year; all files are flat in
+`sources/raw/`, so that is not our problem.
+
+**Corpus result (maj-2024, -2025, -2026 podstawowy):** 3/3 pass the gate with
+**no change** to `strip_boilerplate` or `segment_arkusz` — the three sessions
+are structurally identical. Point totals 46 / 50 / 50, each independently
+confirmed by the arkusz's own cover text. 22 figure regions across the three,
+every one a Word-drawn shape, all rendered. Loose figure crops (M0.4 mode 4,
+ADR 0004) recur but do not affect the gate; tightening is M6-adjacent quality
+work.
+
+**Informatory** are not run through the pipeline — they are prose + worked
+examples, no marking scheme, no `Zadanie`-list structure. The batch does a
+structural audit only (oMath / drawings / marker counts). Semantic chunking of
+them needs `content_type` classification, which is review-queue / Ingestion
+Agent work (M3+), scoped separately. They are reported explicitly, never as a
+silent Track A failure.
+
+**Track B** (rozszerzony everything, version B papers — PDF only, no
+czarnodruk in any Formuła 2023 session) is given a bare `source_documents` row
+with `extraction_status = pending` and left uningested (ADR 0005). This
+matters for M3: roughly half the seeded curriculum (all `rozszerzony` topics)
+currently has no deterministic source.
+
 ## No new dependencies
 
 M2 adds none. pandoc / poppler / LibreOffice are subprocesses (already in

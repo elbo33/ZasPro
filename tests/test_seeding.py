@@ -4,7 +4,11 @@ from sqlalchemy import func, select
 
 from zaspro.db.models import Source, Subject, Topic, Unit
 from zaspro.seeding.curriculum import seed_curriculum
+from zaspro.seeding.manifest import load_manifest
 from zaspro.seeding.sources import seed_sources
+
+N_SOURCES = len(load_manifest())  # tracks the manifest as the corpus grows
+N_CURRICULUM = 133  # 1 subject + 13 units + 119 topics
 
 
 def _counts(db) -> tuple[int, int, int, int]:
@@ -20,9 +24,9 @@ def test_first_run_creates_everything(db):
     c = seed_curriculum(db)
     s = seed_sources(db)
     db.flush()
-    assert (c.created, c.updated, c.unchanged) == (133, 0, 0)  # 1 + 13 + 119
-    assert (s.created, s.updated, s.unchanged) == (8, 0, 0)
-    assert _counts(db) == (1, 13, 119, 8)
+    assert (c.created, c.updated, c.unchanged) == (N_CURRICULUM, 0, 0)
+    assert (s.created, s.updated, s.unchanged) == (N_SOURCES, 0, 0)
+    assert _counts(db) == (1, 13, 119, N_SOURCES)
 
 
 def test_second_run_is_a_noop(db):
@@ -37,7 +41,7 @@ def test_second_run_is_a_noop(db):
 
     assert (c.created, c.updated) == (0, 0)
     assert (s.created, s.updated) == (0, 0)
-    assert c.unchanged == 133 and s.unchanged == 8
+    assert c.unchanged == N_CURRICULUM and s.unchanged == N_SOURCES
     assert _counts(db) == before
 
 
