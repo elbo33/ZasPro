@@ -10,6 +10,8 @@ load-bearing, not paperwork.
 |---|---|---|---|---|
 | pydantic | 2.13.x | MIT | typed boundaries at every module line | pydantic-core (MIT) |
 | pdfplumber | 0.11.x | MIT | PDF char geometry + text for M0.5 audit and M0.6 curriculum extraction | depends on pdfminer.six (MIT), pypdfium2 (BSD-3 / Apache-2.0), Pillow (MIT-CMU) |
+| sympy | 1.14.x | BSD-3-Clause | M0.3 naive-parse characterisation; symbolic verification from M5 | in the SPEC §3 stack ("symbolic maths are Python-native"). mpmath (BSD) |
+| lark | 1.x | MIT | backend for `sympy.parsing.latex.parse_latex(..., backend="lark")` — avoids the antlr4 runtime | pure Python |
 | pytest | 9.x | MIT | tests | dev-only |
 | hatchling | (build) | MIT | build backend | build-only |
 
