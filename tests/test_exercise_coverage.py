@@ -47,15 +47,21 @@ def test_codes_after_the_solution_block_are_not_captured(monkeypatch):
     assert got["2"] == ["II.1"]
 
 
-def test_histogram_buckets_and_zero_count():
+def test_histogram_primary_vs_touch():
     from collections import Counter
 
     cov = ec.Coverage(
         session_codes=["x"],
         podstawowy_topics=10,
-        per_topic=Counter({"I.1": 6, "I.2": 2, "I.3": 1, "II.1": 4}),
+        per_topic_primary=Counter({"I.1": 6, "I.2": 2, "I.3": 1, "II.1": 4}),
+        # touch adds a topic that is never anyone's primary
+        per_topic_touch=Counter({"I.1": 6, "I.2": 3, "I.3": 1, "II.1": 5, "II.2": 2}),
         unmatched_codes=Counter(),
     )
-    h = cov.histogram
-    assert h == {"0": 6, "1-2": 2, "3-4": 1, "5+": 1}
-    assert sum(h.values()) == cov.podstawowy_topics
+    hp = cov.histogram_primary
+    assert hp == {"0": 6, "1-2": 2, "3-4": 1, "5+": 1}
+    assert sum(hp.values()) == cov.podstawowy_topics
+
+    ht = cov.histogram_touch
+    assert ht == {"0": 5, "1-2": 2, "3-4": 1, "5+": 2}  # II.1 crosses 5, II.2 appears
+    assert sum(ht.values()) == cov.podstawowy_topics

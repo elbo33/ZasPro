@@ -23,11 +23,15 @@ router = APIRouter(prefix="/sources", tags=["sources"])
 
 
 def _status_counts(db: Session, doc_id: int) -> dict[str, int]:
+    # primary mappings only — secondaries are always AI_SUGGESTED context
     counts = {s.value: 0 for s in MappingStatus}
     for status, n in db.execute(
         select(ChunkMapping.mapping_status, func.count())
         .join(SourceChunk, SourceChunk.id == ChunkMapping.source_chunk_id)
-        .where(SourceChunk.source_document_id == doc_id)
+        .where(
+            SourceChunk.source_document_id == doc_id,
+            ChunkMapping.is_primary.is_(True),
+        )
         .group_by(ChunkMapping.mapping_status)
     ):
         counts[status.value] = n
@@ -84,7 +88,10 @@ def source_chunks(doc_id: int, db: Session = Depends(get_db)) -> list[SourceChun
     out: list[SourceChunkView] = []
     for c in chunks:
         mapping = db.scalars(
-            select(ChunkMapping).where(ChunkMapping.source_chunk_id == c.id)
+            select(ChunkMapping).where(
+                ChunkMapping.source_chunk_id == c.id,
+                ChunkMapping.is_primary.is_(True),
+            )
         ).one_or_none()
         out.append(
             SourceChunkView(

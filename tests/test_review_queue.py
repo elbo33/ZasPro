@@ -166,3 +166,79 @@ def test_batch_approve_rejects_mixed_groups(db):
     db.flush()
     with pytest.raises(ReviewError, match="shared"):
         batch_approve(db, ids, reviewer="elie")
+
+
+# --- multi-topic: promote a secondary to primary (one keystroke) -------------
+
+
+def _multitopic_item(db):
+    """A chunk mapped to VIII.1 primary + VIII.2 secondary, forced into review."""
+    from zaspro.db.models import (
+        ContentType, ExerciseOrigin, ExtractionMethod, ReviewItem, SourceChunk,
+        VerificationStatus,
+    )
+    from zaspro.db.models import Exercise as Ex
+
+    w = build_world(db)
+    ch = SourceChunk(
+        source_document_id=w.document_id, heading="Zadanie 9.", section="9",
+        content_type=ContentType.EXERCISE,
+        text="Oblicz pole VIII.1) trójkąta z VIII.2) twierdzenia Pitagorasa.",
+        latex="x", order_index=9, extraction_method=ExtractionMethod.pandoc_omml,
+        confidence=None,
+    )
+    db.add(ch)
+    db.add(Ex(
+        source_document_id=w.document_id, exercise_number="9",
+        statement="x", statement_latex_raw="x", origin=ExerciseOrigin.OFFICIAL,
+        verbatim_ok=True, points_available=1,
+        verification_status=VerificationStatus.DRAFT,
+    ))
+    db.flush()
+    m = map_chunk(db, ch.id, StubMappingAgent(), threshold=1.01)  # -> REVIEW_REQUIRED
+    item = db.query(ReviewItem).filter_by(ref_id=m.id).one()
+    return w, ch, item
+
+
+def test_promote_secondary_swaps_primary_and_resolves(db):
+    from zaspro.db.models import ChunkMapping
+
+    w, ch, item = _multitopic_item(db)
+    old_primary_id = item.ref_id
+
+    dec = record_decision(
+        db, item.id, reviewer="elie", decision=ReviewDecisionType.PROMOTE
+    )
+    assert dec.decision is ReviewDecisionType.PROMOTE
+    assert dec.mapping_confidence is not None  # frozen from the OLD primary
+
+    db.refresh(item)
+    assert item.status is ReviewStatus.APPROVED  # one keystroke, resolved
+    assert item.ref_id != old_primary_id
+    assert item.topic_id == w.topic_ids["VIII.2"]
+
+    rows = db.query(ChunkMapping).filter_by(source_chunk_id=ch.id).all()
+    assert sum(r.is_primary for r in rows) == 1
+    new_primary = next(r for r in rows if r.is_primary)
+    assert new_primary.topic_id == w.topic_ids["VIII.2"]
+    assert new_primary.mapping_status is MappingStatus.APPROVED
+    # the demoted one is still a plausible secondary, not rejected
+    old = next(r for r in rows if not r.is_primary)
+    assert old.topic_id == w.topic_ids["VIII.1"]
+    assert old.mapping_status is MappingStatus.AI_SUGGESTED
+    # exercise now points at the promoted topic
+    ex = db.query(Exercise).filter_by(
+        source_document_id=w.document_id, exercise_number="9"
+    ).one()
+    assert ex.topic_id == w.topic_ids["VIII.2"]
+
+
+def test_promote_counts_as_disagreement_in_the_curve(db):
+    from zaspro.review import agreement_curve
+
+    _w, _ch, item = _multitopic_item(db)
+    record_decision(db, item.id, reviewer="e", decision=ReviewDecisionType.PROMOTE)
+    cal = agreement_curve(db)
+    assert cal.resolved == 1
+    band = next(b for b in cal.bands if b.n == 1)
+    assert band.agree == 0 and band.disagree == 1  # promote != agreement

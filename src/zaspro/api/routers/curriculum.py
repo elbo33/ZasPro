@@ -15,7 +15,6 @@ from zaspro.db.models import (
     ChunkMapping,
     Exercise,
     MappingStatus,
-    SourceChunk,
     Topic,
     Unit,
 )
@@ -27,18 +26,30 @@ router = APIRouter(prefix="/curriculum", tags=["curriculum"])
 def get_curriculum(
     level: str = "podstawowy", db: Session = Depends(get_db)
 ) -> list[CurriculumUnit]:
-    # mapped / approved chunk counts per topic
-    mapped: dict[int, int] = {}
+    # per topic: chunks where this is the PRIMARY requirement (primarily drills
+    # it) vs chunks where it is only a secondary (also touches it). Different
+    # things — see m3/mapping_multitopic_scan.md.
+    primary: dict[int, int] = {}
     approved: dict[int, int] = {}
-    for topic_id, status, n in db.execute(
-        select(ChunkMapping.topic_id, ChunkMapping.mapping_status, func.count())
-        .join(SourceChunk, SourceChunk.id == ChunkMapping.source_chunk_id)
+    secondary: dict[int, int] = {}
+    for topic_id, is_primary, status, n in db.execute(
+        select(
+            ChunkMapping.topic_id,
+            ChunkMapping.is_primary,
+            ChunkMapping.mapping_status,
+            func.count(),
+        )
         .where(ChunkMapping.topic_id.is_not(None))
-        .group_by(ChunkMapping.topic_id, ChunkMapping.mapping_status)
+        .group_by(
+            ChunkMapping.topic_id, ChunkMapping.is_primary, ChunkMapping.mapping_status
+        )
     ):
-        mapped[topic_id] = mapped.get(topic_id, 0) + n
-        if status is MappingStatus.APPROVED:
-            approved[topic_id] = approved.get(topic_id, 0) + n
+        if is_primary:
+            primary[topic_id] = primary.get(topic_id, 0) + n
+            if status is MappingStatus.APPROVED:
+                approved[topic_id] = approved.get(topic_id, 0) + n
+        else:
+            secondary[topic_id] = secondary.get(topic_id, 0) + n
 
     ex_counts: dict[int, int] = {}
     for topic_id, n in db.execute(
@@ -66,7 +77,8 @@ def get_curriculum(
                         name=t.name,
                         level=t.level.value,
                         parent_id=t.parent_id,
-                        mapped_chunks=mapped.get(t.id, 0),
+                        mapped_chunks=primary.get(t.id, 0),
+                        also_tests=secondary.get(t.id, 0),
                         approved_chunks=approved.get(t.id, 0),
                         exercises=ex_counts.get(t.id, 0),
                     )

@@ -87,14 +87,20 @@ def queue_stats(session: Session) -> QueueStats:
 
     mappings_by_status = {s.value: 0 for s in MappingStatus}
     for status, n in session.execute(
-        select(ChunkMapping.mapping_status, func.count()).group_by(ChunkMapping.mapping_status)
+        select(ChunkMapping.mapping_status, func.count())
+        .where(ChunkMapping.is_primary.is_(True))
+        .group_by(ChunkMapping.mapping_status)
     ):
         mappings_by_status[status.value] = n
 
     unmapped_chunks = session.scalar(
         select(func.count())
         .select_from(SourceChunk)
-        .outerjoin(ChunkMapping, ChunkMapping.source_chunk_id == SourceChunk.id)
+        .outerjoin(
+            ChunkMapping,
+            (ChunkMapping.source_chunk_id == SourceChunk.id)
+            & ChunkMapping.is_primary.is_(True),
+        )
         .where(ChunkMapping.id.is_(None))
     ) or 0
 
@@ -131,6 +137,56 @@ def batch_groups(session: Session) -> list[BatchGroup]:
     return [g for g in groups.values() if len(g.item_ids) >= 2]
 
 
+def _promote_secondary(session: Session, item: ReviewItem, edit: dict | None) -> None:
+    """Swap a secondary `ChunkMapping` into the primary slot (the agent's
+    primary was the wrong primary). One keystroke on the review card."""
+
+    old_primary = session.get(ChunkMapping, item.ref_id)
+    if old_primary is None:
+        raise ReviewError(f"review_item {item.id}: primary mapping is gone")
+
+    target_id = (edit or {}).get("promote_mapping_id")
+    if target_id is None:
+        # default: the highest-confidence secondary
+        secs = session.scalars(
+            select(ChunkMapping)
+            .where(
+                ChunkMapping.source_chunk_id == old_primary.source_chunk_id,
+                ChunkMapping.is_primary.is_(False),
+            )
+            .order_by(ChunkMapping.confidence.desc(), ChunkMapping.id)
+        ).all()
+        if not secs:
+            raise ReviewError("no secondary mapping to promote")
+        new_primary = secs[0]
+    else:
+        new_primary = session.get(ChunkMapping, target_id)
+        if (
+            new_primary is None
+            or new_primary.source_chunk_id != old_primary.source_chunk_id
+            or new_primary.is_primary
+        ):
+            raise ReviewError(
+                f"mapping {target_id} is not a secondary of this chunk"
+            )
+
+    # two statements, flush between: the partial unique index forbids two
+    # is_primary rows for a chunk even transiently
+    old_primary.is_primary = False
+    old_primary.mapping_status = MappingStatus.AI_SUGGESTED  # still a plausible secondary
+    session.flush()
+    new_primary.is_primary = True
+    new_primary.mapping_status = MappingStatus.APPROVED
+    session.flush()
+
+    apply_mapping_to_exercise(session, new_primary, topic_id=new_primary.topic_id)
+
+    # the review item now tracks the new primary
+    item.ref_id = new_primary.id
+    item.topic_id = new_primary.topic_id
+    item.confidence = new_primary.confidence
+
+
 def _resolve_mapping(session: Session, item: ReviewItem, decision: ReviewDecisionType,
                      edit: dict | None) -> None:
     """Propagate a CURRICULUM_MAPPING decision to its `ChunkMapping` and the
@@ -138,6 +194,11 @@ def _resolve_mapping(session: Session, item: ReviewItem, decision: ReviewDecisio
 
     if item.item_type is not ReviewItemType.CURRICULUM_MAPPING:
         return
+
+    if decision is ReviewDecisionType.PROMOTE:
+        _promote_secondary(session, item, edit)
+        return
+
     mapping = session.get(ChunkMapping, item.ref_id)
     if mapping is None:
         return
@@ -198,7 +259,9 @@ def record_decision(
 
     _resolve_mapping(session, item, decision, edit)
 
-    if decision is ReviewDecisionType.APPROVE:
+    if decision in (ReviewDecisionType.APPROVE, ReviewDecisionType.PROMOTE):
+        # PROMOTE = "the agent's secondary was the right primary, use it" — a
+        # resolution, one keystroke, not a two-step edit-then-approve
         item.status = ReviewStatus.APPROVED
         item.resolved_at = _now()
     elif decision is ReviewDecisionType.REJECT:

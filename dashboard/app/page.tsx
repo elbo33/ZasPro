@@ -8,7 +8,7 @@ import {
   type ReviewItemView,
 } from "./lib/api";
 
-type Mode = "view" | "reject" | "edit";
+type Mode = "view" | "reject" | "edit" | "promote";
 
 function Stats({ s }: { s: QueueStats | null }) {
   if (!s) return null;
@@ -165,6 +165,20 @@ export default function ReviewQueuePage() {
         return;
       }
 
+      if (mode === "promote") {
+        if (e.key === "Escape") return setMode("view");
+        const secs = item?.secondaries ?? [];
+        const n = parseInt(e.key, 10);
+        if (n >= 1 && n <= secs.length) {
+          e.preventDefault();
+          void decide({
+            decision: "PROMOTE",
+            edit: { promote_mapping_id: secs[n - 1].id },
+          });
+        }
+        return;
+      }
+
       if (mode === "edit") {
         if (e.key === "Escape") return setMode("view");
         if (e.key === "j" || e.key === "ArrowDown") {
@@ -189,6 +203,22 @@ export default function ReviewQueuePage() {
           e.preventDefault();
           void decide({ decision: "APPROVE" });
           break;
+        case "p": {
+          e.preventDefault();
+          const secs = item?.secondaries ?? [];
+          if (secs.length === 0) break;
+          // one keystroke for the common case (a single secondary);
+          // p then a digit picks among several
+          if (secs.length === 1) {
+            void decide({
+              decision: "PROMOTE",
+              edit: { promote_mapping_id: secs[0].id },
+            });
+          } else {
+            setMode("promote");
+          }
+          break;
+        }
         case "r":
           e.preventDefault();
           setMode("reject");
@@ -286,6 +316,50 @@ export default function ReviewQueuePage() {
             </p>
           )}
 
+          {item.secondaries.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <div className="muted" style={{ marginBottom: 4 }}>
+                also plausibly tests
+                {item.secondaries.length === 1 ? (
+                  <>
+                    {" "}(<span className="kbd">p</span> promotes it to primary)
+                  </>
+                ) : (
+                  <>
+                    {" "}(<span className="kbd">p</span> then 1–
+                    {item.secondaries.length} promotes)
+                  </>
+                )}
+                :
+              </div>
+              {item.secondaries.map((s, i) => (
+                <div key={s.id} className="chunk" style={{ margin: "4px 0", padding: "8px 12px" }}>
+                  <span className="kbd">{i + 1}</span>{" "}
+                  <b className="mono">{s.topic_code ?? "—"}</b>{" "}
+                  <span className="muted">
+                    conf {s.confidence.toFixed(2)}
+                    {s.topic_name ? ` · ${s.topic_name}` : ""}
+                  </span>
+                  {s.rationale && (
+                    <>
+                      <br />
+                      <span className="muted">{s.rationale}</span>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {mode === "promote" && (
+            <div style={{ marginTop: 12 }}>
+              <p>
+                <b>Promote which secondary to primary?</b>{" "}
+                <span className="muted">(press its number, Esc to cancel)</span>
+              </p>
+            </div>
+          )}
+
           {mode === "reject" && (
             <div style={{ marginTop: 12 }}>
               <p>
@@ -333,6 +407,7 @@ export default function ReviewQueuePage() {
         {mode === "view" && (
           <>
             <span className="kbd">a</span> approve &nbsp;
+            <span className="kbd">p</span> promote secondary &nbsp;
             <span className="kbd">r</span> reject &nbsp;
             <span className="kbd">e</span> edit topic &nbsp;
             <span className="kbd">s</span> skip &nbsp;
@@ -342,6 +417,7 @@ export default function ReviewQueuePage() {
         )}
         {mode === "reject" && <>press 1–{REASON_CODES.length} for a reason, Esc to cancel</>}
         {mode === "edit" && <>j/k to move, Enter to apply the topic, Esc to cancel</>}
+        {mode === "promote" && <>press the secondary&rsquo;s number, Esc to cancel</>}
       </div>
     </div>
   );

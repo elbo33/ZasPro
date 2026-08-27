@@ -13,14 +13,35 @@ from zaspro.db.models import (
     ChunkMapping,
     ContentType,
     Exercise,
+    ExtractionMethod,
     MappingStatus,
     ReviewItem,
     ReviewItemType,
     ReviewStatus,
+    SourceChunk,
 )
-from zaspro.mapping import MappingError, MappingRequest, StubMappingAgent, TopicRef
+from zaspro.mapping import MappingError, MappingRequest, SecondaryTopic, StubMappingAgent, TopicRef
 from zaspro.mapping.agent import MappingResult
 from zaspro.mapping.handler import candidate_topics, map_chunk, map_document
+
+
+def _add_chunk(db, w, text: str) -> int:
+    """Append one EXERCISE chunk to the world; return its id."""
+    n = db.query(SourceChunk).filter_by(source_document_id=w.document_id).count()
+    ch = SourceChunk(
+        source_document_id=w.document_id,
+        heading=f"Zadanie {n + 1}.",
+        section=str(n + 1),
+        content_type=ContentType.EXERCISE,
+        text=text,
+        latex=text,
+        order_index=n,
+        extraction_method=ExtractionMethod.pandoc_omml,
+        confidence=None,
+    )
+    db.add(ch)
+    db.flush()
+    return ch.id
 
 
 def test_candidate_topics_are_podstawowy_only(db):
@@ -158,13 +179,14 @@ def test_remap_replaces_the_mapping_and_its_review_item(db):
 
     first = map_chunk(db, w.chunk_ids["1"], LowAgent())
     assert db.query(ReviewItem).count() == 1
-    first_id = first.id
 
-    # re-map the same chunk with a confident agent
+    # re-map the same chunk with a confident agent: prior rows + review item
+    # are replaced wholesale
     second = map_chunk(db, w.chunk_ids["1"], StubMappingAgent(), remap=True)
-    assert second.id == first_id  # same row, updated in place
+    assert second.is_primary
     assert second.confidence >= 0.8
     assert second.mapping_status.value == "AI_SUGGESTED"
+    assert db.query(ChunkMapping).filter_by(source_chunk_id=w.chunk_ids["1"]).count() == 1
     assert db.query(ReviewItem).count() == 0  # the stale review item is gone
 
 
@@ -191,3 +213,76 @@ def test_stub_needs_no_api_key():
         )
     )
     assert 0.0 <= r.confidence <= 1.0
+
+
+# --- multi-topic (SPEC §10, m3/mapping_multitopic_scan.md) --------------------
+
+
+def test_stub_emits_a_secondary_when_two_codes_are_cited(db):
+    w = build_world(db)
+    cid = _add_chunk(
+        db, w,
+        "Oblicz pole VIII.1) trójkąta, korzystając z VIII.2) twierdzenia Pitagorasa.",
+    )
+    m = map_chunk(db, cid, StubMappingAgent(), audit_sample_rate=0.0)
+
+    assert m.is_primary and m.topic_id == w.topic_ids["VIII.1"]
+    rows = db.query(ChunkMapping).filter_by(source_chunk_id=cid).order_by(ChunkMapping.id).all()
+    assert len(rows) == 2
+    sec = next(r for r in rows if not r.is_primary)
+    assert sec.topic_id == w.topic_ids["VIII.2"]
+    assert sec.confidence <= m.confidence
+    assert sec.mapping_status is MappingStatus.AI_SUGGESTED
+    # exactly one primary per chunk
+    assert sum(r.is_primary for r in rows) == 1
+
+
+def test_business_rule_rejects_a_secondary_outside_the_candidate_set(db):
+    w = build_world(db)
+    cid = _add_chunk(db, w, "cokolwiek")
+
+    class RogueSecondary:
+        name, model, prompt_version = "rogue", None, "x"
+
+        def map(self, request):
+            return MappingResult(
+                topic_id=w.topic_ids["VIII.1"],
+                content_type=ContentType.EXERCISE,
+                confidence=0.99,
+                rationale="ok primary",
+                secondary_topics=[
+                    SecondaryTopic(
+                        topic_id=w.topic_ids["VIII.R1"],  # rozszerzony
+                        confidence=0.5,
+                        rationale="deferred topic",
+                    )
+                ],
+            )
+
+    with pytest.raises(MappingError, match="secondary"):
+        map_chunk(db, cid, RogueSecondary())
+    assert db.query(ChunkMapping).filter_by(source_chunk_id=cid).count() == 0
+
+
+def test_secondary_equal_to_primary_is_dropped_not_an_error(db):
+    w = build_world(db)
+    cid = _add_chunk(db, w, "cokolwiek")
+
+    class DupAgent:
+        name, model, prompt_version = "dup", None, "x"
+
+        def map(self, request):
+            return MappingResult(
+                topic_id=w.topic_ids["VIII.1"],
+                content_type=ContentType.EXERCISE,
+                confidence=0.9,
+                rationale="primary",
+                secondary_topics=[
+                    SecondaryTopic(topic_id=w.topic_ids["VIII.1"], confidence=0.4, rationale="dup"),
+                    SecondaryTopic(topic_id=w.topic_ids["VIII.2"], confidence=0.4, rationale="real"),
+                ],
+            )
+
+    map_chunk(db, cid, DupAgent(), audit_sample_rate=0.0)
+    rows = db.query(ChunkMapping).filter_by(source_chunk_id=cid).all()
+    assert {r.topic_id for r in rows} == {w.topic_ids["VIII.1"], w.topic_ids["VIII.2"]}

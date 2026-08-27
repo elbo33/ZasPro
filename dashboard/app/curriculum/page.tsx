@@ -53,7 +53,8 @@ export default async function CurriculumPage() {
               <tr>
                 <th>code</th>
                 <th>requirement</th>
-                <th>mapped</th>
+                <th title="chunks whose primary requirement is this topic">primary</th>
+                <th title="chunks that name this topic only as a secondary">also tests</th>
                 <th>approved</th>
                 <th>exercises</th>
               </tr>
@@ -64,6 +65,7 @@ export default async function CurriculumPage() {
                   <td className="mono">{t.code}</td>
                   <td>{t.name}</td>
                   <td>{t.mapped_chunks || <span className="muted">0</span>}</td>
+                  <td>{t.also_tests || <span className="muted">0</span>}</td>
                   <td>{t.approved_chunks || <span className="muted">0</span>}</td>
                   <td>{t.exercises || <span className="muted">0</span>}</td>
                 </tr>

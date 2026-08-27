@@ -63,6 +63,15 @@ statistically defended cutoff. **Revisit once a few hundred mappings have been
 reviewed** (the audit sampler feeds this continuously), and re-run
 `zaspro.review.calibration_run`.
 
+**Superseded by the contract change — 0.80 is now UNVALIDATED.** That
+calibration ran under the single-topic contract, where a mid-range confidence
+meant "the primary might be wrong". Under the multi-topic contract (section 8,
+migration 0006) a mid-range confidence means "primary among several defensible
+requirements" — a different quantity, so the number does not carry over. The
+v1 curve is frozen at `m3/mapping_calibration_v1_singletopic.md`. Re-run the
+same paper (`--remap --review-all`) after the change and compare; only then is
+the threshold evidence-based again.
+
 **Recommender bug fixed in the same pass.** The first cut of
 `agreement_curve` skipped bands with n<5 when picking a recommendation, so it
 ignored the n=1 band at 0% and the n=4 band at 75% and returned `0.00` — which,
@@ -171,9 +180,45 @@ So the threshold is set from data, not a feeling:
   if the real agent turns out confident on ~everything, the rate is the lever,
   not the threshold.
 
+### 8. Multi-topic mapping (migration 0006)
+
+The scan in `m3/mapping_multitopic_scan.md` settled it: 17 of 37 real mappings
+name a second requirement the fragment also tests, and **every** mapping the
+agent scored below 0.8 does. The single-topic contract was forcing a "which is
+*the* one?" choice the exam doesn't make. Doing this before M4 rather than after
+because M4 knowledge specs would bake in the single-topic assumption.
+
+* **Schema.** `chunk_mappings` drops `uq_chunk_mappings_chunk` and gains
+  `is_primary`; a partial unique index (`uq_chunk_mappings_primary … WHERE
+  is_primary`) keeps exactly one primary per chunk, secondaries unlimited.
+* **Agent.** `MappingResult.secondary_topics: list[{topic_id, confidence,
+  rationale}]`. The prompt asks for "the primary requirement plus any others
+  the fragment genuinely also tests"; confidence stays "am I right", not "is
+  this primary". `map_chunk` validates each secondary against the candidate set,
+  drops any equal to the primary or duplicated, and writes 1 + N rows (all same
+  provenance). A chunk's review item still targets the primary row.
+* **Review.** `ReviewDecisionType.PROMOTE` + `_promote_secondary`: swap a
+  secondary into the primary slot (two `UPDATE`s with a flush between — the
+  partial index forbids two primaries even transiently), re-point the review
+  item, resolve as APPROVED. One keystroke (`p`; `p` then a digit when there
+  are several). The demoted row stays `AI_SUGGESTED` — still a plausible
+  secondary, not rejected. The review card shows every secondary with its
+  confidence and rationale, because you cannot judge whether the primary is the
+  *right* primary without seeing what it beat.
+* **Calibration.** A PROMOTE counts as disagreement in the agreement curve
+  (the agent's primary needed changing), same as an EDIT. The frozen
+  `mapping_confidence` is the *old* primary's.
+* **`exercises.topic_id`** = the primary, as before. Secondaries reach exercises
+  via an `exercise_topics` M2M — deferred to M4, which is the first consumer
+  ("a topic's chunks = primary OR approved-secondary").
+* **Coverage** (`m2/exercise_coverage.md`) now reports two columns: *primarily
+  drills* (first-cited requirement) and *also touches* (any). The EXERCISES
+  format wants the first. The old single count was a touches count; it is not
+  progress that the "5+" number was higher under it.
+
 ## What this does not touch
 
 No knowledge extraction, no dedupe/merge, no normalisation, no exercise
 generation (M4/M5). `EXTRACTION_CONFLICT` / `NORMALISATION_FAILURE` /
 `MERGE_CANDIDATE` review-item types exist in the enum but nothing produces them
-yet.
+yet. `exercise_topics` (secondary topics on exercises) is M4.

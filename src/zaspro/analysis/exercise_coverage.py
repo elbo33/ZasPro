@@ -78,26 +78,29 @@ def codes_by_task(session_code: str) -> dict[str, list[str]]:
 class Coverage:
     session_codes: list[str]
     podstawowy_topics: int
-    per_topic: Counter  # official_requirement_code -> exercise count
+    # a requirement counts as "primary" for a task only if it is the FIRST code
+    # the zasady cites in that task's box (CKE lists the main requirement first);
+    # "touch" counts every cited code. Different questions — see
+    # m3/mapping_multitopic_scan.md and SPEC settled decision 10.
+    per_topic_primary: Counter
+    per_topic_touch: Counter
     unmatched_codes: Counter  # code cited by zasady but not a podstawowy topic
     tasks_with_no_code: int = 0
     matched_task_code_pairs: int = 0
 
-    @property
-    def histogram(self) -> dict[str, int]:
-        buckets = {"0": 0, "1-2": 0, "3-4": 0, "5+": 0}
-        counts = self.per_topic
-        # per_topic only holds topics with >= 1; add the zeros
-        covered = set(counts)
-        buckets["0"] = self.podstawowy_topics - len(covered)
+    def _hist(self, counts: Counter) -> dict[str, int]:
+        buckets = {"0": self.podstawowy_topics - len(set(counts)), "1-2": 0, "3-4": 0, "5+": 0}
         for n in counts.values():
-            if n <= 2:
-                buckets["1-2"] += 1
-            elif n <= 4:
-                buckets["3-4"] += 1
-            else:
-                buckets["5+"] += 1
+            buckets["1-2" if n <= 2 else "3-4" if n <= 4 else "5+"] += 1
         return buckets
+
+    @property
+    def histogram_primary(self) -> dict[str, int]:
+        return self._hist(self.per_topic_primary)
+
+    @property
+    def histogram_touch(self) -> dict[str, int]:
+        return self._hist(self.per_topic_touch)
 
 
 def analyse(session: Session) -> Coverage:
@@ -114,7 +117,8 @@ def analyse(session: Session) -> Coverage:
         select(SourceDocument).where(SourceDocument.file_ref.like("MMAP-P0-660-%.docx"))
     ).all()
 
-    per_topic: Counter = Counter()
+    primary: Counter = Counter()
+    touch: Counter = Counter()
     unmatched: Counter = Counter()
     no_code = 0
     pairs = 0
@@ -134,17 +138,20 @@ def analyse(session: Session) -> Coverage:
             if not codes:
                 no_code += 1
                 continue
-            for code in codes:
+            for i, code in enumerate(codes):
                 pairs += 1
-                if code in topic_codes:
-                    per_topic[code] += 1
-                else:
+                if code not in topic_codes:
                     unmatched[code] += 1
+                    continue
+                touch[code] += 1
+                if i == 0:  # first code cited = the primary requirement
+                    primary[code] += 1
 
     return Coverage(
         session_codes=sessions,
         podstawowy_topics=len(topic_codes),
-        per_topic=per_topic,
+        per_topic_primary=primary,
+        per_topic_touch=touch,
         unmatched_codes=unmatched,
         tasks_with_no_code=no_code,
         matched_task_code_pairs=pairs,

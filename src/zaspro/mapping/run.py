@@ -72,7 +72,11 @@ def run(
         to_map = total if remap else s.scalar(
             select(func.count())
             .select_from(SourceChunk)
-            .outerjoin(ChunkMapping, ChunkMapping.source_chunk_id == SourceChunk.id)
+            .outerjoin(
+                ChunkMapping,
+                (ChunkMapping.source_chunk_id == SourceChunk.id)
+                & ChunkMapping.is_primary.is_(True),
+            )
             .where(
                 SourceChunk.source_document_id == doc.id,
                 ChunkMapping.id.is_(None),

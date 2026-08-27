@@ -34,11 +34,15 @@ def main() -> int:
             ).all()
         )
 
-    h = cov.histogram
-    zeros = sorted((c for c in names if c not in cov.per_topic), key=_code_key)
+    hp = cov.histogram_primary
+    ht = cov.histogram_touch
+    n_topics = cov.podstawowy_topics
+    n_sessions = len(cov.session_codes)
+
+    zeros = sorted((c for c in names if c not in cov.per_topic_primary), key=_code_key)
     five_plus = sorted(
-        (c for c, n in cov.per_topic.items() if n >= 5),
-        key=lambda c: -cov.per_topic[c],
+        (c for c in cov.per_topic_primary if cov.per_topic_primary[c] >= 5),
+        key=lambda c: -cov.per_topic_primary[c],
     )
 
     L = [
@@ -53,32 +57,44 @@ def main() -> int:
         f"({cov.matched_task_code_pairs} task→code citations, "
         f"{cov.tasks_with_no_code} leaf tasks with no parseable code).",
         "",
-        "## Histogram over the 73 podstawowy requirements",
+        "## Two counts, deliberately",
         "",
-        "| exercises per requirement | requirements |",
-        "|---|---|",
-        f"| 0 | {h['0']} |",
-        f"| 1–2 | {h['1-2']} |",
-        f"| 3–4 | {h['3-4']} |",
-        f"| 5+ | {h['5+']} |",
+        "**primary** = the task's first-cited requirement (the one it mainly "
+        "drills). **touches** = any requirement the task cites. A task that "
+        "builds a system of equations *and* interprets a linear coefficient is "
+        "one primary + one touch. The EXERCISES episode format wants five that "
+        "**primarily** drill a requirement; touches are supporting material. Do "
+        "not read the touches column as progress the primary column doesn't "
+        "show (SPEC settled decision 10; `m3/mapping_multitopic_scan.md`).",
         "",
-        f"Covered (≥1): **{cov.podstawowy_topics - h['0']} / {cov.podstawowy_topics}**. "
-        f"At the EXERCISES format's 5-per-topic bar: **{h['5+']} / {cov.podstawowy_topics}**.",
+        f"| exercises per requirement | primarily drills | also touches |",
+        "|---|---|---|",
+        f"| 0 | {hp['0']} | {ht['0']} |",
+        f"| 1–2 | {hp['1-2']} | {ht['1-2']} |",
+        f"| 3–4 | {hp['3-4']} | {ht['3-4']} |",
+        f"| 5+ | {hp['5+']} | {ht['5+']} |",
         "",
-        "## Requirements with 5+ exercises",
+        f"Covered as **primary** (≥1): **{n_topics - hp['0']} / {n_topics}**. "
+        f"At the EXERCISES 5-per-topic bar, **primary**: **{hp['5+']} / {n_topics}** "
+        f"(touches: {ht['5+']}).",
+        "",
+        "## Requirements with 5+ exercises that primarily drill them",
         "",
     ]
     if five_plus:
         for c in five_plus:
-            L.append(f"- `{c}` ×{cov.per_topic[c]} — {names[c]}")
+            L.append(
+                f"- `{c}` ×{cov.per_topic_primary[c]} primary "
+                f"(+{cov.per_topic_touch[c] - cov.per_topic_primary[c]} touch) — {names[c]}"
+            )
     else:
         L.append("_none._")
 
     L += [
         "",
-        f"## Requirements with zero exercises ({len(zeros)})",
+        f"## Requirements with zero primary exercises ({len(zeros)})",
         "",
-        ", ".join(f"`{c}`" for c in zeros),
+        ", ".join(f"`{c}`" for c in zeros) or "_none._",
         "",
     ]
     if cov.unmatched_codes:
@@ -91,30 +107,29 @@ def main() -> int:
             "",
         ]
 
-    n_sessions = len(cov.session_codes)
     L += [
         "## Read",
         "",
-        f"{n_sessions} ingested papers cover {cov.podstawowy_topics - h['0']} of "
-        f"73 requirements with at least one exercise; the EXERCISES episode "
-        f"format's five-per-topic bar is met for {h['5+']}. Going from three "
-        f"papers to {n_sessions} moved that from 3 to {h['5+']} — the middle of "
-        f"the distribution fills fast — but {h['0'] + h['1-2']} requirements "
-        "still sit at zero, one or two exercises, and CKE publishes only ~2 "
-        "podstawowy sessions a year. Reading it straight (SPEC settled decision "
-        "10): the deterministic corpus is calibration and seed material, not "
-        "supply. The Exercise Agent (M5, generation + symbolic verification) is "
-        "load-bearing for the EXERCISES format, not supplementary. Harvested "
-        "arkusze anchor difficulty and Matura-authentic phrasing; "
-        "generated-and-verified exercises are the majority for most topics.",
+        f"{n_sessions} ingested papers give a **primary** exercise for "
+        f"{n_topics - hp['0']} of {n_topics} requirements; the EXERCISES "
+        f"five-per-topic bar is met (primary) for {hp['5+']}. Counting touches "
+        f"as well moves that to {ht['5+']}, but a touch is not what the format "
+        f"needs. {hp['0'] + hp['1-2']} requirements still have two or fewer "
+        "exercises that primarily drill them, and CKE publishes ~2 podstawowy "
+        "sessions a year. Reading it straight (SPEC settled decision 10): the "
+        "deterministic corpus is calibration and seed material, not supply. The "
+        "Exercise Agent (M5, generation + symbolic verification) is load-bearing "
+        "for the EXERCISES format. Harvested arkusze anchor difficulty and "
+        "Matura-authentic phrasing; generated-and-verified exercises are the "
+        "majority for most topics.",
         "",
     ]
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text("\n".join(L), encoding="utf-8")
 
-    print(f"histogram: {h}")
-    print(f"covered {cov.podstawowy_topics - h['0']}/{cov.podstawowy_topics}, 5+: {h['5+']}")
-    print(f"unmatched codes: {dict(cov.unmatched_codes)}")
+    print(f"primary  histogram: {hp}")
+    print(f"touches  histogram: {ht}")
+    print(f"covered (primary) {n_topics - hp['0']}/{n_topics}, 5+ primary: {hp['5+']}, 5+ touch: {ht['5+']}")
     print(f"wrote {OUT}")
     return 0
 

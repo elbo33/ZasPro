@@ -18,6 +18,7 @@ from sqlalchemy import (
     Enum,
     Float,
     ForeignKey,
+    Index,
     Integer,
     String,
     Text,
@@ -58,6 +59,7 @@ class ReviewDecisionType(str, enum.Enum):
     APPROVE = "APPROVE"
     REJECT = "REJECT"
     EDIT = "EDIT"
+    PROMOTE = "PROMOTE"  # a secondary topic was made primary (agent's primary was wrong)
 
 
 class ReviewReasonCode(str, enum.Enum):
@@ -74,14 +76,31 @@ def _enum(py_enum: type[enum.Enum], name: str) -> Enum:
 
 
 class ChunkMapping(Base, TimestampMixin):
+    """One (chunk -> topic) mapping. A chunk has **exactly one** `is_primary`
+    row and zero or more secondary rows — the other requirements the fragment
+    also plausibly tests (SPEC §10). The single-topic contract was too tight:
+    ~1/3 of exam tasks span two or more requirements (see
+    `m3/mapping_multitopic_scan.md`)."""
+
     __tablename__ = "chunk_mappings"
-    __table_args__ = (UniqueConstraint("source_chunk_id", name="uq_chunk_mappings_chunk"),)
+    __table_args__ = (
+        # exactly one primary per chunk; secondaries are unconstrained in number
+        Index(
+            "uq_chunk_mappings_primary",
+            "source_chunk_id",
+            unique=True,
+            postgresql_where=text("is_primary"),
+        ),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     source_chunk_id: Mapped[int] = mapped_column(
-        ForeignKey("source_chunks.id", ondelete="CASCADE")
+        ForeignKey("source_chunks.id", ondelete="CASCADE"), index=True
     )
     topic_id: Mapped[int | None] = mapped_column(ForeignKey("topics.id", ondelete="SET NULL"))
+    is_primary: Mapped[bool] = mapped_column(
+        Boolean, default=True, server_default=text("true"), index=True
+    )
 
     content_type: Mapped[ContentType] = mapped_column(_enum(ContentType, "content_type"))
     difficulty: Mapped[int | None] = mapped_column(Integer)

@@ -21,6 +21,8 @@ class MappingView(BaseModel):
     source_chunk_id: int
     topic_id: int | None
     topic_code: str | None
+    topic_name: str | None = None
+    is_primary: bool = True
     content_type: str
     difficulty: int | None
     confidence: float
@@ -45,7 +47,8 @@ class ReviewItemView(BaseModel):
     chunk_heading: str | None = None
     chunk_text: str | None = None
     chunk_latex: str | None = None
-    mapping: MappingView | None = None
+    mapping: MappingView | None = None  # the primary
+    secondaries: list[MappingView] = Field(default_factory=list)
     candidates: list[TopicOption] = Field(default_factory=list)
 
 
@@ -89,7 +92,8 @@ class CurriculumTopic(BaseModel):
     name: str
     level: str
     parent_id: int | None
-    mapped_chunks: int
+    mapped_chunks: int  # chunks whose PRIMARY requirement is this topic
+    also_tests: int = 0  # chunks that name this topic only as a secondary
     approved_chunks: int
     exercises: int
 

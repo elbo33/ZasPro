@@ -122,12 +122,14 @@ def apply_mapping_to_exercise(
         _propagate_topic(session, chunk, topic_id)
 
 
-def _drop_review_item(session: Session, mapping_id: int) -> None:
+def _drop_review_items_for(session: Session, mapping_ids: list[int]) -> None:
+    if not mapping_ids:
+        return
     items = session.scalars(
         select(ReviewItem).where(
             ReviewItem.item_type == ReviewItemType.CURRICULUM_MAPPING,
             ReviewItem.ref_table == "chunk_mappings",
-            ReviewItem.ref_id == mapping_id,
+            ReviewItem.ref_id.in_(mapping_ids),
         )
     ).all()
     for item in items:
@@ -163,9 +165,9 @@ def map_chunk(
 
     existing = session.scalars(
         select(ChunkMapping).where(ChunkMapping.source_chunk_id == source_chunk_id)
-    ).one_or_none()
-    if existing is not None and not remap:
-        return existing
+    ).all()
+    if existing and not remap:
+        return next(m for m in existing if m.is_primary)
 
     candidates = candidate_topics(session)
     valid_ids = {c.topic_id for c in candidates}
@@ -185,11 +187,25 @@ def map_chunk(
     # guarantee
     if result.topic_id is not None and result.topic_id not in valid_ids:
         raise MappingError(
-            f"agent chose topic_id={result.topic_id}, which is not a podstawowy "
-            f"requirement ({len(valid_ids)} valid candidates)"
+            f"agent chose primary topic_id={result.topic_id}, which is not a "
+            f"podstawowy requirement ({len(valid_ids)} valid candidates)"
         )
     if not isinstance(result.content_type, ContentType):
         raise MappingError(f"content_type {result.content_type!r} is not valid")
+
+    # secondaries: in the candidate set, distinct, and not the primary
+    secondaries: list = []
+    seen: set[int] = {result.topic_id} if result.topic_id is not None else set()
+    for sec in result.secondary_topics:
+        if sec.topic_id not in valid_ids:
+            raise MappingError(
+                f"agent gave secondary topic_id={sec.topic_id}, not a podstawowy "
+                "requirement"
+            )
+        if sec.topic_id in seen:
+            continue  # duplicate, or same as primary — silently drop
+        seen.add(sec.topic_id)
+        secondaries.append(sec)
 
     status = (
         MappingStatus.AI_SUGGESTED
@@ -197,63 +213,93 @@ def map_chunk(
         else MappingStatus.REVIEW_REQUIRED
     )
 
-    if existing is not None:
-        _drop_review_item(session, existing.id)
-        mapping = existing
-    else:
-        mapping = ChunkMapping(source_chunk_id=source_chunk_id)
-        session.add(mapping)
+    # replace every prior row for this chunk (and its review item) wholesale
+    _drop_review_items_for(session, [m.id for m in existing])
+    for m in existing:
+        session.delete(m)
+    if existing:
+        session.flush()
 
-    mapping.topic_id = result.topic_id
-    mapping.content_type = result.content_type
-    mapping.difficulty = result.difficulty
-    mapping.confidence = result.confidence
-    mapping.mapping_status = status
-    mapping.rationale = result.rationale
-    mapping.model = agent.model
-    mapping.prompt_version = agent.prompt_version
+    primary = ChunkMapping(
+        source_chunk_id=source_chunk_id,
+        is_primary=True,
+        topic_id=result.topic_id,
+        content_type=result.content_type,
+        difficulty=result.difficulty,
+        confidence=result.confidence,
+        mapping_status=status,
+        rationale=result.rationale,
+        model=agent.model,
+        prompt_version=agent.prompt_version,
+    )
+    session.add(primary)
+    session.flush()
+
+    for sec in secondaries:
+        session.add(
+            ChunkMapping(
+                source_chunk_id=source_chunk_id,
+                is_primary=False,
+                topic_id=sec.topic_id,
+                content_type=result.content_type,
+                difficulty=result.difficulty,
+                confidence=sec.confidence,
+                mapping_status=MappingStatus.AI_SUGGESTED,
+                rationale=sec.rationale,
+                model=agent.model,
+                prompt_version=agent.prompt_version,
+            )
+        )
     session.flush()
 
     code = next((c.code for c in candidates if c.topic_id == result.topic_id), None)
+    _place_review_item(
+        session, chunk, primary, code, status,
+        audit=(
+            status is MappingStatus.AI_SUGGESTED
+            and _audit_pick(chunk.id, agent.prompt_version, audit_sample_rate)
+        ),
+    )
+    return primary
 
+
+def _place_review_item(
+    session: Session,
+    chunk: SourceChunk,
+    primary: ChunkMapping,
+    code: str | None,
+    status: MappingStatus,
+    *,
+    audit: bool,
+) -> None:
     if status is MappingStatus.AI_SUGGESTED:
-        # a confident mapping is applied straight away; the audit sampler may
-        # still queue a copy for a human spot-check without blocking it
-        _propagate_topic(session, chunk, result.topic_id)
-        if _audit_pick(chunk.id, agent.prompt_version, audit_sample_rate):
-            session.add(
-                ReviewItem(
-                    item_type=ReviewItemType.CURRICULUM_MAPPING,
-                    ref_table="chunk_mappings",
-                    ref_id=mapping.id,
-                    status=ReviewStatus.OPEN,
-                    risk=min(0.2, round(1.0 - result.confidence, 4)),
-                    confidence=result.confidence,
-                    title=f"[audit] {chunk.heading or 'chunk ' + str(chunk.id)} → {code or 'unmapped'}",
-                    topic_id=result.topic_id,
-                    source_document_id=chunk.source_document_id,
-                    audit_sample=True,
-                )
-            )
-            session.flush()
+        # a confident primary is applied straight away; the audit sampler may
+        # still queue a copy for a spot-check without blocking it
+        _propagate_topic(session, chunk, primary.topic_id)
+        if not audit:
+            return
+        risk = min(0.2, round(1.0 - primary.confidence, 4))
+        title = f"[audit] {chunk.heading or 'chunk ' + str(chunk.id)} → {code or 'unmapped'}"
     else:
         _propagate_topic(session, chunk, None)  # don't carry an unreviewed guess
-        session.add(
-            ReviewItem(
-                item_type=ReviewItemType.CURRICULUM_MAPPING,
-                ref_table="chunk_mappings",
-                ref_id=mapping.id,
-                status=ReviewStatus.OPEN,
-                risk=round(1.0 - result.confidence, 4),
-                confidence=result.confidence,
-                title=f"{chunk.heading or 'chunk ' + str(chunk.id)} → {code or 'unmapped'}",
-                topic_id=result.topic_id,
-                source_document_id=chunk.source_document_id,
-            )
-        )
-        session.flush()
+        risk = round(1.0 - primary.confidence, 4)
+        title = f"{chunk.heading or 'chunk ' + str(chunk.id)} → {code or 'unmapped'}"
 
-    return mapping
+    session.add(
+        ReviewItem(
+            item_type=ReviewItemType.CURRICULUM_MAPPING,
+            ref_table="chunk_mappings",
+            ref_id=primary.id,
+            status=ReviewStatus.OPEN,
+            risk=risk,
+            confidence=primary.confidence,
+            title=title,
+            topic_id=primary.topic_id,
+            source_document_id=chunk.source_document_id,
+            audit_sample=audit,
+        )
+    )
+    session.flush()
 
 
 @register(JobType.MAP_CHUNK)
@@ -305,7 +351,9 @@ def map_document(
     )
     if not remap:
         stmt = stmt.outerjoin(
-            ChunkMapping, ChunkMapping.source_chunk_id == SourceChunk.id
+            ChunkMapping,
+            (ChunkMapping.source_chunk_id == SourceChunk.id)
+            & ChunkMapping.is_primary.is_(True),
         ).where(ChunkMapping.id.is_(None))
     chunk_ids = session.scalars(stmt.order_by(SourceChunk.order_index)).all()
 

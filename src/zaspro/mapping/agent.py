@@ -39,10 +39,12 @@ PROMPT_VERSION = "m3-map-v1"
 # `ReviewItem` is created. This is the "deterministically extracted chunks do
 # not clutter the queue" lever (SPEC §9).
 #
-# Set from the 27 Aug 2026 calibration pass (one arkusz, 37 mappings reviewed):
-# both corrections fell below 0.8, everything at or above 0.8 was accepted
-# unchanged. Thin evidence — revisit after a few hundred reviewed mappings and
-# re-run `zaspro.review.calibration_run`. A parameter of `map_chunk` /
+# 0.80 came from the 27 Aug 2026 calibration pass, but that pass ran under the
+# SINGLE-topic contract where mid-range confidence meant "the primary might be
+# wrong". Under the multi-topic contract (migration 0006) it means "primary
+# among several" — a different quantity. **This number is unvalidated until the
+# calibration pass is re-run** (`zaspro.mapping.run <arkusz> --remap
+# --review-all`, then `calibration_run`). A parameter of `map_chunk` /
 # `map_document` / `MAP_CHUNK`, not a baked constant. See ADR 0009.
 AUTO_APPROVE_THRESHOLD = 0.80
 
@@ -72,17 +74,35 @@ class MappingRequest(BaseModel):
     candidates: list[TopicRef]
 
 
+class SecondaryTopic(BaseModel):
+    """Another requirement the fragment also genuinely tests, ranked below the
+    primary. Not "possible" — a reviewer will see it and may promote it."""
+
+    topic_id: int
+    confidence: float = Field(ge=0.0, le=1.0)
+    rationale: str = Field(min_length=1, max_length=1000)
+
+    @field_validator("rationale")
+    @classmethod
+    def _trim(cls, v: str) -> str:
+        return v.strip()
+
+
 class MappingResult(BaseModel):
     """The agent's structured answer. `topic_id` is `None` when no candidate
-    fits — an unmapped chunk is a legitimate outcome (SPEC §10), not an error."""
+    fits — an unmapped chunk is a legitimate outcome (SPEC §10), not an error.
+
+    `secondary_topics` holds the other requirements the fragment also plausibly
+    tests. Most fragments have none; ~1/3 of exam tasks have one or more."""
 
     topic_id: int | None = Field(
-        None, description="topic_id of the chosen candidate, or null if none fits"
+        None, description="topic_id of the primary candidate, or null if none fits"
     )
     content_type: ContentType = Field(description="the chunk's content type")
     difficulty: int | None = Field(None, ge=1, le=5, description="1 easiest .. 5 hardest")
-    confidence: float = Field(ge=0.0, le=1.0, description="0..1 mapping confidence")
+    confidence: float = Field(ge=0.0, le=1.0, description="0..1 confidence in the primary")
     rationale: str = Field(min_length=1, max_length=2000)
+    secondary_topics: list[SecondaryTopic] = Field(default_factory=list)
 
     @field_validator("rationale")
     @classmethod
@@ -133,10 +153,19 @@ class StubMappingAgent:
 
         cited = [c for c in _CODE_IN_TEXT.findall(blob) if c in by_code]
         if cited:
-            top, n = Counter(cited).most_common(1)[0]
+            ranked = [c for c, _ in Counter(cited).most_common()]
+            top = ranked[0]
+            distinct = len(ranked)
             # one clear citation -> high; several competing -> middling
-            distinct = len(set(cited))
             confidence = 0.92 if distinct == 1 else max(0.45, 0.92 - 0.15 * (distinct - 1))
+            secondaries = [
+                SecondaryTopic(
+                    topic_id=by_code[c].topic_id,
+                    confidence=round(max(0.3, confidence - 0.1 * (i + 1)), 2),
+                    rationale=f"chunk also cites {c}",
+                )
+                for i, c in enumerate(ranked[1:])
+            ]
             return MappingResult(
                 topic_id=by_code[top].topic_id,
                 content_type=request.current_content_type,
@@ -146,6 +175,7 @@ class StubMappingAgent:
                     f"chunk cites requirement code(s) {sorted(set(cited))}; "
                     f"picked {top}"
                 ),
+                secondary_topics=secondaries,
             )
 
         # fall back to token overlap with candidate requirement prose
@@ -179,20 +209,31 @@ class StubMappingAgent:
 # Claude
 
 _SYSTEM = """\
-You map one fragment of a Polish Matura mathematics exam paper to a single \
-curriculum requirement from the podstawa programowa (2024).
+You map one fragment of a Polish Matura mathematics exam paper to the \
+curriculum requirements from the podstawa programowa (2024) that it tests.
 
 You are given the fragment and a closed list of candidate requirements, each \
-with its official code (e.g. "VIII.4"), its unit numeral, and its text. Choose \
-the ONE candidate whose requirement the fragment most directly exercises. If no \
-candidate genuinely fits, return topic_id = null rather than forcing a match — \
-an unmapped fragment is acceptable and useful signal.
+with its official code (e.g. "VIII.4"), its unit numeral, and its text.
 
-Report calibrated confidence: 0.9+ only when the fragment plainly tests exactly \
-that requirement; 0.5-0.8 when it is the best of several plausible; below 0.4 \
-when you are guessing. difficulty is 1 (trivial) to 5 (hard Matura problem) for \
-the fragment as a task, or null if it is not a task. Keep the rationale to one \
-or two sentences.
+Pick the ONE requirement the fragment most directly exercises as the PRIMARY \
+(topic_id). If no candidate genuinely fits, return topic_id = null rather than \
+forcing a match — an unmapped fragment is acceptable, useful signal.
+
+Then list, as secondary_topics, every OTHER candidate the fragment genuinely \
+also tests — not everything vaguely related, only requirements a teacher would \
+agree are exercised. Many fragments have none. A fragment that, say, builds a \
+system of equations from a word problem AND requires interpreting a linear \
+coefficient tests two requirements; record both. Each secondary gets its own \
+confidence and a one-line reason.
+
+Confidence is about being RIGHT, not about primacy: 0.9+ when the fragment \
+plainly tests exactly that requirement; 0.5-0.8 when it is defensible but you \
+are choosing among a few; below 0.4 when guessing. If your primary confidence \
+is mid-range only because two requirements compete for "primary", that is \
+exactly the case where the loser belongs in secondary_topics.
+
+difficulty is 1 (trivial) to 5 (hard Matura problem) for the fragment as a \
+task, or null if it is not a task. Keep every rationale to one or two sentences.
 
 Call the record_mapping tool exactly once.
 """
@@ -205,7 +246,7 @@ _TOOL = {
         "properties": {
             "topic_id": {
                 "type": ["integer", "null"],
-                "description": "topic_id of the chosen candidate, or null",
+                "description": "topic_id of the PRIMARY candidate, or null",
             },
             "content_type": {
                 "type": "string",
@@ -214,6 +255,19 @@ _TOOL = {
             "difficulty": {"type": ["integer", "null"], "minimum": 1, "maximum": 5},
             "confidence": {"type": "number", "minimum": 0, "maximum": 1},
             "rationale": {"type": "string"},
+            "secondary_topics": {
+                "type": "array",
+                "description": "other requirements the fragment genuinely also tests",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "topic_id": {"type": "integer"},
+                        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+                        "rationale": {"type": "string"},
+                    },
+                    "required": ["topic_id", "confidence", "rationale"],
+                },
+            },
         },
         "required": ["topic_id", "content_type", "confidence", "rationale"],
     },

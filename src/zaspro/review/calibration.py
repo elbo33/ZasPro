@@ -138,8 +138,13 @@ def agreement_curve(session: Session) -> Calibration:
             m = session.get(ChunkMapping, item.ref_id)
             conf = m.confidence if m else 0.0
 
-        edited = any(d.decision is ReviewDecisionType.EDIT for d in decs)
-        agree = item.status is ReviewStatus.APPROVED and not edited
+        # an EDIT or a PROMOTE means the agent's primary needed changing —
+        # disagreement, even though the item ends APPROVED
+        changed = any(
+            d.decision in (ReviewDecisionType.EDIT, ReviewDecisionType.PROMOTE)
+            for d in decs
+        )
+        agree = item.status is ReviewStatus.APPROVED and not changed
 
         lo, _ = _band_for(float(conf))
         b = by_lo[lo]

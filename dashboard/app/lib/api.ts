@@ -16,6 +16,8 @@ export type MappingView = {
   source_chunk_id: number;
   topic_id: number | null;
   topic_code: string | null;
+  topic_name: string | null;
+  is_primary: boolean;
   content_type: string;
   difficulty: number | null;
   confidence: number;
@@ -40,6 +42,7 @@ export type ReviewItemView = {
   chunk_text: string | null;
   chunk_latex: string | null;
   mapping: MappingView | null;
+  secondaries: MappingView[];
   candidates: TopicOption[];
 };
 
@@ -98,7 +101,7 @@ export const api = {
     id: number,
     body: {
       reviewer: string;
-      decision: "APPROVE" | "REJECT" | "EDIT";
+      decision: "APPROVE" | "REJECT" | "EDIT" | "PROMOTE";
       reason_code?: string;
       note?: string;
       edit?: Record<string, unknown>;
@@ -136,6 +139,7 @@ export const api = {
           level: string;
           parent_id: number | null;
           mapped_chunks: number;
+          also_tests: number;
           approved_chunks: number;
           exercises: number;
         }[];
