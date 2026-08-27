@@ -28,7 +28,7 @@ from zaspro.db.base import session_scope
 from zaspro.db.models import ExerciseTopic, Job, JobStatus, JobType, Topic, TopicLevel, TopicRole
 from zaspro.jobs import Worker, enqueue
 from zaspro.knowledge.agent import ClaudeKnowledgeAgent, get_agent
-from zaspro.knowledge.aggregate import topic_chunk_counts
+from zaspro.knowledge.aggregate import rebuild_exercise_topics, topic_chunk_counts
 
 
 def pick_calibration_topics(session, n: int = 5) -> list[tuple[str, int, str]]:
@@ -85,6 +85,9 @@ def run(topic_codes: list[str] | None, *, n: int = 5) -> int:
             return 2
 
     with session_scope() as s:
+        r = rebuild_exercise_topics(s)  # keep aggregation current with the mappings
+        print(f"exercise_topics rebuilt: {r.primary_rows} primary + {r.secondary_rows} "
+              f"secondary rows, {r.skipped_unsettled} skipped (unsettled)")
         if topic_codes:
             rows = s.execute(
                 select(Topic.official_requirement_code, Topic.id).where(
