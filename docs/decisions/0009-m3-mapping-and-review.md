@@ -129,6 +129,17 @@ So the threshold is set from data, not a feeling:
   agreement with ≥5 samples. Exposed at `GET /review/calibration`, written to
   `m3/mapping_calibration.md` by `zaspro.review.calibration_run`, shown on the
   dashboard `/calibration` page.
+
+* **`zaspro.mapping.run` fails loudly, and re-maps on demand.** A calibration
+  command that silently no-ops is how you calibrate against the wrong data, so:
+  cheap local checks first (doc exists, has chunks, has something to do) each
+  exit `2` with the reason; then, when the agent is Claude, a one-token
+  `preflight()` call proves the key/model/network before 37 jobs are enqueued
+  and prints the model the API echoed back. `--remap` re-runs chunks that
+  already have a mapping (drops the old `ChunkMapping` and its review item
+  first) — the path from a stub run to a real Claude run for the calibration
+  pass. `ClaudeMappingAgent` now takes its key from `zaspro.config`
+  (pydantic-settings reads `.env`; the SDK alone only reads `os.environ`).
 * **`review_items.audit_sample`** + **`DEFAULT_AUDIT_SAMPLE_RATE = 0.03`** — a
   permanent random fraction of *confident* (`AI_SUGGESTED`) mappings is queued
   anyway, flagged `audit_sample`, at low `risk`, without blocking the mapping

@@ -232,8 +232,28 @@ class ClaudeMappingAgent:
         if self._client is None:
             import anthropic  # imported lazily so the stub path needs no key
 
-            self._client = anthropic.Anthropic()
+            from zaspro.config import get_settings
+
+            # Pass the key from our config explicitly: pydantic-settings reads
+            # `.env`, the anthropic SDK on its own only reads os.environ, so a
+            # key in `.env` alone would otherwise be invisible here.
+            key = get_settings().anthropic_api_key
+            self._client = (
+                anthropic.Anthropic(api_key=key) if key else anthropic.Anthropic()
+            )
         return self._client
+
+    def preflight(self) -> str:
+        """One tiny real call, so a bad key / model / network fails before a
+        batch is enqueued. Returns the model id the API echoed back."""
+
+        client = self._client_lazy()
+        msg = client.messages.create(
+            model=self.model,
+            max_tokens=1,
+            messages=[{"role": "user", "content": "ok"}],
+        )
+        return getattr(msg, "model", self.model)
 
     def _user_block(self, req: MappingRequest) -> str:
         cands = "\n".join(

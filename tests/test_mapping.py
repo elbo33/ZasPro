@@ -124,10 +124,48 @@ def test_business_rule_rejects_a_topic_outside_the_candidate_set(db):
 def test_map_document_inline_counts(db):
     w = build_world(db)
     summary = map_document(db, w.document_id, StubMappingAgent(), inline=True)
-    assert summary["chunks"] == 4
+    assert summary["chunks"] == 4 and summary["selected"] == 4
     assert summary["auto"] + summary["review"] == 4
     assert summary["auto"] >= 2  # chunks 1 and 4 cite VIII.2
     assert summary["unmapped"] >= 1  # chunk 3
+
+
+def test_map_document_skips_already_mapped_unless_remap(db):
+    w = build_world(db)
+    map_document(db, w.document_id, StubMappingAgent(), inline=True)
+
+    # second pass without --remap: nothing selected
+    again = map_document(db, w.document_id, StubMappingAgent(), inline=True)
+    assert again["chunks"] == 4 and again["selected"] == 0 and again["jobs"] == 0
+
+    # with remap: every chunk re-run
+    redo = map_document(db, w.document_id, StubMappingAgent(), inline=True, remap=True)
+    assert redo["selected"] == 4
+    assert db.query(ChunkMapping).count() == 4  # replaced in place, not duplicated
+
+
+def test_remap_replaces_the_mapping_and_its_review_item(db):
+    w = build_world(db)
+    # a low-confidence agent -> REVIEW_REQUIRED + a ReviewItem
+    class LowAgent:
+        name, model, prompt_version = "low", None, "x"
+
+        def map(self, request: MappingRequest) -> MappingResult:
+            return MappingResult(
+                topic_id=None, content_type=ContentType.EXERCISE,
+                confidence=0.2, rationale="unsure",
+            )
+
+    first = map_chunk(db, w.chunk_ids["1"], LowAgent())
+    assert db.query(ReviewItem).count() == 1
+    first_id = first.id
+
+    # re-map the same chunk with a confident agent
+    second = map_chunk(db, w.chunk_ids["1"], StubMappingAgent(), remap=True)
+    assert second.id == first_id  # same row, updated in place
+    assert second.confidence >= 0.8
+    assert second.mapping_status.value == "AI_SUGGESTED"
+    assert db.query(ReviewItem).count() == 0  # the stale review item is gone
 
 
 def test_map_document_enqueues_jobs_by_default(db):

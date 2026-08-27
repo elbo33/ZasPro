@@ -17,7 +17,7 @@ from __future__ import annotations
 import random
 import re
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from zaspro.db.models import (
@@ -123,15 +123,16 @@ def apply_mapping_to_exercise(
 
 
 def _drop_review_item(session: Session, mapping_id: int) -> None:
-    item = session.scalars(
+    items = session.scalars(
         select(ReviewItem).where(
             ReviewItem.item_type == ReviewItemType.CURRICULUM_MAPPING,
             ReviewItem.ref_table == "chunk_mappings",
             ReviewItem.ref_id == mapping_id,
         )
-    ).one_or_none()
-    if item is not None:
+    ).all()
+    for item in items:
         session.delete(item)
+    if items:
         session.flush()
 
 
@@ -265,6 +266,7 @@ def handle_map_chunk(session: Session, job: Job) -> dict:
         get_agent(),
         threshold=threshold,
         audit_sample_rate=audit_rate,
+        remap=job.input.get("remap", False),
     )
     return {
         "chunk_mapping_id": mapping.id,
@@ -282,29 +284,46 @@ def map_document(
     inline: bool = False,
     threshold: float = AUTO_APPROVE_THRESHOLD,
     audit_sample_rate: float = DEFAULT_AUDIT_SAMPLE_RATE,
+    remap: bool = False,
 ) -> dict:
-    """Map every not-yet-mapped chunk of a document. `inline=True` runs the
-    agent now (offline scripts, tests); the default enqueues `MAP_CHUNK` jobs.
+    """Map the document's chunks. `inline=True` runs the agent now (offline
+    scripts, tests); the default enqueues `MAP_CHUNK` jobs.
 
-    `threshold` is the auto-approve cutoff on mapping confidence. Pass a value
-    above 1.0 to force every mapping into the review queue — the calibration
-    run where a human grades the agent's confidence against their own verdict
-    before the cutoff is fixed from evidence. `audit_sample_rate` is the
-    permanent fraction of confident mappings queued for a spot-check regardless
-    of the threshold."""
+    Without `remap`, only chunks that have no mapping yet are touched. With
+    `remap=True` every chunk is re-run: its prior `ChunkMapping` and any review
+    item are dropped and rebuilt (used to re-map a document with a different
+    agent — e.g. stub -> Claude for the calibration pass).
+
+    `threshold` is the auto-approve cutoff on mapping confidence; pass a value
+    above 1.0 to force every mapping into the review queue. `audit_sample_rate`
+    is the permanent fraction of confident mappings queued for a spot-check
+    regardless of the threshold."""
 
     agent = agent or get_agent()
-    chunk_ids = session.scalars(
-        select(SourceChunk.id)
-        .outerjoin(ChunkMapping, ChunkMapping.source_chunk_id == SourceChunk.id)
-        .where(
-            SourceChunk.source_document_id == source_document_id,
-            ChunkMapping.id.is_(None),
-        )
-        .order_by(SourceChunk.order_index)
-    ).all()
+    stmt = select(SourceChunk.id).where(
+        SourceChunk.source_document_id == source_document_id
+    )
+    if not remap:
+        stmt = stmt.outerjoin(
+            ChunkMapping, ChunkMapping.source_chunk_id == SourceChunk.id
+        ).where(ChunkMapping.id.is_(None))
+    chunk_ids = session.scalars(stmt.order_by(SourceChunk.order_index)).all()
 
-    summary = {"chunks": len(chunk_ids), "auto": 0, "review": 0, "unmapped": 0, "jobs": 0}
+    total_chunks = session.scalar(
+        select(func.count())
+        .select_from(SourceChunk)
+        .where(SourceChunk.source_document_id == source_document_id)
+    ) or 0
+
+    summary = {
+        "chunks": total_chunks,
+        "selected": len(chunk_ids),
+        "auto": 0,
+        "review": 0,
+        "unmapped": 0,
+        "jobs": 0,
+        "remap": remap,
+    }
     if not inline:
         for cid in chunk_ids:
             enqueue(
@@ -313,6 +332,7 @@ def map_document(
                     "source_chunk_id": cid,
                     "threshold": threshold,
                     "audit_sample_rate": audit_sample_rate,
+                    "remap": remap,
                 },
             )
             summary["jobs"] += 1
@@ -321,7 +341,7 @@ def map_document(
     for cid in chunk_ids:
         m = map_chunk(
             session, cid, agent,
-            threshold=threshold, audit_sample_rate=audit_sample_rate,
+            threshold=threshold, audit_sample_rate=audit_sample_rate, remap=remap,
         )
         if m.mapping_status is MappingStatus.AI_SUGGESTED:
             summary["auto"] += 1
