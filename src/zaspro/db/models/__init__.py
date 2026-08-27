@@ -28,6 +28,17 @@ from zaspro.db.models.ingestion import (
     SourceFormat,
 )
 from zaspro.db.models.jobs import Job, JobStatus, JobType
+from zaspro.db.models.knowledge import (
+    Concept,
+    Example,
+    FlagKind,
+    Formula,
+    KnowledgeFlag,
+    LearningObjective,
+    Method,
+    Misconception,
+    MisconceptionSource,
+)
 from zaspro.db.models.mapping import (
     ChunkMapping,
     MappingStatus,
@@ -63,4 +74,8 @@ __all__ = [
     "ChunkMapping", "MappingStatus",
     "ReviewItem", "ReviewItemType", "ReviewStatus",
     "ReviewDecision", "ReviewDecisionType", "ReviewReasonCode",
+    # knowledge (M4)
+    "Concept", "Formula", "Method", "Example", "Misconception",
+    "LearningObjective", "MisconceptionSource",
+    "KnowledgeFlag", "FlagKind",
 ]

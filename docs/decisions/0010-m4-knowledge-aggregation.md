@@ -80,12 +80,50 @@ must not assume a 1:1 requirement→episode mapping anywhere; knowledge specs ar
 per requirement, and how requirements combine into an episode is not M4's
 concern. Not built, not designed around here — just not assumed.
 
+## 4. The Knowledge Agent
+
+`zaspro.knowledge.agent` follows the ADR 0009 shape: a `KnowledgeAgent`
+Protocol, `ClaudeKnowledgeAgent` (`claude-opus-5`, adaptive thinking, one
+structured tool `record_knowledge`, prompt-cached system + tool), and an offline
+`StubKnowledgeAgent`. One call per topic returns a `KnowledgeExtraction` —
+concepts, formulas, methods, examples, misconceptions, objectives, and CONFLICT
+/ GAP flags.
+
+Input per topic (`zaspro.knowledge.extract.topic_exercises`): the requirement
+text plus every exercise in the `exercise_topics` touch set, each as
+`Exercise.full_statement_latex` (stem + body) with its `Zasady oceniania`
+partial-credit block where the session's zasady PDF has one.
+
+Business rules re-checked in `extract_topic` (SPEC §11/§12, never LLM →
+database):
+
+* an item's `from_exercises` are intersected with the topic's real exercise
+  numbers; `source_chunk_ids` is the chunk ids of the survivors.
+* a misconception the agent tags `AGENT_INFERENCE` with **no** surviving
+  exercise citation is stored as `UNSOURCED` and raises a `knowledge_flags`
+  GAP row — an unsourced misconception is a §11 violation, kept only so it can
+  be counted and rejected, not approved.
+* `flags` become `knowledge_flags` rows (later: review items).
+
+`extract_topic` clears the topic's prior knowledge items first, so re-running is
+idempotent.
+
 ## Misconception yield check
 
 COMMON_MISTAKES needs five approved misconceptions per topic, and the sources
 are thin: exam papers contain none, marking schemes hint through partial-credit
-rules, the informator's commentary is the best available. Before extracting all
-73, run the knowledge agent on **five** topics, report misconceptions returned
-per topic and the source of each, and hold. One or two per topic decides
-whether a textbook hunt is needed — cheaper to learn after five API calls than
-seventy-three.
+rules, the informator's commentary is the best available (and is not ingested
+yet). Before extracting all 73:
+
+`zaspro.knowledge.run --topics 5` picks a **deliberate spread** — two
+requirements well covered under *touch* and with primary coverage, two mid
+(touch 3–4), one of the requirements with **no primary** exercise — then runs
+extraction and reports, per topic: the concept/formula/method/example/objective
+counts and **every misconception with its `source_kind`
+(`MARKING_SCHEME | INFORMATOR | AGENT_INFERENCE | UNSOURCED`), the exercises it
+cites, and the evidence snippet**; then holds. The deliberate spread answers
+"does yield track material volume, or is it uniformly thin"; the per-source
+breakdown answers "is this a misconception database or the model's priors". If
+most come back `AGENT_INFERENCE` / `UNSOURCED`, the marking schemes / a textbook
+need ingesting before COMMON_MISTAKES is viable — learned after five API calls,
+not seventy-three. The run is a command the user executes (standing rule).
