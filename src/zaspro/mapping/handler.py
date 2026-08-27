@@ -260,6 +260,9 @@ def map_chunk(
             and _audit_pick(chunk.id, agent.prompt_version, audit_sample_rate)
         ),
     )
+    # transient: token usage from this call, for cost reporting (not persisted
+    # on the row). None for the stub.
+    primary._call_usage = getattr(agent, "last_usage", None)  # type: ignore[attr-defined]
     return primary
 
 
@@ -314,12 +317,16 @@ def handle_map_chunk(session: Session, job: Job) -> dict:
         audit_sample_rate=audit_rate,
         remap=job.input.get("remap", False),
     )
-    return {
+    out: dict = {
         "chunk_mapping_id": mapping.id,
         "topic_id": mapping.topic_id,
         "confidence": mapping.confidence,
         "mapping_status": mapping.mapping_status.value,
     }
+    usage = getattr(mapping, "_call_usage", None)
+    if usage is not None:
+        out["usage"] = {"in": usage.input_tokens, "out": usage.output_tokens}
+    return out
 
 
 def map_document(

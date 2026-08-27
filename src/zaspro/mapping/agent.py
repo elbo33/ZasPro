@@ -39,13 +39,12 @@ PROMPT_VERSION = "m3-map-v1"
 # `ReviewItem` is created. This is the "deterministically extracted chunks do
 # not clutter the queue" lever (SPEC §9).
 #
-# 0.80 came from the 27 Aug 2026 calibration pass, but that pass ran under the
-# SINGLE-topic contract where mid-range confidence meant "the primary might be
-# wrong". Under the multi-topic contract (migration 0006) it means "primary
-# among several" — a different quantity. **This number is unvalidated until the
-# calibration pass is re-run** (`zaspro.mapping.run <arkusz> --remap
-# --review-all`, then `calibration_run`). A parameter of `map_chunk` /
-# `map_document` / `MAP_CHUNK`, not a baked constant. See ADR 0009.
+# Validated by two calibration passes on MMAP-P0-660-A-2405-arkusz.docx, 37
+# reviewed mappings each: v1 single-topic and v2 multi-topic (migration 0006).
+# Both agree — every correction fell below 0.8, everything at/above was accepted
+# unchanged. Thin evidence still (one paper, one reviewer, bands below 0.8
+# small); the 3% audit sampler keeps feeding the curve. A parameter of
+# `map_chunk` / `map_document` / `MAP_CHUNK`, not a baked constant. See ADR 0009.
 AUTO_APPROVE_THRESHOLD = 0.80
 
 # A permanent random fraction of *confident* mappings is queued anyway, flagged
@@ -72,6 +71,13 @@ class MappingRequest(BaseModel):
     latex: str | None
     current_content_type: ContentType
     candidates: list[TopicRef]
+
+
+class Usage(BaseModel):
+    """Token usage from one agent call. Only the real agent sets it."""
+
+    input_tokens: int = 0
+    output_tokens: int = 0  # includes thinking tokens (billed as output)
 
 
 class SecondaryTopic(BaseModel):
@@ -285,6 +291,7 @@ class ClaudeMappingAgent:
         self.model = model
         self.max_tokens = max_tokens
         self._client = None
+        self.last_usage: Usage | None = None
 
     def _client_lazy(self):
         if self._client is None:
@@ -335,6 +342,11 @@ class ClaudeMappingAgent:
             system=_SYSTEM,
             tools=[_TOOL],
             messages=[{"role": "user", "content": self._user_block(request)}],
+        )
+        u = getattr(msg, "usage", None)
+        self.last_usage = Usage(
+            input_tokens=getattr(u, "input_tokens", 0) or 0,
+            output_tokens=getattr(u, "output_tokens", 0) or 0,
         )
         for block in msg.content:
             if getattr(block, "type", None) == "tool_use" and block.name == "record_mapping":

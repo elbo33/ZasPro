@@ -38,41 +38,29 @@ to review — only an uncertain *mapping* is (SPEC §9). An unreviewed low-
 confidence guess is **not** written onto `exercises.topic_id`; only an
 `AI_SUGGESTED` (confident) or human-`APPROVED` mapping propagates.
 
-**0.80 is now evidence-based, but thinly.** Calibration pass on 27 Aug 2026:
-`MMAP-P0-660-A-2405-arkusz.docx` mapped with `ClaudeMappingAgent`
-(`claude-opus-5`), threshold 1.01 so all 37 chunks queued, reviewed by keyboard.
-Result (`m3/mapping_calibration.md`):
+**0.80 is validated, twice.** Two calibration passes on
+`MMAP-P0-660-A-2405-arkusz.docx` (`ClaudeMappingAgent`, `claude-opus-5`,
+threshold 1.01 so every chunk queued, ~37 mappings reviewed by keyboard each):
+v1 under the single-topic contract, v2 under multi-topic (migration 0006). Both
+agree — **every reviewer correction fell below 0.8; everything at or above 0.8
+was accepted unchanged.** `AUTO_APPROVE_THRESHOLD = 0.80` is set from this and
+kept as a parameter of `map_chunk` / `map_document` / `MAP_CHUNK`.
 
-| band | n | accepted unchanged | agreement |
-|---|---|---|---|
-| [0.0, 0.5) | 1 | 0 | 0% |
-| [0.5, 0.7) | 9 | 9 | 100% |
-| [0.7, 0.8) | 4 | 3 | 75% |
-| [0.8, 0.9) | 9 | 9 | 100% |
-| [0.9, 1.0] | 14 | 14 | 100% |
+v1 bands: `[0,.5) 1@0% · [.5,.7) 9@100% · [.7,.8) 4@75% · [.8,.9) 9@100% ·
+[.9,1] 14@100%` (`m3/mapping_calibration_v1_singletopic.md`).
 
-35/37 accepted unchanged; both corrections fell below 0.8; everything at or
-above 0.8 was accepted. `AUTO_APPROVE_THRESHOLD = 0.80` is set from this. It is
-still a parameter of `map_chunk` / `map_document` / `MAP_CHUNK`, not a baked
-constant.
+**The contract change worked — this is the evidence, not just tidiness.** From
+v1 to v2 the confidence distribution moved as predicted: **above 0.9 went 14 →
+20; the mid-range [0.5, 0.8) went 13 → 7.** Once the agent could record "also
+tests X" as a secondary instead of hedging its primary, it stopped spreading
+uncertainty across the scale for tasks it actually understood. v2 curve at
+`m3/mapping_calibration.md`.
 
-**Caveats, on the record:** one paper, 37 samples, a single reviewer. The
-[0.7, 0.8) band (n=4, 75%) and [0.0, 0.5) band (n=1, 0%) are too thin to draw a
-line through — 0.80 is the boundary *below* which the two errors happened, not a
-statistically defended cutoff. **Revisit once a few hundred mappings have been
-reviewed** (the audit sampler feeds this continuously), and re-run
-`zaspro.review.calibration_run`.
+**Caveats still on the record:** one paper, ~37 samples, one reviewer per run;
+the bands below 0.8 remain thin. The 3% audit sampler keeps feeding the curve —
+revisit after a few hundred reviewed mappings.
 
-**Superseded by the contract change — 0.80 is now UNVALIDATED.** That
-calibration ran under the single-topic contract, where a mid-range confidence
-meant "the primary might be wrong". Under the multi-topic contract (section 8,
-migration 0006) a mid-range confidence means "primary among several defensible
-requirements" — a different quantity, so the number does not carry over. The
-v1 curve is frozen at `m3/mapping_calibration_v1_singletopic.md`. Re-run the
-same paper (`--remap --review-all`) after the change and compare; only then is
-the threshold evidence-based again.
-
-**Recommender bug fixed in the same pass.** The first cut of
+**Recommender bug fixed during the v1 pass.** The first cut of
 `agreement_curve` skipped bands with n<5 when picking a recommendation, so it
 ignored the n=1 band at 0% and the n=4 band at 75% and returned `0.00` — which,
 taken literally, auto-approves the mapping that was rejected outright. Now a
