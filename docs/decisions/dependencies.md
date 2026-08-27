@@ -37,6 +37,29 @@ All four are named in the SPEC §3 stack; these are the concrete versions.
 | LibreOffice headless (`soffice`) | MPL-2.0 | M0.4 figure work: WMF render, DOCX→PDF for Word-drawn shapes | installed; not yet exercised (M0.4) |
 | uv | Apache-2.0 OR MIT | env + dependency manager, standalone CPython 3.12 (ADR 0002) | single static binary, no services |
 
+## Python packages (M3)
+
+FastAPI and the Next.js dashboard are named in SPEC §3 and §16; adding them
+executes that decision (see ADR 0009), it does not make a new one.
+
+| package | version | licence | role | notes |
+|---|---|---|---|---|
+| anthropic | 1.1.x | MIT | Mapping Agent LLM calls (`claude-opus-5`) — SPEC §12 | only imported on the `ClaudeMappingAgent` path; the offline `StubMappingAgent` needs neither the package's client nor a key |
+| FastAPI | 0.141.x | MIT | the internal API (SPEC §3, §16) | Starlette (BSD-3), pydantic already present |
+| uvicorn | 0.52.x | BSD-3-Clause | ASGI server to run the API in dev | plain build, no `[standard]` extras (no uvloop/httptools pulled) |
+| httpx | 0.28.x | BSD-3-Clause | **dev only** — `fastapi.testclient` transport for `tests/test_api_review.py` | httpcore (BSD-3) |
+
+## Node packages (M3 — `dashboard/`)
+
+Isolated in `dashboard/`, its own `package.json`, never imported by Python. Not
+installed in CI for the Python test job.
+
+| package | version | licence | role |
+|---|---|---|---|
+| next | 14.2.x | MIT | App Router dashboard (SPEC §16) |
+| react / react-dom | 18.3.x | MIT | — |
+| typescript + `@types/*` | 5.5.x | MIT / Apache-2.0 | dev only |
+
 ## What covers the M0.5 PDF audit now that PyMuPDF is out
 
 The audit that a maths-first PDF library would have done is split between two

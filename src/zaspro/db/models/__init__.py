@@ -26,6 +26,16 @@ from zaspro.db.models.ingestion import (
     SourceFormat,
 )
 from zaspro.db.models.jobs import Job, JobStatus, JobType
+from zaspro.db.models.mapping import (
+    ChunkMapping,
+    MappingStatus,
+    ReviewDecision,
+    ReviewDecisionType,
+    ReviewItem,
+    ReviewItemType,
+    ReviewReasonCode,
+    ReviewStatus,
+)
 from zaspro.db.models.sources import (
     LicenceStatus,
     ProcessingStatus,
@@ -46,4 +56,8 @@ __all__ = [
     "Exercise", "ExerciseFigure", "ExerciseOrigin", "VerificationStatus",
     # jobs
     "Job", "JobType", "JobStatus",
+    # mapping + review
+    "ChunkMapping", "MappingStatus",
+    "ReviewItem", "ReviewItemType", "ReviewStatus",
+    "ReviewDecision", "ReviewDecisionType", "ReviewReasonCode",
 ]

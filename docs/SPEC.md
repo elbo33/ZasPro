@@ -673,6 +673,8 @@ Mapping agent with confidence, review queue backend, review UI, dashboard skelet
 
 Gate: I can approve and reject mappings by keyboard without touching the mouse, and deterministically extracted chunks do not clutter the queue. Stop.
 
+As built (ADR 0009): `chunk_mappings` / `review_items` / `review_decisions` (migration `0004`). The Mapping Agent is a Protocol with `ClaudeMappingAgent` (`claude-opus-5`) and an offline `StubMappingAgent`, chosen by `ANTHROPIC_API_KEY` presence, so the whole path runs without the network. `AUTO_APPROVE_THRESHOLD = 0.80` on **mapping** confidence is the single queue-entry lever: at or above it a mapping is `AI_SUGGESTED` and never queued; below it it is `REVIEW_REQUIRED` with one `ReviewItem`. Only `AI_SUGGESTED` or human-`APPROVED` mappings propagate to `exercises.topic_id`. `zaspro.review.queue` does next-by-risk, `record_decision` (immutable, records prior status, REJECT needs a reason code), and `batch_approve` (shared topic+source, confidence ≥ 0.6). API: `zaspro.api` (FastAPI). Dashboard: `dashboard/` (Next.js App Router) — review page is one client component, keys `a`/`r`+digit/`e`+`j`/`k`/`b`/`s`, no route change between items.
+
 ---
 
 ### M4. Knowledge

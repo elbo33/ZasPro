@@ -70,6 +70,7 @@ def migrated_db():
 
 
 _ALL_TABLES_M2 = _ALL_TABLES + ", source_documents, source_chunks, figures, exercises, exercise_figures, jobs"
+_ALL_TABLES_M3 = _ALL_TABLES_M2 + ", chunk_mappings, review_items, review_decisions"
 
 
 @pytest.fixture
@@ -79,7 +80,7 @@ def db(migrated_db):
     from zaspro.db.base import get_engine, get_sessionmaker
 
     with get_engine().begin() as conn:
-        conn.execute(text(f"TRUNCATE {_ALL_TABLES_M2} RESTART IDENTITY CASCADE"))
+        conn.execute(text(f"TRUNCATE {_ALL_TABLES_M3} RESTART IDENTITY CASCADE"))
 
     session = get_sessionmaker()()
     try:
