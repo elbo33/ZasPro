@@ -224,7 +224,10 @@ def map_chunk(
 
 @register(JobType.MAP_CHUNK)
 def handle_map_chunk(session: Session, job: Job) -> dict:
-    mapping = map_chunk(session, job.input["source_chunk_id"], get_agent())
+    threshold = job.input.get("threshold", AUTO_APPROVE_THRESHOLD)
+    mapping = map_chunk(
+        session, job.input["source_chunk_id"], get_agent(), threshold=threshold
+    )
     return {
         "chunk_mapping_id": mapping.id,
         "topic_id": mapping.topic_id,
@@ -239,9 +242,15 @@ def map_document(
     agent: MappingAgent | None = None,
     *,
     inline: bool = False,
+    threshold: float = AUTO_APPROVE_THRESHOLD,
 ) -> dict:
     """Map every not-yet-mapped chunk of a document. `inline=True` runs the
-    agent now (offline scripts, tests); the default enqueues `MAP_CHUNK` jobs."""
+    agent now (offline scripts, tests); the default enqueues `MAP_CHUNK` jobs.
+
+    `threshold` is the auto-approve cutoff on mapping confidence. Pass a value
+    above 1.0 to force every mapping into the review queue — the calibration
+    run where a human grades the agent's confidence against their own verdict
+    before the cutoff is fixed from evidence."""
 
     agent = agent or get_agent()
     chunk_ids = session.scalars(
@@ -257,12 +266,15 @@ def map_document(
     summary = {"chunks": len(chunk_ids), "auto": 0, "review": 0, "unmapped": 0, "jobs": 0}
     if not inline:
         for cid in chunk_ids:
-            enqueue(session, JobType.MAP_CHUNK, {"source_chunk_id": cid})
+            enqueue(
+                session, JobType.MAP_CHUNK,
+                {"source_chunk_id": cid, "threshold": threshold},
+            )
             summary["jobs"] += 1
         return summary
 
     for cid in chunk_ids:
-        m = map_chunk(session, cid, agent)
+        m = map_chunk(session, cid, agent, threshold=threshold)
         if m.mapping_status is MappingStatus.AI_SUGGESTED:
             summary["auto"] += 1
         else:

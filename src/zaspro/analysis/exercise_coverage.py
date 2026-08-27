@@ -27,7 +27,8 @@ from zaspro.db.models import Exercise, SourceDocument, Topic, TopicLevel
 ROOT = Path(__file__).resolve().parents[3]
 RAW = ROOT / "sources" / "raw"
 
-_ZAD = re.compile(r"^Zadanie\s+(\d+(?:\.\d+)?)\.\s*\(0", re.MULTILINE)
+# period after the (sub)task number is optional (pre-2024 multi-variant zasady)
+_ZAD = re.compile(r"^Zadanie\s+(\d+(?:\.\d+)?)\.?\s*\(0", re.MULTILINE)
 _CODE = re.compile(r"\b((?:XIII|XII|XI|X|IX|VIII|VII|VI|IV|V|III|II|I)\.\d+)\)")
 _REQ_SECTION_END = re.compile(r"Zasady oceniania|Rozwiązanie|Przykładowe|Schemat")
 
@@ -35,11 +36,15 @@ _REQ_SECTION_END = re.compile(r"Zasady oceniania|Rozwiązanie|Przykładowe|Schem
 def _zasady_text(session_code: str) -> str:
     import subprocess
 
-    for name in (
-        f"MMAP-P0-660-{session_code}-zasady.pdf",
-        f"MMAP-P0-100-{session_code}-zasady.pdf",
-    ):
-        p = RAW / name
+    candidates = [
+        RAW / f"MMAP-P0-660-{session_code}-zasady.pdf",
+        RAW / f"MMAP-P0-100-{session_code}-zasady.pdf",
+    ]
+    # older sessions: one concatenated-variant PDF, e.g.
+    # MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf
+    globbed = sorted(RAW.glob(f"MMAP-P0-*-{session_code}-zasady.pdf"))
+    candidates += [g for g in globbed if "-660-" in g.name] or globbed
+    for p in candidates:
         if p.is_file():
             return subprocess.run(
                 ["pdftotext", "-layout", str(p), "-"],
@@ -102,8 +107,11 @@ def analyse(session: Session) -> Coverage:
         )
     )
 
+    # every ingested czarnodruk arkusz, both namings (…-660-A-SSSS-arkusz.docx
+    # and the older …-660-SSSS.docx). A paper that fails its gate has no
+    # exercises persisted, so it simply contributes nothing.
     docs = session.scalars(
-        select(SourceDocument).where(SourceDocument.file_ref.like("MMAP-P0-660-A-%.docx"))
+        select(SourceDocument).where(SourceDocument.file_ref.like("MMAP-P0-660-%.docx"))
     ).all()
 
     per_topic: Counter = Counter()

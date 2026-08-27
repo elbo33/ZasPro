@@ -46,3 +46,13 @@ Notes:
 > Formuła 2023 session checked (2024, 2025). Only 100 and 200 variants, both
 > PDF. All rozszerzony material is therefore Track B. Version B papers are
 > likewise PDF only; the _660.docx exists for version A alone.
+| MMAP-P0-660-2305.docx | Arkusz maturalny, matematyka PP, maj 2023, czarnodruk | CKE | EXAM | 2305 | podstawowy | 660 | n/a | https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Matematyka/poziom_podstawowy/MMAP-P0-660-2305.docx | CKE_UNSPECIFIED | false | docx |
+| MMAP-P0-660-A-2312-arkusz.docx | Arkusz diagnostyczny, matematyka PP, grudzień 2023, wersja A, czarnodruk | CKE | EXAM | 2312 | podstawowy | 660 | A | https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/materialy_dodatkowe/diagnostyczne_12_23/matematyka/MMAP-P0-660-A-2312-arkusz.docx | CKE_UNSPECIFIED | false | docx |
+| MMAP-P0-660-2209.docx | Arkusz diagnostyczny, matematyka PP, wrzesień 2022, czarnodruk | CKE | EXAM | 2209 | podstawowy | 660 | n/a | https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/materialy_dodatkowe/diagnostyczne/matematyka/MMAP-P0-660-2209.docx | CKE_UNSPECIFIED | false | docx |
+| MMAP-P0-660-2203.docx | Arkusz pokazowy, matematyka PP, marzec 2022, czarnodruk | CKE | EXAM | 2203 | podstawowy | 660 | n/a | https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/materialy_dodatkowe/pokazowe/Matematyka_PP/MMAP-P0-660-2203.docx | CKE_UNSPECIFIED | false | docx |
+> Note (27 Aug 2026): czarnodruk _660 exports exist for every Formuła 2023
+> maths session checked, including 2203, 2209, 2305 and 2312, but are not
+> linked from the OKE/CKE index pages for the older sessions. The reliable
+> signal is the "660" token inside the session's marking scheme filename.
+> Naming splits two ways: sessions whose PDF has no -A suffix drop it in the
+> DOCX (MMAP-P0-660-2209.docx); -A-...-arkusz sessions keep the full form.

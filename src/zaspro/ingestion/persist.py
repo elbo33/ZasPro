@@ -25,7 +25,10 @@ from zaspro.db.models import (
 )
 from zaspro.ingestion.pipeline import IngestionResult
 
-_MMAP = re.compile(r"MMAP-([PR]0)-(\d{3})-([AB])-(\d{4})-")
+# Handles both czarnodruk DOCX namings: "…-660-A-2405-arkusz.docx" and the
+# older "…-660-2305.docx" with no version letter. A missing letter -> version
+# stays NULL (never defaulted to "A").
+_MMAP = re.compile(r"MMAP-([PR]0)-(\d{3})-(?:([AB])-)?(\d{4})\b")
 _MATH_DELIM = re.compile(r"\\[()\[\]]")
 
 

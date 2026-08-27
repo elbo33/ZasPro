@@ -119,6 +119,47 @@ with `extraction_status = pending` and left uningested (ADR 0005). This
 matters for M3: roughly half the seeded curriculum (all `rozszerzony` topics)
 currently has no deterministic source.
 
+### 7a. Extending Track A to seven sessions (2203, 2209, 2305, 2312)
+
+The manifest gained four pre-Formuła-2023 podstawowy czarnodruk papers. What
+the parser (not the documents) needed:
+
+* **DOCX naming.** Two conventions: `MMAP-P0-660-A-2405-arkusz.docx` and the
+  older `MMAP-P0-660-2305.docx` (no version letter, no `-arkusz`). `_ARKUSZ`
+  and `persist._MMAP` accept both; a missing letter leaves `paper_version`
+  **NULL**, never defaulted to `A`.
+* **Marking-scheme discovery.** Older sessions ship one zasady PDF whose name
+  concatenates every paper code
+  (`MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf`).
+  `resolve_marking_scheme` now globs `MMAP-{lvl}-*-{session}-zasady.pdf` and
+  prefers a name carrying the `660` token — that token is the reliable "a
+  czarnodruk exists for this session" signal (MANIFEST note, better than link
+  scraping); `corpus.py` uses it too.
+* **Marking-scheme subtask notation.** Those PDFs write subtasks `Zadanie 13.1
+  (0–1)` — no period after the number — vs the 2024+ `Zadanie 13.1. (0–1)`.
+  `marking_scheme._TASK_LINE` now treats the period as optional. This reads the
+  oracle correctly; the gate (exact arkusz ↔ marking-scheme agreement) is
+  unchanged.
+* `strip_boilerplate` / `segment_arkusz`: **still zero changes.** The predicted
+  segmentation drift did not appear in any of the seven.
+
+**Result: 5/7 pass clean** (2203, 2305, 2405, 2505, 2605). Two do not, and were
+reported rather than accommodated:
+
+* **2209** — the zasady PDF omits the `(0–1)` range on one heading (`Zadanie
+  10.3.`) that every sibling carries. The parser correctly cannot enumerate it;
+  arkusz 35 leaf tasks / 46 pts vs parsed 34 / 45. A source defect; needs a
+  hand correction or a documented per-paper override, not range inference.
+* **2312** — Zadanie 11.4's figure is a raster/WMF asset, not a Word shape, so
+  the `WORD_SHAPE` crop route finds no vector primitives and the exercise is
+  (correctly) flagged incomplete. Needs the `RASTER`/`WMF` route productionised;
+  SPEC M2's "non-vector figures are page furniture" assumption does not hold for
+  the older papers.
+
+The **2412** próbny (Dec 2024, under the `_OD_2015` path) was checked from its
+cover: it reads "Formuła 2023", podstawowy, 50 pts. It has no czarnodruk DOCX,
+so it is PDF-only Track B, not one of the seven.
+
 ## No new dependencies
 
 M2 adds none. pandoc / poppler / LibreOffice are subprocesses (already in

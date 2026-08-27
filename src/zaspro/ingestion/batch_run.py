@@ -15,41 +15,64 @@ from zaspro.ingestion.batch import ROOT, BatchSummary, run
 
 OUT = ROOT / "m2" / "corpus_track_a_summary.md"
 
-# Written after the fixing round: what actually had to change, vs what was
-# predicted before the corpus arrived.
+# Written after the fixing round over all seven Track A papers: what actually
+# had to change, vs what was predicted.
 FIXING_NOTES = """\
-**Predicted risk — session-to-session formatting drift — checked and did not
-materialise.** Before the corpus arrived we expected the stripper or segmenter
-to need work for older sessions: `a)`/`b)` subtasks instead of `Zadanie N.M`,
-different point-marker punctuation, a moved or renamed `Koniec` sentinel,
-different cover boilerplate. **None of it appeared.** The maj-2024, maj-2025 and
-maj-2026 podstawowy czarnodruk papers are structurally identical for both
-`strip_boilerplate` and `segment_arkusz`: same cover `\\begin{figure}` + three
-`longtable` blocks, same `Zadanie N. (0--M)` / `Zadanie N.` / `Zadanie N.M.
-(0--M)` markers, same `Koniec` sentinel, en-dash point markers rendered as
-`--`. **Zero changes to either function.** The risk was real enough to budget a
-fixing round; the check retired it rather than leaving it assumed.
+The corpus grew from three papers (maj 2024/2025/2026) to seven, adding four
+pre-2024 sessions: **2305** (maj 2023), **2312** (grudzień 2023 diagnostyczny),
+**2209** (wrzesień 2022 diagnostyczny), **2203** (marzec 2022 pokazowy). These
+predate the settled Formuła 2023 exam format, so genuine variation was
+expected. Here is what was actually hit.
 
-Independently cross-checked: each arkusz's own cover states `Liczba punktów do
-uzyskania: 46 / 50 / 50`, which matches both the segmented leaf-task point sum
-and the `zasady` PDF total. The gate also matches every *individual* task's
-point value, not just the totals.
+**1. Czarnodruk DOCX naming (fixed, `zaspro.ingestion.batch`).** Two
+conventions in the corpus: `MMAP-P0-660-A-2405-arkusz.docx` for sessions whose
+PDF keeps the `-A/-B` letter, and `MMAP-P0-660-2305.docx` (no letter, no
+`-arkusz` suffix) for the older sessions. `_ARKUSZ` now accepts both;
+`persist._MMAP` likewise, and a missing letter leaves `paper_version` NULL
+rather than defaulting it to `A`.
 
-**Marking-scheme name convention does vary and is handled.** maj-2025 ships a
-czarnodruk `MMAP-P0-660-2505-zasady.pdf` (under a shared `zasady_oceniania/`
-path upstream); 2024 and 2026 have only `MMAP-P0-100-{session}-zasady.pdf`.
-`resolve_marking_scheme` drops the `-A`/`-B` and tries `660` then `100`. Since
-all files land flat in `sources/raw/`, the upstream path move is irrelevant to
-us.
+**2. Multi-variant marking-scheme PDFs (fixed, `resolve_marking_scheme` +
+`marking_scheme` parser).** 2203/2209/2312 do not have a per-session
+`MMAP-P0-100-{s}-zasady.pdf`; they ship one PDF whose name concatenates every
+paper code, e.g. `MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf`. The
+resolver now globs `MMAP-{level}-*-{session}-zasady.pdf` and prefers a name
+carrying a `660` token. Inside those PDFs subtasks are written `Zadanie 13.1
+(0--1)` — **no period after the subtask number** — where the 2024+ format writes
+`Zadanie 13.1. (0--1)`. The `_TASK_LINE` regex now treats that period as
+optional. This is reading the oracle correctly, not loosening the gate; the
+gate still demands an exact arkusz/marking-scheme match. That fix moved 2203
+and 2312 from gate-fail to passing the task/point check.
 
-**One real quality issue, not a correctness one: loose figure crops.** On
-multiple sessions the vector-primitive crop keeps a few lines of the task's own
-answer options above the figure (e.g. 2405 Zadanie 22). The figure itself is
-always fully captured — every `render_status` is `complete`, `incomplete` is
-empty — so it does not affect the gate. It is the M0.4 failure mode #4 (band
-starts at the marker; plain-text lines with no primitives sit inside the box).
-Tightening it is figure-quality work for when scene planning (M6) consumes the
-crops; ADR 0004 item 4.
+**3. `strip_boilerplate` / `segment_arkusz`: still zero changes.** The predicted
+drift (`a)`/`b)` subtasks, moved `Koniec`, different cover blocks) again did not
+appear — all seven czarnodruk papers use the same `Zadanie N. (0--M)` /
+`Zadanie N.M. (0--M)` markers, the same `Koniec` sentinel and the same
+three-`longtable` cover. Segmentation of every paper matches that paper's own
+cover point total (46 for 2203/2209/2305/2312/2405, 50 for 2505/2605).
+
+**4. 2209 — genuine source defect, reported not worked around.** One marking-
+scheme heading, `Zadanie 10.3.`, is missing the `(0--1)` range that all its
+siblings (`10.1. (0--1)`, `10.2. (0--1)`) carry; the "Zasady oceniania" block
+below it confirms 0--1. The arkusz is internally consistent (35 leaf tasks,
+46 pts = its cover); the parser correctly enumerates 34 tasks / 45 pts from the
+PDF. No range inference was added — a marking scheme that omits a machine-
+readable point value for one subtask is a defect in that PDF and needs a hand
+correction or a documented per-paper override, not a looser parser. **2209 does
+not pass the gate.**
+
+**5. 2312 — task-bearing raster/WMF figure, outside the WORD_SHAPE route.**
+Zadanie 11.4 has a `<w:drawing>` the segmenter counts, but the DOCX carries it
+as a raster/WMF asset (the file has image1.jpeg..image5.png + image3.wmf beside
+its 94 `<wps:wsp>` vector shapes), so the `WORD_SHAPE` crop finds no vector
+primitives in the task band and fails hard. The exercise is correctly flagged
+incomplete. SPEC M2 kept `RASTER`/`WMF` as thin handlers on the assumption that
+non-vector figures are page furniture in this corpus; 2312 breaks that
+assumption. Productionising the raster/WMF route is separate work. **2312 does
+not pass the figure-completeness gate.**
+
+**Result: 5/7 pass clean. 2209 fails on a source-PDF defect (one subtask's
+point range missing). 2312 fails on one raster/WMF task figure the WORD_SHAPE
+route cannot crop.** Neither was hidden by relaxing the gate.
 """
 
 
@@ -69,8 +92,10 @@ def write_summary(summary: BatchSummary) -> Path:
         "# Track A corpus — batch ingestion summary",
         "",
         "Generated by `zaspro.ingestion.batch_run`. Track A = CKE podstawowy exam "
-        "papers with a `_660.docx` czarnodruk (version A only). Marking schemes "
-        "are the `zasady` PDF for the session, czarnodruk name preferred.",
+        "papers with a `_660.docx` czarnodruk. Seven sessions: 2203, 2209, 2305, "
+        "2312, 2405, 2505, 2605. Marking schemes are the `zasady` PDF for the "
+        "session (czarnodruk name preferred; older sessions ship one "
+        "concatenated-variant PDF, matched by the `660` token in its name).",
         "",
         "## Gate result per document",
         "",

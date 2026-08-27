@@ -38,6 +38,20 @@ to review — only an uncertain *mapping* is (SPEC §9). An unreviewed low-
 confidence guess is **not** written onto `exercises.topic_id`; only an
 `AI_SUGGESTED` (confident) or human-`APPROVED` mapping propagates.
 
+**0.80 is provisional — a starting value, not evidence.** No real-agent
+confidence data exists yet. It sits above the stub's "token overlap" band
+(≤0.6) and below its "clear citation" band (0.92), which is meaningless for the
+real agent. The threshold is a parameter of `map_chunk` / `map_document` /
+`MAP_CHUNK`, not a constant baked into persistence. `zaspro.mapping.run
+--review-all` forces every mapping into the queue (threshold 1.01) for a
+calibration pass: map one real arkusz with `ClaudeMappingAgent`, review the
+whole paper by keyboard, then set the cutoff where the agent's self-reported
+confidence actually predicts human agreement (e.g. the lowest confidence at
+which ≥95% of mappings were approved unchanged). Until that pass is run, treat
+auto-suggested mappings as unaudited. If the real agent turns out confident on
+nearly everything, that is its own failure mode — auto-approving confidently
+wrong mappings nobody looks at — and the calibration pass is what surfaces it.
+
 ### 2. `StubMappingAgent` for the offline path
 
 `zaspro.mapping.agent` ships two implementations behind one Protocol:

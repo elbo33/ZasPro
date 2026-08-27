@@ -91,15 +91,22 @@ def main() -> int:
             "",
         ]
 
+    n_sessions = len(cov.session_codes)
     L += [
         "## Read",
         "",
-        "Three papers give roughly one to two exercises for the requirements they "
-        "touch and nothing for the rest. The EXERCISES episode format needs five "
-        "approved exercises per topic; on this corpus that bar is met for "
-        f"{h['5+']} of 73 requirements. Supporting the format as specified across "
-        "podstawowy needs many more sessions harvested (order of 10–15 more "
-        "arkusze, plus generated exercises to fill the long tail).",
+        f"{n_sessions} ingested papers cover {cov.podstawowy_topics - h['0']} of "
+        f"73 requirements with at least one exercise; the EXERCISES episode "
+        f"format's five-per-topic bar is met for {h['5+']}. Doubling the corpus "
+        "from three papers to six moved that number from 3 to "
+        f"{h['5+']} — so more sessions help the middle of the distribution fast, "
+        f"but {h['0'] + h['1-2']} requirements still sit at zero, one or two "
+        "exercises and CKE has only ~2 podstawowy sessions per year to harvest. "
+        "Reading it straight: the deterministic corpus alone will not fill the "
+        "EXERCISES format across podstawowy on any near horizon — the Exercise "
+        "Agent (M5, generation + verification) is load-bearing for that format, "
+        "not supplementary. Harvested arkusze anchor difficulty and style; "
+        "generated-and-verified exercises fill the long tail.",
         "",
     ]
     OUT.parent.mkdir(exist_ok=True)

@@ -35,11 +35,34 @@ def _manifest_rows(manifest_md: Path) -> list[dict[str, str]]:
     return rows
 
 
+def _has_660_token(filename: str) -> bool:
+    """True if ``660`` appears as one of the dash-delimited paper codes in the
+    name. For older sessions CKE ships a single zasady PDF whose name
+    concatenates every variant, e.g.
+    ``MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf`` — the ``660`` token
+    is the reliable signal that a czarnodruk export exists for that session,
+    even when the index page does not link it (MANIFEST note, 27 Aug 2026)."""
+
+    return "660" in filename.split("-")
+
+
+def _mmap_session(filename: str) -> str | None:
+    m = re.search(r"-(\d{4})-(?:zasady|arkusz)\b|-(\d{4})\.docx$", filename)
+    return next((g for g in (m.groups() if m else ()) if g), None)
+
+
 def _derive_sibling(filename: str) -> str | None:
     """Expected ``_660.docx`` sibling name for a standard-variant document."""
 
     if filename.endswith(".docx"):
         return None
+    # zasady PDF carrying a 660 token -> the session has a czarnodruk arkusz.
+    # Its own name is one of two conventions; report whichever is real.
+    if filename.endswith("-zasady.pdf") and _has_660_token(filename):
+        m = re.match(r"^(MMAP-[PR]0)-", filename)
+        session = _mmap_session(filename)
+        if m and session:
+            return f"{m.group(1)}-660-{session}.docx"
     if "-100-" in filename:  # MMAP arkusze / zasady: -100- -> -660-
         return re.sub(r"\.pdf$", ".docx", filename.replace("-100-", "-660-"))
     if filename.endswith(".pdf"):  # informator convention: <stem>.pdf -> <stem>_660.docx
@@ -72,11 +95,18 @@ def _classify(row: dict[str, str], sibling_present: bool, sibling_in_manifest: b
     if stype == "PODSTAWA_PROGRAMOWA":
         return Track.B, "unstructured regulation; Track B (deferred, see docs/sources.md Part B)"
     if stype == "MARKING_SCHEME":
-        return Track.A, (
-            "PDF only — no _660.docx sibling exists (CKE publishes -zasady as PDF, "
-            "docs/sources.md A3). Consumed deterministically via pdftotext as the "
-            "M0.2 gate oracle. EXPLICIT EXCEPTION to the DOCX-sibling rule."
+        note = (
+            "PDF only — CKE publishes -zasady as PDF (docs/sources.md A3). "
+            "Consumed deterministically via pdftotext as the M0.2 gate oracle. "
+            "EXPLICIT EXCEPTION to the DOCX-sibling rule."
         )
+        if _has_660_token(row["file"]):
+            note += (
+                " Name carries a 660 token -> a czarnodruk arkusz exists for "
+                "this session (used for Track A ingestion even where the index "
+                "page omits the link)."
+            )
+        return Track.A, note
     if sibling_present or sibling_in_manifest:
         return Track.A, "extraction source is its _660.docx sibling"
     if stype == "FORMULA_SHEET":
@@ -93,8 +123,19 @@ def build_corpus_split(manifest_md: Path, raw_dir: Path) -> list[CorpusEntry]:
         filename = row["file"]
         fmt = row["format"].lower()
         sibling = _derive_sibling(filename)
-        sibling_present = bool(sibling) and (Path(raw_dir) / sibling).is_file()
-        sibling_in_manifest = bool(sibling) and sibling in manifest_files
+        # a session's czarnodruk DOCX uses one of two namings; accept either
+        alt = (
+            re.sub(r"-660-(\d{4})\.docx$", r"-660-A-\1-arkusz.docx", sibling)
+            if sibling
+            else None
+        )
+        sibling_present = bool(sibling) and (
+            (Path(raw_dir) / sibling).is_file()
+            or (alt is not None and (Path(raw_dir) / alt).is_file())
+        )
+        sibling_in_manifest = bool(sibling) and (
+            sibling in manifest_files or (alt is not None and alt in manifest_files)
+        )
 
         track, note = _classify(row, sibling_present, sibling_in_manifest)
 

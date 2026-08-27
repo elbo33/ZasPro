@@ -18,8 +18,11 @@ from pathlib import Path
 from .models import MarkingSchemeTask
 
 _DASH = r"[‐-―\-]+"
+# The period after the task number is optional: pre-2024 multi-variant zasady
+# PDFs write subtasks as "Zadanie 13.1 (0–1)" (no trailing period), the 2024+
+# format writes "Zadanie 13.1. (0–1)". Both are the same task.
 _TASK_LINE = re.compile(
-    r"^Zadanie\s+(?P<num>\d+(?:\.\d+)?)\.\s*"
+    r"^Zadanie\s+(?P<num>\d+(?:\.\d+)?)\.?\s*"
     rf"\((?P<lo>\d+)\s*{_DASH}\s*(?P<hi>\d+)\)",
     re.MULTILINE,
 )

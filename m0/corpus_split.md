@@ -12,14 +12,45 @@ does a structured `_660.docx` sibling exist, and what does the OOXML carry.
 | `MMAP-P0-100-2605-zasady.pdf` | pdf | `MMAP-P0-660-2605-zasady.docx` | no | — | — | — | — | A |
 | `wybrane_wzory_matematyczne_EM2023.pdf` | pdf | `wybrane_wzory_matematyczne_EM2023_660.docx` | no | — | — | — | — | N/A |
 | `MMAP-P0-660-A-2605-arkusz.docx` | docx | — | no | 284 | 9 | 18 | 5 | A |
+| `matematyka.pdf` | pdf | `matematyka_660.docx` | no | — | — | — | — | N/A |
+| `MMAP-P0-660-A-2405-arkusz.docx` | docx | — | no | 255 | 17 | 14 | 5 | A |
+| `MMAP-P0-100-2405-zasady.pdf` | pdf | `MMAP-P0-660-2405-zasady.docx` | no | — | — | — | — | A |
+| `MMAP-P0-660-A-2505-arkusz.docx` | docx | — | no | 258 | 17 | 17 | 5 | A |
+| `MMAP-P0-660-2505-zasady.pdf` | pdf | `MMAP-P0-660-2505.docx` | yes | — | — | — | — | A |
+| `MMAP-P0-100-2505-zasady.pdf` | pdf | `MMAP-P0-660-2505-zasady.docx` | no | — | — | — | — | A |
+| `Informator_EM2024_matematyka_pr_660.docx` | docx | — | no | 667 | 188 | 8 | 0 | A |
+| `MMAP-P0-100-A-2405-arkusz.pdf` | pdf | `MMAP-P0-660-A-2405-arkusz.docx` | yes | — | — | — | — | A |
+| `MMAP-P0-100-B-2405-arkusz.pdf` | pdf | `MMAP-P0-660-B-2405-arkusz.docx` | no | — | — | — | — | N/A |
+| `MMAP-R0-100-A-2405-arkusz.pdf` | pdf | `MMAP-R0-660-A-2405-arkusz.docx` | no | — | — | — | — | N/A |
+| `MMAP-R0-100-2405-zasady.pdf` | pdf | `MMAP-R0-660-2405-zasady.docx` | no | — | — | — | — | A |
+| `MMAP-P0-100-A-2505-arkusz.pdf` | pdf | `MMAP-P0-660-A-2505-arkusz.docx` | yes | — | — | — | — | A |
+| `MMAP-P0-100-B-2505-arkusz.pdf` | pdf | `MMAP-P0-660-B-2505-arkusz.docx` | no | — | — | — | — | N/A |
+| `MMAP-R0-100-A-2505-arkusz.pdf` | pdf | `MMAP-R0-660-A-2505-arkusz.docx` | no | — | — | — | — | N/A |
+| `MMAP-R0-100-2505-zasady.pdf` | pdf | `MMAP-R0-660-2505-zasady.docx` | no | — | — | — | — | A |
+| `MMAP-P0-660-2305.docx` | docx | — | no | 238 | 15 | 14 | 5 | A |
+| `MMAP-P0-660-A-2312-arkusz.docx` | docx | — | no | 279 | 17 | 15 | 5 | A |
+| `MMAP-P0-660-2209.docx` | docx | — | no | 234 | 3 | 13 | 10 | A |
+| `MMAP-P0-660-2203.docx` | docx | — | no | 265 | 4 | 15 | 4 | A |
 
 ## Notes and exceptions
 
 - `DU_programowej_2024.pdf`: unstructured regulation; Track B (deferred, see docs/sources.md Part B)
 - `Informator_EM2024_matematyka_pp.pdf`: extraction source is its _660.docx sibling
 - `MMAP-P0-100-A-2605-arkusz.pdf`: extraction source is its _660.docx sibling
-- `MMAP-P0-100-2605-zasady.pdf`: PDF only — no _660.docx sibling exists (CKE publishes -zasady as PDF, docs/sources.md A3). Consumed deterministically via pdftotext as the M0.2 gate oracle. EXPLICIT EXCEPTION to the DOCX-sibling rule.
+- `MMAP-P0-100-2605-zasady.pdf`: PDF only — CKE publishes -zasady as PDF (docs/sources.md A3). Consumed deterministically via pdftotext as the M0.2 gate oracle. EXPLICIT EXCEPTION to the DOCX-sibling rule.
 - `wybrane_wzory_matematyczne_EM2023.pdf`: no DOCX sibling; not exercise-bearing; revisit if formula extraction needs it
+- `matematyka.pdf`: no DOCX sibling identified
+- `MMAP-P0-100-2405-zasady.pdf`: PDF only — CKE publishes -zasady as PDF (docs/sources.md A3). Consumed deterministically via pdftotext as the M0.2 gate oracle. EXPLICIT EXCEPTION to the DOCX-sibling rule.
+- `MMAP-P0-660-2505-zasady.pdf`: PDF only — CKE publishes -zasady as PDF (docs/sources.md A3). Consumed deterministically via pdftotext as the M0.2 gate oracle. EXPLICIT EXCEPTION to the DOCX-sibling rule. Name carries a 660 token -> a czarnodruk arkusz exists for this session (used for Track A ingestion even where the index page omits the link).
+- `MMAP-P0-100-2505-zasady.pdf`: PDF only — CKE publishes -zasady as PDF (docs/sources.md A3). Consumed deterministically via pdftotext as the M0.2 gate oracle. EXPLICIT EXCEPTION to the DOCX-sibling rule.
+- `MMAP-P0-100-A-2405-arkusz.pdf`: extraction source is its _660.docx sibling
+- `MMAP-P0-100-B-2405-arkusz.pdf`: no DOCX sibling identified
+- `MMAP-R0-100-A-2405-arkusz.pdf`: no DOCX sibling identified
+- `MMAP-R0-100-2405-zasady.pdf`: PDF only — CKE publishes -zasady as PDF (docs/sources.md A3). Consumed deterministically via pdftotext as the M0.2 gate oracle. EXPLICIT EXCEPTION to the DOCX-sibling rule.
+- `MMAP-P0-100-A-2505-arkusz.pdf`: extraction source is its _660.docx sibling
+- `MMAP-P0-100-B-2505-arkusz.pdf`: no DOCX sibling identified
+- `MMAP-R0-100-A-2505-arkusz.pdf`: no DOCX sibling identified
+- `MMAP-R0-100-2505-zasady.pdf`: PDF only — CKE publishes -zasady as PDF (docs/sources.md A3). Consumed deterministically via pdftotext as the M0.2 gate oracle. EXPLICIT EXCEPTION to the DOCX-sibling rule.
 
 ## Comparison to SPEC §2a spike (reconciled)
 

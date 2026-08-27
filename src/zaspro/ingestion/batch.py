@@ -40,7 +40,18 @@ ROOT = Path(__file__).resolve().parents[3]
 RAW = ROOT / "sources" / "raw"
 OUT = ROOT / "m2"
 
-_ARKUSZ = re.compile(r"^MMAP-([PR]0)-(\d{3})-([AB])-(\d{4})-arkusz\.docx$")
+# Two czarnodruk DOCX naming conventions in the corpus (sources/MANIFEST.md
+# note, 27 Aug 2026):
+#   MMAP-P0-660-A-2405-arkusz.docx   sessions whose PDF keeps the -A/-B letter
+#   MMAP-P0-660-2305.docx            older sessions that drop the letter (no
+#                                    version, no "-arkusz" suffix)
+# A missing letter means paper_version is unknown, not "A".
+_ARKUSZ = re.compile(r"^MMAP-([PR]0)-(\d{3})-(?:([AB])-)?(\d{4})(?:-arkusz)?\.docx$")
+
+
+def arkusz_session(file_ref: str) -> str | None:
+    m = _ARKUSZ.match(file_ref)
+    return m.group(4) if m else None
 
 
 def resolve_marking_scheme(arkusz_file_ref: str, raw: Path = RAW) -> str | None:
@@ -54,7 +65,16 @@ def resolve_marking_scheme(arkusz_file_ref: str, raw: Path = RAW) -> str | None:
     ):
         if (raw / candidate).is_file():
             return candidate
-    return None
+    # Older sessions ship one zasady PDF whose name concatenates every paper
+    # code for the session, e.g.
+    #   MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf
+    # The "660" token in that name is the reliable signal that a czarnodruk
+    # exists for the session (MANIFEST note). Prefer such a file.
+    globbed = sorted(p.name for p in raw.glob(f"MMAP-{level}-*-{session}-zasady.pdf"))
+    for name in globbed:
+        if "-660-" in name:
+            return name
+    return globbed[0] if globbed else None
 
 
 @dataclass
@@ -89,7 +109,7 @@ class BatchSummary:
 
 
 def _ingest_one(session: Session, arkusz: str, marking: str) -> DocResult:
-    session_code = _ARKUSZ.match(arkusz).group(4)
+    session_code = arkusz_session(arkusz) or "?"
     job = enqueue(session, JobType.INGEST_DOCUMENT, {
         "source_file_ref": arkusz, "marking_scheme_file_ref": marking,
     })
@@ -144,6 +164,10 @@ def _register_track_b(session: Session) -> list[str]:
         select(Source).where(Source.source_type.in_(["EXAM", "MARKING_SCHEME"]))
     ).all()
     for src in exam_sources:
+        # a Track A czarnodruk arkusz that failed its gate is *attempted*, not
+        # deferred — don't file it under Track B
+        if _ARKUSZ.match(src.file_ref):
+            continue
         existing = session.scalars(
             select(SourceDocument).where(SourceDocument.file_ref == src.file_ref)
         ).one_or_none()
@@ -173,7 +197,7 @@ def run(session: Session) -> BatchSummary:
         marking = resolve_marking_scheme(src.file_ref)
         if marking is None:
             summary.docs.append(DocResult(
-                src.file_ref, _ARKUSZ.match(src.file_ref).group(4),
+                src.file_ref, arkusz_session(src.file_ref) or "?",
                 "no-marking-scheme", reason="no zasady PDF found for this session",
             ))
             continue
