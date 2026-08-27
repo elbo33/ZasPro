@@ -97,16 +97,16 @@ def main() -> int:
         "",
         f"{n_sessions} ingested papers cover {cov.podstawowy_topics - h['0']} of "
         f"73 requirements with at least one exercise; the EXERCISES episode "
-        f"format's five-per-topic bar is met for {h['5+']}. Doubling the corpus "
-        "from three papers to six moved that number from 3 to "
-        f"{h['5+']} — so more sessions help the middle of the distribution fast, "
-        f"but {h['0'] + h['1-2']} requirements still sit at zero, one or two "
-        "exercises and CKE has only ~2 podstawowy sessions per year to harvest. "
-        "Reading it straight: the deterministic corpus alone will not fill the "
-        "EXERCISES format across podstawowy on any near horizon — the Exercise "
-        "Agent (M5, generation + verification) is load-bearing for that format, "
-        "not supplementary. Harvested arkusze anchor difficulty and style; "
-        "generated-and-verified exercises fill the long tail.",
+        f"format's five-per-topic bar is met for {h['5+']}. Going from three "
+        f"papers to {n_sessions} moved that from 3 to {h['5+']} — the middle of "
+        f"the distribution fills fast — but {h['0'] + h['1-2']} requirements "
+        "still sit at zero, one or two exercises, and CKE publishes only ~2 "
+        "podstawowy sessions a year. Reading it straight (SPEC settled decision "
+        "10): the deterministic corpus is calibration and seed material, not "
+        "supply. The Exercise Agent (M5, generation + symbolic verification) is "
+        "load-bearing for the EXERCISES format, not supplementary. Harvested "
+        "arkusze anchor difficulty and Matura-authentic phrasing; "
+        "generated-and-verified exercises are the majority for most topics.",
         "",
     ]
     OUT.parent.mkdir(exist_ok=True)

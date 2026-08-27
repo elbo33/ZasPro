@@ -247,7 +247,13 @@ export default function ReviewQueuePage() {
         <div className="card">
           <div className="row">
             <span className="pill">{item.item_type}</span>
-            <span className="pill warn">risk {item.risk.toFixed(2)}</span>
+            {item.audit_sample ? (
+              <span className="pill good" title="a confident mapping queued for a spot-check, not because it is risky">
+                audit spot-check
+              </span>
+            ) : (
+              <span className="pill warn">risk {item.risk.toFixed(2)}</span>
+            )}
             {item.confidence != null && (
               <span className="pill">
                 mapping confidence {item.confidence.toFixed(2)}

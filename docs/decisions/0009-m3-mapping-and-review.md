@@ -113,11 +113,36 @@ with a `window` keydown handler: `a` approve, `r` then `1–6` reject-with-reaso
 group. No route changes between items — decisions return the next item and fresh
 stats in the response body.
 
+### 7. Threshold calibration instrumentation (migration 0005)
+
+So the threshold is set from data, not a feeling:
+
+* **`review_decisions.mapping_confidence`** — the `ChunkMapping`'s confidence is
+  frozen onto every decision at the moment it is made, so the
+  agreement-vs-confidence curve is real recorded data, not a later join that
+  could drift if a mapping is re-run.
+* **`zaspro.review.calibration.agreement_curve`** buckets resolved
+  CURRICULUM_MAPPING reviews into confidence bands `[0,.5) [.5,.7) [.7,.8)
+  [.8,.9) [.9,1]` and reports, per band, how often the reviewer accepted the
+  mapping unchanged (APPROVE, no prior EDIT) vs changed/rejected it. It
+  recommends the lowest band boundary at/above which every band clears 95%
+  agreement with ≥5 samples. Exposed at `GET /review/calibration`, written to
+  `m3/mapping_calibration.md` by `zaspro.review.calibration_run`, shown on the
+  dashboard `/calibration` page.
+* **`review_items.audit_sample`** + **`DEFAULT_AUDIT_SAMPLE_RATE = 0.03`** — a
+  permanent random fraction of *confident* (`AI_SUGGESTED`) mappings is queued
+  anyway, flagged `audit_sample`, at low `risk`, without blocking the mapping
+  (topic still propagates). The pick is deterministic per `(chunk_id, prompt
+  version)` so a re-run is stable and a new prompt re-rolls. This means **no
+  threshold setting can put the system in a state where a large block is
+  auto-approved with no human ever seeing a sample of it** — the rate is not
+  reachable-to-zero without a code change. Tune it after the calibration pass;
+  if the real agent turns out confident on ~everything, the rate is the lever,
+  not the threshold.
+
 ## What this does not touch
 
 No knowledge extraction, no dedupe/merge, no normalisation, no exercise
 generation (M4/M5). `EXTRACTION_CONFLICT` / `NORMALISATION_FAILURE` /
 `MERGE_CANDIDATE` review-item types exist in the enum but nothing produces them
-yet. The M2 re-ingestion `StaleDataError` on `exercise_figures` is a known M2
-wrinkle, out of scope here; the test suite never hits it because the `db`
-fixture truncates.
+yet.

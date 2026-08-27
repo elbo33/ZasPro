@@ -42,7 +42,9 @@ def test_real_arkusz_ingests_end_to_end(db):
     db.commit()
 
     processed = Worker().drain()
-    assert processed == 9  # 1 INGEST + 8 RENDER_VECTOR_FIGURE
+    assert processed == 8  # 1 INGEST + 7 RENDER_VECTOR_FIGURE
+    # (Zadanie 32's lone stray line is recorded as a non-figure in
+    #  sources/figure_overrides.yaml, so it is not one of the 7)
 
     db.expire_all()
     jobs = db.query(Job).all()
@@ -59,10 +61,10 @@ def test_real_arkusz_ingests_end_to_end(db):
     # 41 = 4 parents (12, 13, 24, 33) + 37 leaf tasks
     assert rep.exercises == 41 and rep.parents == 4
     assert rep.chunks == 41
-    # 8 distinct drawing regions, all rendered; 12 exercises need one
-    # (8 own + 4 subtasks of 12 and 13 that inherit); none incomplete.
-    assert rep.figure_regions_expected == 8
-    assert rep.figure_regions_rendered == 8
-    assert rep.figure_bearing_exercises == 12
+    # 7 distinct drawing regions, all rendered; 11 exercises need one
+    # (7 own + 4 subtasks of 12 and 13 that inherit); none incomplete.
+    assert rep.figure_regions_expected == 7
+    assert rep.figure_regions_rendered == 7
+    assert rep.figure_bearing_exercises == 11
     assert rep.incomplete == []
     assert rep.figures_ok and rep.complete

@@ -7,6 +7,7 @@ Importing this package registers the `MAP_CHUNK` job handler.
 
 from zaspro.mapping.agent import (
     AUTO_APPROVE_THRESHOLD,
+    DEFAULT_AUDIT_SAMPLE_RATE,
     PROMPT_VERSION,
     ClaudeMappingAgent,
     MappingAgent,
@@ -27,6 +28,7 @@ from zaspro.mapping.handler import (
 
 __all__ = [
     "AUTO_APPROVE_THRESHOLD",
+    "DEFAULT_AUDIT_SAMPLE_RATE",
     "PROMPT_VERSION",
     "ClaudeMappingAgent",
     "MappingAgent",

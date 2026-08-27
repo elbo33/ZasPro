@@ -35,11 +35,29 @@ export type ReviewItemView = {
   topic_id: number | null;
   source_document_id: number | null;
   created_at: string;
+  audit_sample: boolean;
   chunk_heading: string | null;
   chunk_text: string | null;
   chunk_latex: string | null;
   mapping: MappingView | null;
   candidates: TopicOption[];
+};
+
+export type Calibration = {
+  resolved: number;
+  pending: number;
+  target: number;
+  recommended_threshold: number | null;
+  notes: string[];
+  bands: {
+    lo: number;
+    hi: number;
+    n: number;
+    agree: number;
+    disagree: number;
+    audit: number;
+    agreement: number | null;
+  }[];
 };
 
 export type QueueStats = {
@@ -104,6 +122,7 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ reviewer, item_ids }),
     }),
+  calibration: () => req<Calibration>("/review/calibration"),
   curriculum: () =>
     req<
       {

@@ -13,9 +13,15 @@ from __future__ import annotations
 
 import re
 import subprocess
+from functools import lru_cache
 from pathlib import Path
 
 from .models import MarkingSchemeTask
+
+_OVERRIDES = (
+    Path(__file__).resolve().parents[3] / "sources" / "marking_scheme_overrides.yaml"
+)
+_SESSION_IN_NAME = re.compile(r"-(\d{4})-zasady\.pdf$")
 
 _DASH = r"[‐-―\-]+"
 # The period after the task number is optional: pre-2024 multi-variant zasady
@@ -60,8 +66,53 @@ def parse_marking_scheme_text(text: str) -> list[MarkingSchemeTask]:
     return [MarkingSchemeTask(exercise_number=n, points_available=p) for n, p in tasks.items()]
 
 
+@lru_cache(maxsize=1)
+def _load_overrides() -> dict:
+    if not _OVERRIDES.is_file():
+        return {}
+    import yaml
+
+    return yaml.safe_load(_OVERRIDES.read_text(encoding="utf-8")) or {}
+
+
+def apply_overrides(
+    tasks: list[MarkingSchemeTask], session_code: str
+) -> list[MarkingSchemeTask]:
+    """Merge in hand-entered corrections for one session (see
+    `sources/marking_scheme_overrides.yaml`). This is the *only* way a task the
+    PDF failed to make machine-readable gets a point value — never inference."""
+
+    entry = _load_overrides().get(session_code)
+    if not entry:
+        return tasks
+
+    by_num = {t.exercise_number: t for t in tasks}
+    for add in entry.get("add_tasks", []):
+        num = str(add["number"])
+        if num in by_num:
+            continue  # the parser found it after all; leave it alone
+        by_num[num] = MarkingSchemeTask(
+            exercise_number=num, points_available=int(add["points"])
+        )
+    for fix in entry.get("set_points", []):
+        num = str(fix["number"])
+        if num in by_num:
+            by_num[num] = MarkingSchemeTask(
+                exercise_number=num, points_available=int(fix["points"])
+            )
+    return sorted(
+        by_num.values(),
+        key=lambda t: [int(p) for p in t.exercise_number.split(".")],
+    )
+
+
 def parse_marking_scheme(pdf: Path) -> list[MarkingSchemeTask]:
-    return parse_marking_scheme_text(pdf_to_text(Path(pdf)))
+    pdf = Path(pdf)
+    tasks = parse_marking_scheme_text(pdf_to_text(pdf))
+    m = _SESSION_IN_NAME.search(pdf.name)
+    if m:
+        tasks = apply_overrides(tasks, m.group(1))
+    return tasks
 
 
 def marking_points(tasks: list[MarkingSchemeTask]) -> dict[str, int]:

@@ -179,6 +179,12 @@ def record_decision(
 
     prior_status = item.status.value
 
+    # freeze the mapping's confidence onto the decision (calibration data)
+    mapping_confidence = None
+    if item.item_type is ReviewItemType.CURRICULUM_MAPPING:
+        m = session.get(ChunkMapping, item.ref_id)
+        mapping_confidence = m.confidence if m is not None else None
+
     dec = ReviewDecision(
         review_item_id=item.id,
         reviewer=reviewer,
@@ -186,6 +192,7 @@ def record_decision(
         reason_code=reason_code,
         prior_status=prior_status,
         note=note,
+        mapping_confidence=mapping_confidence,
     )
     session.add(dec)
 

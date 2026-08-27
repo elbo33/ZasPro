@@ -18,6 +18,7 @@ from zaspro.api.schemas import (
 from zaspro.api.views import item_view
 from zaspro.review import (
     ReviewError,
+    agreement_curve,
     batch_approve,
     batch_groups,
     next_item,
@@ -44,6 +45,30 @@ def _result(db: Session) -> DecisionResult:
 @router.get("/queue", response_model=QueueStatsView)
 def get_queue(db: Session = Depends(get_db)) -> QueueStatsView:
     return _stats_view(db)
+
+
+@router.get("/calibration")
+def get_calibration(db: Session = Depends(get_db)) -> dict:
+    cal = agreement_curve(db)
+    return {
+        "resolved": cal.resolved,
+        "pending": cal.pending,
+        "target": cal.target,
+        "recommended_threshold": cal.recommended_threshold,
+        "notes": cal.notes,
+        "bands": [
+            {
+                "lo": b.lo,
+                "hi": b.hi,
+                "n": b.n,
+                "agree": b.agree,
+                "disagree": b.disagree,
+                "audit": b.audit,
+                "agreement": b.agreement,
+            }
+            for b in cal.bands
+        ],
+    }
 
 
 @router.get("/next", response_model=ReviewItemView | None)

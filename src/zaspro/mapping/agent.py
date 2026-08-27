@@ -34,11 +34,19 @@ from zaspro.db.models import ContentType
 PROMPT_VERSION = "m3-map-v1"
 
 # A mapping at or above this confidence is trusted straight away
-# (`mapping_status = AI_SUGGESTED`) and never reaches the review queue. Below it,
-# the mapping is `REVIEW_REQUIRED` and a `ReviewItem` is created. This single
-# number is the "deterministically extracted chunks do not clutter the queue"
-# lever (SPEC §9): clean pandoc text maps confidently, so it sails through.
+# (`mapping_status = AI_SUGGESTED`) and never reaches the review queue *unless*
+# the audit sampler picks it. Below it, the mapping is `REVIEW_REQUIRED` and a
+# `ReviewItem` is created. This single number is the "deterministically
+# extracted chunks do not clutter the queue" lever (SPEC §9): clean pandoc text
+# maps confidently, so it sails through. Provisional until a calibration pass
+# (`zaspro.mapping.run --review-all`) fixes it from evidence — see ADR 0009.
 AUTO_APPROVE_THRESHOLD = 0.80
+
+# A permanent random fraction of *confident* mappings is queued anyway, flagged
+# `audit_sample`, so no threshold setting can ever put the system in a state
+# where a large block is auto-approved with no human ever seeing a sample. Not
+# reachable-to-zero without a code change; tune after calibration.
+DEFAULT_AUDIT_SAMPLE_RATE = 0.03
 
 
 class TopicRef(BaseModel):

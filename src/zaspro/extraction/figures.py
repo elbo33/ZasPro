@@ -17,9 +17,43 @@ from __future__ import annotations
 import re
 import xml.etree.ElementTree as ET
 import zipfile
+from functools import lru_cache
 from pathlib import Path
 
 _W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+
+_FIGURE_OVERRIDES = (
+    Path(__file__).resolve().parents[3] / "sources" / "figure_overrides.yaml"
+)
+_SESSION_RE = re.compile(r"MMAP-[PR]0-\d{3}-(?:[AB]-)?(\d{4})")
+
+
+@lru_cache(maxsize=1)
+def _load_figure_overrides() -> dict:
+    if not _FIGURE_OVERRIDES.is_file():
+        return {}
+    import yaml
+
+    return yaml.safe_load(_FIGURE_OVERRIDES.read_text(encoding="utf-8")) or {}
+
+
+def apply_figure_overrides(counts: dict[str, int], source_name: str) -> dict[str, int]:
+    """Overlay hand-entered per-task figure-count corrections
+    (`sources/figure_overrides.yaml`). Used where a `<w:drawing>` counted by the
+    walker is an editing artifact, not a figure — recorded by a human, never
+    inferred from geometry."""
+
+    m = _SESSION_RE.search(source_name or "")
+    if not m:
+        return counts
+    entry = _load_figure_overrides().get(m.group(1))
+    if not entry:
+        return counts
+    out = dict(counts)
+    for num, ov in entry.items():
+        if isinstance(ov, dict) and "expected_figure_count" in ov:
+            out[str(num)] = int(ov["expected_figure_count"])
+    return out
 _MARKER_TEXT = re.compile(
     r"^\s*Zadanie\s+(?P<num>\d+(?:\.\d+)?)\.\s*"
     r"(?:\(\s*\d+\s*[‐-―\-]+\s*\d+\s*\))?\s*$"
@@ -103,13 +137,22 @@ def count_drawings_by_task(docx: Path) -> dict[str, int]:
 
     Drawings before the first marker or after ``Koniec`` are dropped (they are
     cover / running-header / footer chrome). Every task that opens a marker is
-    present in the result, even with a zero count.
+    present in the result, even with a zero count. Hand-entered figure-count
+    overrides (``sources/figure_overrides.yaml``) are applied last.
     """
 
-    return _attribute(_document_xml(Path(docx)))[0]
+    docx = Path(docx)
+    return apply_figure_overrides(_attribute(_document_xml(docx))[0], docx.name)
 
 
 def drawing_attribution(docx: Path) -> tuple[dict[str, int], int, int]:
-    """(per-task counts, boilerplate count, total body drawings) — for reporting."""
+    """(per-task counts, boilerplate count, total body drawings) — for reporting.
 
-    return _attribute(_document_xml(Path(docx)))
+    ``total`` is the raw physical drawing count; the per-task map has any
+    ``figure_overrides.yaml`` corrections applied, so the two need not reconcile
+    exactly where an override zeroed a non-figure drawing.
+    """
+
+    docx = Path(docx)
+    counts, boilerplate, total = _attribute(_document_xml(docx))
+    return apply_figure_overrides(counts, docx.name), boilerplate, total

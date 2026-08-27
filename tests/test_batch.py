@@ -119,35 +119,34 @@ def test_track_a_corpus_seven_sessions(db):
     by_session = {d.session: d for d in summary.docs}
     assert set(by_session) == {"2203", "2209", "2305", "2312", "2405", "2505", "2605"}
 
-    # 5 pass clean
-    passing = {s for s, d in by_session.items() if d.outcome == "pass"}
-    assert passing == {"2203", "2305", "2405", "2505", "2605"}
-    points = {s: by_session[s].report.points_total for s in passing}
-    assert points == {"2203": 46, "2305": 46, "2405": 46, "2505": 50, "2605": 50}
+    # 7/7 pass, after: two parser fixes (naming, multi-variant zasady), one
+    # hand-entered marking-scheme correction (2209/10.3, source defect), and
+    # three hand-entered non-figure records (2209/10.1, 2312/11.4, 2605/32).
+    assert {s for s, d in by_session.items() if d.outcome == "pass"} == set(by_session)
+    points = {s: by_session[s].report.points_total for s in by_session}
+    assert points == {
+        "2203": 46, "2209": 46, "2305": 46, "2312": 46,
+        "2405": 46, "2505": 50, "2605": 50,
+    }
 
-    # 2209: source-PDF defect — one subtask's point range missing from the zasady
-    d2209 = by_session["2209"]
-    assert d2209.outcome == "gate-fail"
-    assert "10.3" in d2209.reason
+    # the 2209 marking-scheme override supplied the point value the PDF omits
+    assert by_session["2209"].report.leaf_tasks == 35
 
-    # 2312: one task figure is raster/WMF, not a Word shape the crop can handle
-    d2312 = by_session["2312"]
-    assert d2312.outcome == "error"
-    assert "11.4" in d2312.reason
+    from zaspro.db.models import SourceDocument
 
-    # a Track A czarnodruk that failed its gate is NOT filed under Track B
+    validated = {
+        d.session_code
+        for d in db.query(SourceDocument).filter(
+            SourceDocument.extraction_status == "validated"
+        )
+    }
+    assert validated == {"2203", "2209", "2305", "2312", "2405", "2505", "2605"}
+
+    # a Track A czarnodruk is never filed under Track B
     assert not any(
         f.startswith("MMAP-P0-660-") and f.endswith(".docx")
         for f in summary.track_b_registered
     )
-
-    from zaspro.db.models import SourceDocument
-
-    validated = db.query(SourceDocument).filter(
-        SourceDocument.extraction_status == "validated"
-    ).all()
-    # the 5 clean passes + 2312 (gate ok, only a later figure render failed)
-    assert {d.session_code for d in validated} == {"2203", "2305", "2312", "2405", "2505", "2605"}
 
     # informatory audited, not ingested
     assert {a.file for a in summary.informatory} == {
@@ -157,3 +156,17 @@ def test_track_a_corpus_seven_sessions(db):
     assert not db.query(SourceDocument).filter(
         SourceDocument.file_ref.like("Informator%")
     ).count()
+
+
+def test_figure_overrides_zero_the_stray_drawings(db):
+    """The three hand-recorded non-figure drawings drop out of the per-task
+    counts (sources/figure_overrides.yaml)."""
+    from zaspro.extraction.figures import count_drawings_by_task
+
+    assert (RAW / "MMAP-P0-660-A-2312-arkusz.docx").is_file()
+    c2312 = count_drawings_by_task(RAW / "MMAP-P0-660-A-2312-arkusz.docx")
+    assert c2312.get("11.4", 0) == 0
+    c2605 = count_drawings_by_task(RAW / "MMAP-P0-660-A-2605-arkusz.docx")
+    assert c2605.get("32", 0) == 0
+    c2209 = count_drawings_by_task(RAW / "MMAP-P0-660-2209.docx")
+    assert c2209.get("10.1", 0) == 0

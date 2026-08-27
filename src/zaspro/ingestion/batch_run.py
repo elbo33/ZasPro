@@ -15,64 +15,61 @@ from zaspro.ingestion.batch import ROOT, BatchSummary, run
 
 OUT = ROOT / "m2" / "corpus_track_a_summary.md"
 
-# Written after the fixing round over all seven Track A papers: what actually
-# had to change, vs what was predicted.
+# Written after the fixing round over all seven Track A papers.
 FIXING_NOTES = """\
 The corpus grew from three papers (maj 2024/2025/2026) to seven, adding four
-pre-2024 sessions: **2305** (maj 2023), **2312** (grudzień 2023 diagnostyczny),
-**2209** (wrzesień 2022 diagnostyczny), **2203** (marzec 2022 pokazowy). These
-predate the settled Formuła 2023 exam format, so genuine variation was
-expected. Here is what was actually hit.
+pre-Formuła-2023 sessions: **2305** (maj 2023), **2312** (grudzień 2023
+diagnostyczny), **2209** (wrzesień 2022 diagnostyczny), **2203** (marzec 2022
+pokazowy). **7/7 now pass.** What had to change was in the parsers and in two
+hand-authored source-defect files, never in the gate.
 
-**1. Czarnodruk DOCX naming (fixed, `zaspro.ingestion.batch`).** Two
-conventions in the corpus: `MMAP-P0-660-A-2405-arkusz.docx` for sessions whose
-PDF keeps the `-A/-B` letter, and `MMAP-P0-660-2305.docx` (no letter, no
-`-arkusz` suffix) for the older sessions. `_ARKUSZ` now accepts both;
-`persist._MMAP` likewise, and a missing letter leaves `paper_version` NULL
-rather than defaulting it to `A`.
+**1. Czarnodruk DOCX naming (`zaspro.ingestion.batch`, `persist`).** Two
+conventions: `MMAP-P0-660-A-2405-arkusz.docx` (keeps the `-A/-B` letter) and
+the older `MMAP-P0-660-2305.docx` (no letter, no `-arkusz`). `_ARKUSZ` and
+`_MMAP` accept both; a missing letter leaves `paper_version` NULL, never
+defaulted to `A`.
 
-**2. Multi-variant marking-scheme PDFs (fixed, `resolve_marking_scheme` +
-`marking_scheme` parser).** 2203/2209/2312 do not have a per-session
-`MMAP-P0-100-{s}-zasady.pdf`; they ship one PDF whose name concatenates every
-paper code, e.g. `MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf`. The
-resolver now globs `MMAP-{level}-*-{session}-zasady.pdf` and prefers a name
-carrying a `660` token. Inside those PDFs subtasks are written `Zadanie 13.1
-(0--1)` — **no period after the subtask number** — where the 2024+ format writes
-`Zadanie 13.1. (0--1)`. The `_TASK_LINE` regex now treats that period as
-optional. This is reading the oracle correctly, not loosening the gate; the
-gate still demands an exact arkusz/marking-scheme match. That fix moved 2203
-and 2312 from gate-fail to passing the task/point check.
+**2. Multi-variant marking-scheme PDFs (`resolve_marking_scheme`,
+`marking_scheme` parser).** 2203/2209/2312 ship one zasady PDF whose name
+concatenates every paper code
+(`MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf`). The resolver globs
+`MMAP-{level}-*-{session}-zasady.pdf`, preferring a `660` token. Inside those
+PDFs subtasks are written `Zadanie 13.1 (0--1)` — no period after the number —
+vs the 2024+ `Zadanie 13.1. (0--1)`; `_TASK_LINE` now treats that period as
+optional. Reading the oracle correctly; the gate still demands an exact match.
 
 **3. `strip_boilerplate` / `segment_arkusz`: still zero changes.** The predicted
-drift (`a)`/`b)` subtasks, moved `Koniec`, different cover blocks) again did not
-appear — all seven czarnodruk papers use the same `Zadanie N. (0--M)` /
-`Zadanie N.M. (0--M)` markers, the same `Koniec` sentinel and the same
-three-`longtable` cover. Segmentation of every paper matches that paper's own
-cover point total (46 for 2203/2209/2305/2312/2405, 50 for 2505/2605).
+drift (`a)`/`b)` subtasks, moved `Koniec`, different cover) did not appear in
+any of the seven. Each paper's segmentation matches its own cover point total
+(46 for 2203/2209/2305/2312/2405, 50 for 2505/2605).
 
-**4. 2209 — genuine source defect, reported not worked around.** One marking-
-scheme heading, `Zadanie 10.3.`, is missing the `(0--1)` range that all its
-siblings (`10.1. (0--1)`, `10.2. (0--1)`) carry; the "Zasady oceniania" block
-below it confirms 0--1. The arkusz is internally consistent (35 leaf tasks,
-46 pts = its cover); the parser correctly enumerates 34 tasks / 45 pts from the
-PDF. No range inference was added — a marking scheme that omits a machine-
-readable point value for one subtask is a defect in that PDF and needs a hand
-correction or a documented per-paper override, not a looser parser. **2209 does
-not pass the gate.**
+**4. 2209 marking scheme — source defect, hand-corrected not inferred.** The
+heading `Zadanie 10.3.` in the PDF is missing the `(0--1)` range every sibling
+carries; the "Zasady oceniania" block below it confirms 0--1, and the arkusz's
+own 46-pt cover total only reconciles with 10.3 = 1 pt. Recorded by hand in
+`sources/marking_scheme_overrides.yaml` (with the page reference and the reason
+it is a defect). The parser never infers a missing range — that would defeat
+the check the gate exists to perform; it only applies a value a human entered.
 
-**5. 2312 — task-bearing raster/WMF figure, outside the WORD_SHAPE route.**
-Zadanie 11.4 has a `<w:drawing>` the segmenter counts, but the DOCX carries it
-as a raster/WMF asset (the file has image1.jpeg..image5.png + image3.wmf beside
-its 94 `<wps:wsp>` vector shapes), so the `WORD_SHAPE` crop finds no vector
-primitives in the task band and fails hard. The exercise is correctly flagged
-incomplete. SPEC M2 kept `RASTER`/`WMF` as thin handlers on the assumption that
-non-vector figures are page furniture in this corpus; 2312 breaks that
-assumption. Productionising the raster/WMF route is separate work. **2312 does
-not pass the figure-completeness gate.**
+**5. Three stray `<w:drawing>` elements, not figures
+(`sources/figure_overrides.yaml`).** Re-checking every task drawing across all
+seven papers (reusing the real marker walker): **every genuine exercise figure
+is a `WORD_SHAPE`** — the earlier note that the older papers carried task
+*raster* figures was a measurement error (a throwaway scan with a broken marker
+regex misattributed chrome images to tasks). What the older papers do carry is
+the occasional orphaned drawing group: 2209 Zadanie 10.1, 2312 Zadanie 11.4,
+2605 Zadanie 32 each have a `<w:drawing>` with no text box, no image, only bare
+connector/rectangle/line shapes, sitting in a "Dokończ zdanie" / multiple-
+choice question that uses the parent's figure or needs none. Each is recorded
+by hand with its corrected `expected_figure_count: 0`. `RASTER` and `WMF`
+handlers stay wired to `source_format` for a future source; no exercise in this
+corpus uses them.
 
-**Result: 5/7 pass clean. 2209 fails on a source-PDF defect (one subtask's
-point range missing). 2312 fails on one raster/WMF task figure the WORD_SHAPE
-route cannot crop.** Neither was hidden by relaxing the gate.
+**Result: 7/7 pass.** Two parser fixes (naming, multi-variant zasady), one
+hand-entered marking-scheme correction (2209/10.3), three hand-entered
+non-figure records (2209/10.1, 2312/11.4, 2605/32). The gate itself —
+segmented arkusz must equal the marking scheme exactly, every substantive
+figure linked and rendered — is unchanged.
 """
 
 

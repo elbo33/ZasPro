@@ -40,6 +40,7 @@ def item_view(session: Session, item: ReviewItem, *, with_candidates: bool) -> R
         topic_id=item.topic_id,
         source_document_id=item.source_document_id,
         created_at=item.created_at,
+        audit_sample=item.audit_sample,
     )
     if item.item_type is ReviewItemType.CURRICULUM_MAPPING:
         mapping = session.get(ChunkMapping, item.ref_id)

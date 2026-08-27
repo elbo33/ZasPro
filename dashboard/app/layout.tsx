@@ -20,6 +20,7 @@ export default function RootLayout({
           <Link href="/">Review queue</Link>
           <Link href="/curriculum">Curriculum</Link>
           <Link href="/sources">Sources</Link>
+          <Link href="/calibration">Calibration</Link>
         </nav>
         <main className="wrap">{children}</main>
       </body>

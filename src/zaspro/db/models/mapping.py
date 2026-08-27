@@ -13,6 +13,7 @@ import enum
 from datetime import datetime
 
 from sqlalchemy import (
+    Boolean,
     CheckConstraint,
     Enum,
     Float,
@@ -22,6 +23,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     func,
+    text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -110,6 +112,12 @@ class ReviewItem(Base):
     risk: Mapped[float] = mapped_column(Float, index=True)
     confidence: Mapped[float | None] = mapped_column(Float)
     title: Mapped[str] = mapped_column(Text)
+    # queued by the audit sampler (a permanent random fraction of *confident*
+    # mappings), not because confidence was low. Keeps the system from ever
+    # auto-approving a large block with no human ever seeing a sample of it.
+    audit_sample: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=text("false"), index=True
+    )
 
     # for "batch approval for items sharing high confidence and the same topic
     # and source" (SPEC §9)
@@ -149,6 +157,10 @@ class ReviewDecision(Base):
     )
     prior_status: Mapped[str] = mapped_column(String(32))
     note: Mapped[str | None] = mapped_column(Text)
+    # the ChunkMapping's confidence at the moment of this decision — frozen here
+    # so the agreement-vs-confidence curve is real data, not a later join that
+    # could drift if the mapping is re-run. NULL for non-mapping review items.
+    mapping_confidence: Mapped[float | None] = mapped_column(Float)
 
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 

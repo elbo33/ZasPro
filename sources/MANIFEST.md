@@ -56,3 +56,11 @@ Notes:
 > signal is the "660" token inside the session's marking scheme filename.
 > Naming splits two ways: sessions whose PDF has no -A suffix drop it in the
 > DOCX (MMAP-P0-660-2209.docx); -A-...-arkusz sessions keep the full form.
+
+> Note (27 Aug 2026): the 2412 test diagnostyczny (MMAP-P0-100-A-2412-arkusz.pdf,
+> 6 Dec 2024) sits under the `_EGZAMIN_MATURALNY_OD_2015` path but its cover
+> reads "Formuła 2023", poziom podstawowy, 50 pkt — it is **not** a Formuła 2015
+> exclusion. It has **no czarnodruk _660 DOCX** (only the 100 PDF and a
+> concatenated-variant zasady, MMAP-P0-100-200-300-400-700-Q00-K00-MMAU-2412-zasady.pdf),
+> so it is **Track B: PDF-only**, deferred for the same reason as the version-B
+> and rozszerzony papers, not for its formula. Not yet added as a row.

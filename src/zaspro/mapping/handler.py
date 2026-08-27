@@ -14,6 +14,7 @@ Queue policy (SPEC §9, §10): a mapping at or above `AUTO_APPROVE_THRESHOLD` is
 
 from __future__ import annotations
 
+import random
 import re
 
 from sqlalchemy import select
@@ -36,6 +37,7 @@ from zaspro.db.models import (
 from zaspro.jobs import enqueue, register
 from zaspro.mapping.agent import (
     AUTO_APPROVE_THRESHOLD,
+    DEFAULT_AUDIT_SAMPLE_RATE,
     MappingAgent,
     MappingError,
     MappingRequest,
@@ -133,12 +135,24 @@ def _drop_review_item(session: Session, mapping_id: int) -> None:
         session.flush()
 
 
+def _audit_pick(chunk_id: int, prompt_version: str | None, rate: float) -> bool:
+    """Deterministic per (chunk, prompt version) so a re-run is stable and a new
+    prompt re-rolls the sample."""
+
+    if rate <= 0:
+        return False
+    if rate >= 1:
+        return True
+    return random.Random(f"{chunk_id}:{prompt_version}").random() < rate
+
+
 def map_chunk(
     session: Session,
     source_chunk_id: int,
     agent: MappingAgent | None = None,
     *,
     threshold: float = AUTO_APPROVE_THRESHOLD,
+    audit_sample_rate: float = DEFAULT_AUDIT_SAMPLE_RATE,
     remap: bool = False,
 ) -> ChunkMapping:
     agent = agent or get_agent()
@@ -199,11 +213,30 @@ def map_chunk(
     mapping.prompt_version = agent.prompt_version
     session.flush()
 
+    code = next((c.code for c in candidates if c.topic_id == result.topic_id), None)
+
     if status is MappingStatus.AI_SUGGESTED:
+        # a confident mapping is applied straight away; the audit sampler may
+        # still queue a copy for a human spot-check without blocking it
         _propagate_topic(session, chunk, result.topic_id)
+        if _audit_pick(chunk.id, agent.prompt_version, audit_sample_rate):
+            session.add(
+                ReviewItem(
+                    item_type=ReviewItemType.CURRICULUM_MAPPING,
+                    ref_table="chunk_mappings",
+                    ref_id=mapping.id,
+                    status=ReviewStatus.OPEN,
+                    risk=min(0.2, round(1.0 - result.confidence, 4)),
+                    confidence=result.confidence,
+                    title=f"[audit] {chunk.heading or 'chunk ' + str(chunk.id)} → {code or 'unmapped'}",
+                    topic_id=result.topic_id,
+                    source_document_id=chunk.source_document_id,
+                    audit_sample=True,
+                )
+            )
+            session.flush()
     else:
         _propagate_topic(session, chunk, None)  # don't carry an unreviewed guess
-        code = next((c.code for c in candidates if c.topic_id == result.topic_id), None)
         session.add(
             ReviewItem(
                 item_type=ReviewItemType.CURRICULUM_MAPPING,
@@ -225,8 +258,13 @@ def map_chunk(
 @register(JobType.MAP_CHUNK)
 def handle_map_chunk(session: Session, job: Job) -> dict:
     threshold = job.input.get("threshold", AUTO_APPROVE_THRESHOLD)
+    audit_rate = job.input.get("audit_sample_rate", DEFAULT_AUDIT_SAMPLE_RATE)
     mapping = map_chunk(
-        session, job.input["source_chunk_id"], get_agent(), threshold=threshold
+        session,
+        job.input["source_chunk_id"],
+        get_agent(),
+        threshold=threshold,
+        audit_sample_rate=audit_rate,
     )
     return {
         "chunk_mapping_id": mapping.id,
@@ -243,6 +281,7 @@ def map_document(
     *,
     inline: bool = False,
     threshold: float = AUTO_APPROVE_THRESHOLD,
+    audit_sample_rate: float = DEFAULT_AUDIT_SAMPLE_RATE,
 ) -> dict:
     """Map every not-yet-mapped chunk of a document. `inline=True` runs the
     agent now (offline scripts, tests); the default enqueues `MAP_CHUNK` jobs.
@@ -250,7 +289,9 @@ def map_document(
     `threshold` is the auto-approve cutoff on mapping confidence. Pass a value
     above 1.0 to force every mapping into the review queue — the calibration
     run where a human grades the agent's confidence against their own verdict
-    before the cutoff is fixed from evidence."""
+    before the cutoff is fixed from evidence. `audit_sample_rate` is the
+    permanent fraction of confident mappings queued for a spot-check regardless
+    of the threshold."""
 
     agent = agent or get_agent()
     chunk_ids = session.scalars(
@@ -268,13 +309,20 @@ def map_document(
         for cid in chunk_ids:
             enqueue(
                 session, JobType.MAP_CHUNK,
-                {"source_chunk_id": cid, "threshold": threshold},
+                {
+                    "source_chunk_id": cid,
+                    "threshold": threshold,
+                    "audit_sample_rate": audit_sample_rate,
+                },
             )
             summary["jobs"] += 1
         return summary
 
     for cid in chunk_ids:
-        m = map_chunk(session, cid, agent, threshold=threshold)
+        m = map_chunk(
+            session, cid, agent,
+            threshold=threshold, audit_sample_rate=audit_sample_rate,
+        )
         if m.mapping_status is MappingStatus.AI_SUGGESTED:
             summary["auto"] += 1
         else:

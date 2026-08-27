@@ -1,0 +1,49 @@
+# Hand-entered corrections to per-task figure expectations.
+#
+# `count_drawings_by_task` counts every `<w:drawing>` in a task's DOCX range.
+# A few of those are not figures — orphaned connector/rectangle groups, editing
+# leftovers, a lone stray line — sitting in the flow of a question that is
+# plainly text-only. Rather than have the code guess "is this drawing a figure"
+# from its geometry (which risks silently dropping a real minimal figure such as
+# a number line), a human inspects each case and records it here. Keyed by
+# session code, then exercise number, giving the corrected expected count.
+#
+# Common signature of the entries below: the drawing has no text box and no
+# embedded image, and the task text is a "Dokończ zdanie" / multiple-choice
+# item that uses the parent's figure (or needs none). Real diagrams in this
+# corpus always carry text-box labels (axes, vertices, measurements).
+
+"2209":
+  "10.1":
+    expected_figure_count: 0
+    note: >-
+      Zadanie 10.1 is "Dokończ zdanie. Zbiorem wartości funkcji jest ----." — a
+      fill-in-the-blank that reads off the parent Zadanie 10's graph. The
+      <w:drawing> attributed to it is a group of rectangles, straight
+      connectors and freeform shapes with no text box and no image — an editing
+      artifact. Parent Zadanie 10 keeps its graph. Verified by hand 27 Aug 2026
+      against MMAP-P0-660-2209.docx.
+
+"2312":
+  "11.4":
+    expected_figure_count: 0
+    note: >-
+      The <w:drawing> attributed to Zadanie 11.4 is a group of four bare
+      "Łącznik prosty" (straight-connector) shapes — no image, no text box, no
+      enclosed geometry. Zadanie 11.4 is a text-only algebra question ("Funkcja
+      kwadratowa g jest określona za pomocą f następująco: … Dokończ zdanie.
+      Zapisz właściwą odpowiedź spośród podanych."). The parabola diagram
+      belongs to the parent Zadanie 11, which keeps its figure. Verified by
+      hand 27 Aug 2026 against MMAP-P0-660-A-2312-arkusz.docx.
+
+"2605":
+  "32":
+    expected_figure_count: 0
+    note: >-
+      Zadanie 32 is a text-only multiple-choice question about the arithmetic
+      mean of seven numbers ("Dokończ zdanie. Zapisz właściwą odpowiedź spośród
+      podanych. A. B. C. D."). Its <w:drawing> is a single unnamed straight
+      line with no text and no image — a stray. Verified by hand 27 Aug 2026
+      against MMAP-P0-660-A-2605-arkusz.docx. (2605 passed the gate before this
+      entry because the lone line still cropped to a non-empty PNG; the entry
+      makes the expectation honest.)

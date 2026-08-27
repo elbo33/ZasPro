@@ -40,6 +40,7 @@ class ReviewItemView(BaseModel):
     topic_id: int | None
     source_document_id: int | None
     created_at: datetime
+    audit_sample: bool = False  # queued for a spot-check, not because risky
     # context for the reviewer, one item per screen (SPEC §9)
     chunk_heading: str | None = None
     chunk_text: str | None = None

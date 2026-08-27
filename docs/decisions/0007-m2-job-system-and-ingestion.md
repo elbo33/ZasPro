@@ -142,25 +142,39 @@ the parser (not the documents) needed:
   unchanged.
 * `strip_boilerplate` / `segment_arkusz`: **still zero changes.** The predicted
   segmentation drift did not appear in any of the seven.
+* **Re-ingest idempotency.** `persist_ingestion` now deletes a document's
+  `figures` before its `exercises` on re-ingest; without that the
+  `exercise_figures` association delete raised `StaleDataError`. The batch is
+  now idempotent (verified: 7/7 on a second run against the same DB).
 
-**Result: 5/7 pass clean** (2203, 2305, 2405, 2505, 2605). Two do not, and were
-reported rather than accommodated:
+**Result: 7/7 pass**, after two parser fixes above plus two hand-authored
+source-defect files (never inference):
 
-* **2209** — the zasady PDF omits the `(0–1)` range on one heading (`Zadanie
-  10.3.`) that every sibling carries. The parser correctly cannot enumerate it;
-  arkusz 35 leaf tasks / 46 pts vs parsed 34 / 45. A source defect; needs a
-  hand correction or a documented per-paper override, not range inference.
-* **2312** — Zadanie 11.4's figure is a raster/WMF asset, not a Word shape, so
-  the `WORD_SHAPE` crop route finds no vector primitives and the exercise is
-  (correctly) flagged incomplete. Needs the `RASTER`/`WMF` route productionised;
-  SPEC M2's "non-vector figures are page furniture" assumption does not hold for
-  the older papers.
+* **`sources/marking_scheme_overrides.yaml`** — 2209's zasady PDF omits the
+  `(0–1)` range on the heading `Zadanie 10.3.` that every sibling carries; the
+  "Zasady oceniania" block below it and the arkusz's 46-pt cover both confirm
+  0–1. A human recorded that one value with the page reference. `_TASK_LINE`
+  never infers a missing range — that would defeat the check the gate performs.
+* **`sources/figure_overrides.yaml`** — re-checking every task drawing across
+  all seven papers (reusing the real marker walker) confirmed **every genuine
+  exercise figure is a `WORD_SHAPE`** in all seven; the earlier claim that the
+  older papers carried task *raster* figures was a measurement error (a
+  throwaway scan with a broken marker regex misattributed chrome images to
+  tasks). What the older papers do carry is the occasional orphaned drawing
+  group: **2209 Zadanie 10.1, 2312 Zadanie 11.4, 2605 Zadanie 32** each have a
+  `<w:drawing>` with no text box, no image, only bare connector/line/rectangle
+  shapes, on a "Dokończ zdanie" / multiple-choice question that uses the
+  parent's figure or needs none. Each is recorded by hand with
+  `expected_figure_count: 0`. `count_drawings_by_task` applies the file last;
+  the `RASTER`/`WMF` handlers stay wired to `source_format` for a future source.
 
 The **2412** próbny (Dec 2024, under the `_OD_2015` path) was checked from its
-cover: it reads "Formuła 2023", podstawowy, 50 pts. It has no czarnodruk DOCX,
-so it is PDF-only Track B, not one of the seven.
+cover: it reads "Formuła 2023", podstawowy, 50 pts — **not** a Formuła 2015
+exclusion. It has no czarnodruk DOCX, so it is PDF-only Track B (recorded as
+such in the manifest), not one of the seven.
 
 ## No new dependencies
 
 M2 adds none. pandoc / poppler / LibreOffice are subprocesses (already in
-`dependencies.md`); SQLAlchemy / psycopg / PyYAML came with M1.
+`dependencies.md`); SQLAlchemy / psycopg / PyYAML came with M1. The
+`sources/*_overrides.yaml` files are read with PyYAML.

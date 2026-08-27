@@ -25,7 +25,10 @@ def test_health(client):
 
 def test_deterministic_confident_mappings_do_not_reach_the_queue(client, db):
     w = build_world(db)
-    map_document(db, w.document_id, StubMappingAgent(), inline=True)
+    # audit_sample_rate=0 isolates the threshold behaviour from the sampler
+    map_document(
+        db, w.document_id, StubMappingAgent(), inline=True, audit_sample_rate=0.0
+    )
 
     stats = client.get("/review/queue").json()
     # chunks 1 and 4 map confidently to VIII.2 and must be absent from the queue
@@ -33,6 +36,33 @@ def test_deterministic_confident_mappings_do_not_reach_the_queue(client, db):
     assert stats["open_total"] == stats["by_type"]["CURRICULUM_MAPPING"]
     assert stats["open_total"] <= 2  # only the uncertain ones
     assert stats["unmapped_chunks"] == 0
+
+
+def test_calibration_endpoint_after_a_review_all_pass(client, db):
+    w = build_world(db)
+    # --review-all: everything queues; audit sampler on too
+    map_document(
+        db, w.document_id, StubMappingAgent(), inline=True,
+        threshold=1.01, audit_sample_rate=1.0,
+    )
+    # work the whole queue: approve the two VIII.2 items, reject the rest
+    for _ in range(20):
+        resp = client.get("/review/next")
+        if resp.status_code == 204:
+            break
+        item = resp.json()
+        if item["mapping"] and item["mapping"]["topic_code"] == "VIII.2":
+            body = {"reviewer": "elie", "decision": "APPROVE"}
+        else:
+            body = {"reviewer": "elie", "decision": "REJECT", "reason_code": "AMBIGUOUS"}
+        client.post(f"/review/{item['id']}/decision", json=body)
+
+    cal = client.get("/review/calibration").json()
+    assert cal["resolved"] == 4
+    assert cal["pending"] == 0
+    # every resolved decision carries the frozen mapping confidence
+    total_in_bands = sum(b["n"] for b in cal["bands"])
+    assert total_in_bands == 4
 
 
 def test_keyboard_review_loop_approve_and_reject(client, db):

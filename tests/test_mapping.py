@@ -33,7 +33,8 @@ def test_confident_deterministic_mapping_skips_the_queue(db):
     w = build_world(db)
     agent = StubMappingAgent()
 
-    m = map_chunk(db, w.chunk_ids["1"], agent)
+    # audit_sample_rate=0 isolates the threshold mechanism from the sampler
+    m = map_chunk(db, w.chunk_ids["1"], agent, audit_sample_rate=0.0)
 
     assert m.topic_id == w.topic_ids["VIII.2"]
     assert m.confidence >= 0.8
@@ -44,6 +45,36 @@ def test_confident_deterministic_mapping_skips_the_queue(db):
     # topic mirrored onto the exercise
     ex = db.query(Exercise).filter_by(source_document_id=w.document_id, exercise_number="1").one()
     assert ex.topic_id == w.topic_ids["VIII.2"]
+
+
+def test_audit_sampler_queues_a_confident_mapping_without_blocking_it(db):
+    w = build_world(db)
+    # rate 1.0 -> every confident mapping also gets an audit ReviewItem
+    m = map_chunk(db, w.chunk_ids["1"], StubMappingAgent(), audit_sample_rate=1.0)
+
+    assert m.mapping_status is MappingStatus.AI_SUGGESTED  # not blocked
+    item = db.query(ReviewItem).one()
+    assert item.audit_sample is True
+    assert item.status.value == "OPEN"
+    assert item.risk <= 0.2
+    # the confident mapping is still applied to the exercise
+    ex = db.query(Exercise).filter_by(
+        source_document_id=w.document_id, exercise_number="1"
+    ).one()
+    assert ex.topic_id == w.topic_ids["VIII.2"]
+
+
+def test_audit_sampler_is_deterministic_per_chunk(db):
+    w = build_world(db)
+    # a mid rate: same chunk, same prompt version -> same pick every time
+    picks = set()
+    for _ in range(3):
+        db.query(ReviewItem).delete()
+        db.query(ChunkMapping).delete()
+        db.flush()
+        map_chunk(db, w.chunk_ids["1"], StubMappingAgent(), audit_sample_rate=0.5)
+        picks.add(db.query(ReviewItem).count())
+    assert len(picks) == 1  # stable
 
 
 def test_unmappable_chunk_enters_the_queue_as_review_required(db):

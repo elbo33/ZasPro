@@ -18,6 +18,7 @@ from zaspro.db.models import (
     ExerciseOrigin,
     ExtractionMethod,
     ExtractionStatus,
+    Figure,
     Source,
     SourceChunk,
     SourceDocument,
@@ -76,7 +77,13 @@ def persist_ingestion(session: Session, result: IngestionResult) -> SourceDocume
     doc.extraction_status = ExtractionStatus.SEGMENTED
     session.flush()
 
-    # Reingest cleanly: drop prior chunks/exercises for this document.
+    # Reingest cleanly: drop prior figures, chunks and exercises for this
+    # document. Figures first so the exercise_figures association rows are gone
+    # before the Exercise rows they point at (otherwise a re-ingest raises
+    # StaleDataError on the association delete).
+    for fig in session.scalars(select(Figure).where(Figure.source_document_id == doc.id)):
+        session.delete(fig)
+    session.flush()
     for ex in session.scalars(select(Exercise).where(Exercise.source_document_id == doc.id)):
         session.delete(ex)
     for ch in session.scalars(select(SourceChunk).where(SourceChunk.source_document_id == doc.id)):

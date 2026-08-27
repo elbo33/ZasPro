@@ -1,0 +1,26 @@
+# Hand-entered corrections to `zasady oceniania` PDFs.
+#
+# Each entry is a HUMAN reading the source PDF and recording what a specific
+# heading should have said. Nothing here is generated, and the parser never
+# infers a missing point range on its own — that would silently defeat the
+# check the M0.2 gate exists to perform. The gate still compares the segmented
+# arkusz against the (corrected) marking scheme exactly; an override only
+# supplies a value the PDF failed to make machine-readable.
+#
+# Keyed by session code. `add_tasks` inserts a task the parser could not find;
+# `set_points` corrects one it found with the wrong value.
+
+"2209":
+  zasady_file: MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf
+  add_tasks:
+    - number: "10.3"
+      points: 1
+      note: >-
+        SOURCE DEFECT in the PDF. The heading "Zadanie 10.3." is missing the
+        "(0–1)" range that every sibling heading carries (10.1. (0–1),
+        10.2. (0–1), 11. (0–1), ...). The "Zasady oceniania" block immediately
+        below it reads "1 pkt – odpowiedź poprawna." / "0 pkt – odpowiedź
+        niepoprawna albo brak odpowiedzi.", which confirms a 0–1 task. The
+        arkusz's own cover total (46 pts) also only reconciles with 10.3 worth
+        1 point. Entered by hand, 27 Aug 2026, from
+        MMAP-P0-100-200-300-400-660-700-Q00-2209-zasady.pdf pages 7–8.
