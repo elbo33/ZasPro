@@ -47,6 +47,7 @@ class ReviewItemView(BaseModel):
     chunk_heading: str | None = None
     chunk_text: str | None = None
     chunk_latex: str | None = None
+    chunk_stem: str | None = None  # the parent task's shared statement, for a subtask
     mapping: MappingView | None = None  # the primary
     secondaries: list[MappingView] = Field(default_factory=list)
     candidates: list[TopicOption] = Field(default_factory=list)

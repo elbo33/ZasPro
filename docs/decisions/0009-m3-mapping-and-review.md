@@ -60,6 +60,35 @@ uncertainty across the scale for tasks it actually understood. v2 curve at
 the bands below 0.8 remain thin. The 3% audit sampler keeps feeding the curve —
 revisit after a few hundred reviewed mappings.
 
+### 1a. The stem defect and its effect on the curve (28 Aug 2026)
+
+Working the 104-decision queue (the v2 pass + the six-paper run) surfaced a
+pipeline bug: **`map_chunk` passed only the subtask's own body to the agent,
+not the parent's shared stem.** The stem was in the DB (parent chunk row;
+`Exercise.full_statement`), but the mapping pipeline reads `source_chunks` and
+built `MappingRequest` from `chunk.text` alone. A subtask read without its stem
+("the 50th term of the sequence is …") is usually unmappable, so those were
+rejected — recording the agent as wrong on broken input.
+
+Fixed (`PROMPT_VERSION` → `m3-map-v2`): `MappingRequest` gains `stem` /
+`stem_latex`, `_parent_chunk` supplies them for `Zadanie N.M` fragments, the
+system prompt and the review card show the stem. `review_items.input_defect`
+(migration 0007) marks decisions made on the broken input;
+`flag_stem_defect_reviews` set it on the **32** resolved subtask decisions;
+`agreement_curve` excludes them.
+
+**Effect:** removing the 32 lifts the sub-0.8 bands ([0.5,0.7) 66% → 80%;
+[0.0,0.5) 14% → 33%) but does **not** move the recommendation. On the clean
+72 top-level decisions the recommender returns **0.70**, not 0.80 — the
+[0.7, 0.8) band is 19/19 (100%) once broken-input rejections are gone; the
+single 75% data point that had pinned v1 at 0.80 was contamination.
+
+**0.80 stays for now.** It is safe under every curve computed (everything
+≥ 0.80 is 100% agreement). Lowering to 0.70 waits until the 32 subtasks are
+remapped with the stem (`zaspro.mapping.run --remap-defective`, ~32 calls) and
+re-reviewed, so the clean curve covers subtasks too. M4 aggregates from the
+threshold, so it does not move on a partial dataset.
+
 **Recommender bug fixed during the v1 pass.** The first cut of
 `agreement_curve` skipped bands with n<5 when picking a recommendation, so it
 ignored the n=1 band at 0% and the n=4 band at 75% and returned `0.00` — which,

@@ -137,6 +137,13 @@ class ReviewItem(Base):
     audit_sample: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=text("false"), index=True
     )
+    # the agent's input was known to be defective when this item was decided
+    # (e.g. a subtask mapped without its parent's stem — the v1 bug). Such
+    # decisions are excluded from the calibration curve; the chunk needs
+    # remapping. Not the same as the mapping being wrong.
+    input_defect: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=text("false"), index=True
+    )
 
     # for "batch approval for items sharing high confidence and the same topic
     # and source" (SPEC §9)

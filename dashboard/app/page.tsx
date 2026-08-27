@@ -294,6 +294,12 @@ export default function ReviewQueuePage() {
 
           <h2 style={{ marginBottom: 4 }}>{item.chunk_heading ?? item.title}</h2>
 
+          {item.chunk_stem && (
+            <div className="chunk" style={{ borderLeft: "3px solid var(--accent)" }}>
+              <span className="muted">shared stem (parent task): </span>
+              {item.chunk_stem}
+            </div>
+          )}
           {item.chunk_text && <div className="chunk">{item.chunk_text}</div>}
 
           {item.mapping && (

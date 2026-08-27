@@ -30,6 +30,7 @@ def render() -> str:
         "`zaspro.review.calibration_run`.",
         "",
         f"Resolved mapping reviews: **{cal.resolved}**  ·  still open: {cal.pending}  "
+        f"·  excluded (input defect): {cal.excluded_defective}  "
         f"·  target agreement: {cal.target:.0%}",
         "",
         "| confidence band | n | accepted unchanged | changed/rejected | agreement | (of n) audit-sampled |",

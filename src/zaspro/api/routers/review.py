@@ -53,6 +53,7 @@ def get_calibration(db: Session = Depends(get_db)) -> dict:
     return {
         "resolved": cal.resolved,
         "pending": cal.pending,
+        "excluded_defective": cal.excluded_defective,
         "target": cal.target,
         "recommended_threshold": cal.recommended_threshold,
         "notes": cal.notes,

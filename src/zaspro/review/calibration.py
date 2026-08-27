@@ -46,9 +46,10 @@ class Band:
 @dataclass
 class Calibration:
     bands: list[Band]
-    resolved: int
+    resolved: int  # decisions that count toward the curve
     pending: int
     recommended_threshold: float | None
+    excluded_defective: int = 0  # resolved but on known-defective agent input
     target: float = _TARGET_AGREEMENT
     notes: list[str] = field(default_factory=list)
 
@@ -118,10 +119,13 @@ def agreement_curve(session: Session) -> Calibration:
         )
     ).all()
 
-    resolved = pending = 0
+    resolved = pending = excluded = 0
     for item in items:
         if item.status is ReviewStatus.OPEN:
             pending += 1
+            continue
+        if item.input_defect:
+            excluded += 1  # decided on broken input — not evidence about the agent
             continue
         resolved += 1
 
@@ -174,6 +178,11 @@ def agreement_curve(session: Session) -> Calibration:
         notes.append("below target: " + ", ".join(below))
     if pending:
         notes.append(f"{pending} mapping review items still open — curve is partial")
+    if excluded:
+        notes.append(
+            f"{excluded} resolved decisions excluded (input_defect) — the agent's "
+            "input was broken; those chunks need remapping and re-review"
+        )
     if resolved == 0:
         notes.append("no resolved mapping reviews yet — run a calibration pass")
 
@@ -182,5 +191,6 @@ def agreement_curve(session: Session) -> Calibration:
         resolved=resolved,
         pending=pending,
         recommended_threshold=recommended,
+        excluded_defective=excluded,
         notes=notes,
     )

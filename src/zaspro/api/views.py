@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from zaspro.api.schemas import MappingView, ReviewItemView, TopicOption
 from zaspro.db.models import ChunkMapping, ReviewItem, ReviewItemType, SourceChunk, Topic
-from zaspro.mapping.handler import candidate_topics
+from zaspro.mapping.handler import candidate_topics, _parent_chunk
 
 
 def mapping_view(session: Session, mapping: ChunkMapping) -> MappingView:
@@ -67,6 +67,9 @@ def item_view(session: Session, item: ReviewItem, *, with_candidates: bool) -> R
                 view.chunk_heading = chunk.heading
                 view.chunk_text = chunk.text
                 view.chunk_latex = chunk.latex
+                parent = _parent_chunk(session, chunk)
+                if parent is not None:
+                    view.chunk_stem = parent.text
         if with_candidates:
             view.candidates = [
                 TopicOption(topic_id=c.topic_id, code=c.code, unit=c.unit, name=c.name)

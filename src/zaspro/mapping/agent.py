@@ -31,7 +31,10 @@ from pydantic import BaseModel, Field, field_validator
 
 from zaspro.db.models import ContentType
 
-PROMPT_VERSION = "m3-map-v1"
+# v2: the parent's shared stem is now passed with every subtask fragment. v1
+# mappings of subtasks were made on the bare subtask body and are not
+# comparable — see ADR 0009 and `flag_stem_defect_reviews`.
+PROMPT_VERSION = "m3-map-v2"
 
 # A mapping at or above this confidence is trusted straight away
 # (`mapping_status = AI_SUGGESTED`) and never reaches the review queue *unless*
@@ -69,6 +72,11 @@ class MappingRequest(BaseModel):
     heading: str | None
     text: str
     latex: str | None
+    # the shared problem statement from the parent task, for a subtask fragment.
+    # A subtask read without it ("the 50th term of the sequence is …") is
+    # usually unmappable. NULL for a top-level task.
+    stem: str | None = None
+    stem_latex: str | None = None
     current_content_type: ContentType
     candidates: list[TopicRef]
 
@@ -164,7 +172,10 @@ class StubMappingAgent:
 
     def map(self, request: MappingRequest) -> MappingResult:
         by_code = {c.code: c for c in request.candidates}
-        blob = " ".join(filter(None, [request.heading, request.text, request.latex]))
+        blob = " ".join(
+            filter(None, [request.heading, request.stem, request.stem_latex,
+                          request.text, request.latex])
+        )
 
         cited = [c for c in _CODE_IN_TEXT.findall(blob) if c in by_code]
         if cited:
@@ -228,7 +239,11 @@ You map one fragment of a Polish Matura mathematics exam paper to the \
 curriculum requirements from the podstawa programowa (2024) that it tests.
 
 You are given the fragment and a closed list of candidate requirements, each \
-with its official code (e.g. "VIII.4"), its unit numeral, and its text.
+with its official code (e.g. "VIII.4"), its unit numeral, and its text. When \
+the fragment is a subtask, its parent's shared problem statement is given \
+first as SHARED STEM — read the stem and the fragment together; the stem \
+usually carries the objects (a function, a sequence, a figure) the subtask \
+refers to.
 
 Pick the ONE requirement the fragment most directly exercises as the PRIMARY \
 (topic_id). If no candidate genuinely fits, return topic_id = null rather than \
@@ -341,7 +356,15 @@ class ClaudeMappingAgent:
 
     @staticmethod
     def _fragment_block(req: MappingRequest) -> str:
+        stem = ""
+        if req.stem or req.stem_latex:
+            stem = (
+                "SHARED STEM (the parent task's problem statement — this "
+                "fragment is a subtask of it):\n"
+                f"{req.stem_latex or req.stem}\n\n"
+            )
         return (
+            f"{stem}"
             f"FRAGMENT heading: {req.heading or '—'}\n"
             f"FRAGMENT content type so far: {req.current_content_type.value}\n"
             f"FRAGMENT text:\n{req.text}\n\n"

@@ -60,7 +60,9 @@ def test_confident_deterministic_mapping_skips_the_queue(db):
     assert m.topic_id == w.topic_ids["VIII.2"]
     assert m.confidence >= 0.8
     assert m.mapping_status is MappingStatus.AI_SUGGESTED
-    assert m.model is None and m.prompt_version == "m3-map-v1"
+    from zaspro.mapping import PROMPT_VERSION
+
+    assert m.model is None and m.prompt_version == PROMPT_VERSION
     # nothing in the queue
     assert db.query(ReviewItem).count() == 0
     # topic mirrored onto the exercise
@@ -286,3 +288,47 @@ def test_secondary_equal_to_primary_is_dropped_not_an_error(db):
     map_chunk(db, cid, DupAgent(), audit_sample_rate=0.0)
     rows = db.query(ChunkMapping).filter_by(source_chunk_id=cid).all()
     assert {r.topic_id for r in rows} == {w.topic_ids["VIII.1"], w.topic_ids["VIII.2"]}
+
+
+# --- subtask stem is passed to the agent (v2 fix, ADR 0009) -----------------
+
+
+def test_subtask_fragment_carries_the_parent_stem(db):
+    from zaspro.db.models import (
+        ContentType as CT, ExerciseOrigin, ExtractionMethod as EM, SourceChunk as SC,
+        VerificationStatus,
+    )
+    from zaspro.db.models import Exercise as Ex
+
+    w = build_world(db)
+    # parent Zadanie 9 + subtask 9.1, both as SourceChunks
+    parent = SC(source_document_id=w.document_id, heading="Zadanie 9.", section="9",
+                content_type=CT.EXERCISE, text="Dany jest ciąg a_n = 2n.", latex="a_n = 2n",
+                order_index=9, extraction_method=EM.pandoc_omml, confidence=None)
+    sub = SC(source_document_id=w.document_id, heading="Zadanie 9.1.", section="9",
+             content_type=CT.EXERCISE, text="Podaj dziesiąty wyraz ciągu.", latex="a_10 = ?",
+             order_index=10, extraction_method=EM.pandoc_omml, confidence=None)
+    db.add_all([parent, sub])
+    db.flush()
+
+    seen = {}
+
+    class Spy:
+        name, model, prompt_version = "spy", None, "x"
+
+        def map(self, request):
+            seen["stem"] = request.stem
+            seen["stem_latex"] = request.stem_latex
+            return MappingResult(
+                topic_id=w.topic_ids["VIII.1"], content_type=CT.EXERCISE,
+                confidence=0.9, rationale="ok",
+            )
+
+    map_chunk(db, sub.id, Spy(), audit_sample_rate=0.0)
+    assert seen["stem"] == "Dany jest ciąg a_n = 2n."
+    assert seen["stem_latex"] == "a_n = 2n"
+
+    # a top-level task gets no stem
+    seen.clear()
+    map_chunk(db, w.chunk_ids["1"], Spy(), audit_sample_rate=0.0)
+    assert seen["stem"] is None

@@ -9,6 +9,7 @@ carries a reason code (the DB enforces it too).
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
@@ -30,6 +31,39 @@ from zaspro.mapping.handler import apply_mapping_to_exercise
 
 # batch approval is only offered above this (SPEC §9: "sharing high confidence")
 BATCH_MIN_CONFIDENCE = 0.6
+
+_SUBTASK_HEADING = re.compile(r"Zadanie\s+\d+\.\d+")
+
+
+def flag_stem_defect_reviews(session: Session, *, current_prompt_version: str) -> int:
+    """Mark resolved CURRICULUM_MAPPING items where a **subtask** was mapped
+    without its parent's stem (the v1 pipeline bug — the agent got the bare
+    subtask body). Those decisions are not evidence about the agent and are
+    excluded from the calibration curve until the chunk is remapped.
+
+    Idempotent: an item already flagged, or one whose mapping is at the current
+    (fixed) prompt version, is left alone. Returns the number newly flagged.
+    """
+
+    items = session.scalars(
+        select(ReviewItem).where(
+            ReviewItem.item_type == ReviewItemType.CURRICULUM_MAPPING,
+            ReviewItem.status != ReviewStatus.OPEN,
+            ReviewItem.input_defect.is_(False),
+        )
+    ).all()
+    flagged = 0
+    for item in items:
+        mapping = session.get(ChunkMapping, item.ref_id)
+        if mapping is None or mapping.prompt_version == current_prompt_version:
+            continue
+        chunk = session.get(SourceChunk, mapping.source_chunk_id)
+        if chunk is None or not chunk.heading or not _SUBTASK_HEADING.match(chunk.heading):
+            continue
+        item.input_defect = True
+        flagged += 1
+    session.flush()
+    return flagged
 
 
 class ReviewError(RuntimeError):

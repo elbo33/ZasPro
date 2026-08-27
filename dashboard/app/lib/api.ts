@@ -41,6 +41,7 @@ export type ReviewItemView = {
   chunk_heading: string | null;
   chunk_text: string | null;
   chunk_latex: string | null;
+  chunk_stem: string | null;
   mapping: MappingView | null;
   secondaries: MappingView[];
   candidates: TopicOption[];

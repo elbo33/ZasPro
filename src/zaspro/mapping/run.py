@@ -15,6 +15,8 @@ real agent — token usage and an estimated API cost.
 calibration pass. `--remap` re-runs chunks that already have a mapping, dropping
 the old rows and review item first. Without it, already-mapped chunks are
 skipped; if that leaves a paper with nothing to do it is reported and skipped.
+`--remap-defective` (no file args) re-maps only the chunks whose review item is
+flagged `input_defect` — the subtasks that were mapped without their stem.
 `--rate-in` / `--rate-out` override the $/1M-token rates for the cost estimate;
 the defaults are the published `claude-opus-5` base rates (checked 27 Aug 2026:
 $5 input, $25 output, $0.50 cache-read per MTok).
@@ -42,7 +44,7 @@ from zaspro.db.models import (
     SourceChunk,
     SourceDocument,
 )
-from zaspro.jobs import Worker
+from zaspro.jobs import Worker, enqueue
 from zaspro.mapping import AUTO_APPROVE_THRESHOLD, ClaudeMappingAgent, map_document
 from zaspro.mapping.handler import get_agent
 from zaspro.review import queue_stats
@@ -92,6 +94,87 @@ def _open_items(s) -> int:
             ReviewItem.status == ReviewStatus.OPEN
         )
     ) or 0
+
+
+def _cost_line(tot_in, tot_out, tot_cr, tot_cw, rate_in, rate_out) -> str:
+    cost = (
+        tot_in / 1e6 * rate_in
+        + tot_cw / 1e6 * (rate_in * 1.25)
+        + tot_cr / 1e6 * (rate_in * 0.10)
+        + tot_out / 1e6 * rate_out
+    )
+    return (
+        f"tokens {tot_in:,} in / {tot_cr:,} cache-read / {tot_out:,} out  ->  "
+        f"est. ${cost:,.2f} (${rate_in:g}/${rate_out:g}/1M, published claude-opus-5)"
+    )
+
+
+def remap_defective(
+    *, rate_in: float = OPUS5_RATE_IN, rate_out: float = OPUS5_RATE_OUT
+) -> int:
+    """Re-map every chunk whose review item is flagged `input_defect` (a subtask
+    mapped without its stem). The old mapping, its review item and its decisions
+    are dropped and rebuilt at the fixed prompt version, so the flag clears with
+    them. Small, scoped run."""
+
+    agent = get_agent()
+    print(f"agent: {_describe_agent(agent)}")
+    real = isinstance(agent, ClaudeMappingAgent)
+    if real:
+        try:
+            print(f"preflight: API reachable, model={agent.preflight()}")
+        except Exception as e:  # noqa: BLE001
+            print(f"ERROR: Claude preflight failed ({type(e).__name__}): {e}")
+            return 2
+
+    with session_scope() as s:
+        chunk_ids = list(
+            s.scalars(
+                select(ChunkMapping.source_chunk_id)
+                .join(ReviewItem, ReviewItem.ref_id == ChunkMapping.id)
+                .where(
+                    ReviewItem.input_defect.is_(True),
+                    ReviewItem.item_type == "CURRICULUM_MAPPING",
+                )
+            )
+        )
+        if not chunk_ids:
+            print("nothing flagged input_defect — nothing to remap")
+            return 0
+        job_hwm = s.scalar(select(func.max(Job.id))) or 0
+        for cid in chunk_ids:
+            enqueue(
+                s, JobType.MAP_CHUNK,
+                {"source_chunk_id": cid, "threshold": AUTO_APPROVE_THRESHOLD, "remap": True},
+            )
+        print(f"enqueued {len(chunk_ids)} MAP_CHUNK remaps (input_defect chunks)")
+
+    Worker().drain()
+
+    with session_scope() as s:
+        rows = s.execute(
+            select(Job.status, Job.output).where(
+                Job.job_type == JobType.MAP_CHUNK, Job.id > job_hwm
+            )
+        ).all()
+        ti = to = tcr = tcw = failed = done = 0
+        for status, out in rows:
+            if status is JobStatus.FAILED:
+                failed += 1
+                continue
+            done += 1
+            u = (out or {}).get("usage") or {}
+            ti += int(u.get("in", 0)); to += int(u.get("out", 0))
+            tcr += int(u.get("cache_read", 0)); tcw += int(u.get("cache_write", 0))
+        st = queue_stats(s)
+        n_defect = s.scalar(
+            select(func.count()).select_from(ReviewItem).where(ReviewItem.input_defect)
+        )
+    print(f"remapped {done}  (failed {failed})")
+    print(f"review queue depth   : {st.open_total}   still flagged input_defect: {n_defect}")
+    if real and (ti or to or tcr):
+        print(_cost_line(ti, to, tcr, tcw, rate_in, rate_out))
+    return 1 if failed else 0
 
 
 def run(
@@ -219,8 +302,13 @@ def run(
 
 if __name__ == "__main__":
     args = sys.argv[1:]
+    ri = float(args[args.index("--rate-in") + 1]) if "--rate-in" in args else OPUS5_RATE_IN
+    ro = float(args[args.index("--rate-out") + 1]) if "--rate-out" in args else OPUS5_RATE_OUT
+
+    if "--remap-defective" in args:
+        sys.exit(remap_defective(rate_in=ri, rate_out=ro))
+
     refs = [a for a in args if not a.startswith("-")]
-    # drop the value that follows a value-taking flag
     for flag in ("--threshold", "--rate-in", "--rate-out"):
         if flag in args:
             v = args[args.index(flag) + 1]
@@ -233,6 +321,4 @@ if __name__ == "__main__":
     thr = 1.01 if "--review-all" in args else AUTO_APPROVE_THRESHOLD
     if "--threshold" in args:
         thr = float(args[args.index("--threshold") + 1])
-    ri = float(args[args.index("--rate-in") + 1]) if "--rate-in" in args else OPUS5_RATE_IN
-    ro = float(args[args.index("--rate-out") + 1]) if "--rate-out" in args else OPUS5_RATE_OUT
     sys.exit(run(refs, thr, remap="--remap" in args, rate_in=ri, rate_out=ro))

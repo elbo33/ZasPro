@@ -93,6 +93,22 @@ def _exercise_number_from(chunk: SourceChunk) -> str | None:
     return chunk.section
 
 
+def _parent_chunk(session: Session, chunk: SourceChunk) -> SourceChunk | None:
+    """The parent task's chunk, for a subtask (heading `Zadanie N.M`). Its
+    `text` / `latex` is the shared stem the subtask can't be read without."""
+
+    number = _exercise_number_from(chunk)
+    if not number or "." not in number:
+        return None
+    parent_number = number.rsplit(".", 1)[0]
+    return session.scalars(
+        select(SourceChunk).where(
+            SourceChunk.source_document_id == chunk.source_document_id,
+            SourceChunk.heading == f"Zadanie {parent_number}.",
+        )
+    ).one_or_none()
+
+
 def _propagate_topic(session: Session, chunk: SourceChunk, topic_id: int | None) -> None:
     """Mirror an accepted mapping onto the matching exercise row so downstream
     milestones (and the coverage histogram) see it. Reversible: passing
@@ -172,12 +188,15 @@ def map_chunk(
     candidates = candidate_topics(session)
     valid_ids = {c.topic_id for c in candidates}
 
+    parent = _parent_chunk(session, chunk)
     result = agent.map(
         MappingRequest(
             source_chunk_id=source_chunk_id,
             heading=chunk.heading,
             text=chunk.text,
             latex=chunk.latex,
+            stem=parent.text if parent else None,
+            stem_latex=parent.latex if parent else None,
             current_content_type=chunk.content_type,
             candidates=candidates,
         )

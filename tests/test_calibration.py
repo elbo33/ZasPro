@@ -111,3 +111,66 @@ def test_curve_is_empty_before_any_review(db):
     assert cal.resolved == 0
     assert cal.recommended_threshold is None
     assert any("calibration pass" in n for n in cal.notes)
+
+
+def test_input_defect_items_are_excluded_from_the_curve(db):
+    from zaspro.db.models import ReviewItem
+
+    w = build_world(db)
+    _queue_all(db, w)
+    # resolve all four
+    for _ in range(4):
+        it = next_item(db)
+        record_decision(db, it.id, reviewer="e", decision=ReviewDecisionType.APPROVE)
+
+    cal = agreement_curve(db)
+    assert cal.resolved == 4 and cal.excluded_defective == 0
+
+    # mark two as defective input
+    marked = 0
+    for it in db.query(ReviewItem).all():
+        if marked < 2:
+            it.input_defect = True
+            marked += 1
+    db.flush()
+
+    cal = agreement_curve(db)
+    assert cal.resolved == 2
+    assert cal.excluded_defective == 2
+    assert any("input_defect" in n for n in cal.notes)
+
+
+def test_flag_stem_defect_reviews_targets_stale_subtasks(db):
+    from zaspro.db.models import (
+        ChunkMapping, ContentType as CT, ExtractionMethod as EM, ReviewItem, SourceChunk as SC,
+    )
+    from zaspro.mapping.agent import MappingResult
+    from zaspro.mapping.handler import map_chunk
+    from zaspro.review import flag_stem_defect_reviews
+
+    w = build_world(db)
+    # a subtask chunk mapped at an OLD prompt version -> should be flagged
+    sub = SC(source_document_id=w.document_id, heading="Zadanie 9.1.", section="9",
+             content_type=CT.EXERCISE, text="Podaj dziesiąty wyraz.", latex="x",
+             order_index=9, extraction_method=EM.pandoc_omml, confidence=None)
+    db.add(sub)
+    db.flush()
+
+    class OldAgent:
+        name, model, prompt_version = "old", None, "m3-map-v1"
+
+        def map(self, request):
+            return MappingResult(topic_id=None, content_type=CT.EXERCISE,
+                                 confidence=0.3, rationale="bare subtask")
+
+    m = map_chunk(db, sub.id, OldAgent())          # subtask, old version -> flag
+    m1 = map_chunk(db, w.chunk_ids["3"], OldAgent())  # top-level, old version -> no flag
+    for it in db.query(ReviewItem).all():
+        record_decision(db, it.id, reviewer="e", decision=ReviewDecisionType.APPROVE)
+
+    n = flag_stem_defect_reviews(db, current_prompt_version="m3-map-v2")
+    assert n == 1
+    flagged = [it for it in db.query(ReviewItem).all() if it.input_defect]
+    assert len(flagged) == 1 and flagged[0].ref_id == m.id
+    # idempotent
+    assert flag_stem_defect_reviews(db, current_prompt_version="m3-map-v2") == 0
