@@ -38,19 +38,39 @@ to review — only an uncertain *mapping* is (SPEC §9). An unreviewed low-
 confidence guess is **not** written onto `exercises.topic_id`; only an
 `AI_SUGGESTED` (confident) or human-`APPROVED` mapping propagates.
 
-**0.80 is provisional — a starting value, not evidence.** No real-agent
-confidence data exists yet. It sits above the stub's "token overlap" band
-(≤0.6) and below its "clear citation" band (0.92), which is meaningless for the
-real agent. The threshold is a parameter of `map_chunk` / `map_document` /
-`MAP_CHUNK`, not a constant baked into persistence. `zaspro.mapping.run
---review-all` forces every mapping into the queue (threshold 1.01) for a
-calibration pass: map one real arkusz with `ClaudeMappingAgent`, review the
-whole paper by keyboard, then set the cutoff where the agent's self-reported
-confidence actually predicts human agreement (e.g. the lowest confidence at
-which ≥95% of mappings were approved unchanged). Until that pass is run, treat
-auto-suggested mappings as unaudited. If the real agent turns out confident on
-nearly everything, that is its own failure mode — auto-approving confidently
-wrong mappings nobody looks at — and the calibration pass is what surfaces it.
+**0.80 is now evidence-based, but thinly.** Calibration pass on 27 Aug 2026:
+`MMAP-P0-660-A-2405-arkusz.docx` mapped with `ClaudeMappingAgent`
+(`claude-opus-5`), threshold 1.01 so all 37 chunks queued, reviewed by keyboard.
+Result (`m3/mapping_calibration.md`):
+
+| band | n | accepted unchanged | agreement |
+|---|---|---|---|
+| [0.0, 0.5) | 1 | 0 | 0% |
+| [0.5, 0.7) | 9 | 9 | 100% |
+| [0.7, 0.8) | 4 | 3 | 75% |
+| [0.8, 0.9) | 9 | 9 | 100% |
+| [0.9, 1.0] | 14 | 14 | 100% |
+
+35/37 accepted unchanged; both corrections fell below 0.8; everything at or
+above 0.8 was accepted. `AUTO_APPROVE_THRESHOLD = 0.80` is set from this. It is
+still a parameter of `map_chunk` / `map_document` / `MAP_CHUNK`, not a baked
+constant.
+
+**Caveats, on the record:** one paper, 37 samples, a single reviewer. The
+[0.7, 0.8) band (n=4, 75%) and [0.0, 0.5) band (n=1, 0%) are too thin to draw a
+line through — 0.80 is the boundary *below* which the two errors happened, not a
+statistically defended cutoff. **Revisit once a few hundred mappings have been
+reviewed** (the audit sampler feeds this continuously), and re-run
+`zaspro.review.calibration_run`.
+
+**Recommender bug fixed in the same pass.** The first cut of
+`agreement_curve` skipped bands with n<5 when picking a recommendation, so it
+ignored the n=1 band at 0% and the n=4 band at 75% and returned `0.00` — which,
+taken literally, auto-approves the mapping that was rejected outright. Now a
+band below the target blocks the cutoff regardless of sample count, and when the
+band that would sit at the cutoff is thin the tool reports "insufficient data",
+never a number. `--review-all` forces every mapping into the queue for future
+calibration passes; `--remap` re-runs an already-mapped paper.
 
 ### 2. `StubMappingAgent` for the offline path
 

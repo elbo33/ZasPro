@@ -36,10 +36,14 @@ PROMPT_VERSION = "m3-map-v1"
 # A mapping at or above this confidence is trusted straight away
 # (`mapping_status = AI_SUGGESTED`) and never reaches the review queue *unless*
 # the audit sampler picks it. Below it, the mapping is `REVIEW_REQUIRED` and a
-# `ReviewItem` is created. This single number is the "deterministically
-# extracted chunks do not clutter the queue" lever (SPEC §9): clean pandoc text
-# maps confidently, so it sails through. Provisional until a calibration pass
-# (`zaspro.mapping.run --review-all`) fixes it from evidence — see ADR 0009.
+# `ReviewItem` is created. This is the "deterministically extracted chunks do
+# not clutter the queue" lever (SPEC §9).
+#
+# Set from the 27 Aug 2026 calibration pass (one arkusz, 37 mappings reviewed):
+# both corrections fell below 0.8, everything at or above 0.8 was accepted
+# unchanged. Thin evidence — revisit after a few hundred reviewed mappings and
+# re-run `zaspro.review.calibration_run`. A parameter of `map_chunk` /
+# `map_document` / `MAP_CHUNK`, not a baked constant. See ADR 0009.
 AUTO_APPROVE_THRESHOLD = 0.80
 
 # A permanent random fraction of *confident* mappings is queued anyway, flagged

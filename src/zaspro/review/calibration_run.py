@@ -37,8 +37,9 @@ def render() -> str:
     ]
     for b in cal.bands:
         rate = f"{b.agreement:.0%}" if b.agreement is not None else "—"
+        close = "]" if b.hi >= 1.0 else ")"
         L.append(
-            f"| [{b.lo:.1f}, {b.hi:.1f}){' ' if b.hi < 1 else ']'} | {b.n} | "
+            f"| [{b.lo:.1f}, {b.hi:.1f}{close} | {b.n} | "
             f"{b.agree} | {b.disagree} | {rate} | {b.audit} |"
         )
 
@@ -46,14 +47,15 @@ def render() -> str:
     if cal.recommended_threshold is not None:
         L.append(
             f"**Evidence-based threshold: {cal.recommended_threshold:.2f}** — the "
-            f"lowest band at/above which every band clears {cal.target:.0%} "
-            "agreement (with ≥5 samples). Set `AUTO_APPROVE_THRESHOLD` here."
+            f"lowest cutoff such that every band at or above it clears "
+            f"{cal.target:.0%} agreement, and the band sitting at the cutoff has "
+            "≥5 samples. A band below target blocks the cutoff no matter how few "
+            "samples it has. Set `AUTO_APPROVE_THRESHOLD` here."
         )
     else:
         L.append(
-            "**No threshold recommendation yet** — not enough resolved reviews, or "
-            "no confidence band clears the target. Keep the queue at "
-            "`--review-all` and work more mappings."
+            "**No threshold recommendation** — see the reason below. Do not read "
+            "the absence of a number as \"0.00 is fine\"."
         )
     for n in cal.notes:
         L.append(f"- {n}")

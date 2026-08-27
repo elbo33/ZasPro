@@ -26,6 +26,7 @@ from zaspro.db.models import (
 # lower bound of each band; last band is [0.9, 1.0]
 _BANDS = [0.0, 0.5, 0.7, 0.8, 0.9]
 _TARGET_AGREEMENT = 0.95
+_MIN_SAMPLES = 5  # a band with fewer than this cannot, on its own, set the cutoff
 
 
 @dataclass
@@ -59,6 +60,52 @@ def _band_for(conf: float) -> tuple[float, float]:
             lo = b
     hi = next((x for x in _BANDS if x > lo), 1.0)
     return lo, hi
+
+
+def recommend_threshold(bands: list[Band]) -> tuple[float | None, str | None]:
+    """The lowest band boundary `t` such that every band at or above `t` is safe
+    to auto-approve. Returns `(threshold, None)` on success, `(None, reason)`
+    otherwise.
+
+    * A band at/above `t` whose agreement is below the target **blocks** `t` —
+      no matter how few samples it has. A thin band at 0% agreement is still
+      evidence that auto-approving there is wrong. (This is the bug fix: the
+      first version skipped bands with n<5 when scanning, so an n=1 band at 0%
+      and an n=4 band at 75% were ignored and it returned 0.00.)
+    * If nothing blocks `t` but the lowest non-empty band at/above `t` is thin
+      (< `_MIN_SAMPLES`), there isn't enough evidence to stand a cutoff on it —
+      report "insufficient data", never a number.
+
+    The number returned is the lower bound of the lowest band that actually
+    carries evidence — never a level whose band range has zero samples (that
+    would repeat the original bug in the other direction: "clean" by absence of
+    data).
+    """
+
+    hit_thin_cutoff: Band | None = None
+    for b in bands:
+        at_or_above = [x for x in bands if x.lo >= b.lo]
+        blocking = [
+            x for x in at_or_above
+            if x.n > 0 and (x.agreement or 0.0) < _TARGET_AGREEMENT
+        ]
+        if blocking:
+            continue
+        cutoff_band = next((x for x in at_or_above if x.n > 0), None)
+        if cutoff_band is None:
+            continue  # no data at all at/above here
+        if cutoff_band.n < _MIN_SAMPLES:
+            hit_thin_cutoff = hit_thin_cutoff or cutoff_band
+            continue  # never recommend a cutoff we can't stand on; look higher
+        return cutoff_band.lo, None
+
+    if hit_thin_cutoff is not None:
+        return None, (
+            "insufficient data: the band(s) that would set the cutoff are thin "
+            f"(e.g. [{hit_thin_cutoff.lo:.1f}, {hit_thin_cutoff.hi:.1f}) "
+            f"n={hit_thin_cutoff.n})"
+        )
+    return None, f"no confidence band clears {_TARGET_AGREEMENT:.0%} agreement"
 
 
 def agreement_curve(session: Session) -> Calibration:
@@ -103,23 +150,23 @@ def agreement_curve(session: Session) -> Calibration:
         else:
             b.disagree += 1
 
-    # recommended threshold: the lowest band boundary at/above which every band
-    # meets the target (and has enough data to mean something)
-    recommended: float | None = None
-    for b in bands:
-        higher = [x for x in bands if x.lo >= b.lo and x.n >= 5]
-        if higher and all(
-            (x.agreement or 0.0) >= _TARGET_AGREEMENT for x in higher
-        ):
-            recommended = b.lo
-            break
+    recommended, reason = recommend_threshold(bands)
 
     notes: list[str] = []
-    thin = [f"[{b.lo:.1f},{b.hi:.1f})" for b in bands if 0 < b.n < 5]
+    if recommended is None and reason:
+        notes.append(reason)
+    thin = [f"[{b.lo:.1f},{b.hi:.1f})" for b in bands if 0 < b.n < _MIN_SAMPLES]
     if thin:
         notes.append(
             "thin data in " + ", ".join(thin) + " — review more mappings before trusting these"
         )
+    below = [
+        f"[{b.lo:.1f},{b.hi:.1f}) {b.agreement:.0%} (n={b.n})"
+        for b in bands
+        if b.n > 0 and (b.agreement or 0.0) < _TARGET_AGREEMENT
+    ]
+    if below:
+        notes.append("below target: " + ", ".join(below))
     if pending:
         notes.append(f"{pending} mapping review items still open — curve is partial")
     if resolved == 0:

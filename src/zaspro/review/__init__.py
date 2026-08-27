@@ -3,7 +3,7 @@
     from zaspro.review import next_item, record_decision, queue_stats, batch_approve
 """
 
-from zaspro.review.calibration import Calibration, agreement_curve
+from zaspro.review.calibration import Band, Calibration, agreement_curve, recommend_threshold
 from zaspro.review.queue import (
     BATCH_MIN_CONFIDENCE,
     BatchGroup,
@@ -21,8 +21,10 @@ __all__ = [
     "BatchGroup",
     "QueueStats",
     "ReviewError",
+    "Band",
     "Calibration",
     "agreement_curve",
+    "recommend_threshold",
     "batch_approve",
     "batch_groups",
     "next_item",
