@@ -15,8 +15,9 @@ real agent — token usage and an estimated API cost.
 calibration pass. `--remap` re-runs chunks that already have a mapping, dropping
 the old rows and review item first. Without it, already-mapped chunks are
 skipped; if that leaves a paper with nothing to do it is reported and skipped.
-`--rate-in` / `--rate-out` set the $/1M-token rates for the cost estimate
-(defaults 15 / 75 — assumed Opus rate, correct if it differs).
+`--rate-in` / `--rate-out` override the $/1M-token rates for the cost estimate;
+the defaults are the published `claude-opus-5` base rates (checked 27 Aug 2026:
+$5 input, $25 output, $0.50 cache-read per MTok).
 
 Exit codes: 0 success, 1 a job failed, 2 bad arguments / a paper not ingested.
 """
@@ -47,13 +48,22 @@ from zaspro.mapping.handler import get_agent
 from zaspro.review import queue_stats
 
 
+# Published claude-opus-5 base rates, $/1M tokens (checked 27 Aug 2026 against
+# platform.claude.com/docs/en/about-claude/pricing). Prompt caching: 5-min
+# write = 1.25x base input, cache read = 0.1x base input.
+OPUS5_RATE_IN = 5.0
+OPUS5_RATE_OUT = 25.0
+
+
 @dataclass
 class PaperResult:
     ref: str
     mapped: int
     queued: int  # review items this paper added
-    tok_in: int
+    tok_in: int  # fresh input only
     tok_out: int
+    tok_cache_read: int
+    tok_cache_write: int
     failed: int
 
 
@@ -89,8 +99,8 @@ def run(
     threshold: float = AUTO_APPROVE_THRESHOLD,
     *,
     remap: bool = False,
-    rate_in: float = 15.0,
-    rate_out: float = 75.0,
+    rate_in: float = OPUS5_RATE_IN,
+    rate_out: float = OPUS5_RATE_OUT,
 ) -> int:
     agent = get_agent()  # honours zaspro.mapping.set_agent() for offline tests
     print(f"agent: {_describe_agent(agent)}")
@@ -138,7 +148,7 @@ def run(
                     Job.job_type == JobType.MAP_CHUNK, Job.id > job_hwm
                 )
             ).all()
-            tok_in = tok_out = failed = mapped = 0
+            tok_in = tok_out = tok_cr = tok_cw = failed = mapped = 0
             for status, out in rows:
                 if status is JobStatus.FAILED:
                     failed += 1
@@ -147,11 +157,16 @@ def run(
                 u = (out or {}).get("usage") or {}
                 tok_in += int(u.get("in", 0))
                 tok_out += int(u.get("out", 0))
+                tok_cr += int(u.get("cache_read", 0))
+                tok_cw += int(u.get("cache_write", 0))
             queued = max(0, _open_items(s) - open_before)
-            results.append(PaperResult(ref, mapped, queued, tok_in, tok_out, failed))
+            results.append(
+                PaperResult(ref, mapped, queued, tok_in, tok_out, tok_cr, tok_cw, failed)
+            )
+            cache = f", {tok_cr:,} cache-read" if tok_cr else ""
             print(
-                f"  {ref}: mapped {mapped}, queued {queued}, "
-                f"failed {failed}, tokens {tok_in:,} in / {tok_out:,} out"
+                f"  {ref}: mapped {mapped}, queued {queued}, failed {failed}, "
+                f"tokens {tok_in:,} in{cache} / {tok_out:,} out"
             )
 
     # totals
@@ -159,6 +174,8 @@ def run(
     tot_queued = sum(r.queued for r in results)
     tot_in = sum(r.tok_in for r in results)
     tot_out = sum(r.tok_out for r in results)
+    tot_cr = sum(r.tok_cache_read for r in results)
+    tot_cw = sum(r.tok_cache_write for r in results)
     tot_failed = sum(r.failed for r in results)
 
     with session_scope() as s:
@@ -170,17 +187,33 @@ def run(
     print(f"review queue depth   : {st.open_total}  (this run added {tot_queued})")
     print(f"  by type            : {st.by_type}")
     print(f"  mappings by status  : {st.mappings_by_status}")
-    if real and (tot_in or tot_out):
-        cost = tot_in / 1e6 * rate_in + tot_out / 1e6 * rate_out
+    if real and (tot_in or tot_out or tot_cr):
+        cost = (
+            tot_in / 1e6 * rate_in
+            + tot_cw / 1e6 * (rate_in * 1.25)   # 5-min cache write
+            + tot_cr / 1e6 * (rate_in * 0.10)   # cache read
+            + tot_out / 1e6 * rate_out
+        )
+        rate_note = (
+            "published claude-opus-5 rate, checked 27 Aug 2026"
+            if (rate_in, rate_out) == (OPUS5_RATE_IN, OPUS5_RATE_OUT)
+            else "overridden rate"
+        )
         print()
-        print(f"tokens               : {tot_in:,} in  /  {tot_out:,} out")
+        print(
+            f"tokens               : {tot_in:,} in  /  {tot_cr:,} cache-read  /  "
+            f"{tot_cw:,} cache-write  /  {tot_out:,} out"
+        )
         print(
             f"est. API cost        : ${cost:,.2f}  "
-            f"(at ${rate_in}/${rate_out} per 1M in/out — assumed rate)"
+            f"(${rate_in:g}/${rate_out:g}/1M in/out; cache 1.25x write, 0.1x read "
+            f"— {rate_note})"
         )
         if results:
-            per = cost / len(results)
-            print(f"  per paper (avg)     : ${per:,.2f}  (~{tot_mapped // len(results)} chunks)")
+            print(
+                f"  per paper (avg)     : ${cost / len(results):,.4f}  "
+                f"(~{tot_mapped // len(results)} chunks)"
+            )
     return 1 if tot_failed else 0
 
 
@@ -200,6 +233,6 @@ if __name__ == "__main__":
     thr = 1.01 if "--review-all" in args else AUTO_APPROVE_THRESHOLD
     if "--threshold" in args:
         thr = float(args[args.index("--threshold") + 1])
-    ri = float(args[args.index("--rate-in") + 1]) if "--rate-in" in args else 15.0
-    ro = float(args[args.index("--rate-out") + 1]) if "--rate-out" in args else 75.0
+    ri = float(args[args.index("--rate-in") + 1]) if "--rate-in" in args else OPUS5_RATE_IN
+    ro = float(args[args.index("--rate-out") + 1]) if "--rate-out" in args else OPUS5_RATE_OUT
     sys.exit(run(refs, thr, remap="--remap" in args, rate_in=ri, rate_out=ro))

@@ -325,7 +325,12 @@ def handle_map_chunk(session: Session, job: Job) -> dict:
     }
     usage = getattr(mapping, "_call_usage", None)
     if usage is not None:
-        out["usage"] = {"in": usage.input_tokens, "out": usage.output_tokens}
+        out["usage"] = {
+            "in": usage.input_tokens,
+            "out": usage.output_tokens,
+            "cache_read": usage.cache_read,
+            "cache_write": usage.cache_write,
+        }
     return out
 
 

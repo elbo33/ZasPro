@@ -74,10 +74,19 @@ class MappingRequest(BaseModel):
 
 
 class Usage(BaseModel):
-    """Token usage from one agent call. Only the real agent sets it."""
+    """Token usage from one agent call. Only the real agent sets it.
+
+    The three input figures are disjoint and additive:
+      * `input_tokens`  — fresh input, billed at the base rate
+      * `cache_write`   — cache_creation_input_tokens, billed at 1.25x (5-min)
+      * `cache_read`    — cache_read_input_tokens, billed at 0.1x
+    `output_tokens` includes thinking tokens (billed as output).
+    """
 
     input_tokens: int = 0
-    output_tokens: int = 0  # includes thinking tokens (billed as output)
+    output_tokens: int = 0
+    cache_read: int = 0
+    cache_write: int = 0
 
 
 class SecondaryTopic(BaseModel):
@@ -320,33 +329,56 @@ class ClaudeMappingAgent:
         )
         return getattr(msg, "model", self.model)
 
-    def _user_block(self, req: MappingRequest) -> str:
+    @staticmethod
+    def _candidates_block(req: MappingRequest) -> str:
+        """Stable across every call in a run (same 73 podstawowy requirements,
+        deterministic order) — the prompt-cache prefix."""
         cands = "\n".join(
             f"- topic_id={c.topic_id}  {c.code}  (unit {c.unit})  {c.name}"
             for c in req.candidates
         )
+        return f"CANDIDATE REQUIREMENTS ({len(req.candidates)}):\n{cands}\n"
+
+    @staticmethod
+    def _fragment_block(req: MappingRequest) -> str:
         return (
             f"FRAGMENT heading: {req.heading or '—'}\n"
             f"FRAGMENT content type so far: {req.current_content_type.value}\n"
             f"FRAGMENT text:\n{req.text}\n\n"
-            f"FRAGMENT latex:\n{req.latex or '—'}\n\n"
-            f"CANDIDATES ({len(req.candidates)}):\n{cands}\n"
+            f"FRAGMENT latex:\n{req.latex or '—'}\n"
         )
 
     def map(self, request: MappingRequest) -> MappingResult:
         client = self._client_lazy()
+        _cache = {"type": "ephemeral"}
         msg = client.messages.create(
             model=self.model,
             max_tokens=self.max_tokens,
             thinking={"type": "adaptive"},
-            system=_SYSTEM,
-            tools=[_TOOL],
-            messages=[{"role": "user", "content": self._user_block(request)}],
+            system=[{"type": "text", "text": _SYSTEM, "cache_control": _cache}],
+            tools=[{**_TOOL, "cache_control": _cache}],
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        # cached prefix: system + tools + the candidate list
+                        {
+                            "type": "text",
+                            "text": self._candidates_block(request),
+                            "cache_control": _cache,
+                        },
+                        # varies per chunk — not cached
+                        {"type": "text", "text": self._fragment_block(request)},
+                    ],
+                }
+            ],
         )
         u = getattr(msg, "usage", None)
         self.last_usage = Usage(
             input_tokens=getattr(u, "input_tokens", 0) or 0,
             output_tokens=getattr(u, "output_tokens", 0) or 0,
+            cache_read=getattr(u, "cache_read_input_tokens", 0) or 0,
+            cache_write=getattr(u, "cache_creation_input_tokens", 0) or 0,
         )
         for block in msg.content:
             if getattr(block, "type", None) == "tool_use" and block.name == "record_mapping":

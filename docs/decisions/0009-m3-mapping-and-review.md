@@ -204,6 +204,25 @@ because M4 knowledge specs would bake in the single-topic assumption.
   format wants the first. The old single count was a touches count; it is not
   progress that the "5+" number was higher under it.
 
+### 9. Cost — measured, not assumed; prompt caching on
+
+The first six-paper mapping run (2203/2209/2305/2312/2505/2605, threshold 0.80,
+no `--review-all`) cost about **$8.75 USD** for ~229 `claude-opus-5` calls —
+1.53M input / 110k output tokens, ~6.7k input per chunk. `zaspro.mapping.run`'s
+estimator had assumed $15/$75 per 1M and reported $31.19 — **3x high**. Fixed:
+the estimator default is now the published `claude-opus-5` rate ($5 input /
+$25 output / $0.50 cache-read per MTok, checked 27 Aug 2026), labelled as the
+published rate; `--rate-in` / `--rate-out` override it.
+
+**Prompt caching** (`ClaudeMappingAgent.map`): the ~5k-token static prefix —
+system prompt + tool schema + the 73-requirement candidate list — carries a
+`cache_control: ephemeral` breakpoint, so after the first call of a run each
+chunk pays 0.1x for that prefix instead of 1x. That prefix was ~6.2k of the
+~6.7k input tokens per chunk, resent 229 times; caching roughly halves the
+input bill. `Usage` and the `MAP_CHUNK` job output now carry
+`cache_read` / `cache_write` token counts, and the run summary breaks the cost
+into fresh / cache-read / cache-write / output.
+
 ## What this does not touch
 
 No knowledge extraction, no dedupe/merge, no normalisation, no exercise
