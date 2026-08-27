@@ -16,7 +16,17 @@ from __future__ import annotations
 import enum
 from typing import Any
 
-from sqlalchemy import Enum, ForeignKey, Integer, String, Text, UniqueConstraint
+from datetime import datetime
+
+from sqlalchemy import (
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    func,
+)
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -98,11 +108,24 @@ class Exercise(Base, TimestampMixin):
 
     @property
     def full_statement(self) -> str:
-        """Stem (from the parent) + this exercise's own statement."""
+        """Stem (from the parent) + this exercise's own statement, plain text.
+
+        **Always read this, never `statement` alone**, for a subtask: the M3
+        stem defect was reading the body without the parent's shared setup.
+        """
 
         if self.parent is not None and self.parent.statement:
             return f"{self.parent.statement}\n\n{self.statement}"
         return self.statement
+
+    @property
+    def full_statement_latex(self) -> str | None:
+        """Same as `full_statement`, in raw LaTeX (`statement_latex_raw`)."""
+
+        own = self.statement_latex_raw
+        if self.parent is not None and self.parent.statement_latex_raw:
+            return f"{self.parent.statement_latex_raw}\n\n{own or ''}".strip()
+        return own
 
 
 class ExerciseFigure(Base):
@@ -114,3 +137,38 @@ class ExerciseFigure(Base):
     figure_id: Mapped[int] = mapped_column(
         ForeignKey("figures.id", ondelete="CASCADE"), primary_key=True
     )
+
+
+class TopicRole(str, enum.Enum):
+    PRIMARY = "PRIMARY"
+    SECONDARY = "SECONDARY"
+
+
+class ExerciseTopic(Base):
+    """Which curriculum requirements an exercise tests (M4 §11 aggregation
+    input). Materialised from `chunk_mappings` by
+    `zaspro.knowledge.aggregate.rebuild_exercise_topics` — one PRIMARY row plus
+    a SECONDARY row per other requirement the chunk's mapping named, but only
+    for chunks whose primary mapping is accepted (`AI_SUGGESTED` or human
+    `APPROVED`), never a rejected or still-pending one.
+
+    Knowledge extraction aggregates a topic's exercises from **both** roles;
+    reading `exercises.topic_id` (the primary alone) would rebuild the narrow
+    view multi-topic mapping removed (SPEC §10, §17)."""
+
+    __tablename__ = "exercise_topics"
+
+    exercise_id: Mapped[int] = mapped_column(
+        ForeignKey("exercises.id", ondelete="CASCADE"), primary_key=True
+    )
+    topic_id: Mapped[int] = mapped_column(
+        ForeignKey("topics.id", ondelete="CASCADE"), primary_key=True, index=True
+    )
+    role: Mapped[TopicRole] = mapped_column(
+        Enum(TopicRole, name="topic_role", native_enum=False, validate_strings=True)
+    )
+    confidence: Mapped[float | None] = mapped_column()  # the mapping's confidence
+    source_chunk_mapping_id: Mapped[int | None] = mapped_column(
+        ForeignKey("chunk_mappings.id", ondelete="SET NULL")
+    )
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())

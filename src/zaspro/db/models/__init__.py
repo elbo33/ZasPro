@@ -13,6 +13,8 @@ from zaspro.db.models.exercises import (
     Exercise,
     ExerciseFigure,
     ExerciseOrigin,
+    ExerciseTopic,
+    TopicRole,
     VerificationStatus,
 )
 from zaspro.db.models.ingestion import (
@@ -54,6 +56,7 @@ __all__ = [
     "SourceFormat", "RenderStatus",
     # exercises
     "Exercise", "ExerciseFigure", "ExerciseOrigin", "VerificationStatus",
+    "ExerciseTopic", "TopicRole",
     # jobs
     "Job", "JobType", "JobStatus",
     # mapping + review
