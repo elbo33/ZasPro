@@ -77,17 +77,44 @@ system prompt and the review card show the stem. `review_items.input_defect`
 `flag_stem_defect_reviews` set it on the **32** resolved subtask decisions;
 `agreement_curve` excludes them.
 
-**Effect:** removing the 32 lifts the sub-0.8 bands ([0.5,0.7) 66% → 80%;
-[0.0,0.5) 14% → 33%) but does **not** move the recommendation. On the clean
-72 top-level decisions the recommender returns **0.70**, not 0.80 — the
-[0.7, 0.8) band is 19/19 (100%) once broken-input rejections are gone; the
-single 75% data point that had pinned v1 at 0.80 was contamination.
+**Effect on the sub-0.8 bands:** removing the 32 lifts [0.5,0.7) 66% → 83% and
+[0.0,0.5) 14% → 33%. It does **not** move the recommendation — the six-paper
+run had already put enough clean samples in [0.7,0.8) that the contaminated
+104-decision curve also recommended 0.70.
 
-**0.80 stays for now.** It is safe under every curve computed (everything
-≥ 0.80 is 100% agreement). Lowering to 0.70 waits until the 32 subtasks are
-remapped with the stem (`zaspro.mapping.run --remap-defective`, ~32 calls) and
-re-reviewed, so the clean curve covers subtasks too. M4 aggregates from the
-threshold, so it does not move on a partial dataset.
+### 1b. AUTO_APPROVE_THRESHOLD = 0.70 (28 Aug 2026)
+
+After `--remap-defective` (the 32 flagged subtasks re-mapped with their stems)
+and re-review, the curve is:
+
+| band | n | agreement |
+|---|---|---|
+| [0.0, 0.5) | 3 | 33% |
+| [0.5, 0.7) | 23 | 83% |
+| **[0.7, 0.8)** | **25** | **100%** |
+| [0.8, 0.9) | 8 | 100% |
+| [0.9, 1.0] | 23 | 100% |
+
+**Set `AUTO_APPROVE_THRESHOLD = 0.70`.** Curve provenance: seven papers,
+top-level *and* subtask, multi-topic contract, prompt `m3-map-v2`, stem defect
+cleared. 56 decisions at or above 0.70, every one accepted unchanged. The
+[0.7,0.8) band went from n=4 (75%, the point that pinned v1 at 0.80) to n=25
+(100%) — **the drop from 0.80 to 0.70 is from more data in that band, not from
+the defect fix.** Bands below 0.70 still carry real disagreement (83% / 33%),
+so 0.70 is the floor, not a suggestion to go lower.
+
+**Count reconciliation** (why the curve shows 82, not 104): the 72 top-level
+decisions are untouched. Of the 32 flagged subtask items, `--remap-defective`
+deleted the items and decisions, then re-mapped with the stem — **22 now map at
+≥ 0.70 and are `AI_SUGGESTED` (no review item, no decision needed)**; the other
+**10** stayed sub-threshold, were re-reviewed, and all 10 were APPROVED (zero
+subtask rejections after the fix — the 11 earlier were all broken-input). 72 +
+10 = 82. The 22 are not lost: the mappings exist, feed coverage and M4; there
+is simply no longer a human decision to make on them. Separately, 22 *other*
+subtask primaries had mapped confidently on the stem-less body at v1 and never
+entered the queue; `--remap-defective` now also sweeps those (any subtask
+primary with `prompt_version != PROMPT_VERSION`), so M4 does not aggregate from
+stem-less subtask mappings.
 
 **Recommender bug fixed during the v1 pass.** The first cut of
 `agreement_curve` skipped bands with n<5 when picking a recommendation, so it

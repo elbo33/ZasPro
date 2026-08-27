@@ -112,10 +112,15 @@ def _cost_line(tot_in, tot_out, tot_cr, tot_cw, rate_in, rate_out) -> str:
 def remap_defective(
     *, rate_in: float = OPUS5_RATE_IN, rate_out: float = OPUS5_RATE_OUT
 ) -> int:
-    """Re-map every chunk whose review item is flagged `input_defect` (a subtask
-    mapped without its stem). The old mapping, its review item and its decisions
-    are dropped and rebuilt at the fixed prompt version, so the flag clears with
-    them. Small, scoped run."""
+    """Re-map every **subtask** chunk whose primary mapping predates the stem
+    fix (`prompt_version != PROMPT_VERSION`). Covers both the review items that
+    were flagged `input_defect` and the subtasks that mapped confidently on the
+    stem-less body and so were never queued. Each chunk's old mapping, review
+    item and decisions are dropped and rebuilt at the current prompt version.
+    Idempotent once every subtask is on the current version."""
+
+    from zaspro.mapping import PROMPT_VERSION
+    from zaspro.db.models import SourceChunk as _SC
 
     agent = get_agent()
     print(f"agent: {_describe_agent(agent)}")
@@ -127,19 +132,20 @@ def remap_defective(
             print(f"ERROR: Claude preflight failed ({type(e).__name__}): {e}")
             return 2
 
+    import re as _re
+    _sub = _re.compile(r"Zadanie\s+\d+\.\d+")
     with session_scope() as s:
-        chunk_ids = list(
-            s.scalars(
-                select(ChunkMapping.source_chunk_id)
-                .join(ReviewItem, ReviewItem.ref_id == ChunkMapping.id)
-                .where(
-                    ReviewItem.input_defect.is_(True),
-                    ReviewItem.item_type == "CURRICULUM_MAPPING",
-                )
+        rows = s.execute(
+            select(ChunkMapping.source_chunk_id, _SC.heading)
+            .join(_SC, _SC.id == ChunkMapping.source_chunk_id)
+            .where(
+                ChunkMapping.is_primary.is_(True),
+                ChunkMapping.prompt_version != PROMPT_VERSION,
             )
-        )
+        ).all()
+        chunk_ids = [cid for cid, h in rows if h and _sub.match(h)]
         if not chunk_ids:
-            print("nothing flagged input_defect — nothing to remap")
+            print("every subtask mapping is already at the current prompt version")
             return 0
         job_hwm = s.scalar(select(func.max(Job.id))) or 0
         for cid in chunk_ids:

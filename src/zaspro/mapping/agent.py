@@ -42,13 +42,15 @@ PROMPT_VERSION = "m3-map-v2"
 # `ReviewItem` is created. This is the "deterministically extracted chunks do
 # not clutter the queue" lever (SPEC §9).
 #
-# Validated by two calibration passes on MMAP-P0-660-A-2405-arkusz.docx, 37
-# reviewed mappings each: v1 single-topic and v2 multi-topic (migration 0006).
-# Both agree — every correction fell below 0.8, everything at/above was accepted
-# unchanged. Thin evidence still (one paper, one reviewer, bands below 0.8
-# small); the 3% audit sampler keeps feeding the curve. A parameter of
-# `map_chunk` / `map_document` / `MAP_CHUNK`, not a baked constant. See ADR 0009.
-AUTO_APPROVE_THRESHOLD = 0.80
+# Set from the 28 Aug 2026 calibration curve: seven papers, top-level +
+# subtask, multi-topic contract, prompt m3-map-v2 (stem defect cleared). 82
+# reviewed decisions; [0.7,0.8) is 25/25 and everything above is 100% — 56
+# samples at or above 0.70, all accepted. The move down from 0.80 came from
+# more data in the [0.7,0.8) band (n=4 -> n=25), not from the defect fix; bands
+# below 0.70 still carry real disagreement (83% / 33%). The 3% audit sampler
+# keeps feeding it. A parameter of `map_chunk` / `map_document` / `MAP_CHUNK`,
+# not a baked constant. See ADR 0009 §1a.
+AUTO_APPROVE_THRESHOLD = 0.70
 
 # A permanent random fraction of *confident* mappings is queued anyway, flagged
 # `audit_sample`, so no threshold setting can ever put the system in a state
