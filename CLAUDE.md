@@ -12,3 +12,10 @@ verified source inventory and extraction tooling research.
 - Ask before adding a dependency that brings infrastructure with it.
 - Files in sources/raw/ are read-only source material. Do not process
   them beyond what the current milestone requires.
+- Nothing invokes the real LLM agent except a command the user runs
+  themselves. Smoke tests, examples, and dev fixtures use the stub agent
+  explicitly and in-process (e.g. `StubMappingAgent()`), never via a CLI
+  entry point that would resolve `default_agent()` against a configured
+  `ANTHROPIC_API_KEY`. `.env` is read by pydantic-settings regardless of the
+  shell environment, so unsetting the env var is not enough — pass the stub
+  directly.
