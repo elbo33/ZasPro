@@ -1,16 +1,10 @@
-"""Export an approved topic's knowledge layer to a committed git file.
+"""Export an approved section's knowledge spec to a committed git file.
 
-ADR 0011: git holds the record, the database is the working store. Once a
-topic's KNOWLEDGE_SPEC review card is resolved, its approved items are written
-to `knowledge/topics/<official_requirement_code>.yaml` — human-readable,
-diffable, one file per topic. That file is the freeze: `extract_topic` refuses
-to re-run a topic that has one unless `force=True`.
-
-The file carries everything needed to rebuild the DB rows (plus the source
-documents, which M2 re-ingests): the extraction metadata, every approved
-concept / formula / method / example / objective / misconception with its
-evidence and cited exercises, the unresolved flags, and the touch-set exercise
-index (numbers + source, not full text — that lives in the source documents).
+ADR 0012: git holds the record, the database is the working store. Once a
+section's KNOWLEDGE_SPEC review card is resolved, its approved items are written
+to `knowledge/sections/<slug>.yaml` — human-readable, diffable, one file per
+section. That file is the freeze: `write_section` refuses to re-run a section
+that has one unless `force=True`.
 """
 
 from __future__ import annotations
@@ -26,157 +20,98 @@ from sqlalchemy.orm import Session
 
 from zaspro.db.base import session_scope
 from zaspro.db.models import (
-    Concept, Example, Exercise, ExerciseTopic, Formula, KnowledgeExtraction,
-    KnowledgeFlag, LearningObjective, Method, Misconception, ReviewItem,
-    ReviewItemType, ReviewStatus, SourceChunk, SourceDocument, Topic,
+    Concept, Example, Formula, LearningObjective, Method, Misconception,
+    ReviewItem, ReviewItemType, ReviewStatus, Section, SectionSpec, Topic,
     VerificationStatus,
 )
 
-KNOWLEDGE_ROOT = Path("knowledge/topics")
+KNOWLEDGE_ROOT = Path("knowledge/sections")
 
 
 class ExportError(RuntimeError):
     pass
 
 
-def export_path(code: str) -> Path:
-    return KNOWLEDGE_ROOT / f"{code}.yaml"
+def export_path(slug: str) -> Path:
+    return KNOWLEDGE_ROOT / f"{slug}.yaml"
 
 
-def is_frozen(code: str | None) -> bool:
-    """True once the topic has a committed export file — the 'generate once'
-    lock. `extract_topic` checks this."""
-    return bool(code) and export_path(code).exists()
+def is_frozen(slug: str | None) -> bool:
+    return bool(slug) and export_path(slug).exists()
 
 
-def _approved(session: Session, model: type, topic_id: int) -> list:
+def _approved(session: Session, model: type, section_id: int) -> list:
     return list(
         session.scalars(
             select(model).where(
-                model.topic_id == topic_id,
+                model.section_id == section_id,
                 model.verification_status == VerificationStatus.APPROVED,
-            ).order_by(model.id)
+            ).order_by(model.order_index, model.id)
         )
     )
 
 
-def _chunk_number(session: Session, chunk_ids: list[int] | None) -> list[str]:
-    """chunk ids -> their `Zadanie N.` numbers, for a stable human-readable ref."""
-    if not chunk_ids:
-        return []
-    out: list[str] = []
-    for cid in chunk_ids:
-        c = session.get(SourceChunk, cid)
-        if c is not None and c.heading and c.heading.startswith("Zadanie "):
-            out.append(c.heading.removeprefix("Zadanie ").rstrip(". "))
-    return out
-
-
-def _item_dict(session: Session, item: Any, fields: list[str]) -> dict:
+def _fields(item: Any, names: list[str]) -> dict:
     d: dict[str, Any] = {}
-    prov = getattr(item, "provenance", None)
-    d["provenance"] = prov.value if hasattr(prov, "value") else prov
-    for f in fields:
-        v = getattr(item, f, None)
+    for n in names:
+        v = getattr(item, n, None)
         if v not in (None, "", [], {}):
-            d[f] = v
-    refs = _chunk_number(session, getattr(item, "source_chunk_ids", None))
-    if refs:
-        d["from_exercises"] = refs
+            d[n] = v
     return d
 
 
-def _exercise_index(session: Session, topic_id: int) -> list[dict]:
-    rows = session.execute(
-        select(ExerciseTopic.exercise_id, ExerciseTopic.role, ExerciseTopic.confidence)
-        .where(ExerciseTopic.topic_id == topic_id)
-    ).all()
-    out: list[dict] = []
-    for ex_id, role, conf in rows:
-        ex = session.get(Exercise, ex_id)
-        if ex is None:
-            continue
-        doc = session.get(SourceDocument, ex.source_document_id) if ex.source_document_id else None
-        out.append({
-            "number": ex.exercise_number,
-            "source": doc.file_ref if doc else None,
-            "role": (role.value if hasattr(role, "value") else str(role)),
-            "confidence": round(conf, 3) if conf is not None else None,
-        })
-    out.sort(key=lambda r: (r["source"] or "", r["number"]))
-    return out
-
-
-def build_export(session: Session, topic_id: int) -> dict:
-    topic = session.get(Topic, topic_id)
-    if topic is None:
-        raise ExportError(f"topic {topic_id} not found")
-    code = topic.official_requirement_code
-    if not code:
-        raise ExportError(f"topic {topic_id} has no official_requirement_code")
-
-    ke = session.scalars(
-        select(KnowledgeExtraction).where(KnowledgeExtraction.topic_id == topic_id)
+def build_export(session: Session, section_id: int) -> dict:
+    section = session.get(Section, section_id)
+    if section is None:
+        raise ExportError(f"section {section_id} not found")
+    spec = session.scalars(
+        select(SectionSpec).where(SectionSpec.section_id == section_id)
     ).one_or_none()
-    if ke is None:
-        raise ExportError(f"{code}: no extraction on record — run knowledge.run first")
+    if spec is None:
+        raise ExportError(f"{section.slug}: no spec on record — run knowledge.write first")
 
-    flags = list(
-        session.scalars(
-            select(KnowledgeFlag).where(
-                KnowledgeFlag.topic_id == topic_id, KnowledgeFlag.resolved.is_(False)
-            ).order_by(KnowledgeFlag.id)
-        )
+    codes = sorted(
+        session.get(Topic, sr.topic_id).official_requirement_code
+        for sr in section.requirements
     )
-
-    data: dict[str, Any] = {
-        "requirement_code": code,
-        "name": topic.name,
-        "unit": f"{topic.unit.code} {topic.unit.name}" if topic.unit else None,
-        "requirement_text": topic.statement_latex or topic.description,
-        "extraction": {
-            "agent": ke.agent_name,
-            "model": ke.model,
-            "prompt_version": ke.prompt_version,
-            "exercises": ke.exercises,
-            "extracted_at": ke.extracted_at.isoformat() if ke.extracted_at else None,
-            "approved_at": ke.approved_at.isoformat() if ke.approved_at else None,
-            "approved_by": ke.approved_by,
+    return {
+        "section": section.slug,
+        "name": section.name,
+        "scope": section.scope,
+        "requirements": codes,
+        "spec": {
+            "agent": spec.agent_name,
+            "model": spec.model,
+            "prompt_version": spec.prompt_version,
+            "written_at": spec.written_at.isoformat() if spec.written_at else None,
+            "approved_at": spec.approved_at.isoformat() if spec.approved_at else None,
+            "approved_by": spec.approved_by,
         },
         "concepts": [
-            _item_dict(session, c, ["name", "description", "explanation", "difficulty"])
-            for c in _approved(session, Concept, topic_id)
+            _fields(c, ["name", "description", "explanation", "difficulty"])
+            for c in _approved(session, Concept, section_id)
         ],
         "formulas": [
-            _item_dict(session, f, ["name", "latex_raw", "description", "conditions"])
-            for f in _approved(session, Formula, topic_id)
+            _fields(f, ["name", "latex_raw", "conditions", "description"])
+            for f in _approved(session, Formula, section_id)
         ],
         "methods": [
-            _item_dict(session, m, ["name", "when_to_use", "steps"])
-            for m in _approved(session, Method, topic_id)
+            _fields(m, ["name", "when_to_use", "steps"])
+            for m in _approved(session, Method, section_id)
         ],
         "examples": [
-            _item_dict(session, e, ["statement", "worked_solution", "difficulty"])
-            for e in _approved(session, Example, topic_id)
+            _fields(e, ["statement", "worked_solution", "difficulty"])
+            for e in _approved(session, Example, section_id)
         ],
         "objectives": [
-            _item_dict(session, o, ["statement", "bloom_level"])
-            for o in _approved(session, LearningObjective, topic_id)
+            _fields(o, ["statement", "bloom_level"])
+            for o in _approved(session, LearningObjective, section_id)
         ],
         "misconceptions": [
-            _item_dict(session, mc, [
-                "name", "description", "incorrect_reasoning", "correct_reasoning",
-                "severity", "distractor",
-            ])
-            for mc in _approved(session, Misconception, topic_id)
+            _fields(mc, ["name", "incorrect_reasoning", "correct_reasoning", "severity"])
+            for mc in _approved(session, Misconception, section_id)
         ],
-        "flags": [
-            {"kind": fl.kind.value, "item_kind": fl.item_kind, "detail": fl.detail}
-            for fl in flags
-        ],
-        "exercises": _exercise_index(session, topic_id),
     }
-    return data
 
 
 class _Dumper(yaml.SafeDumper):
@@ -192,99 +127,84 @@ _Dumper.add_representer(str, _str_representer)
 
 
 def dump_yaml(data: dict) -> str:
-    return yaml.dump(
-        data, Dumper=_Dumper, sort_keys=False, allow_unicode=True, width=100
-    )
+    return yaml.dump(data, Dumper=_Dumper, sort_keys=False, allow_unicode=True, width=100)
 
 
-def _review_item(session: Session, topic_id: int) -> ReviewItem | None:
+def _review_item(session: Session, section_id: int) -> ReviewItem | None:
     return session.scalars(
         select(ReviewItem).where(
             ReviewItem.item_type == ReviewItemType.KNOWLEDGE_SPEC,
-            ReviewItem.ref_table == "topics",
-            ReviewItem.ref_id == topic_id,
+            ReviewItem.ref_table == "sections",
+            ReviewItem.ref_id == section_id,
         )
     ).one_or_none()
 
 
-def export_topic(
-    session: Session, topic_id: int, *, reviewer: str | None = None,
-    force_unreviewed: bool = False,
-) -> Path:
-    topic = session.get(Topic, topic_id)
-    if topic is None or not topic.official_requirement_code:
-        raise ExportError(f"topic {topic_id}: no requirement code")
-    code = topic.official_requirement_code
+def export_section(session: Session, section_id: int, *, reviewer: str | None = None,
+                   force_unreviewed: bool = False) -> Path:
+    section = session.get(Section, section_id)
+    if section is None:
+        raise ExportError(f"section {section_id} not found")
 
-    ri = _review_item(session, topic_id)
+    ri = _review_item(session, section_id)
     if not force_unreviewed:
         if ri is None:
-            raise ExportError(f"{code}: no review card — nothing has been reviewed")
+            raise ExportError(f"{section.slug}: no review card — nothing reviewed")
         if ri.status is ReviewStatus.OPEN:
-            raise ExportError(f"{code}: review card is still OPEN — approve it first")
+            raise ExportError(f"{section.slug}: review card is still OPEN — approve it first")
         if ri.status is ReviewStatus.REJECTED:
-            raise ExportError(f"{code}: review card was REJECTED — not an approved spec")
+            raise ExportError(f"{section.slug}: review card was REJECTED — not an approved spec")
 
-    data = build_export(session, topic_id)
-    path = export_path(code)
+    data = build_export(session, section_id)
+    path = export_path(section.slug)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(dump_yaml(data), encoding="utf-8")
 
-    ke = session.scalars(
-        select(KnowledgeExtraction).where(KnowledgeExtraction.topic_id == topic_id)
+    spec = session.scalars(
+        select(SectionSpec).where(SectionSpec.section_id == section_id)
     ).one_or_none()
-    if ke is not None:
+    if spec is not None:
         now = datetime.now(timezone.utc)
-        ke.exported_at = now
-        ke.export_path = str(path)
-        if ke.approved_at is None:
-            ke.approved_at = now
-        if reviewer and not ke.approved_by:
-            ke.approved_by = reviewer
+        spec.exported_at = now
+        spec.export_path = str(path)
+        if spec.approved_at is None:
+            spec.approved_at = now
+        if reviewer and not spec.approved_by:
+            spec.approved_by = reviewer
         session.flush()
     return path
 
 
-def load_export(code: str) -> dict:
-    return yaml.safe_load(export_path(code).read_text(encoding="utf-8"))
+def load_export(slug: str) -> dict:
+    return yaml.safe_load(export_path(slug).read_text(encoding="utf-8"))
 
 
 # --------------------------------------------------------------------------- #
 
 def _main(argv: list[str]) -> int:
     force = "--force-unreviewed" in argv
-    codes = [a for a in argv if not a.startswith("-")]
     do_all = "--all" in argv
+    slugs = [a for a in argv if not a.startswith("-")]
     with session_scope() as s:
         if do_all:
-            rows = s.execute(
-                select(Topic.id, Topic.official_requirement_code).where(
-                    Topic.official_requirement_code.is_not(None)
-                )
-            ).all()
-            targets = [(tid, c) for tid, c in rows]
+            targets = list(s.scalars(select(Section).order_by(Section.order_index)))
+        elif slugs:
+            targets = list(s.scalars(select(Section).where(Section.slug.in_(slugs))))
         else:
-            if not codes:
-                print("usage: python -m zaspro.knowledge.export <CODE...> | --all")
-                return 2
-            rows = s.execute(
-                select(Topic.id, Topic.official_requirement_code).where(
-                    Topic.official_requirement_code.in_(codes)
-                )
-            ).all()
-            targets = [(tid, c) for tid, c in rows]
+            print("usage: python -m zaspro.knowledge.export <slug...> | --all")
+            return 2
 
         wrote = skipped = failed = 0
-        for tid, code in sorted(targets, key=lambda t: t[1]):
+        for section in targets:
             try:
-                path = export_topic(s, tid, force_unreviewed=force)
+                path = export_section(s, section.id, force_unreviewed=force)
                 print(f"  wrote {path}")
                 wrote += 1
             except ExportError as e:
                 if do_all:
                     skipped += 1
                 else:
-                    print(f"  SKIP {code}: {e}")
+                    print(f"  SKIP {section.slug}: {e}")
                     failed += 1
         print(f"\n{wrote} exported"
               + (f", {skipped} not ready" if do_all else "")

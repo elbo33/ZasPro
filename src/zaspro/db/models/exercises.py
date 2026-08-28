@@ -145,16 +145,13 @@ class TopicRole(str, enum.Enum):
 
 
 class ExerciseTopic(Base):
-    """Which curriculum requirements an exercise tests (M4 §11 aggregation
-    input). Materialised from `chunk_mappings` by
-    `zaspro.knowledge.aggregate.rebuild_exercise_topics` — one PRIMARY row plus
-    a SECONDARY row per other requirement the chunk's mapping named, but only
-    for chunks whose primary mapping is accepted (`AI_SUGGESTED` or human
-    `APPROVED`), never a rejected or still-pending one.
+    """Which curriculum requirements an exercise tests — a materialised view of
+    `chunk_mappings` (one PRIMARY row plus a SECONDARY row per other requirement
+    the chunk's mapping named, for accepted mappings only).
 
-    Knowledge extraction aggregates a topic's exercises from **both** roles;
-    reading `exercises.topic_id` (the primary alone) would rebuild the narrow
-    view multi-topic mapping removed (SPEC §10, §17)."""
+    Built for the exercise-based knowledge layer of ADR 0010/0011, which was
+    replaced by section-scoped specs (ADR 0012). Now unused by M4; kept as it
+    may serve M5 exercise work."""
 
     __tablename__ = "exercise_topics"
 

@@ -69,7 +69,7 @@ function KnowledgeCard({
     <div>
       <div className="row">
         <span className="pill">KNOWLEDGE_SPEC</span>
-        <span className="pill">{k.exercises} exercises</span>
+        <span className="pill mono">{k.requirement_codes.join(", ")}</span>
         {Object.entries(k.counts).map(([kind, n]) => (
           <span className="pill" key={kind}>
             {n} {kind}
@@ -82,25 +82,12 @@ function KnowledgeCard({
       </div>
 
       <h2 style={{ marginBottom: 4 }}>
-        <span className="mono">{k.code}</span> — {k.name}
+        <span className="mono">{k.slug}</span> — {k.name}
       </h2>
-      {k.requirement_text && (
+      {k.scope && (
         <p className="muted" style={{ marginTop: 0 }}>
-          {k.requirement_text}
+          {k.scope}
         </p>
-      )}
-
-      {k.flags.length > 0 && (
-        <div className="chunk" style={{ borderLeft: "3px solid var(--warn)" }}>
-          <b>{k.flags.length} flag(s) for your eyes</b>
-          <ul style={{ margin: "6px 0 0" }}>
-            {k.flags.map((f, i) => (
-              <li key={i} className="muted">
-                {f}
-              </li>
-            ))}
-          </ul>
-        </div>
       )}
 
       <div style={{ marginTop: 10 }}>
@@ -130,23 +117,6 @@ function KRow({ it, active }: { it: KnowledgeItemView; active: boolean }) {
     >
       <div className="row">
         <span className="pill">{it.kind}</span>
-        {it.provenance && (
-          <span
-            className={
-              "pill" + (it.provenance === "AGENT_KNOWLEDGE" ? "" : " good")
-            }
-          >
-            {it.provenance}
-          </span>
-        )}
-        {it.distractor && (
-          <span className="pill">dystraktor {it.distractor}</span>
-        )}
-        {it.from_exercises.length > 0 && (
-          <span className="muted mono">
-            Zad {it.from_exercises.join(", ")}
-          </span>
-        )}
         {rejected && <span className="pill bad">rejected</span>}
         {approved && <span className="pill good">approved</span>}
       </div>
@@ -156,6 +126,12 @@ function KRow({ it, active }: { it: KnowledgeItemView; active: boolean }) {
           <>
             <br />
             <span className="muted">{it.detail}</span>
+          </>
+        )}
+        {it.extra && (
+          <>
+            <br />
+            <span className="muted">{it.extra}</span>
           </>
         )}
       </div>
@@ -257,7 +233,9 @@ export default function ReviewQueuePage() {
         decision: "EDIT",
         edit,
       });
-      const fresh = await api.knowledgeSpec(item.topic_id as number);
+      const fresh = await api.knowledgeSpec(
+        item.knowledge?.section_id as number,
+      );
       setItem({ ...item, knowledge: fresh });
     } catch (e) {
       setErr(String(e));
@@ -272,12 +250,12 @@ export default function ReviewQueuePage() {
     setErr(null);
     setMsg(null);
     try {
-      const topicId = item.topic_id as number;
+      const sectionId = item.knowledge?.section_id as number;
       await api.decide(item.id, {
         reviewer: reviewer.current,
         decision: "APPROVE",
       });
-      const ex = await api.exportKnowledge(topicId, reviewer.current);
+      const ex = await api.exportKnowledge(sectionId, reviewer.current);
       const [nextItem, qStats] = await Promise.all([api.next([]), api.queue()]);
       setItem(nextItem);
       setStats(qStats);

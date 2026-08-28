@@ -1,0 +1,235 @@
+# ZasPro teaching tree — Mathematics, Matura podstawowa (M4).
+#
+# A teaching layer above the 73 podstawowy `official_requirement_code`s: the
+# order a course is taught in, regrouped for teaching. Proposed in
+# m4/teaching_tree_proposal.md and approved for seeding.
+#
+# Every podstawowy requirement code appears under EXACTLY ONE section
+# (`seed_sections` asserts this against the DB). Sections are ordered; the
+# `scope` line bounds what the section's knowledge spec should contain.
+#
+# This is the unit the Knowledge Agent writes a spec for (Step 2). Exercises
+# are not involved.
+
+subject: matematyka   # slug of the seeded Subject
+
+sections:
+  # --- Liczby rzeczywiste ---
+  - slug: dzialania-liczby-rzeczywiste
+    name: "Działania w zbiorze liczb rzeczywistych; przedziały liczbowe"
+    scope: "The four operations plus powers, roots and logarithms as operations on real numbers; order of operations and estimation; number intervals and their marking on the axis."
+    requirements: [I.1, I.6]
+  - slug: wartosc-bezwzgledna
+    name: "Wartość bezwzględna: interpretacja i proste równania"
+    scope: "Absolute value read geometrically (distance) and algebraically; solving simple equations with an absolute value."
+    requirements: [I.7]
+  - slug: pierwiastki-dowolnego-stopnia
+    name: "Pierwiastki dowolnego stopnia"
+    scope: "Properties of roots of any degree, including odd-degree roots of negative numbers; simplifying root expressions."
+    requirements: [I.3]
+  - slug: prawa-dzialan-potegi-pierwiastki
+    name: "Prawa działań na potęgach i pierwiastkach"
+    scope: "Rational exponents and the root-power link; the laws for multiplying, dividing and raising powers, and their counterparts for roots."
+    requirements: [I.4]
+  - slug: monotonicznosc-potegowania
+    name: "Monotoniczność potęgowania"
+    scope: "How a^x orders values of x: the direction is kept for base > 1 and reversed for base in (0, 1); comparing and estimating powers."
+    requirements: [I.5]
+  - slug: logarytm-i-jego-wlasnosci
+    name: "Logarytm i jego własności"
+    scope: "Logarithm as the inverse of exponentiation; evaluating logarithms; the formulas for the logarithm of a product, a quotient and a power."
+    requirements: [I.9]
+  - slug: procent-skladany
+    name: "Procent składany, lokaty i modele wykładnicze"
+    scope: "Powers and roots in practice: compound interest, deposit growth, loan cost, exponential decay; setting up and reading a growth/decay model."
+    requirements: [I.8]
+  - slug: dowody-podzielnosci
+    name: "Dowody dotyczące podzielności liczb całkowitych"
+    scope: "Divisibility and remainders; representing integers by form (2k, 3k+1, ...); short direct proofs about divisibility and parity."
+    requirements: [I.2]
+
+  # --- Wyrażenia algebraiczne ---
+  - slug: wzory-skroconego-mnozenia
+    name: "Wzory skróconego mnożenia i przekształcanie wyrażeń"
+    scope: "(a +- b)^2 and a^2 - b^2 for expanding and factoring; taking a common monomial factor out of an algebraic sum."
+    requirements: [II.1, II.3]
+  - slug: dzialania-na-wielomianach
+    name: "Działania na wielomianach"
+    scope: "Adding, subtracting and multiplying polynomials in one and several variables; ordering and collecting terms."
+    requirements: [II.2]
+  - slug: postac-iloczynowa-rownania-wielomianowe
+    name: "Postać iloczynowa wielomianu i równania wielomianowe"
+    scope: "Bringing a polynomial to product form; solving polynomial equations once factored."
+    requirements: [III.5]
+  - slug: wyrazenia-wymierne
+    name: "Wyrażenia wymierne: dziedzina, mnożenie i dzielenie"
+    scope: "Domain of a rational expression; multiplying, dividing and simplifying rational expressions."
+    requirements: [II.4]
+
+  # --- Równania i nierówności ---
+  - slug: przeksztalcanie-rownan-wymierne-do-liniowego
+    name: "Przekształcanie równań i nierówności; równania wymierne prowadzące do liniowego"
+    scope: "Equivalent transformations of equations and inequalities; solving rational equations that reduce to a linear one, with the domain condition."
+    requirements: [III.1]
+  - slug: rownania-nierownosci-liniowe
+    name: "Równania liniowe sprzeczne i tożsamościowe; nierówności liniowe"
+    scope: "Recognising a contradictory and an identity linear equation; solving linear inequalities in one unknown and writing the solution set."
+    requirements: [III.2, III.3]
+  - slug: uklady-rownan-liniowych
+    name: "Układy równań liniowych: rozwiązywanie, interpretacja i zastosowania"
+    scope: "Solving 2x2 linear systems; consistent, dependent and inconsistent systems as pairs of lines; translating a word problem into a system and interpreting the solution."
+    requirements: [IV.1, IV.2]
+  - slug: rownania-nierownosci-kwadratowe
+    name: "Równania i nierówności kwadratowe"
+    scope: "Solving quadratic equations (factoring, discriminant, Vieta); solving quadratic inequalities from the sign of the parabola."
+    requirements: [III.4]
+
+  # --- Funkcje ---
+  - slug: pojecie-funkcji-wartosci
+    name: "Pojęcie funkcji; obliczanie i odczytywanie wartości"
+    scope: "Function as a unique assignment given verbally, by table, graph, formula or piecewise; evaluating from a formula; reading and interpreting values from tables, graphs and formulas."
+    requirements: [V.1, V.2, V.3]
+  - slug: wlasnosci-funkcji-z-wykresu
+    name: "Odczytywanie własności funkcji z wykresu"
+    scope: "From a graph: domain, range, zeros, intervals of monotonicity, intervals of constant sign, greatest and least value."
+    requirements: [V.4]
+  - slug: funkcja-liniowa
+    name: "Funkcja liniowa: współczynniki i wyznaczanie wzoru"
+    scope: "Meaning of a and b in y = ax + b; finding the formula from a graph or from stated properties; parallel and perpendicular lines via slope."
+    requirements: [V.5, V.6]
+  - slug: funkcja-kwadratowa-wykres-postacie
+    name: "Funkcja kwadratowa: wykres, postacie i wyznaczanie wzoru"
+    scope: "Sketching y = ax^2 + bx + c; interpreting coefficients in general, vertex and factored form; finding the formula from given information or a graph."
+    requirements: [V.7, V.8, V.9]
+  - slug: funkcja-kwadratowa-wartosci-w-przedziale
+    name: "Największa i najmniejsza wartość funkcji kwadratowej w przedziale"
+    scope: "Locating the extremum relative to a closed interval and reading off the greatest and least value on it."
+    requirements: [V.10]
+  - slug: zastosowania-funkcji-optymalizacja
+    name: "Zastosowania funkcji liniowej i kwadratowej; optymalizacja"
+    scope: "Using linear and quadratic functions to interpret geometric, physical and everyday problems; optimisation reducible to a quadratic - expressing the quantity as a quadratic function of one variable under constraints and reading the extremum."
+    requirements: [V.11, XIII.1]
+  - slug: przeksztalcenia-wykresow-odwrotna-proporcjonalnosc
+    name: "Przekształcenia wykresów i funkcja odwrotnie proporcjonalna"
+    scope: "Sketching graphs shifted along the axes from y = f(x); the inversely-proportional function y = a/x, its hyperbola, and modelling inversely-proportional quantities."
+    requirements: [V.12, V.13]
+  - slug: funkcje-wykladnicza-logarytmiczna
+    name: "Funkcje wykładnicza i logarytmiczna"
+    scope: "The exponential and logarithmic functions and their graphs; using them to describe and interpret growth, decay and scales."
+    requirements: [V.14]
+
+  # --- Ciągi ---
+  - slug: ciag-wzor-ogolny
+    name: "Ciąg i jego wyrazy; wzór ogólny"
+    scope: "Sequence as a function on the positive integers; computing terms from a general formula; the index-term correspondence."
+    requirements: [VI.1]
+  - slug: ciagi-rekurencyjne-monotonicznosc
+    name: "Ciągi rekurencyjne i monotoniczność ciągu"
+    scope: "Computing the first terms of a recursively defined sequence; deciding in simple cases whether a sequence is increasing or decreasing."
+    requirements: [VI.2, VI.3]
+  - slug: ciag-arytmetyczny
+    name: "Ciąg arytmetyczny: n-ty wyraz i suma"
+    scope: "Recognising an arithmetic sequence; the nth term and the sum of the first n terms."
+    requirements: [VI.4, VI.5]
+  - slug: ciag-geometryczny
+    name: "Ciąg geometryczny: n-ty wyraz i suma"
+    scope: "Recognising a geometric sequence; the nth term and the sum of the first n terms."
+    requirements: [VI.6]
+  - slug: zastosowania-ciagow
+    name: "Zastosowania ciągów arytmetycznych i geometrycznych"
+    scope: "Using sequence properties, arithmetic and geometric in particular, to solve problems, including practical ones."
+    requirements: [VI.7]
+
+  # --- Trygonometria ---
+  - slug: trojkaty-prostokatne-trygonometria
+    name: "Rozwiązywanie trójkątów prostokątnych"
+    scope: "sin, cos, tan in a right triangle; finding sides and angles from the given data."
+    requirements: [VII.4]
+  - slug: funkcje-trygonometryczne-0-180
+    name: "Sinus, cosinus i tangens kąta od 0° do 180°; jedynka trygonometryczna"
+    scope: "Values for 0-180 degrees, exact values for 30/45/60 and the reduction relationships; the Pythagorean identity; tan as sin / cos."
+    requirements: [VII.1, VII.2]
+  - slug: twierdzenie-cosinusow-pole-trojkata
+    name: "Twierdzenie cosinusów i pole trójkąta przez sinus"
+    scope: "Law of cosines; area = 1/2 * a * b * sin(gamma); choosing between them from the given data."
+    requirements: [VII.3]
+
+  # --- Planimetria ---
+  - slug: okrag-cieciwy-styczne-katy
+    name: "Okrąg: cięciwy, styczne, kąty wpisane i środkowe"
+    scope: "Radii, diameters, chords and tangent segments (with Pythagoras); inscribed and central angles and the relations between them."
+    requirements: [VIII.1, VIII.5]
+  - slug: wycinek-kola-luk
+    name: "Wycinek koła i długość łuku"
+    scope: "Area of a circular sector and length of an arc from the central angle."
+    requirements: [VIII.6]
+  - slug: rodzaje-trojkatow-twierdzenie-odwrotne
+    name: "Rodzaje trójkątów; twierdzenie odwrotne do twierdzenia Pitagorasa"
+    scope: "Classifying a triangle as acute, right or obtuse from its side lengths, using the converse of the Pythagorean theorem."
+    requirements: [VIII.2]
+  - slug: czworokaty-wielokaty-foremne
+    name: "Czworokąty i wielokąty foremne"
+    scope: "Angles and diagonals in rectangles, parallelograms, rhombi and trapezia; regular polygons and their basic properties."
+    requirements: [VIII.3, VIII.4]
+  - slug: punkty-szczegolne-trojkata
+    name: "Punkty szczególne trójkąta"
+    scope: "Incentre, circumcentre, orthocentre and centroid: definitions and how to locate them."
+    requirements: [VIII.10]
+  - slug: tales-podobienstwo-trojkatow
+    name: "Twierdzenie Talesa i podobieństwo trójkątów"
+    scope: "Thales' theorem and its use; similarity criteria for triangles and their application."
+    requirements: [VIII.7, VIII.8]
+  - slug: pola-obwody-figur-podobnych
+    name: "Pola i obwody figur podobnych"
+    scope: "Ratio of perimeters and ratio of areas of similar figures, and problems that use them."
+    requirements: [VIII.9]
+  - slug: dowody-geometryczne
+    name: "Dowody geometryczne"
+    scope: "Structuring a plane-geometry proof; typical arguments with congruent triangles, angles and the circle theorems."
+    requirements: [VIII.11]
+  - slug: trygonometria-w-figurach-plaskich
+    name: "Trygonometria w figurach płaskich"
+    scope: "Using trig functions to find segment lengths and to compute areas of plane figures."
+    requirements: [VIII.12]
+
+  # --- Geometria analityczna ---
+  - slug: proste-odleglosci-uklad-wspolrzednych
+    name: "Proste i odległości w układzie współrzędnych"
+    scope: "Line equations in slope and general form; relative position of two lines and their common point; distance between two points and length of a segment."
+    requirements: [IX.1, IX.2, IX.3]
+  - slug: rownanie-okregu
+    name: "Równanie okręgu"
+    scope: "Circle equation in canonical form; centre, radius and checking whether a point lies on the circle."
+    requirements: [IX.4]
+  - slug: symetrie-przesuniecie-uklad-wspolrzednych
+    name: "Symetrie i przesunięcie w układzie współrzędnych"
+    scope: "Images of circles and polygons under axis symmetries, central symmetry about the origin, and translation by a vector."
+    requirements: [IX.5]
+
+  # --- Stereometria ---
+  - slug: proste-plaszczyzny-katy-w-przestrzeni
+    name: "Proste, płaszczyzny i kąty w przestrzeni"
+    scope: "Relative position of lines in space, including skew perpendicular lines; angle between a line and a plane; dihedral angle."
+    requirements: [X.1, X.2]
+  - slug: katy-w-brylach
+    name: "Kąty w graniastosłupach, ostrosłupach, walcach i stożkach"
+    scope: "Angles between edges, between edges and diagonals, and between faces in prisms and pyramids; angle of a cone's aperture and related angles in cylinders and cones, and computing them."
+    requirements: [X.3, X.4]
+  - slug: objetosci-pola-bryly-podobne
+    name: "Objętości, pola powierzchni i bryły podobne"
+    scope: "Volumes and surface areas of prisms, pyramids, cylinder, cone and sphere, including with trigonometry; ratio of volumes of similar solids."
+    requirements: [X.5, X.6]
+
+  # --- Kombinatoryka, prawdopodobieństwo, statystyka ---
+  - slug: kombinatoryka-reguly-zliczania
+    name: "Kombinatoryka: zliczanie, reguła mnożenia i dodawania"
+    scope: "Counting objects in simple situations; the multiplication and addition rules, including used together, for any number of steps."
+    requirements: [XI.1, XI.2]
+  - slug: prawdopodobienstwo-klasyczne
+    name: "Prawdopodobieństwo w modelu klasycznym"
+    scope: "Equally likely outcomes; favourable versus all outcomes; complementary events."
+    requirements: [XII.1]
+  - slug: srednia-mediana-dominanta
+    name: "Średnia, mediana, dominanta"
+    scope: "Arithmetic mean and weighted mean; median and mode, and reading them from a small data set."
+    requirements: [XII.2]

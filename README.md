@@ -4,8 +4,9 @@ Polish Matura knowledge base and episode planning system. The authoritative
 spec is [`docs/SPEC.md`](docs/SPEC.md); architectural decisions are ADRs in
 [`docs/decisions/`](docs/decisions/).
 
-Build state: **M4 (knowledge layer)** — per-topic knowledge extraction, review,
-and export to committed files.
+Build state: **M4 (knowledge layer)** — a teaching tree of 50 sections; the
+agent writes each section's knowledge as a textbook would; review and export to
+committed files.
 
 ## Setup
 
@@ -41,20 +42,23 @@ docs/                  SPEC.md, sources.md, decisions/
 
 ## Knowledge layer (M4)
 
+The teaching tree is seeded from `seeds/teaching_sections.yaml` by
+`zaspro.seeding.run`. The agent then writes each section's spec:
+
 ```sh
-uv run python -m zaspro.knowledge.run --topics 5   # deliberate 5-topic yield check
-uv run python -m zaspro.knowledge.run --all        # every podstawowy requirement (asks first)
+uv run python -m zaspro.knowledge.write ciag-arytmetyczny funkcja-liniowa
+uv run python -m zaspro.knowledge.write --all      # every section (asks first)
 ```
 
-Each run leaves one `KNOWLEDGE_SPEC` review card per topic. Review in the
+Each run leaves one `KNOWLEDGE_SPEC` review card per section. Review in the
 dashboard (Knowledge tab), then freeze the approved ones to git:
 
 ```sh
-uv run python -m zaspro.knowledge.export --all     # writes knowledge/topics/<code>.yaml
+uv run python -m zaspro.knowledge.export --all     # writes knowledge/sections/<slug>.yaml
 ```
 
-The committed YAML is the record of truth (ADR 0011). `knowledge.run` refuses to
-re-extract a topic that has one unless `--force`.
+The committed YAML is the record of truth (ADR 0012). `knowledge.write` refuses
+to re-run a section that has one unless `--force`.
 
 ## Backups
 

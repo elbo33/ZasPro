@@ -245,37 +245,33 @@ def test_promote_counts_as_disagreement_in_the_curve(db):
 
 
 def _knowledge_card(db, monkeypatch):
-    """Extract VIII.2 with a stub knowledge agent -> one KNOWLEDGE_SPEC card."""
+    """Write a stub section spec -> one KNOWLEDGE_SPEC card over a section."""
     import zaspro.knowledge.export as kexport
-    from zaspro.db.models import ExerciseTopic, KnowledgeProvenance, TopicRole
-    from zaspro.knowledge.agent import ConceptOut, KnowledgeExtraction, MisconceptionOut
-    from zaspro.knowledge.extract import extract_topic
+    from zaspro.db.models import Section, SectionRequirement, Subject
+    from zaspro.knowledge.agent import ConceptOut, MisconceptionOut, SectionSpecOut
+    from zaspro.knowledge.write import write_section
 
     monkeypatch.setattr(kexport, "KNOWLEDGE_ROOT",
                         __import__("pathlib").Path("/tmp/zaspro-test-knowledge-never"))
     w = build_world(db)
-    ex = db.query(Exercise).filter_by(
-        source_document_id=w.document_id, exercise_number="1"
-    ).one()
-    db.add(ExerciseTopic(exercise_id=ex.id, topic_id=w.topic_ids["VIII.2"],
-                         role=TopicRole.PRIMARY, confidence=0.9))
+    sec = Section(subject_id=db.query(Subject).one().id, slug="sec-under-test",
+                  name="Sekcja testowa", scope="s", order_index=1)
+    db.add(sec)
+    db.flush()
+    db.add(SectionRequirement(section_id=sec.id, topic_id=w.topic_ids["VIII.2"]))
     db.flush()
 
     class A:
-        name, model, prompt_version = "fake", None, "m4-know-v3"
+        name, model, prompt_version = "fake", None, "m4-sec-v1"
         last_usage = None
 
-        def extract(self, request):
-            return KnowledgeExtraction(
-                concepts=[ConceptOut(name="c", description="d",
-                                     provenance=KnowledgeProvenance.EXAM_TASK,
-                                     from_exercises=["1"], evidence="Zad 1")],
-                misconceptions=[MisconceptionOut(
-                    name="m", incorrect_reasoning="x", correct_reasoning="y",
-                    provenance=KnowledgeProvenance.AGENT_KNOWLEDGE,
-                    from_exercises=[], evidence="a common error")],
+        def write(self, request):
+            return SectionSpecOut(
+                concepts=[ConceptOut(name="c", definition="d")],
+                misconceptions=[MisconceptionOut(name="m", incorrect_reasoning="x",
+                                                 correct_reasoning="y")],
             )
-    res = extract_topic(db, w.topic_ids["VIII.2"], A())
+    res = write_section(db, sec.id, A())
     return w, res
 
 

@@ -33,25 +33,20 @@ export type KnowledgeItemView = {
   status: string;
   title: string;
   detail: string | null;
-  evidence: string | null;
-  from_exercises: string[];
-  provenance: string | null;
-  distractor: string | null;
+  extra: string | null;
 };
 
 export type KnowledgeSpecView = {
-  topic_id: number;
-  code: string | null;
+  section_id: number;
+  slug: string;
   name: string;
-  unit: string | null;
-  requirement_text: string | null;
-  extracted_at: string | null;
+  scope: string | null;
+  requirement_codes: string[];
+  written_at: string | null;
   prompt_version: string | null;
   model: string | null;
-  exercises: number;
   exported_at: string | null;
   items: KnowledgeItemView[];
-  flags: string[];
   counts: Record<string, number>;
 };
 
@@ -77,13 +72,12 @@ export type ReviewItemView = {
 };
 
 export type KnowledgeIndexRow = {
-  topic_id: number;
-  code: string;
+  section_id: number;
+  slug: string;
   name: string;
-  unit: string | null;
-  exercises: number;
+  order_index: number;
+  requirement_codes: string[];
   counts: Record<string, number>;
-  agent_knowledge_items: number;
   review_status: string | null;
   review_item_id: number | null;
   exported_at: string | null;
@@ -171,11 +165,11 @@ export const api = {
     }),
   calibration: () => req<Calibration>("/review/calibration"),
   knowledgeIndex: () => req<KnowledgeIndexRow[]>("/knowledge"),
-  knowledgeSpec: (topicId: number) =>
-    req<KnowledgeSpecView>(`/knowledge/${topicId}`),
-  exportKnowledge: (topicId: number, reviewer: string) =>
-    req<{ ok: boolean; code: string; path: string | null; error: string | null }>(
-      `/knowledge/${topicId}/export?reviewer=${encodeURIComponent(reviewer)}`,
+  knowledgeSpec: (sectionId: number) =>
+    req<KnowledgeSpecView>(`/knowledge/${sectionId}`),
+  exportKnowledge: (sectionId: number, reviewer: string) =>
+    req<{ ok: boolean; slug: string; path: string | null; error: string | null }>(
+      `/knowledge/${sectionId}/export?reviewer=${encodeURIComponent(reviewer)}`,
       { method: "POST" },
     ),
   curriculum: () =>

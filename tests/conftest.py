@@ -72,8 +72,8 @@ def migrated_db():
 _ALL_TABLES_M2 = _ALL_TABLES + ", source_documents, source_chunks, figures, exercises, exercise_figures, jobs"
 _ALL_TABLES_M3 = _ALL_TABLES_M2 + ", chunk_mappings, review_items, review_decisions"
 _ALL_TABLES_M4 = _ALL_TABLES_M3 + (
-    ", exercise_topics, concepts, formulas, methods, examples, misconceptions,"
-    " learning_objectives, knowledge_flags, knowledge_extractions"
+    ", exercise_topics, sections, section_requirements, section_specs,"
+    " concepts, formulas, methods, examples, misconceptions, learning_objectives"
 )
 
 

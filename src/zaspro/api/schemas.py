@@ -38,26 +38,20 @@ class KnowledgeItemView(BaseModel):
     status: str          # VerificationStatus
     title: str           # name / statement head
     detail: str | None = None
-    evidence: str | None = None
-    from_exercises: list[str] = Field(default_factory=list)
-    # EXAM_TASK / MARKING_SCHEME / DISTRACTOR / AGENT_KNOWLEDGE — info, not a gate
-    provenance: str | None = None
-    distractor: str | None = None  # misconception-only, when provenance == DISTRACTOR
+    extra: str | None = None  # explanation / correction / conditions
 
 
 class KnowledgeSpecView(BaseModel):
-    topic_id: int
-    code: str | None
+    section_id: int
+    slug: str
     name: str
-    unit: str | None = None
-    requirement_text: str | None = None
-    extracted_at: datetime | None = None
+    scope: str | None = None
+    requirement_codes: list[str] = Field(default_factory=list)
+    written_at: datetime | None = None
     prompt_version: str | None = None
     model: str | None = None
-    exercises: int = 0
     exported_at: datetime | None = None
     items: list[KnowledgeItemView] = Field(default_factory=list)
-    flags: list[str] = Field(default_factory=list)
     counts: dict[str, int] = Field(default_factory=dict)
 
 
@@ -84,14 +78,13 @@ class ReviewItemView(BaseModel):
 
 
 class KnowledgeIndexRow(BaseModel):
-    topic_id: int
-    code: str
+    section_id: int
+    slug: str
     name: str
-    unit: str | None = None
-    exercises: int = 0
+    order_index: int
+    requirement_codes: list[str] = Field(default_factory=list)
     counts: dict[str, int] = Field(default_factory=dict)
-    agent_knowledge_items: int = 0  # items with AGENT_KNOWLEDGE provenance
-    review_status: str | None = None  # OPEN | APPROVED | REJECTED | None (not extracted)
+    review_status: str | None = None  # OPEN | APPROVED | REJECTED | None (not written)
     review_item_id: int | None = None
     exported_at: datetime | None = None
     prompt_version: str | None = None
@@ -99,7 +92,7 @@ class KnowledgeIndexRow(BaseModel):
 
 class ExportResult(BaseModel):
     ok: bool
-    code: str
+    slug: str
     path: str | None = None
     error: str | None = None
 

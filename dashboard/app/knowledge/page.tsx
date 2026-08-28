@@ -25,7 +25,7 @@ export default function KnowledgePage() {
 
   const doExport = useCallback(
     async (r: KnowledgeIndexRow) => {
-      setBusy(r.topic_id);
+      setBusy(r.section_id);
       setErr(null);
       setMsg(null);
       try {
@@ -35,8 +35,8 @@ export default function KnowledgePage() {
         } catch {
           /* ignore */
         }
-        const res = await api.exportKnowledge(r.topic_id, reviewer);
-        setMsg(res.ok ? `${r.code} -> ${res.path}` : `${r.code}: ${res.error}`);
+        const res = await api.exportKnowledge(r.section_id, reviewer);
+        setMsg(res.ok ? `${r.slug} -> ${res.path}` : `${r.slug}: ${res.error}`);
         await load();
       } catch (e) {
         setErr(String(e));
@@ -56,7 +56,7 @@ export default function KnowledgePage() {
     );
   if (!rows) return <p className="muted">loading…</p>;
 
-  const extracted = rows.filter((r) => r.review_status);
+  const written = rows.filter((r) => r.review_status);
   const approved = rows.filter((r) => r.review_status === "APPROVED");
   const exported = rows.filter((r) => r.exported_at);
 
@@ -64,20 +64,21 @@ export default function KnowledgePage() {
     <div>
       <h2>Knowledge layer</h2>
       <p className="muted">
-        One row per podstawowy requirement. Review each spec on the{" "}
-        <a href="/">review queue</a> (one KNOWLEDGE_SPEC card per topic), then
-        export the approved ones to <span className="mono">knowledge/topics/</span>{" "}
-        — the committed file is the freeze (ADR 0011).
+        One row per teaching section. Review each spec on the{" "}
+        <a href="/">review queue</a> (one KNOWLEDGE_SPEC card per section), then
+        export the approved ones to{" "}
+        <span className="mono">knowledge/sections/</span> — the committed file is
+        the freeze (ADR 0012).
       </p>
 
       <div className="statbar">
         <div className="stat">
           <b>{rows.length}</b>
-          <span>requirements</span>
+          <span>sections</span>
         </div>
         <div className="stat">
-          <b>{extracted.length}</b>
-          <span>extracted</span>
+          <b>{written.length}</b>
+          <span>written</span>
         </div>
         <div className="stat">
           <b>{approved.length}</b>
@@ -95,38 +96,31 @@ export default function KnowledgePage() {
         <table>
           <thead>
             <tr>
-              <th>code</th>
-              <th>requirement</th>
-              <th>ex</th>
+              <th>#</th>
+              <th>section</th>
+              <th>requirements</th>
               {KINDS.map((k) => (
                 <th key={k}>{k.slice(0, 4)}</th>
               ))}
-              <th>agent-only</th>
               <th>review</th>
               <th>export</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.topic_id}>
-                <td className="mono">{r.code}</td>
+              <tr key={r.section_id}>
+                <td className="muted">{r.order_index}</td>
                 <td>
-                  {r.name.length > 60 ? r.name.slice(0, 58) + "…" : r.name}
+                  {r.name.length > 64 ? r.name.slice(0, 62) + "…" : r.name}
                   <br />
-                  <span className="muted">{r.unit}</span>
+                  <span className="muted mono">{r.slug}</span>
                 </td>
-                <td>{r.exercises}</td>
+                <td className="mono">{r.requirement_codes.join(", ")}</td>
                 {KINDS.map((k) => (
                   <td key={k} className={r.counts[k] ? "" : "muted"}>
                     {r.counts[k] ?? 0}
                   </td>
                 ))}
-                <td
-                  className={r.agent_knowledge_items ? "" : "muted"}
-                  title="items with AGENT_KNOWLEDGE provenance"
-                >
-                  {r.agent_knowledge_items}
-                </td>
                 <td>
                   {r.review_status ? (
                     <span
@@ -142,7 +136,7 @@ export default function KnowledgePage() {
                       {r.review_status}
                     </span>
                   ) : (
-                    <span className="muted">not extracted</span>
+                    <span className="muted">not written</span>
                   )}
                 </td>
                 <td>
@@ -150,10 +144,10 @@ export default function KnowledgePage() {
                     <span className="pill good">frozen</span>
                   ) : r.review_status === "APPROVED" ? (
                     <button
-                      disabled={busy === r.topic_id}
+                      disabled={busy === r.section_id}
                       onClick={() => doExport(r)}
                     >
-                      {busy === r.topic_id ? "…" : "export"}
+                      {busy === r.section_id ? "…" : "export"}
                     </button>
                   ) : (
                     <span className="muted">—</span>

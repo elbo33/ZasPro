@@ -31,15 +31,13 @@ from zaspro.db.models.jobs import Job, JobStatus, JobType
 from zaspro.db.models.knowledge import (
     Concept,
     Example,
-    FlagKind,
     Formula,
-    KnowledgeExtraction,
-    KnowledgeFlag,
-    KnowledgeProvenance,
     LearningObjective,
     Method,
     Misconception,
+    SectionSpec,
 )
+from zaspro.db.models.sections import Section, SectionRequirement
 from zaspro.db.models.mapping import (
     ChunkMapping,
     MappingStatus,
@@ -75,8 +73,8 @@ __all__ = [
     "ChunkMapping", "MappingStatus",
     "ReviewItem", "ReviewItemType", "ReviewStatus",
     "ReviewDecision", "ReviewDecisionType", "ReviewReasonCode",
-    # knowledge (M4)
+    # teaching sections + knowledge (M4)
+    "Section", "SectionRequirement", "SectionSpec",
     "Concept", "Formula", "Method", "Example", "Misconception",
-    "LearningObjective", "KnowledgeProvenance",
-    "KnowledgeFlag", "FlagKind", "KnowledgeExtraction",
+    "LearningObjective",
 ]

@@ -21,8 +21,6 @@ from zaspro.db.models import (
     Concept,
     Example,
     Formula,
-    KnowledgeExtraction,
-    KnowledgeFlag,
     LearningObjective,
     MappingStatus,
     Method,
@@ -33,6 +31,7 @@ from zaspro.db.models import (
     ReviewItemType,
     ReviewReasonCode,
     ReviewStatus,
+    SectionSpec,
     SourceChunk,
     VerificationStatus,
 )
@@ -240,13 +239,6 @@ def _promote_secondary(session: Session, item: ReviewItem, edit: dict | None) ->
     item.confidence = new_primary.confidence
 
 
-def _knowledge_items(session: Session, topic_id: int) -> list:
-    items: list = []
-    for model in _KNOWLEDGE_MODELS.values():
-        items += list(session.scalars(select(model).where(model.topic_id == topic_id)))
-    return items
-
-
 def _resolve_knowledge(session: Session, item: ReviewItem, decision: ReviewDecisionType,
                        edit: dict | None) -> None:
     """Resolve a KNOWLEDGE_SPEC card (one per topic, ADR 0011).
@@ -257,11 +249,11 @@ def _resolve_knowledge(session: Session, item: ReviewItem, decision: ReviewDecis
     APPROVE — every item not individually REJECTED becomes APPROVED.
     REJECT  — every item becomes REJECTED (the whole spec is thrown out).
     """
-    topic_id = item.ref_id
+    section_id = item.ref_id
     by_key = {
         (kind, obj.id): obj
         for kind, model in _KNOWLEDGE_MODELS.items()
-        for obj in session.scalars(select(model).where(model.topic_id == topic_id))
+        for obj in session.scalars(select(model).where(model.section_id == section_id))
     }
 
     if decision is ReviewDecisionType.EDIT:
@@ -283,15 +275,12 @@ def _resolve_knowledge(session: Session, item: ReviewItem, decision: ReviewDecis
     elif decision is ReviewDecisionType.REJECT:
         for obj in by_key.values():
             obj.verification_status = VerificationStatus.REJECTED
-        session.query(KnowledgeFlag).filter_by(topic_id=topic_id).update(
-            {"resolved": True}
-        )
 
-    ke = session.scalars(
-        select(KnowledgeExtraction).where(KnowledgeExtraction.topic_id == topic_id)
+    spec = session.scalars(
+        select(SectionSpec).where(SectionSpec.section_id == section_id)
     ).one_or_none()
-    if ke is not None and decision is ReviewDecisionType.APPROVE:
-        ke.approved_at = _now()
+    if spec is not None and decision is ReviewDecisionType.APPROVE:
+        spec.approved_at = _now()
     session.flush()
 
 
@@ -375,13 +364,11 @@ def record_decision(
         item.item_type is ReviewItemType.KNOWLEDGE_SPEC
         and decision is ReviewDecisionType.APPROVE
     ):
-        ke = session.scalars(
-            select(KnowledgeExtraction).where(
-                KnowledgeExtraction.topic_id == item.ref_id
-            )
+        spec = session.scalars(
+            select(SectionSpec).where(SectionSpec.section_id == item.ref_id)
         ).one_or_none()
-        if ke is not None and not ke.approved_by:
-            ke.approved_by = reviewer
+        if spec is not None and not spec.approved_by:
+            spec.approved_by = reviewer
 
     if decision in (ReviewDecisionType.APPROVE, ReviewDecisionType.PROMOTE):
         # PROMOTE = "the agent's secondary was the right primary, use it" — a

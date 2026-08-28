@@ -17,13 +17,13 @@ from zaspro.db.models import (
     Concept,
     Example,
     Formula,
-    KnowledgeExtraction,
-    KnowledgeFlag,
     LearningObjective,
     Method,
     Misconception,
     ReviewItem,
     ReviewItemType,
+    Section,
+    SectionSpec,
     SourceChunk,
     Topic,
 )
@@ -60,28 +60,23 @@ _KNOWLEDGE_KINDS = [
 ]
 
 
-def _ex_numbers(session: Session, chunk_ids) -> list[str]:
-    out: list[str] = []
-    for cid in chunk_ids or []:
-        c = session.get(SourceChunk, cid)
-        if c is not None and c.heading and c.heading.startswith("Zadanie "):
-            out.append(c.heading.removeprefix("Zadanie ").rstrip(". "))
-    return out
-
-
-def knowledge_spec_view(session: Session, topic_id: int) -> KnowledgeSpecView | None:
-    topic = session.get(Topic, topic_id)
-    if topic is None:
+def knowledge_spec_view(session: Session, section_id: int) -> KnowledgeSpecView | None:
+    section = session.get(Section, section_id)
+    if section is None:
         return None
-    ke = session.scalars(
-        select(KnowledgeExtraction).where(KnowledgeExtraction.topic_id == topic_id)
+    spec = session.scalars(
+        select(SectionSpec).where(SectionSpec.section_id == section_id)
     ).one_or_none()
+    codes = sorted(
+        session.get(Topic, sr.topic_id).official_requirement_code
+        for sr in section.requirements
+    )
 
     items: list[KnowledgeItemView] = []
     counts: dict[str, int] = {}
     for kind, model in _KNOWLEDGE_KINDS:
         for obj in session.scalars(
-            select(model).where(model.topic_id == topic_id).order_by(model.id)
+            select(model).where(model.section_id == section_id).order_by(model.order_index, model.id)
         ):
             counts[kind] = counts.get(kind, 0) + 1
             title = getattr(obj, "name", None) or (getattr(obj, "statement", "") or "")[:80]
@@ -91,36 +86,25 @@ def knowledge_spec_view(session: Session, topic_id: int) -> KnowledgeSpecView | 
                 or getattr(obj, "worked_solution", None)
                 or getattr(obj, "incorrect_reasoning", None)
             )
-            prov = getattr(obj, "provenance", None)
             items.append(KnowledgeItemView(
                 kind=kind, id=obj.id,
                 status=obj.verification_status.value,
                 title=title, detail=detail,
-                evidence=getattr(obj, "explanation", None) or getattr(obj, "description", None),
-                from_exercises=_ex_numbers(session, obj.source_chunk_ids),
-                provenance=prov.value if prov is not None else None,
-                distractor=getattr(obj, "distractor", None),
+                extra=getattr(obj, "explanation", None) or getattr(obj, "correct_reasoning", None)
+                or getattr(obj, "conditions", None),
             ))
 
-    flags = [
-        f.detail for f in session.scalars(
-            select(KnowledgeFlag).where(
-                KnowledgeFlag.topic_id == topic_id, KnowledgeFlag.resolved.is_(False)
-            ).order_by(KnowledgeFlag.id)
-        )
-    ]
     return KnowledgeSpecView(
-        topic_id=topic_id,
-        code=topic.official_requirement_code,
-        name=topic.name,
-        unit=f"{topic.unit.code} {topic.unit.name}" if topic.unit else None,
-        requirement_text=topic.statement_latex or topic.description,
-        extracted_at=ke.extracted_at if ke else None,
-        prompt_version=ke.prompt_version if ke else None,
-        model=ke.model if ke else None,
-        exercises=ke.exercises if ke else 0,
-        exported_at=ke.exported_at if ke else None,
-        items=items, flags=flags, counts=counts,
+        section_id=section_id,
+        slug=section.slug,
+        name=section.name,
+        scope=section.scope,
+        requirement_codes=codes,
+        written_at=spec.written_at if spec else None,
+        prompt_version=spec.prompt_version if spec else None,
+        model=spec.model if spec else None,
+        exported_at=spec.exported_at if spec else None,
+        items=items, counts=counts,
     )
 
 
