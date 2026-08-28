@@ -81,9 +81,13 @@ sections:
     name: "Układy równań liniowych: rozwiązywanie, interpretacja i zastosowania"
     scope: "Solving 2x2 linear systems; consistent, dependent and inconsistent systems as pairs of lines; translating a word problem into a system and interpreting the solution."
     requirements: [IV.1, IV.2]
-  - slug: rownania-nierownosci-kwadratowe
-    name: "Równania i nierówności kwadratowe"
-    scope: "Solving quadratic equations (factoring, discriminant, Vieta); solving quadratic inequalities from the sign of the parabola."
+  - slug: rownania-kwadratowe
+    name: "Równania kwadratowe"
+    scope: "Solving quadratic equations: factoring, the discriminant and the quadratic formula, Vieta's formulas; the number of real roots from the sign of the discriminant; equations reducible to quadratic."
+    requirements: [III.4]
+  - slug: nierownosci-kwadratowe
+    name: "Nierówności kwadratowe"
+    scope: "Solving quadratic inequalities from the roots and the sign of the parabola; writing the solution set; the edge cases where the discriminant is zero or negative."
     requirements: [III.4]
 
   # --- Funkcje ---
@@ -237,9 +241,21 @@ sections:
     name: "Kąty w graniastosłupach, ostrosłupach, walcach i stożkach"
     scope: "Angles between edges, between edges and diagonals, and between faces in prisms and pyramids; angle of a cone's aperture and related angles in cylinders and cones, and computing them."
     requirements: [X.3, X.4]
-  - slug: objetosci-i-pola-powierzchni-bryl
-    name: "Objętości i pola powierzchni brył"
-    scope: "Volumes and surface areas of prisms, pyramids, the cylinder, the cone and the sphere, including cases that need trigonometry to recover a missing length."
+  - slug: graniastoslupy-i-ostroslupy
+    name: "Graniastosłupy i ostrosłupy: objętości i pola powierzchni"
+    scope: "Volume and surface area of prisms and pyramids, including regular ones; recovering a missing edge, height or slant height with the Pythagorean theorem or trigonometry; the net."
+    requirements: [X.5]
+  - slug: walec
+    name: "Walec"
+    scope: "Volume and surface area of a right cylinder; the axial cross-section; cases where the cylinder is given via an inscribed or circumscribed solid or a rotation."
+    requirements: [X.5]
+  - slug: stozek
+    name: "Stożek"
+    scope: "Volume and surface area of a right cone; slant height, apex angle and the axial cross-section; the circular sector that unrolls to the lateral surface."
+    requirements: [X.5]
+  - slug: kula
+    name: "Kula"
+    scope: "Volume and surface area of a sphere; plane cross-sections; a sphere inscribed in or circumscribed about a prism, pyramid, cylinder or cone."
     requirements: [X.5]
   - slug: bryly-podobne
     name: "Bryły podobne"

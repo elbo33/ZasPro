@@ -4,7 +4,12 @@
 
 **Revision (theorem pass):** seven two-code sections were split so each named
 theorem / distinct topic family gets its own section, taking the tree from 50 to
-58 sections. Each code still maps to exactly one section.
+58 sections. Then, against the matemaks reference, two single-code sections were
+split further because one section cannot make one episode: **X.5** into four
+(graniastosłupy/ostrosłupy, walec, stożek, kula) and **III.4** into two (równania
+kwadratowe, nierówności kwadratowe) — all keeping the code. **62 sections.** The
+seeder's coverage check is now "every requirement in ≥ 1 section", not a
+partition.
 
 | was | became |
 |---|---|

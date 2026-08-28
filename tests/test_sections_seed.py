@@ -1,8 +1,10 @@
-"""seed_sections: idempotent, and covers every podstawowy requirement once."""
+"""seed_sections: idempotent, and covers every podstawowy requirement (>=1x)."""
 
 from __future__ import annotations
 
 import pytest
+
+from sqlalchemy import func, select
 
 from zaspro.db.models import Section, SectionRequirement, Topic, TopicLevel
 from zaspro.seeding.curriculum import seed_curriculum
@@ -14,7 +16,7 @@ def _seed(db):
     return seed_sections(db)
 
 
-def test_seed_covers_all_podstawowy_requirements_exactly_once(db):
+def test_seed_covers_all_podstawowy_requirements_at_least_once(db):
     counts = _seed(db)
     n_sections = db.query(Section).count()
     assert counts.created == n_sections
@@ -23,13 +25,25 @@ def test_seed_covers_all_podstawowy_requirements_exactly_once(db):
         Topic.level == TopicLevel.PODSTAWOWY,
         Topic.official_requirement_code.is_not(None),
     ).count()
-    assert db.query(SectionRequirement).count() == n_pod == 73
+    distinct = db.scalar(select(func.count(func.distinct(SectionRequirement.topic_id))))
+    assert distinct == n_pod == 73                     # every requirement covered
+    assert db.query(SectionRequirement).count() >= 73  # some span several sections
 
-    # a requirement is in exactly one section; order is a permutation of 1..N
-    topic_ids = [sr.topic_id for sr in db.query(SectionRequirement)]
-    assert len(topic_ids) == len(set(topic_ids))
     orders = sorted(s.order_index for s in db.query(Section))
-    assert orders == list(range(1, n_sections + 1))
+    assert orders == list(range(1, n_sections + 1))     # order is a permutation
+
+
+def test_a_requirement_may_span_several_sections(db):
+    _seed(db)
+    by_code = {
+        c: [db.get(Section, sr.section_id).slug for sr in db.query(SectionRequirement).filter_by(topic_id=tid)]
+        for c, tid in db.execute(
+            select(Topic.official_requirement_code, Topic.id)
+            .where(Topic.official_requirement_code.in_(["X.5", "III.4"]))
+        ).all()
+    }
+    assert len(by_code["X.5"]) == 4     # split by solid
+    assert len(by_code["III.4"]) == 2   # equations vs inequalities
 
 
 def test_seed_is_idempotent_and_reorders_without_collision(db):

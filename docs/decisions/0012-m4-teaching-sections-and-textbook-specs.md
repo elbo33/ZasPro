@@ -16,10 +16,14 @@ shipped no reviewable knowledge. Torn out.
 
 `sections` + `section_requirements` (migration 0013), seeded from
 `seeds/teaching_sections.yaml` (proposed in `m4/teaching_tree_proposal.md`,
-approved). **50 lesson-sized sections**, ordered in teaching sequence, each
-covering one or more `official_requirement_code`s. `seed_sections` asserts every
-podstawowy requirement is covered exactly once — coverage against the podstawa
-stays provable. Sections are the "teaching layer above requirements" flagged in
+approved). **62 lesson-sized sections** (50 → 58 with a theorem-split pass →
+62 after splitting X.5 by solid type and III.4 into equations vs inequalities),
+ordered in teaching sequence, each covering one or more
+`official_requirement_code`s. `seed_sections` asserts every podstawowy
+requirement is covered by **at least one** section — a requirement may span
+several sections (X.5's five solids, III.4's equations vs inequalities), all
+keeping the same code; the guarantee is coverage, not a partition. Sections are
+the "teaching layer above requirements" flagged in
 SPEC §17 / ADR 0010 §3; requirements remain the legal definition of what is
 examinable.
 
@@ -75,7 +79,7 @@ section that has one without `force=True`).
 
 ## Consequences
 
-* `uv run python -m zaspro.knowledge.write --all` writes all 50 sections
+* `uv run python -m zaspro.knowledge.write --all` writes all 62 sections
   (~$25–45 at opus-5 rates; ~14–24k output tokens per section). It cleans up
   pre-0013 leftovers (topic-scoped cards, stale jobs) on startup.
 * `uv run python -m zaspro.knowledge.export --all` freezes the approved ones.

@@ -4,7 +4,7 @@ Polish Matura knowledge base and episode planning system. The authoritative
 spec is [`docs/SPEC.md`](docs/SPEC.md); architectural decisions are ADRs in
 [`docs/decisions/`](docs/decisions/).
 
-Build state: **M4 (knowledge layer)** — a teaching tree of 50 sections; the
+Build state: **M4 (knowledge layer)** — a teaching tree of 62 sections; the
 agent writes each section's knowledge as a textbook would; review and export to
 committed files.
 

@@ -1,8 +1,9 @@
 """Seed the teaching sections from `seeds/teaching_sections.yaml`.
 
-Idempotent. Asserts that the sections cover every podstawowy
-`official_requirement_code` exactly once — coverage against the podstawa stays
-provable (ADR 0012).
+Idempotent. Asserts that every podstawowy `official_requirement_code` is covered
+by at least one section — coverage against the podstawa stays provable. A
+requirement may span several sections (X.5's five solid types, III.4's equations
+vs inequalities); the guarantee is coverage, not a partition (ADR 0012).
 """
 
 from __future__ import annotations
@@ -59,7 +60,7 @@ def seed_sections(session: Session, seed_path: Path = SEED) -> Counts:
     )
 
     counts = Counts()
-    seen: dict[str, str] = {}  # code -> section slug (for the coverage assertion)
+    seen: set[str] = set()  # requirement codes covered by >= 1 section
     seed_slugs: set[str] = set()
 
     # Park every existing order_index out of the way so re-ordering (splits,
@@ -90,11 +91,9 @@ def seed_sections(session: Session, seed_path: Path = SEED) -> Counts:
         for code in row["requirements"]:
             if code not in by_code:
                 raise ValueError(f"section {row['slug']}: unknown requirement {code!r}")
-            if code in seen:
-                raise ValueError(
-                    f"requirement {code} is in two sections: {seen[code]} and {row['slug']}"
-                )
-            seen[code] = row["slug"]
+            # a requirement may span several sections (e.g. X.5 split by solid);
+            # the guarantee is coverage, not partition.
+            seen.add(code)
             want_topic_ids.add(by_code[code])
 
         have = {sr.topic_id for sr in section.requirements}
@@ -133,7 +132,7 @@ def seed_sections(session: Session, seed_path: Path = SEED) -> Counts:
         ).delete(synchronize_session=False)
         session.flush()
 
-    missing = set(by_code) - set(seen)
+    missing = set(by_code) - seen
     if missing:
         raise ValueError(
             f"{len(missing)} podstawowy requirement(s) not covered by any section: "
