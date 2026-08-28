@@ -14,9 +14,30 @@ from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from zaspro.db.models import (
-    Section, SectionRequirement, Subject, Topic, TopicLevel,
+    ReviewDecision, ReviewItem, ReviewItemType, Section, SectionRequirement,
+    Subject, Topic, TopicLevel,
 )
 from zaspro.seeding.upsert import Counts, upsert
+
+
+def _drop_section_card(session: Session, section_id: int) -> None:
+    """Remove a section's KNOWLEDGE_SPEC review card (+ its decisions).
+    `ReviewItem.ref_id` has no FK, so deleting the Section alone would leave the
+    card dangling in the review queue as a contentless item."""
+    ids = list(session.scalars(
+        select(ReviewItem.id).where(
+            ReviewItem.item_type == ReviewItemType.KNOWLEDGE_SPEC,
+            ReviewItem.ref_table == "sections",
+            ReviewItem.ref_id == section_id,
+        )
+    ))
+    if ids:
+        session.query(ReviewDecision).filter(
+            ReviewDecision.review_item_id.in_(ids)
+        ).delete(synchronize_session=False)
+        session.query(ReviewItem).filter(
+            ReviewItem.id.in_(ids)
+        ).delete(synchronize_session=False)
 
 ROOT = Path(__file__).resolve().parents[3]
 SEED = ROOT / "seeds" / "teaching_sections.yaml"
@@ -84,11 +105,33 @@ def seed_sections(session: Session, seed_path: Path = SEED) -> Counts:
                 session.delete(sr)
         session.flush()
 
-    # drop sections no longer in the seed
+    # drop sections no longer in the seed, and their (now orphaned) review card
     for section in session.scalars(select(Section)):
         if section.slug not in seed_slugs:
+            _drop_section_card(session, section.id)
             session.delete(section)
     session.flush()
+
+    # sweep any KNOWLEDGE_SPEC card whose section no longer exists (e.g. a slug
+    # renamed in an earlier seed run before this cleanup existed)
+    live = {x.id for x in session.scalars(select(Section))}
+    dangling = [
+        r.id for r in session.scalars(
+            select(ReviewItem).where(
+                ReviewItem.item_type == ReviewItemType.KNOWLEDGE_SPEC,
+                ReviewItem.ref_table == "sections",
+            )
+        )
+        if r.ref_id not in live
+    ]
+    if dangling:
+        session.query(ReviewDecision).filter(
+            ReviewDecision.review_item_id.in_(dangling)
+        ).delete(synchronize_session=False)
+        session.query(ReviewItem).filter(
+            ReviewItem.id.in_(dangling)
+        ).delete(synchronize_session=False)
+        session.flush()
 
     missing = set(by_code) - set(seen)
     if missing:
