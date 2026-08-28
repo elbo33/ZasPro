@@ -1,8 +1,24 @@
 # M4 Step 1 — Teaching tree proposal (Matura podstawowa)
 
-**Status: proposal for review. Not a seed.** Approve / edit the section list and
-order; it then becomes a committed curriculum seed and Step 2 (per-section
-knowledge) runs against it.
+**Status: seeded** as `seeds/teaching_sections.yaml`.
+
+**Revision (theorem pass):** seven two-code sections were split so each named
+theorem / distinct topic family gets its own section, taking the tree from 50 to
+58 sections. Each code still maps to exactly one section.
+
+| was | became |
+|---|---|
+| wzory skróconego mnożenia + wyłączanie czynnika | `wzory-skroconego-mnozenia` (II.1) · `wylaczanie-wspolnego-czynnika` (II.3) |
+| przekształcenia wykresów + f. odwrotnie proporcjonalna | `przeksztalcenia-wykresow` (V.12) · `funkcja-odwrotnie-proporcjonalna` (V.13) |
+| f. tryg. 0–180 + jedynka | `sinus-cosinus-tangens-kata` (VII.1) · `jedynka-trygonometryczna` (VII.2) |
+| okrąg: cięciwy/styczne/kąty | `okrag-cieciwy-i-styczne` (VIII.1) · `kat-wpisany-i-srodkowy` (VIII.5) |
+| czworokąty + wielokąty foremne | `wlasnosci-czworokatow` (VIII.4) · `wielokaty-foremne` (VIII.3) |
+| Tales + podobieństwo | `twierdzenie-talesa` (VIII.7) · `cechy-podobienstwa-trojkatow` (VIII.8) |
+| objętości/pola + bryły podobne | `objetosci-i-pola-powierzchni-bryl` (X.5) · `bryly-podobne` (X.6) |
+| kombinatoryka: zliczanie + reguły | `zliczanie-obiektow` (XI.1) · `regula-mnozenia-i-dodawania` (XI.2) |
+
+The rest of this document is the original 33- then 50-section proposal, kept for
+the reasoning.
 
 ## What this is
 

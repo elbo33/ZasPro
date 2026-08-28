@@ -2,14 +2,12 @@
 #
 # A teaching layer above the 73 podstawowy `official_requirement_code`s: the
 # order a course is taught in, regrouped for teaching. Proposed in
-# m4/teaching_tree_proposal.md and approved for seeding.
+# m4/teaching_tree_proposal.md; refined once to give named theorems and
+# distinct topic families their own sections.
 #
 # Every podstawowy requirement code appears under EXACTLY ONE section
 # (`seed_sections` asserts this against the DB). Sections are ordered; the
 # `scope` line bounds what the section's knowledge spec should contain.
-#
-# This is the unit the Knowledge Agent writes a spec for (Step 2). Exercises
-# are not involved.
 
 subject: matematyka   # slug of the seeded Subject
 
@@ -50,9 +48,13 @@ sections:
 
   # --- Wyrażenia algebraiczne ---
   - slug: wzory-skroconego-mnozenia
-    name: "Wzory skróconego mnożenia i przekształcanie wyrażeń"
-    scope: "(a +- b)^2 and a^2 - b^2 for expanding and factoring; taking a common monomial factor out of an algebraic sum."
-    requirements: [II.1, II.3]
+    name: "Wzory skróconego mnożenia"
+    scope: "The identities (a +- b)^2 and a^2 - b^2; using them to expand products and to factor expressions."
+    requirements: [II.1]
+  - slug: wylaczanie-wspolnego-czynnika
+    name: "Wyłączanie wspólnego czynnika przed nawias"
+    scope: "Taking a common monomial factor out of an algebraic sum; recognising a common factor and factoring by grouping in simple cases."
+    requirements: [II.3]
   - slug: dzialania-na-wielomianach
     name: "Działania na wielomianach"
     scope: "Adding, subtracting and multiplying polynomials in one and several variables; ordering and collecting terms."
@@ -109,10 +111,14 @@ sections:
     name: "Zastosowania funkcji liniowej i kwadratowej; optymalizacja"
     scope: "Using linear and quadratic functions to interpret geometric, physical and everyday problems; optimisation reducible to a quadratic - expressing the quantity as a quadratic function of one variable under constraints and reading the extremum."
     requirements: [V.11, XIII.1]
-  - slug: przeksztalcenia-wykresow-odwrotna-proporcjonalnosc
-    name: "Przekształcenia wykresów i funkcja odwrotnie proporcjonalna"
-    scope: "Sketching graphs shifted along the axes from y = f(x); the inversely-proportional function y = a/x, its hyperbola, and modelling inversely-proportional quantities."
-    requirements: [V.12, V.13]
+  - slug: przeksztalcenia-wykresow
+    name: "Przekształcenia wykresów: przesunięcia wzdłuż osi"
+    scope: "From the graph of y = f(x), sketching the graphs obtained by shifting it along the x-axis and along the y-axis; reading off how the shift changes zeros, domain and range."
+    requirements: [V.12]
+  - slug: funkcja-odwrotnie-proporcjonalna
+    name: "Funkcja odwrotnie proporcjonalna"
+    scope: "The inversely-proportional function y = a/x: its hyperbola, domain and asymptotic behaviour; using it to model and interpret inversely-proportional quantities."
+    requirements: [V.13]
   - slug: funkcje-wykladnicza-logarytmiczna
     name: "Funkcje wykładnicza i logarytmiczna"
     scope: "The exponential and logarithmic functions and their graphs; using them to describe and interpret growth, decay and scales."
@@ -145,20 +151,28 @@ sections:
     name: "Rozwiązywanie trójkątów prostokątnych"
     scope: "sin, cos, tan in a right triangle; finding sides and angles from the given data."
     requirements: [VII.4]
-  - slug: funkcje-trygonometryczne-0-180
-    name: "Sinus, cosinus i tangens kąta od 0° do 180°; jedynka trygonometryczna"
-    scope: "Values for 0-180 degrees, exact values for 30/45/60 and the reduction relationships; the Pythagorean identity; tan as sin / cos."
-    requirements: [VII.1, VII.2]
+  - slug: sinus-cosinus-tangens-kata
+    name: "Sinus, cosinus i tangens kąta od 0° do 180°"
+    scope: "sin, cos and tan for angles from 0 to 180 degrees; exact values for 30, 45 and 60 degrees and the reduction relationships for obtuse angles."
+    requirements: [VII.1]
+  - slug: jedynka-trygonometryczna
+    name: "Jedynka trygonometryczna i tangens jako sin/cos"
+    scope: "The Pythagorean identity sin^2(a) + cos^2(a) = 1 and tan(a) = sin(a)/cos(a); recovering the remaining trig values from one, and simplifying trigonometric expressions."
+    requirements: [VII.2]
   - slug: twierdzenie-cosinusow-pole-trojkata
     name: "Twierdzenie cosinusów i pole trójkąta przez sinus"
     scope: "Law of cosines; area = 1/2 * a * b * sin(gamma); choosing between them from the given data."
     requirements: [VII.3]
 
   # --- Planimetria ---
-  - slug: okrag-cieciwy-styczne-katy
-    name: "Okrąg: cięciwy, styczne, kąty wpisane i środkowe"
-    scope: "Radii, diameters, chords and tangent segments (with Pythagoras); inscribed and central angles and the relations between them."
-    requirements: [VIII.1, VIII.5]
+  - slug: okrag-cieciwy-i-styczne
+    name: "Okrąg: cięciwy i styczne"
+    scope: "Radii, diameters, chords and tangent segments; the perpendicular from the centre to a chord, and the tangent perpendicular to the radius, both used with the Pythagorean theorem."
+    requirements: [VIII.1]
+  - slug: kat-wpisany-i-srodkowy
+    name: "Twierdzenie o kącie wpisanym i środkowym"
+    scope: "The inscribed-angle theorem: an inscribed angle is half the central angle on the same arc; inscribed angles on the same arc are equal; the angle in a semicircle is right. Using these to find angles in circle figures."
+    requirements: [VIII.5]
   - slug: wycinek-kola-luk
     name: "Wycinek koła i długość łuku"
     scope: "Area of a circular sector and length of an arc from the central angle."
@@ -167,18 +181,26 @@ sections:
     name: "Rodzaje trójkątów; twierdzenie odwrotne do twierdzenia Pitagorasa"
     scope: "Classifying a triangle as acute, right or obtuse from its side lengths, using the converse of the Pythagorean theorem."
     requirements: [VIII.2]
-  - slug: czworokaty-wielokaty-foremne
-    name: "Czworokąty i wielokąty foremne"
-    scope: "Angles and diagonals in rectangles, parallelograms, rhombi and trapezia; regular polygons and their basic properties."
-    requirements: [VIII.3, VIII.4]
+  - slug: wlasnosci-czworokatow
+    name: "Kąty i przekątne w czworokątach"
+    scope: "Angles, sides and diagonals in rectangles, parallelograms, rhombi and trapezia, and the relationships among them."
+    requirements: [VIII.4]
+  - slug: wielokaty-foremne
+    name: "Wielokąty foremne"
+    scope: "Regular polygons: interior and central angles, the circumscribed and inscribed circles, side and apothem; using these to compute lengths and areas."
+    requirements: [VIII.3]
   - slug: punkty-szczegolne-trojkata
     name: "Punkty szczególne trójkąta"
     scope: "Incentre, circumcentre, orthocentre and centroid: definitions and how to locate them."
     requirements: [VIII.10]
-  - slug: tales-podobienstwo-trojkatow
-    name: "Twierdzenie Talesa i podobieństwo trójkątów"
-    scope: "Thales' theorem and its use; similarity criteria for triangles and their application."
-    requirements: [VIII.7, VIII.8]
+  - slug: twierdzenie-talesa
+    name: "Twierdzenie Talesa"
+    scope: "Thales' theorem and its converse: parallel lines cut proportional segments on two transversals; using it to find unknown lengths, and the intercept theorem in a triangle."
+    requirements: [VIII.7]
+  - slug: cechy-podobienstwa-trojkatow
+    name: "Cechy podobieństwa trójkątów"
+    scope: "The similarity criteria for triangles (AA, SSS, SAS); identifying similar triangles and using the ratio of similarity to find lengths."
+    requirements: [VIII.8]
   - slug: pola-obwody-figur-podobnych
     name: "Pola i obwody figur podobnych"
     scope: "Ratio of perimeters and ratio of areas of similar figures, and problems that use them."
@@ -215,16 +237,24 @@ sections:
     name: "Kąty w graniastosłupach, ostrosłupach, walcach i stożkach"
     scope: "Angles between edges, between edges and diagonals, and between faces in prisms and pyramids; angle of a cone's aperture and related angles in cylinders and cones, and computing them."
     requirements: [X.3, X.4]
-  - slug: objetosci-pola-bryly-podobne
-    name: "Objętości, pola powierzchni i bryły podobne"
-    scope: "Volumes and surface areas of prisms, pyramids, cylinder, cone and sphere, including with trigonometry; ratio of volumes of similar solids."
-    requirements: [X.5, X.6]
+  - slug: objetosci-i-pola-powierzchni-bryl
+    name: "Objętości i pola powierzchni brył"
+    scope: "Volumes and surface areas of prisms, pyramids, the cylinder, the cone and the sphere, including cases that need trigonometry to recover a missing length."
+    requirements: [X.5]
+  - slug: bryly-podobne
+    name: "Bryły podobne"
+    scope: "Similar solids: the ratio of surface areas is the square, and the ratio of volumes the cube, of the linear scale factor; problems that use this."
+    requirements: [X.6]
 
   # --- Kombinatoryka, prawdopodobieństwo, statystyka ---
-  - slug: kombinatoryka-reguly-zliczania
-    name: "Kombinatoryka: zliczanie, reguła mnożenia i dodawania"
-    scope: "Counting objects in simple situations; the multiplication and addition rules, including used together, for any number of steps."
-    requirements: [XI.1, XI.2]
+  - slug: zliczanie-obiektow
+    name: "Zliczanie obiektów w prostych sytuacjach"
+    scope: "Counting objects in simple situations by systematic listing, tree diagrams and tables."
+    requirements: [XI.1]
+  - slug: regula-mnozenia-i-dodawania
+    name: "Reguła mnożenia i reguła dodawania"
+    scope: "The multiplication rule and the addition rule, and using them together, for a sequence of choices with any number of steps."
+    requirements: [XI.2]
   - slug: prawdopodobienstwo-klasyczne
     name: "Prawdopodobieństwo w modelu klasycznym"
     scope: "Equally likely outcomes; favourable versus all outcomes; complementary events."

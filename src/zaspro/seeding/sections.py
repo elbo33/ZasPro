@@ -10,7 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import yaml
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from zaspro.db.models import (
@@ -40,6 +40,16 @@ def seed_sections(session: Session, seed_path: Path = SEED) -> Counts:
     counts = Counts()
     seen: dict[str, str] = {}  # code -> section slug (for the coverage assertion)
     seed_slugs: set[str] = set()
+
+    # Park every existing order_index out of the way so re-ordering (splits,
+    # inserts) never trips the (subject_id, order_index) unique constraint
+    # mid-sync.
+    session.execute(
+        update(Section)
+        .where(Section.subject_id == subject.id)
+        .values(order_index=Section.order_index + 100_000)
+    )
+    session.flush()
 
     for order, row in enumerate(data["sections"], start=1):
         seed_slugs.add(row["slug"])
