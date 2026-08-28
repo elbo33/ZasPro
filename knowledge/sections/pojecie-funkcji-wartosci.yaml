@@ -1,0 +1,423 @@
+section: pojecie-funkcji-wartosci
+name: Pojęcie funkcji; obliczanie i odczytywanie wartości
+scope: Function as a unique assignment given verbally, by table, graph, formula or piecewise; evaluating
+  from a formula; reading and interpreting values from tables, graphs and formulas.
+requirements:
+- V.1
+- V.2
+- V.3
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:36:46.793330'
+  approved_at: '2026-08-28T18:28:04.135676'
+  approved_by: reviewer
+concepts:
+- name: Funkcja jako jednoznaczne przyporządkowanie
+  description: 'Funkcja f określona na zbiorze X o wartościach w zbiorze Y to przyporządkowanie, które
+    KAŻDEMU elementowi zbioru X przypisuje DOKŁADNIE JEDEN element zbioru Y. Zapisujemy f: X → Y.'
+  explanation: 'Dwa warunki muszą być spełnione naraz: (1) każdy element X ma przypisaną wartość (nikt
+    nie zostaje pominięty), (2) nie może mieć przypisanych dwóch różnych wartości. Myśl o funkcji jak
+    o automacie: wrzucasz jedną monetę (argument) i zawsze dostajesz jeden, z góry określony produkt (wartość).
+    Nic nie stoi na przeszkodzie, by dwa różne argumenty dawały tę samą wartość — to nadal funkcja.'
+  difficulty: 2
+- name: Argument i wartość funkcji
+  description: Argument to element x dziedziny, czyli to, co „wkładamy” do funkcji. Wartość funkcji dla
+    argumentu x to element f(x) przyporządkowany temu argumentowi.
+  explanation: 'Argument mieszka na osi OX, wartość na osi OY. Zdanie „f(3) = 5” czytamy: dla argumentu
+    3 funkcja przyjmuje wartość 5. Pytanie „oblicz wartość funkcji dla x = 3” to podstawienie; pytanie
+    „dla jakiego argumentu wartość wynosi 5” to rozwiązanie równania f(x) = 5 — to dwa różne zadania.'
+  difficulty: 1
+- name: Dziedzina funkcji
+  description: Dziedzina D (oznaczana też Df lub X) to zbiór wszystkich argumentów, dla których funkcja
+    jest określona.
+  explanation: Dziedzina bywa podana wprost (np. „dla x ∈ {1,2,3}”), wynika z opisu sytuacji (liczba osób
+    nie może być ujemna ani ułamkowa), z tabeli (pierwszy wiersz), z wykresu (rzut wykresu na oś OX) albo
+    ze wzoru (wtedy jest to zbiór liczb, dla których wzór ma sens — nie dzielimy przez zero, nie pierwiastkujemy
+    liczb ujemnych).
+  difficulty: 2
+- name: Zbiór wartości funkcji
+  description: 'Zbiór wartości ZW (Zw, f(X)) to zbiór wszystkich liczb, które funkcja faktycznie przyjmuje:
+    ZW = {f(x) : x ∈ D}.'
+  explanation: 'Na wykresie to rzut wykresu na oś OY. W tabeli — zbiór liczb z drugiego wiersza (bez powtórzeń).
+    Uwaga: to zbiór wartości osiąganych, a nie „wszystkich liczb rzeczywistych”.'
+  difficulty: 2
+- name: Opis słowny funkcji
+  description: Sposób zadania funkcji zdaniem opisującym regułę przyporządkowania, np. „każdej liczbie
+    naturalnej przyporządkowujemy liczbę jej dodatnich dzielników”.
+  explanation: 'Aby sprawdzić, czy opis definiuje funkcję, pytaj: czy dla każdego dopuszczalnego x reguła
+    daje wynik i czy daje tylko jeden wynik? „Liczbie przyporządkowujemy jej dzielnik” — to NIE jest funkcja
+    (6 ma kilka dzielników), a „najmniejszy dzielnik pierwszy” — już tak.'
+  difficulty: 2
+- name: Opis tabelaryczny funkcji
+  description: 'Funkcja o skończonej dziedzinie zadana tabelą: w jednym wierszu (kolumnie) argumenty,
+    w drugim odpowiadające im wartości.'
+  explanation: 'Tabela zadaje funkcję, gdy żaden argument nie powtarza się w wierszu argumentów z dwiema
+    różnymi wartościami. Odczyt: znajdź argument w wierszu x, zejdź do wiersza f(x). Powtórzone wartości
+    (np. f(1)=f(4)=7) są dozwolone.'
+  difficulty: 1
+- name: Opis grafem (diagramem strzałkowym)
+  description: 'Dwa zbiory (owale) połączone strzałkami: z każdego elementu zbioru X wychodzi dokładnie
+    jedna strzałka do elementu zbioru Y.'
+  explanation: 'Szybki test: policz strzałki wychodzące z każdej kropki po lewej. Dokładnie jedna z każdej
+    — funkcja. Zero strzałek lub dwie — nie funkcja. To, ile strzałek wchodzi do elementów po prawej,
+    jest bez znaczenia.'
+  difficulty: 2
+- name: Wzór funkcji
+  description: Zadanie funkcji wyrażeniem algebraicznym, np. f(x) = 2x² − 5, wraz z dziedziną (jeśli nie
+    podano — przyjmujemy dziedzinę naturalną wzoru).
+  explanation: 'Wzór to przepis: w miejsce każdego x wstaw konkretną liczbę (w nawiasie!) i wykonaj działania.
+    Zapis f(x) NIE oznacza mnożenia f razy x.'
+  difficulty: 1
+- name: Wykres funkcji
+  description: Wykres funkcji f o dziedzinie D to zbiór punktów płaszczyzny o współrzędnych (x, f(x))
+    dla x ∈ D.
+  explanation: 'Każdy punkt wykresu ma postać (argument, wartość). Dlatego sprawdzenie „czy punkt A(3,
+    −1) leży na wykresie” sprowadza się do policzenia f(3) i porównania z −1. Wykres czytamy zawsze: z
+    osi OX w górę/w dół do krzywej, potem w bok na oś OY.'
+  difficulty: 2
+- name: Test prostej pionowej
+  description: Krzywa na płaszczyźnie jest wykresem pewnej funkcji zmiennej x wtedy i tylko wtedy, gdy
+    każda prosta pionowa przecina ją co najwyżej w jednym punkcie.
+  explanation: 'To graficzna wersja warunku jednoznaczności: jeśli prosta x = a przecina krzywą dwa razy,
+    to argumentowi a odpowiadałyby dwie wartości — a to zakazane. Dlatego okrąg nie jest wykresem funkcji,
+    a parabola „leżąca” też nie.'
+  difficulty: 3
+- name: Funkcja określona różnymi wzorami na różnych przedziałach (funkcja klamrowa)
+  description: Funkcja, której dziedzinę dzielimy na rozłączne części i na każdej z nich obowiązuje inny
+    wzór; zapisujemy ją za pomocą klamry.
+  explanation: To wciąż JEDNA funkcja. Przy liczeniu wartości najpierw sprawdzasz, do którego przedziału
+    należy argument, a dopiero potem podstawiasz do odpowiedniego wzoru. Przedziały muszą się nie zachodzić
+    (inaczej złamana byłaby jednoznaczność), a ich suma jest dziedziną. Takie funkcje modelują cenniki,
+    taryfy, opłaty progowe.
+  difficulty: 3
+- name: Odczytywanie wartości z wykresu
+  description: 'Wyznaczanie f(a) na podstawie rysunku: nad (lub pod) punktem a osi OX znajdujemy punkt
+    wykresu i odczytujemy jego drugą współrzędną.'
+  explanation: Warto zaznaczyć ołówkiem odcinek pionowy od (a,0) do wykresu i poziomy do osi OY. Odwrotny
+    kierunek (od osi OY poziomo do wykresu, potem w dół) służy do rozwiązywania równania f(x) = c.
+  difficulty: 2
+- name: Graficzne rozwiązywanie równania f(x) = c
+  description: Zbiór argumentów, dla których funkcja przyjmuje wartość c, to zbiór odciętych punktów wspólnych
+    wykresu funkcji i prostej poziomej y = c.
+  explanation: Rysujesz prostą poziomą na wysokości c i patrzysz, ile razy przecina wykres — tyle jest
+    rozwiązań. Podobnie odczytujesz, dla jakich x zachodzi f(x) > c (wykres nad prostą) lub f(x) < c (pod
+    prostą).
+  difficulty: 3
+- name: Miejsce zerowe funkcji (odczyt)
+  description: Miejsce zerowe to taki argument x₀ ∈ D, że f(x₀) = 0.
+  explanation: 'Na wykresie to odcięta punktu przecięcia z osią OX. W tym rozdziale traktujemy je tylko
+    jako szczególny przypadek odczytu wartości: szukamy x, dla których wartość równa się 0.'
+  difficulty: 2
+- name: Interpretacja wartości funkcji w kontekście praktycznym
+  description: Nadawanie liczbom f(x) sensu wynikającego z opisanej sytuacji (złotówki, stopnie, kilometry,
+    liczba osób) wraz z jednostkami.
+  explanation: 'Zawsze pytaj: co oznacza x, co oznacza f(x) i w jakich jednostkach? Odpowiedź zapisuj
+    zdaniem, np. „po 3 godzinach postoju kierowca zapłaci 9 zł”. Pozwala to też sprawdzić sensowność wyniku
+    (ujemna cena = błąd).'
+  difficulty: 2
+- name: Korzystanie z kilku źródeł informacji jednocześnie
+  description: Rozwiązywanie zadań, w których dane pochodzą równocześnie z tabeli, wykresu i wzoru (lub
+    z wielokrotnego użycia tego samego źródła).
+  explanation: 'Schemat pracy: (1) wypisz, co daje każde źródło, (2) ustal wspólną zmienną (najczęściej
+    ten sam argument x), (3) przenoś wynik z jednego źródła jako dane wejściowe do drugiego. Np. z wykresu
+    odczytujesz liczbę sprzedanych biletów, a z tabeli — cenę biletu, i dopiero mnożysz.'
+  difficulty: 4
+formulas:
+- name: Zapis funkcji i wartości
+  latex_raw: f\colon X \to Y,\qquad y = f(x)
+  conditions: X — dziedzina, Y — zbiór, w którym leżą wartości
+  description: f(x) czytamy „ef od iks”; to nie jest iloczyn f·x.
+- name: Wartość funkcji w punkcie
+  latex_raw: f(a) = \text{wartość wyrażenia po podstawieniu } x := a
+  conditions: a ∈ D; podstawiamy a w każde miejsce, gdzie stoi x, ujmując je w nawias
+- name: Wykres funkcji
+  latex_raw: 'W_f = \{(x, f(x)) : x \in D\}'
+  conditions: D — dziedzina funkcji f
+- name: Warunek należenia punktu do wykresu
+  latex_raw: P(x_0, y_0) \in W_f \iff x_0 \in D \ \wedge\ y_0 = f(x_0)
+  conditions: zawsze; podstawową techniką jest obliczenie f(x₀) i porównanie z y₀
+- name: Zbiór wartości
+  latex_raw: 'ZW_f = \{ f(x) : x \in D \}'
+  conditions: 'z wykresu: rzut wykresu na oś OY; z tabeli: zbiór liczb z wiersza wartości'
+- name: Funkcja określona różnymi wzorami
+  latex_raw: f(x)=\begin{cases} w_1(x), & x \in A_1\\ w_2(x), & x \in A_2\\ w_3(x), & x \in A_3\end{cases}
+  conditions: zbiory A₁, A₂, A₃ są parami rozłączne, a ich suma to dziedzina D
+  description: Wartość liczymy TYM wzorem, którego warunek spełnia dany argument.
+- name: Miejsce zerowe
+  latex_raw: f(x_0)=0,\quad x_0 \in D
+  conditions: 'na wykresie: punkt przecięcia z osią OX ma współrzędne (x₀, 0)'
+- name: Rozwiązania równania f(x)=c
+  latex_raw: '\{x \in D : f(x)=c\} \ \longleftrightarrow\ W_f \cap \{y=c\}'
+  conditions: 'metoda graficzna: liczba rozwiązań = liczba punktów wspólnych wykresu z prostą poziomą
+    y = c'
+- name: Typowy model opłaty progowej
+  latex_raw: K(t)=\begin{cases} a, & 0 \le t \le t_0\\ a + c\,(t-t_0), & t > t_0\end{cases}
+  conditions: a — opłata stała obejmująca t₀ jednostek, c — cena każdej dodatkowej jednostki
+  description: 'Schemat cenników: abonament + dopłata za nadwyżkę.'
+methods:
+- name: Sprawdzanie, czy dane przyporządkowanie jest funkcją
+  when_to_use: Gdy przyporządkowanie zadano opisem słownym, tabelą, grafem lub rysunkiem krzywej i trzeba
+    rozstrzygnąć, czy to funkcja.
+  steps:
+  - Ustal, co jest zbiorem argumentów (X), a co zbiorem wartości (Y).
+  - 'Sprawdź kompletność: czy KAŻDY element X ma przypisaną co najmniej jedną wartość?'
+  - 'Sprawdź jednoznaczność: czy żaden element X nie ma przypisanych dwóch różnych wartości?'
+  - 'Dla grafu: policz strzałki wychodzące z każdego elementu X — musi być dokładnie jedna.'
+  - 'Dla tabeli: sprawdź, czy argumenty się nie powtarzają z różnymi wartościami.'
+  - 'Dla krzywej: zastosuj test prostej pionowej.'
+  - Sformułuj wniosek; jeśli to nie funkcja, podaj kontrprzykład (konkretny argument łamiący warunek).
+- name: Obliczanie wartości funkcji zadanej wzorem
+  when_to_use: Gdy mamy wzór f(x) i konkretny argument (liczbę, ułamek, liczbę ujemną, wyrażenie).
+  steps:
+  - Sprawdź, czy argument należy do dziedziny.
+  - Przepisz wzór, wstawiając w miejsce KAŻDEGO x podstawiany argument ujęty w nawias.
+  - Wykonaj potęgowanie, potem mnożenie/dzielenie, na końcu dodawanie/odejmowanie.
+  - Uprość wynik (skróć ułamek, usuń niewymierność, jeśli trzeba).
+  - Zapisz odpowiedź w postaci f(a) = ... .
+- name: Obliczanie wartości funkcji określonej różnymi wzorami na różnych przedziałach
+  when_to_use: Gdy funkcja jest zapisana klamrą (cenniki, taryfy, funkcje przedziałami liniowe).
+  steps:
+  - Odczytaj warunki przy poszczególnych wzorach i sprawdź, do którego przedziału należy dany argument
+    (zwróć uwagę na nierówności ostre i nieostre).
+  - Wybierz ten jeden wzór, który odpowiada temu przedziałowi.
+  - Podstaw argument do wybranego wzoru i oblicz.
+  - Jeśli argumentów jest kilka, powtórz procedurę osobno dla każdego — mogą wypaść w różnych przedziałach.
+  - Zinterpretuj wynik w kontekście zadania (jednostki).
+- name: Wyznaczanie argumentu o zadanej wartości (rozwiązywanie f(x) = c)
+  when_to_use: 'Gdy pytanie brzmi: „dla jakiego argumentu funkcja przyjmuje wartość c?”, „kiedy koszt
+    wyniesie c zł?”, „gdzie wykres przecina prostą y = c?”.'
+  steps:
+  - Zapisz równanie f(x) = c, podstawiając wzór funkcji.
+  - Rozwiąż równanie (liniowe, kwadratowe, proporcja).
+  - Dla funkcji klamrowej rozwiąż równanie osobno na każdym przedziale i ODRZUĆ rozwiązania spoza rozpatrywanego
+    przedziału.
+  - Sprawdź, czy otrzymane x należą do dziedziny.
+  - Zapisz wszystkie rozwiązania (może ich być kilka lub żadne).
+- name: Sprawdzanie, czy punkt należy do wykresu / wyznaczanie brakującego parametru
+  when_to_use: Gdy dany jest punkt P(x₀, y₀) i wzór funkcji, ewentualnie ze współczynnikiem literowym.
+  steps:
+  - Sprawdź, czy x₀ należy do dziedziny.
+  - Oblicz f(x₀).
+  - 'Porównaj z y₀: równość oznacza, że punkt leży na wykresie, brak równości — że nie leży.'
+  - Jeśli we wzorze występuje parametr (np. m), zapisz równanie f(x₀) = y₀ i rozwiąż je względem parametru.
+  - Podaj odpowiedź pełnym zdaniem.
+- name: Odczytywanie informacji z wykresu funkcji
+  when_to_use: Gdy funkcja zadana jest wyłącznie rysunkiem i pytamy o wartości, argumenty, dziedzinę,
+    zbiór wartości, miejsca zerowe, największą/najmniejszą wartość.
+  steps:
+  - Odczytaj skalę obu osi (ile jednostek przypada na kratkę).
+  - 'Dziedzina: rzutuj cały wykres na oś OX i zapisz przedział/zbiór.'
+  - 'Zbiór wartości: rzutuj wykres na oś OY.'
+  - 'f(a): idź pionowo od punktu a na osi OX do wykresu, potem poziomo na oś OY.'
+  - 'f(x) = c: poprowadź prostą poziomą y = c i odczytaj odcięte wszystkich punktów wspólnych.'
+  - 'Miejsca zerowe: odczytaj odcięte punktów przecięcia z osią OX.'
+  - 'Wartość największa/najmniejsza: najwyżej/najniżej położony punkt wykresu — podaj wartość ORAZ argument,
+    w którym jest przyjmowana.'
+- name: Odczytywanie i interpretowanie danych z tabeli
+  when_to_use: Gdy dane (np. temperatury, ceny, wyniki pomiarów) zapisano w tabeli i trzeba wyciągnąć
+    z niej wniosek.
+  steps:
+  - Zidentyfikuj, który wiersz/kolumna zawiera argumenty, a który wartości, wraz z jednostkami.
+  - Odczytaj potrzebne wartości, ewentualnie kilka naraz.
+  - Wykonaj wymagane działania (różnica, suma, średnia, procent, porównanie).
+  - Sprawdź, czy odpowiedź dotyczy argumentu czy wartości — to najczęstsze źródło pomyłki.
+  - Sformułuj odpowiedź w kontekście sytuacji.
+- name: Praca z kilkoma źródłami informacji naraz
+  when_to_use: Gdy w zadaniu występują jednocześnie np. wykres i tabela, tabela i wzór, albo trzeba użyć
+    tego samego wykresu kilka razy.
+  steps:
+  - Wypisz osobno, co opisuje każde źródło (jaka wielkość jest argumentem, jaka wartością).
+  - Ustal wielkość łączącą źródła (najczęściej wspólny argument, np. numer miesiąca, liczba godzin).
+  - Z pierwszego źródła odczytaj potrzebną wielkość pośrednią.
+  - Wstaw ją jako argument do drugiego źródła (wzoru/tabeli) i wyznacz wynik końcowy.
+  - Jeśli pytanie dotyczy porównania, wykonaj obliczenia dla wszystkich rozważanych przypadków i dopiero
+    potem porównaj.
+  - Zapisz odpowiedź z jednostkami.
+examples:
+- statement: Dana jest funkcja f(x) = x² − 3x + 2 określona dla wszystkich liczb rzeczywistych. a) Oblicz
+    f(0), f(−2) oraz f(1/2). b) Sprawdź, czy punkt A(4, 6) należy do wykresu tej funkcji. c) Wyznacz wszystkie
+    argumenty, dla których f(x) = 2.
+  worked_solution: |-
+    a) f(0) = 0² − 3·0 + 2 = 2.
+    f(−2) = (−2)² − 3·(−2) + 2 = 4 + 6 + 2 = 12. (Uwaga na nawiasy przy liczbie ujemnej!)
+    f(1/2) = (1/2)² − 3·(1/2) + 2 = 1/4 − 3/2 + 2 = 1/4 − 6/4 + 8/4 = 3/4.
+    b) Liczymy f(4) = 16 − 12 + 2 = 6. Ponieważ f(4) = 6 = y_A, punkt A(4, 6) należy do wykresu.
+    c) Rozwiązujemy równanie x² − 3x + 2 = 2, czyli x² − 3x = 0, x(x − 3) = 0, stąd x = 0 lub x = 3.
+    Odpowiedź: funkcja przyjmuje wartość 2 dla dwóch argumentów: x = 0 i x = 3. (Widać, że dwa różne argumenty mogą mieć tę samą wartość — to nie przeczy definicji funkcji.)
+  difficulty: 2
+- statement: Funkcja f jest określona wzorem f(x) = { x + 4 dla x < −1; x² dla −1 ≤ x ≤ 2; 6 − x dla x
+    > 2 }. a) Oblicz f(−3), f(−1), f(2) i f(5). b) Wyznacz wszystkie argumenty, dla których f(x) = 1.
+  worked_solution: |-
+    a) x = −3: ponieważ −3 < −1, używamy wzoru x + 4: f(−3) = −3 + 4 = 1.
+    x = −1: warunek −1 ≤ x ≤ 2 jest spełniony (nierówność nieostra!), więc f(−1) = (−1)² = 1.
+    x = 2: należy do [−1, 2], więc f(2) = 2² = 4. (Nie wolno użyć wzoru 6 − x, bo tam jest x > 2.)
+    x = 5: 5 > 2, więc f(5) = 6 − 5 = 1.
+    b) Rozwiązujemy równanie osobno na każdym przedziale:
+    • dla x < −1: x + 4 = 1 ⟹ x = −3; sprawdzenie: −3 < −1 ✓, przyjmujemy.
+    • dla −1 ≤ x ≤ 2: x² = 1 ⟹ x = −1 lub x = 1; oba należą do [−1, 2] ✓, przyjmujemy oba.
+    • dla x > 2: 6 − x = 1 ⟹ x = 5; sprawdzenie: 5 > 2 ✓, przyjmujemy.
+    Odpowiedź: f(x) = 1 dla x ∈ {−3, −1, 1, 5} — są cztery takie argumenty.
+  difficulty: 3
+- statement: 'Wykresem funkcji f jest łamana o kolejnych wierzchołkach A(−4, −2), B(−1, 4), C(2, −2),
+    D(4, 2). Odczytaj: a) dziedzinę i zbiór wartości funkcji, b) f(−4), f(−1) i f(4), c) wszystkie miejsca
+    zerowe, d) wszystkie rozwiązania równania f(x) = 2, e) największą i najmniejszą wartość funkcji.'
+  worked_solution: |-
+    Wykres składa się z trzech odcinków: AB, BC, CD.
+    a) Rzut wykresu na oś OX: od −4 do 4, więc D = ⟨−4, 4⟩. Najniższy punkt ma rzędną −2 (punkty A i C), najwyższy 4 (punkt B); wykres jest ciągłą łamaną, więc ZW = ⟨−2, 4⟩.
+    b) Wartości w wierzchołkach odczytujemy wprost: f(−4) = −2, f(−1) = 4, f(4) = 2.
+    c) Wyznaczmy wzory odcinków. AB: ze wzrostu od −2 do 4 na odcinku długości 3 mamy współczynnik kierunkowy a = 6/3 = 2, więc y = 2x + 6 (sprawdzenie: dla x = −4 mamy −2 ✓). Zero: 2x + 6 = 0 ⟹ x = −3.
+    BC: a = (−2 − 4)/(2 − (−1)) = −6/3 = −2, więc y = −2x + 2 (dla x = −1: 4 ✓). Zero: −2x + 2 = 0 ⟹ x = 1.
+    CD: a = (2 − (−2))/(4 − 2) = 2, więc y = 2x − 6 (dla x = 2: −2 ✓). Zero: 2x − 6 = 0 ⟹ x = 3.
+    Miejsca zerowe: −3, 1, 3.
+    d) Prowadzimy prostą y = 2 i szukamy punktów wspólnych:
+    2x + 6 = 2 ⟹ x = −2 (należy do ⟨−4, −1⟩ ✓);
+    −2x + 2 = 2 ⟹ x = 0 (należy do ⟨−1, 2⟩ ✓);
+    2x − 6 = 2 ⟹ x = 4 (należy do ⟨2, 4⟩ ✓).
+    Równanie f(x) = 2 ma trzy rozwiązania: −2, 0, 4.
+    e) Wartość największa to 4 i jest przyjmowana dla x = −1; wartość najmniejsza to −2 i jest przyjmowana dla dwóch argumentów: x = −4 oraz x = 2.
+  difficulty: 4
+- statement: Operator telefoniczny pobiera miesięczny abonament 30 zł, w ramach którego można wykonać
+    100 minut połączeń. Każda kolejna rozpoczęta minuta kosztuje 0,20 zł. a) Zapisz wzór funkcji K(t)
+    — koszt w złotych przy t minutach rozmów (t ≥ 0, t całkowite). b) Oblicz K(80) i K(150). c) W pewnym
+    miesiącu rachunek wyniósł 46 zł. Ile minut rozmawiał klient? d) Klient rozmawia średnio 200 minut
+    miesięcznie. Konkurencja oferuje taryfę bez abonamentu, w której każda minuta kosztuje 0,30 zł. Która
+    oferta jest dla niego tańsza i o ile?
+  worked_solution: |-
+    a) Do 100 minut płacimy tylko abonament, powyżej — abonament plus 0,20 zł za każdą minutę ponad 100:
+    K(t) = 30 dla 0 ≤ t ≤ 100, K(t) = 30 + 0,2(t − 100) dla t > 100.
+    b) t = 80 ≤ 100, więc K(80) = 30 zł.
+    t = 150 > 100, więc K(150) = 30 + 0,2·(150 − 100) = 30 + 0,2·50 = 30 + 10 = 40 zł.
+    c) Szukamy t, dla którego K(t) = 46. Skoro 46 > 30, argument leży w drugim przedziale:
+    30 + 0,2(t − 100) = 46 ⟹ 0,2(t − 100) = 16 ⟹ t − 100 = 80 ⟹ t = 180.
+    Sprawdzenie: 180 > 100 ✓. Klient rozmawiał 180 minut.
+    d) Oferta 1: K(200) = 30 + 0,2·100 = 50 zł. Oferta 2: L(200) = 0,3·200 = 60 zł.
+    Tańsza jest oferta z abonamentem, o 60 − 50 = 10 zł miesięcznie.
+  difficulty: 4
+- statement: 'W tabeli podano liczbę sprzedanych biletów w kolejnych dniach festiwalu: dzień 1 – 120,
+    dzień 2 – 150, dzień 3 – 90, dzień 4 – 200, dzień 5 – 150. Cena jednego biletu zależy od dnia i wyraża
+    się wzorem c(n) = 40 + 5n (w złotych), gdzie n to numer dnia. a) Czy przyporządkowanie „dniowi — liczba
+    sprzedanych biletów” jest funkcją? Uzasadnij. b) Oblicz przychód ze sprzedaży biletów w dniu 4. c)
+    W którym dniu przychód był najmniejszy? d) O ile procent więcej biletów sprzedano w dniu 4 niż w dniu
+    3?'
+  worked_solution: |-
+    a) Tak. Dziedziną jest zbiór {1, 2, 3, 4, 5}, a każdemu dniowi odpowiada dokładnie jedna liczba biletów. To, że w dniach 2 i 5 sprzedano tyle samo biletów (150), nie narusza definicji — powtarzać mogą się wartości, nie argumenty.
+    b) Korzystamy z dwóch źródeł: z tabeli b(4) = 200, ze wzoru c(4) = 40 + 5·4 = 60 zł.
+    Przychód: P(4) = 200 · 60 = 12 000 zł.
+    c) Liczymy przychód dla każdego dnia P(n) = b(n)·c(n):
+    P(1) = 120·45 = 5400 zł, P(2) = 150·50 = 7500 zł, P(3) = 90·55 = 4950 zł, P(4) = 200·60 = 12 000 zł, P(5) = 150·65 = 9750 zł.
+    Najmniejszy przychód, 4950 zł, przypadł na dzień 3. (Zauważ, że najmniejsza liczba biletów i najmniejszy przychód wypadły tu w tym samym dniu, ale nie musiało tak być — cena rośnie z dniem.)
+    d) (200 − 90)/90 = 110/90 ≈ 1,2222, czyli o około 122%.
+    Odpowiedź: w dniu 4 sprzedano o około 122% biletów więcej niż w dniu 3.
+  difficulty: 5
+objectives:
+- statement: Podać definicję funkcji jako jednoznacznego przyporządkowania oraz wskazać dziedzinę, argument,
+    wartość i zbiór wartości w konkretnym przykładzie.
+  bloom_level: zapamiętywanie/rozumienie
+- statement: Rozstrzygnąć, czy dane przyporządkowanie (opis słowny, tabela, graf, krzywa na rysunku) jest
+    funkcją, i uzasadnić odpowiedź, podając w razie potrzeby kontrprzykład.
+  bloom_level: analiza
+- statement: Obliczyć wartość funkcji zadanej wzorem algebraicznym dla argumentu całkowitego, ujemnego,
+    ułamkowego lub niewymiernego, poprawnie stosując nawiasy i kolejność działań.
+  bloom_level: stosowanie
+- statement: Obliczyć wartość funkcji określonej różnymi wzorami na różnych przedziałach, dobierając wzór
+    odpowiadający warunkowi spełnianemu przez argument.
+  bloom_level: stosowanie
+- statement: Sprawdzić, czy dany punkt należy do wykresu funkcji, oraz wyznaczyć wartość parametru we
+    wzorze funkcji tak, aby wykres przechodził przez wskazany punkt.
+  bloom_level: stosowanie/analiza
+- statement: Wyznaczyć wszystkie argumenty, dla których funkcja przyjmuje zadaną wartość (w tym miejsca
+    zerowe), także dla funkcji określonej kilkoma wzorami, z weryfikacją przynależności do przedziałów.
+  bloom_level: stosowanie/analiza
+- statement: 'Odczytać z wykresu funkcji: dziedzinę, zbiór wartości, wartości dla wskazanych argumentów,
+    miejsca zerowe, rozwiązania równania f(x) = c oraz wartość największą i najmniejszą wraz z argumentami,
+    w których są przyjmowane.'
+  bloom_level: rozumienie/stosowanie
+- statement: Odczytać i porównać dane zapisane w tabeli, wykonując na nich obliczenia (różnice, sumy,
+    średnie, porównania procentowe) i interpretując wynik w kontekście sytuacji.
+  bloom_level: stosowanie
+- statement: Zbudować wzór funkcji (także klamrowej) opisującej prostą sytuację praktyczną, np. cennik
+    z opłatą stałą i dopłatą za nadwyżkę.
+  bloom_level: tworzenie
+- statement: Rozwiązać zadanie wymagające jednoczesnego lub wielokrotnego korzystania z kilku źródeł informacji
+    (tabela, wykres, wzór), łącząc odczyty przez wspólny argument i formułując odpowiedź z jednostkami.
+  bloom_level: analiza/ocena
+- statement: Zinterpretować wartość funkcji w kontekście opisanej sytuacji, ocenić sensowność otrzymanego
+    wyniku i zapisać odpowiedź pełnym zdaniem.
+  bloom_level: ocena
+misconceptions:
+- name: Mylenie argumentu z wartością
+  incorrect_reasoning: '„Oblicz f(2)” — uczeń rozwiązuje równanie f(x) = 2 albo odwrotnie: na pytanie
+    „dla jakiego x wartość wynosi 3” podaje f(3).'
+  correct_reasoning: f(2) to wartość dla argumentu 2 — podstawiamy 2 za x. Równanie f(x) = 2 to poszukiwanie
+    argumentu, dla którego wartość wynosi 2 — trzeba rozwiązać równanie. Argument czytamy z osi OX, wartość
+    z osi OY.
+  severity: 5
+- name: Przekonanie, że funkcja nie może przyjmować dwa razy tej samej wartości
+  incorrect_reasoning: „W tabeli f(2) = 7 i f(5) = 7, więc to nie jest funkcja, bo przyporządkowanie nie
+    jest jednoznaczne.”
+  correct_reasoning: 'Jednoznaczność dotyczy tylko kierunku od argumentu do wartości: jeden argument —
+    jedna wartość. Różne argumenty mogą mieć tę samą wartość (np. funkcja stała f(x) = 7 jest poprawną
+    funkcją).'
+  severity: 4
+- name: Brak nawiasów przy podstawianiu liczby ujemnej
+  incorrect_reasoning: Dla f(x) = x² − 3x uczeń pisze f(−2) = −2² − 3·−2 = −4 + 6 = 2.
+  correct_reasoning: 'Podstawiany argument zawsze ujmujemy w nawias: f(−2) = (−2)² − 3·(−2) = 4 + 6 =
+    10. Zapis −2² oznacza −(2²) = −4, a to co innego niż (−2)² = 4.'
+  severity: 5
+- name: Traktowanie f(x) jako iloczynu
+  incorrect_reasoning: „f(x) = f razy x, więc f(2x) = 2f(x)” albo „f(a + b) = f(a) + f(b)”.
+  correct_reasoning: f(x) to symbol wartości funkcji w punkcie x, a nie mnożenie. Aby obliczyć f(2x) czy
+    f(a+b), trzeba wstawić całe wyrażenie w miejsce x we wzorze i wykonać rachunki; ogólnie f(a+b) ≠ f(a)
+    + f(b).
+  severity: 4
+- name: Wybór złego wzoru w funkcji klamrowej
+  incorrect_reasoning: Uczeń podstawia argument do pierwszego wzoru z brzegu albo do wszystkich wzorów
+    naraz, ignorując warunki przy klamrze; przy x = 2 i warunkach „x ≤ 2” oraz „x > 2” wybiera drugi.
+  correct_reasoning: Najpierw sprawdzamy, który warunek spełnia argument (uwaga na nierówności ostre i
+    nieostre), i dopiero wtedy podstawiamy do jedynego pasującego wzoru. Dla x = 2 przy warunkach x ≤
+    2 / x > 2 obowiązuje pierwszy wzór.
+  severity: 5
+- name: Nieodrzucanie rozwiązań spoza przedziału przy równaniu f(x) = c
+  incorrect_reasoning: W funkcji klamrowej uczeń rozwiązuje każde równanie i zapisuje wszystkie otrzymane
+    x jako rozwiązania.
+  correct_reasoning: Rozwiązanie otrzymane z danego wzoru jest poprawne tylko wtedy, gdy należy do przedziału,
+    na którym ten wzór obowiązuje. Każde x trzeba skonfrontować z warunkiem i ewentualnie odrzucić.
+  severity: 4
+- name: Zamiana kolejności współrzędnych przy odczycie z wykresu
+  incorrect_reasoning: Widząc punkt wykresu (3, −1), uczeń pisze f(−1) = 3.
+  correct_reasoning: Punkt wykresu ma zawsze postać (argument, wartość) = (x, f(x)). Punkt (3, −1) oznacza
+    f(3) = −1. Pierwsza współrzędna to zawsze x.
+  severity: 4
+- name: Mylenie dziedziny ze zbiorem wartości
+  incorrect_reasoning: Uczeń podaje dziedzinę jako rzut wykresu na oś OY, a zbiór wartości jako rzut na
+    oś OX.
+  correct_reasoning: 'Dziedzina to zbiór argumentów — rzut wykresu na oś OX (poziomą). Zbiór wartości
+    to rzut na oś OY (pionową). Pomaga hasło: „dziedzina leży, wartości stoją”.'
+  severity: 3
+- name: Domyślanie się przebiegu wykresu poza narysowanym fragmentem
+  incorrect_reasoning: „Wykres rośnie, więc dla x = 10 wartość też będzie duża” — mimo że rysunek kończy
+    się na x = 4.
+  correct_reasoning: Funkcja jest określona tylko tam, gdzie narysowano wykres. Dla argumentów spoza dziedziny
+    wartość nie istnieje i nie wolno jej ekstrapolować.
+  severity: 3
+- name: Uznawanie każdej krzywej za wykres funkcji
+  incorrect_reasoning: „Okrąg (albo parabola o osi poziomej) też jest wykresem funkcji, bo to ładna krzywa.”
+  correct_reasoning: 'Trzeba zastosować test prostej pionowej: prosta x = 0 przecina okrąg w dwóch punktach,
+    więc jednemu argumentowi odpowiadałyby dwie wartości — to nie jest wykres funkcji.'
+  severity: 3
+- name: Podawanie samej wartości zamiast argumentu (i odwrotnie) przy ekstremach
+  incorrect_reasoning: Na pytanie „dla jakiego argumentu funkcja przyjmuje wartość największą” uczeń odpowiada
+    „4”, mając na myśli wysokość wykresu.
+  correct_reasoning: Wartość największa to liczba na osi OY, a argument, w którym jest przyjmowana, to
+    liczba na osi OX. Odpowiedź powinna wskazywać właściwą z nich, np. „wartość największa równa 4 jest
+    przyjmowana dla x = −1”.
+  severity: 3
+- name: Mieszanie źródeł danych bez sprawdzenia wspólnego argumentu
+  incorrect_reasoning: Uczeń mnoży liczbę biletów z dnia 4 przez cenę odczytaną dla dnia 2, bo „to były
+    sąsiednie kolumny”.
+  correct_reasoning: Przy łączeniu tabeli, wykresu i wzoru trzeba pilnować, aby wszystkie odczyty dotyczyły
+    tego samego argumentu (tego samego dnia, miesiąca, produktu). Warto wypisać dane w jednej tabelce
+    pomocniczej przed obliczeniami.
+  severity: 4

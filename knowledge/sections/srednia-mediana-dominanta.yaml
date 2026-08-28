@@ -1,0 +1,355 @@
+section: srednia-mediana-dominanta
+name: Średnia, mediana, dominanta
+scope: Arithmetic mean and weighted mean; median and mode, and reading them from a small data set.
+requirements:
+- XII.2
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:36:04.521927'
+  approved_at: '2026-08-28T18:28:21.857287'
+  approved_by: reviewer
+concepts:
+- name: Zestaw danych (próba statystyczna)
+  description: Skończony ciąg liczb x₁, x₂, …, x_n będących wynikami pomiaru, obserwacji lub oceny; n
+    nazywamy liczebnością zestawu.
+  explanation: Myśl o tym jak o liście liczb wypisanych na kartce – kolejność zapisu nie ma znaczenia
+    dla średniej, ale ma znaczenie dla wygody szukania mediany. Ta sama liczba może wystąpić wiele razy
+    i za każdym razem liczy się osobno.
+  difficulty: 1
+- name: Szereg uporządkowany
+  description: 'Zestaw danych ustawiony niemalejąco: x₍₁₎ ≤ x₍₂₎ ≤ … ≤ x₍n₎.'
+  explanation: To pierwszy krok przy każdej medianie. Uporządkowanie musi obejmować wszystkie powtórzenia
+    – jeśli liczba 7 występuje trzy razy, w szeregu zapisujemy ją trzy razy.
+  difficulty: 1
+- name: Średnia arytmetyczna
+  description: 'Iloraz sumy wszystkich danych przez ich liczbę: x̄ = (x₁ + x₂ + … + x_n)/n.'
+  explanation: 'To „sprawiedliwy podział”: gdyby wszystkie wartości wyrównać do jednej liczby, nie zmieniając
+    sumy, byłaby to właśnie średnia. Stąd użyteczna zależność: suma danych = n · x̄.'
+  difficulty: 1
+- name: Waga
+  description: Liczba dodatnia w_i przypisana danej x_i, opisująca jej znaczenie (np. waga oceny, liczebność
+    grupy, liczba sztuk towaru).
+  explanation: Waga mówi, „ile razy” dana wartość ma się liczyć. Waga 3 działa tak, jakby ta sama liczba
+    wystąpiła trzy razy. Wagi mogą być całkowite, ułamkowe lub procentowe.
+  difficulty: 2
+- name: Średnia ważona
+  description: 'Dla danych x₁,…,x_n z wagami w₁,…,w_n: x̄_w = (w₁x₁ + w₂x₂ + … + w_nx_n)/(w₁ + w₂ + …
+    + w_n).'
+  explanation: W liczniku sumujemy iloczyny wartość·waga, w mianowniku – same wagi (nigdy liczbę danych!).
+    Gdy wszystkie wagi są równe, średnia ważona sprowadza się do arytmetycznej.
+  difficulty: 2
+- name: Mediana
+  description: 'Wartość środkowa uporządkowanego zestawu danych: dla n nieparzystego jest to element o
+    numerze (n+1)/2, dla n parzystego – średnia arytmetyczna elementów o numerach n/2 i n/2+1.'
+  explanation: 'Mediana dzieli uporządkowane dane na dwie połowy: co najmniej połowa danych jest od niej
+    niewiększa i co najmniej połowa niemniejsza. Dla n parzystego mediana zwykle nie jest jednym z danych.'
+  difficulty: 2
+- name: Dominanta (moda)
+  description: Wartość występująca w zestawie najczęściej, czyli o największej liczebności.
+  explanation: Szukamy wartości, a nie tego, ile razy się powtarza. Jeśli kilka wartości ma tę samą, największą
+    liczebność – dominant jest kilka; jeśli wszystkie dane występują po jednym razie, dominanta nie istnieje.
+  difficulty: 2
+- name: Tabela liczebności (szereg rozdzielczy)
+  description: Zestawienie różnych wartości danych wraz z liczbą ich wystąpień (liczebnością) lub częstością.
+  explanation: Wygodna forma zapisu dużego zestawu. Liczebność całkowita to suma liczebności; średnią
+    liczymy jako sumę iloczynów wartość·liczebność podzieloną przez sumę liczebności – to dokładnie średnia
+    ważona z wagami równymi liczebnościom.
+  difficulty: 2
+- name: Liczebność skumulowana
+  description: Suma liczebności wartości nie większych od danej wartości.
+  explanation: 'Narzędzie do szukania mediany w tabeli: idziemy po wartościach, dodając liczebności, aż
+    „miniemy” pozycję środkową. Wartość, przy której to nastąpiło, jest elementem szeregu o tym numerze.'
+  difficulty: 3
+- name: Częstość (częstość względna)
+  description: Iloraz liczebności danej wartości przez liczebność całego zestawu; często wyrażany w procentach.
+  explanation: Częstości sumują się do 1 (100%). Jeśli w zadaniu podano procenty zamiast liczebności,
+    można ich użyć wprost jako wag – mianownik średniej ważonej wynosi wtedy 1 (albo 100%).
+  difficulty: 3
+- name: Wartość odstająca i odporność miar
+  description: Dana znacznie odbiegająca od pozostałych; mediana i dominanta są na nią mało wrażliwe,
+    średnia arytmetyczna – bardzo wrażliwa.
+  explanation: Jedna ekstremalna liczba (np. bardzo wysoka pensja) potrafi „pociągnąć” średnią, ale przesuwa
+    medianę najwyżej o jedno miejsce w szeregu. Dlatego przy danych z wartościami odstającymi mediana
+    lepiej opisuje typową wartość.
+  difficulty: 3
+- name: Zakres wartości średniej
+  description: 'Średnia arytmetyczna i średnia ważona zawsze spełniają: min(x_i) ≤ x̄ ≤ max(x_i).'
+  explanation: 'Dobry test poprawności rachunków: jeśli wyszła średnia mniejsza od najmniejszej danej
+    lub większa od największej, gdzieś jest błąd.'
+  difficulty: 2
+formulas:
+- name: Średnia arytmetyczna
+  latex_raw: \bar{x}=\frac{x_1+x_2+\dots+x_n}{n}=\frac{1}{n}\sum_{i=1}^{n}x_i
+  conditions: n ≥ 1, dane liczbowe x₁,…,x_n (z powtórzeniami)
+- name: Suma danych z średniej
+  latex_raw: x_1+x_2+\dots+x_n=n\cdot\bar{x}
+  conditions: zawsze; wygodne przy szukaniu brakującej danej lub przy łączeniu zestawów
+  description: Podstawowe narzędzie w zadaniach typu „średnia wynosi …, wyznacz x”.
+- name: Średnia z tabeli liczebności
+  latex_raw: \bar{x}=\frac{x_1n_1+x_2n_2+\dots+x_kn_k}{n_1+n_2+\dots+n_k}
+  conditions: x₁,…,x_k to różne wartości, n₁,…,n_k ich liczebności
+  description: Mianownik to łączna liczba danych, nie liczba różnych wartości.
+- name: Średnia ważona
+  latex_raw: \bar{x}_w=\frac{w_1x_1+w_2x_2+\dots+w_nx_n}{w_1+w_2+\dots+w_n}
+  conditions: wagi w_i > 0
+- name: Średnia ważona przy wagach procentowych
+  latex_raw: \bar{x}_w=p_1x_1+p_2x_2+\dots+p_nx_n
+  conditions: gdy p₁+p₂+…+p_n = 1 (100% zapisane ułamkiem)
+  description: Mianownik równy 1 znika.
+- name: Średnia połączonych zestawów
+  latex_raw: \bar{x}=\frac{n_1\bar{x}_1+n_2\bar{x}_2}{n_1+n_2}
+  conditions: zestawy o liczebnościach n₁, n₂ i średnich x̄₁, x̄₂, połączone w jeden
+  description: To średnia ważona średnich z wagami równymi liczebnościom – NIE zwykła średnia obu średnich.
+- name: Mediana – n nieparzyste
+  latex_raw: \mathrm{Me}=x_{\left(\frac{n+1}{2}\right)}
+  conditions: dane uporządkowane niemalejąco
+- name: Mediana – n parzyste
+  latex_raw: \mathrm{Me}=\frac{x_{\left(\frac{n}{2}\right)}+x_{\left(\frac{n}{2}+1\right)}}{2}
+  conditions: dane uporządkowane niemalejąco
+- name: Częstość
+  latex_raw: f_i=\frac{n_i}{n}
+  conditions: n_i – liczebność wartości x_i, n – liczebność całkowita
+  description: f₁+f₂+…+f_k = 1
+methods:
+- name: Obliczanie średniej arytmetycznej
+  when_to_use: Gdy dany jest niewielki zestaw liczb i pytamy o wartość przeciętną.
+  steps:
+  - Wypisz wszystkie dane, pamiętając o powtórzeniach.
+  - Policz liczebność n.
+  - Zsumuj wszystkie dane (powtórzenia można zastąpić mnożeniem).
+  - Podziel sumę przez n.
+  - Sprawdź, czy wynik leży między najmniejszą a największą daną.
+- name: Obliczanie średniej z tabeli liczebności / diagramu słupkowego
+  when_to_use: Gdy dane podano jako wartości z liczebnościami (np. oceny w klasie, liczba punktów) lub
+    w postaci diagramu.
+  steps:
+  - Odczytaj z tabeli/diagramu każdą wartość x_i i jej liczebność n_i.
+  - Oblicz łączną liczebność n = n₁ + … + n_k.
+  - Oblicz sumę iloczynów x₁n₁ + x₂n₂ + … + x_kn_k.
+  - Podziel sumę iloczynów przez n.
+  - Zapisz wynik z odpowiednią dokładnością (np. do dwóch miejsc po przecinku).
+- name: Obliczanie średniej ważonej
+  when_to_use: 'Gdy poszczególne dane mają różne znaczenie: oceny z wagami, ceny z liczbą sztuk, grupy
+    o różnych liczebnościach, składniki mieszaniny.'
+  steps:
+  - Wypisz pary (wartość, waga).
+  - Oblicz sumę iloczynów wartość · waga.
+  - Oblicz sumę wag.
+  - Podziel pierwszą sumę przez drugą.
+  - 'Zinterpretuj wynik: powinien być bliżej wartości o większych wagach.'
+- name: Wyznaczanie mediany małego zestawu
+  when_to_use: Zawsze, gdy pytanie dotyczy wartości środkowej.
+  steps:
+  - Uporządkuj dane niemalejąco, wypisując wszystkie powtórzenia.
+  - Policz liczebność n.
+  - Jeśli n jest nieparzyste, wskaż element o numerze (n+1)/2.
+  - Jeśli n jest parzyste, wskaż elementy o numerach n/2 i n/2+1 i oblicz ich średnią arytmetyczną.
+  - Sprawdź, czy po obu stronach mediany jest tyle samo danych.
+- name: Wyznaczanie mediany z tabeli liczebności
+  when_to_use: Gdy danych jest dużo i podano je z liczebnościami – wypisywanie wszystkich byłoby żmudne.
+  steps:
+  - Oblicz łączną liczebność n i numery pozycji środkowych.
+  - Dodawaj liczebności kolejnych (uporządkowanych rosnąco) wartości, tworząc liczebności skumulowane.
+  - Odczytaj, przy której wartości liczebność skumulowana po raz pierwszy osiąga lub przekracza numer
+    szukanej pozycji.
+  - Dla n parzystego zrób to dla obu pozycji i uśrednij odczytane wartości.
+- name: Wyznaczanie dominanty
+  when_to_use: Gdy pytamy o wartość najczęściej występującą (np. najpopularniejszy rozmiar, najczęstsza
+    ocena).
+  steps:
+  - Zlicz wystąpienia każdej różnej wartości (najlepiej w tabelce).
+  - Znajdź największą liczebność.
+  - Podaj wartość (lub wartości) o tej liczebności – to dominanta.
+  - Jeśli wszystkie wartości mają tę samą liczebność, zapisz, że dominanta nie istnieje.
+- name: Wyznaczanie brakującej danej z warunku na średnią
+  when_to_use: Gdy znana jest średnia zestawu i jedna z danych jest niewiadomą.
+  steps:
+  - 'Zapisz równanie: suma danych (z niewiadomą x) podzielona przez n równa się danej średniej.'
+  - Pomnóż obie strony przez n, otrzymując suma = n · średnia.
+  - Rozwiąż równanie liniowe względem x.
+  - Podstaw x do zestawu i sprawdź średnią; w razie potrzeby wyznacz też medianę lub dominantę.
+- name: Analiza przypadków przy medianie z parametrem
+  when_to_use: Gdy w zestawie występuje niewiadoma x i mamy warunek na medianę (lub równość mediany i
+    średniej).
+  steps:
+  - Uporządkuj znane dane niemalejąco.
+  - Rozważ przedziały, w których może leżeć x, wyznaczone przez znane dane (x mniejsze od najmniejszej,
+    między kolejnymi, większe od największej).
+  - W każdym przypadku wskaż położenie x w szeregu i zapisz wzór na medianę.
+  - Rozwiąż otrzymane równanie i sprawdź, czy rozwiązanie należy do rozważanego przedziału.
+  - Zbierz wszystkie rozwiązania spełniające warunek zgodności z przypadkiem.
+- name: Porównywanie średniej, mediany i dominanty
+  when_to_use: Gdy trzeba ocenić, która miara najlepiej opisuje dane, lub zbadać wpływ zmiany danych.
+  steps:
+  - Oblicz wszystkie trzy miary dla wyjściowego zestawu.
+  - Zidentyfikuj ewentualne wartości odstające.
+  - Przelicz miary po dodaniu/zmianie danej.
+  - 'Porównaj zmiany: średnia reaguje na każdą zmianę, mediana i dominanta często pozostają takie same.'
+  - Sformułuj wniosek słowny.
+examples:
+- statement: 'Sześciu uczniów uzyskało na sprawdzianie następujące liczby punktów: 12, 8, 15, 8, 10, 19.
+    Oblicz średnią arytmetyczną, medianę i dominantę tego zestawu.'
+  worked_solution: |-
+    Średnia: suma danych to 12 + 8 + 15 + 8 + 10 + 19 = 72, liczebność n = 6, zatem x̄ = 72/6 = 12 punktów.
+
+    Mediana: porządkujemy dane niemalejąco: 8, 8, 10, 12, 15, 19. Liczebność n = 6 jest parzysta, więc bierzemy elementy o numerach n/2 = 3 i n/2 + 1 = 4, czyli 10 i 12. Me = (10 + 12)/2 = 11 punktów.
+
+    Dominanta: wartość 8 występuje dwa razy, pozostałe po jednym razie, więc D = 8 punktów.
+
+    Sprawdzenie: 8 ≤ 12 ≤ 19 – średnia mieści się między najmniejszą a największą daną.
+  difficulty: 1
+- statement: 'W klasie liczącej 20 uczniów oceny z kartkówki rozłożyły się następująco: ocenę 2 otrzymało
+    3 uczniów, ocenę 3 – 5 uczniów, ocenę 4 – 8 uczniów, ocenę 5 – 3 uczniów, ocenę 6 – 1 uczeń. Oblicz
+    średnią ocen, medianę i dominantę.'
+  worked_solution: |-
+    Sprawdzamy liczebność: 3 + 5 + 8 + 3 + 1 = 20 ✓.
+
+    Średnia (z tabeli liczebności):
+    suma iloczynów = 2·3 + 3·5 + 4·8 + 5·3 + 6·1 = 6 + 15 + 32 + 15 + 6 = 74,
+    x̄ = 74/20 = 3,7.
+
+    Mediana: n = 20 jest parzyste, więc szukamy elementów o numerach 10 i 11 w szeregu uporządkowanym. Liczebności skumulowane: do oceny 2 – 3 elementy, do oceny 3 – 3 + 5 = 8 elementów, do oceny 4 – 8 + 8 = 16 elementów. Pozycje 9–16 zajmuje ocena 4, więc element 10. i 11. to 4 i 4. Zatem Me = (4 + 4)/2 = 4.
+
+    Dominanta: największa liczebność to 8 i odpowiada ocenie 4, więc D = 4.
+
+    Odpowiedź: x̄ = 3,7, Me = 4, D = 4.
+  difficulty: 2
+- statement: '(a) W szkole ocena semestralna liczona jest jako średnia ważona: sprawdziany mają wagę 3,
+    odpowiedzi ustne wagę 2, a kartkówki wagę 1. Ania ma dwa sprawdziany: 4 i 3, jedną odpowiedź: 5 oraz
+    trzy kartkówki: 5, 4, 2. Oblicz jej średnią ważoną. (b) W klasie A jest 20 uczniów, których średnia
+    z tego przedmiotu wynosi 4,2, a w klasie B – 30 uczniów o średniej 3,7. Oblicz średnią wszystkich
+    50 uczniów.'
+  worked_solution: |-
+    (a) Wypisujemy pary (ocena, waga): (4;3), (3;3), (5;2), (5;1), (4;1), (2;1).
+    Suma iloczynów: 4·3 + 3·3 + 5·2 + 5·1 + 4·1 + 2·1 = 12 + 9 + 10 + 5 + 4 + 2 = 42.
+    Suma wag: 3 + 3 + 2 + 1 + 1 + 1 = 11.
+    Średnia ważona: x̄_w = 42/11 ≈ 3,82.
+    (Dla porównania zwykła średnia arytmetyczna tych ocen to (4+3+5+5+4+2)/6 = 23/6 ≈ 3,83 – widać, że wagi zmieniają wynik.)
+
+    (b) Łączna suma ocen: 20 · 4,2 + 30 · 3,7 = 84 + 111 = 195. Łączna liczba uczniów: 20 + 30 = 50.
+    Średnia: 195/50 = 3,9.
+    Uwaga: zwykła średnia obu średnich dałaby (4,2 + 3,7)/2 = 3,95 – to wynik błędny, bo klasy mają różne liczebności i średnia musi być bliżej średniej klasy liczniejszej.
+  difficulty: 3
+- statement: 'Dany jest zestaw pięciu liczb: 3, 5, x, 9, 12. Wiadomo, że średnia arytmetyczna tego zestawu
+    wynosi 8. Wyznacz x, a następnie podaj medianę i dominantę zestawu.'
+  worked_solution: |-
+    Z definicji średniej: (3 + 5 + x + 9 + 12)/5 = 8.
+    Mnożymy obie strony przez 5: 3 + 5 + x + 9 + 12 = 40, czyli 29 + x = 40, stąd x = 11.
+
+    Zestaw ma postać 3, 5, 11, 9, 12. Porządkujemy: 3, 5, 9, 11, 12. Liczebność n = 5 jest nieparzysta, więc mediana to element o numerze (5+1)/2 = 3, czyli Me = 9.
+
+    Dominanta: wszystkie wartości występują dokładnie raz, więc dominanta nie istnieje.
+
+    Sprawdzenie średniej: (3+5+9+11+12)/5 = 40/5 = 8 ✓.
+  difficulty: 3
+- statement: Dla jakich wartości x średnia arytmetyczna zestawu liczb 4, 6, 8, x jest równa jego medianie?
+  worked_solution: |-
+    Średnia zależy od x zawsze tak samo: x̄ = (4 + 6 + 8 + x)/4 = (18 + x)/4. Mediana zależy od położenia x w szeregu, więc rozważamy przypadki. Zestaw ma n = 4 elementy, więc mediana to średnia dwóch środkowych.
+
+    Przypadek 1: x ≤ 4. Szereg: x, 4, 6, 8. Me = (4 + 6)/2 = 5.
+    Równanie: (18 + x)/4 = 5 ⟹ 18 + x = 20 ⟹ x = 2. Warunek x ≤ 4 spełniony, więc x = 2 jest rozwiązaniem.
+
+    Przypadek 2: 4 ≤ x ≤ 6. Szereg: 4, x, 6, 8. Me = (x + 6)/2.
+    Równanie: (18 + x)/4 = (x + 6)/2 ⟹ 18 + x = 2x + 12 ⟹ x = 6. Warunek 4 ≤ 6 ≤ 6 spełniony, więc x = 6 jest rozwiązaniem.
+
+    Przypadek 3: 6 ≤ x ≤ 8. Szereg: 4, 6, x, 8. Me = (6 + x)/2 – to samo równanie co wyżej, znów x = 6 (wartość graniczna, już znaleziona).
+
+    Przypadek 4: x ≥ 8. Szereg: 4, 6, 8, x. Me = (6 + 8)/2 = 7.
+    Równanie: (18 + x)/4 = 7 ⟹ 18 + x = 28 ⟹ x = 10. Warunek x ≥ 8 spełniony, więc x = 10 jest rozwiązaniem.
+
+    Odpowiedź: x ∈ {2, 6, 10}.
+    Sprawdzenie dla x = 10: średnia = 28/4 = 7, szereg 4, 6, 8, 10, mediana = (6+8)/2 = 7 ✓.
+  difficulty: 4
+objectives:
+- statement: Podać definicje średniej arytmetycznej, średniej ważonej, mediany i dominanty oraz wyjaśnić,
+    co każda z nich mówi o zestawie danych.
+  bloom_level: Rozumienie
+- statement: Obliczyć średnią arytmetyczną małego zestawu danych podanego w formie listy liczb.
+  bloom_level: Zastosowanie
+- statement: Uporządkować dane niemalejąco i wyznaczyć medianę zarówno dla nieparzystej, jak i parzystej
+    liczby danych.
+  bloom_level: Zastosowanie
+- statement: Wskazać dominantę zestawu danych, rozpoznając przypadki braku dominanty i kilku dominant.
+  bloom_level: Zastosowanie
+- statement: Odczytać dane z tabeli liczebności, diagramu słupkowego lub kołowego i obliczyć na ich podstawie
+    średnią, medianę i dominantę.
+  bloom_level: Zastosowanie
+- statement: Obliczyć średnią ważoną danych z podanymi wagami (liczbowymi, procentowymi lub liczebnościami
+    grup), w tym średnią zestawu powstałego z połączenia dwóch grup.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć brakującą daną lub wartość parametru z warunku dotyczącego średniej, mediany albo
+    ich równości, prowadząc w razie potrzeby analizę przypadków.
+  bloom_level: Analiza
+- statement: Porównać średnią, medianę i dominantę tego samego zestawu oraz ocenić, jak zmienią się po
+    dodaniu lub zmianie danej, w szczególności wartości odstającej.
+  bloom_level: Analiza
+- statement: Ocenić poprawność otrzymanego wyniku, sprawdzając m.in. czy średnia mieści się między najmniejszą
+    a największą daną i czy mianownik średniej ważonej to suma wag.
+  bloom_level: Ocena
+- statement: Zinterpretować w kontekście praktycznym (oceny, ceny, wyniki pomiarów), która z miar najlepiej
+    opisuje typową wartość w danym zestawie danych.
+  bloom_level: Ocena
+misconceptions:
+- name: Szukanie mediany bez uporządkowania danych
+  incorrect_reasoning: „Dane to 12, 8, 15, 8, 10, 19 – środkowe są 15 i 8, więc mediana wynosi 11,5.”
+  correct_reasoning: 'Mediana to wartość środkowa szeregu uporządkowanego. Najpierw porządkujemy: 8, 8,
+    10, 12, 15, 19, a dopiero potem bierzemy elementy 3. i 4.: Me = (10 + 12)/2 = 11.'
+  severity: 5
+- name: Mylenie dominanty z jej liczebnością
+  incorrect_reasoning: „Ocena 4 wystąpiła 8 razy, najczęściej ze wszystkich, więc dominanta wynosi 8.”
+  correct_reasoning: Dominanta to sama wartość, która wystąpiła najczęściej, a nie liczba jej wystąpień.
+    Tu D = 4 (a 8 to jedynie liczebność tej oceny).
+  severity: 4
+- name: Mediana jako numer pozycji zamiast wartości
+  incorrect_reasoning: „n = 9, więc (9+1)/2 = 5 i mediana wynosi 5.”
+  correct_reasoning: 'Wzór (n+1)/2 podaje numer elementu w szeregu, a nie wartość mediany. Trzeba odczytać,
+    jaka liczba stoi na tej pozycji: Me = x₍₅₎.'
+  severity: 4
+- name: Dzielenie przez liczbę różnych wartości zamiast przez liczebność
+  incorrect_reasoning: „W tabeli są oceny 2, 3, 4, 5, 6 – pięć wartości, więc średnia to (2+3+4+5+6)/5
+    = 4.”
+  correct_reasoning: 'Każdą ocenę trzeba uwzględnić tyle razy, ile razy wystąpiła: x̄ = (2·3 + 3·5 + 4·8
+    + 5·3 + 6·1)/(3+5+8+3+1) = 74/20 = 3,7. Mianownikiem jest łączna liczba danych.'
+  severity: 5
+- name: Dzielenie średniej ważonej przez liczbę danych
+  incorrect_reasoning: „Mam 6 ocen z wagami, suma iloczynów wynosi 42, więc średnia ważona to 42/6 = 7.”
+  correct_reasoning: 'W mianowniku średniej ważonej stoi suma wag, nie liczba danych: 42/11 ≈ 3,82. Kontrola:
+    wynik musi mieścić się między najmniejszą a największą daną, a 7 leży poza zakresem ocen.'
+  severity: 5
+- name: Uśrednianie średnich bez wag
+  incorrect_reasoning: „Klasa A ma średnią 4,2, klasa B 3,7, więc razem (4,2 + 3,7)/2 = 3,95.”
+  correct_reasoning: 'Trzeba uwzględnić liczebności klas: (20·4,2 + 30·3,7)/(20+30) = 195/50 = 3,9. Uśrednianie
+    średnich bez wag jest poprawne tylko przy równych liczebnościach.'
+  severity: 4
+- name: Przekonanie, że mediana musi być jedną z danych
+  incorrect_reasoning: „W zestawie 8, 8, 10, 12, 15, 19 nie ma liczby 11, więc mediana nie może wynosić
+    11.”
+  correct_reasoning: Przy parzystej liczbie danych mediana jest średnią dwóch środkowych wartości i często
+    nie należy do zestawu. Wartość 11 jest poprawną medianą.
+  severity: 3
+- name: Przekonanie, że dominanta zawsze istnieje i jest jedna
+  incorrect_reasoning: '„W zestawie 3, 5, 9, 11, 12 dominantą jest 9, bo to liczba środkowa (albo: najczęstsza
+    jest pierwsza z brzegu).”'
+  correct_reasoning: Gdy wszystkie dane występują po jednym razie, dominanta nie istnieje. Gdy kilka wartości
+    ma jednakową, największą liczebność, dominant jest kilka i wszystkie należy wymienić. Liczba środkowa
+    to mediana, nie dominanta.
+  severity: 3
+- name: Pomijanie powtórzeń przy porządkowaniu danych
+  incorrect_reasoning: '„Liczba 8 pojawia się dwa razy, ale w szeregu zapiszę ją raz: 8, 10, 12, 15, 19
+    – mediana to 12.”'
+  correct_reasoning: Każde wystąpienie danej liczy się osobno; szereg ma tyle elementów, ile jest danych.
+    Dla n = 6 mediana to (10 + 12)/2 = 11.
+  severity: 4
+- name: Mylenie wpływu wartości odstającej na średnią i medianę
+  incorrect_reasoning: „Dodanie jednej bardzo dużej liczby zmienia wszystkie miary tak samo mocno.”
+  correct_reasoning: Średnia jest wrażliwa na wartości odstające (zmienia się suma), natomiast mediana
+    przesuwa się co najwyżej o jedną pozycję w szeregu, a dominanta zwykle wcale. Dlatego dla danych z
+    wartościami skrajnymi mediana lepiej opisuje wartość typową.
+  severity: 3
+- name: Błędne równanie przy szukaniu brakującej danej
+  incorrect_reasoning: „Średnia pięciu liczb wynosi 8, więc brakująca liczba to 8 · 5 = 40.”
+  correct_reasoning: 'Iloczyn n · x̄ = 40 to suma wszystkich pięciu liczb. Brakującą daną otrzymujemy,
+    odejmując od tej sumy sumę pozostałych: x = 40 − 29 = 11.'
+  severity: 4

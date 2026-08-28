@@ -1,0 +1,381 @@
+section: zliczanie-obiektow
+name: Zliczanie obiektów w prostych sytuacjach
+scope: Counting objects in simple situations by systematic listing, tree diagrams and tables.
+requirements:
+- XI.1
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:41:26.531110'
+  approved_at: '2026-08-28T18:28:25.660557'
+  approved_by: reviewer
+concepts:
+- name: Sytuacja kombinatoryczna
+  description: 'Sytuacja, w której z pewnego zbioru elementów tworzymy obiekty złożone (kody, liczby,
+    pary, ustawienia, zestawy) i pytamy: ile jest wszystkich takich obiektów spełniających podane warunki.'
+  explanation: 'Zanim cokolwiek policzysz, odpowiedz na trzy pytania: (1) co dokładnie jest jednym obiektem
+    (jeden kod? jedna liczba? jedna para osób?), (2) czy elementy mogą się powtarzać, (3) czy kolejność
+    elementów tworzy nowy obiekt. Odpowiedzi na te pytania jednoznacznie wyznaczają sposób liczenia.'
+  difficulty: 2
+- name: Systematyczne wypisywanie (przegląd uporządkowany)
+  description: Metoda zliczania polegająca na wypisaniu wszystkich obiektów według ustalonego, stałego
+    porządku (np. rosnąco, alfabetycznie, „od lewej do prawej”), a następnie ich policzeniu.
+  explanation: Jest to metoda absolutnie pewna, jeśli trzymasz się jednego porządku — wtedy nic nie zgubisz
+    i nic nie policzysz dwa razy. Sensowna, gdy obiektów jest kilkanaście, najwyżej kilkadziesiąt. Chaotyczne
+    wypisywanie „co przyjdzie do głowy” jest główną przyczyną błędów.
+  difficulty: 1
+- name: Drzewo możliwości (graf możliwości)
+  description: 'Schemat, w którym każdy etap wyboru przedstawiony jest jako rozgałęzienie: z każdego wierzchołka
+    wychodzi tyle krawędzi, ile jest możliwości na danym etapie. Jeden pełny obiekt odpowiada jednej ścieżce
+    od korzenia do liścia.'
+  explanation: Drzewo to "wypisywanie z rysunkiem" — porządkuje wieloetapowy wybór. Liczba wszystkich
+    obiektów to liczba liści (końców ścieżek), a nie liczba wszystkich wierzchystek czy krawędzi. Drzewo
+    jest szczególnie dobre, gdy liczba możliwości w kolejnym etapie zależy od wcześniejszego wyboru.
+  difficulty: 2
+- name: Tabela możliwości
+  description: Prostokątna tablica, w której wiersze odpowiadają wynikom pierwszego etapu, kolumny — wynikom
+    drugiego, a każda komórka to jeden możliwy obiekt (para wyników).
+  explanation: Idealna dla dokładnie dwóch etapów, np. rzut dwiema kostkami (tabela 6×6 = 36 komórek)
+    albo losowanie po jednej kuli z dwóch urn. Warunki typu „suma równa 8” zaznaczamy w tabeli i po prostu
+    liczymy zaznaczone komórki.
+  difficulty: 2
+- name: Reguła mnożenia
+  description: Jeśli obiekt powstaje w k następujących po sobie etapach i na pierwszym etapie mamy n₁
+    możliwości, na drugim n₂ (niezależnie od wyboru w pierwszym), …, na k-tym n_k, to wszystkich obiektów
+    jest n₁·n₂·…·n_k.
+  explanation: 'Kluczowe słowo to „i”: wybieram to I to I to. Warunek stosowalności: liczba możliwości
+    na kolejnym etapie musi być taka sama bez względu na to, co wybrano wcześniej (sama zawartość opcji
+    może się zmieniać, ważna jest ich liczba).'
+  difficulty: 2
+- name: Reguła dodawania
+  description: Jeśli wszystkie liczone obiekty da się rozbić na przypadki wzajemnie się wykluczające (rozłączne),
+    to liczba wszystkich obiektów jest sumą liczb obiektów w poszczególnych przypadkach.
+  explanation: Kluczowe słowo to „lub” w sensie „albo–albo”. Zanim dodasz, sprawdź, czy przypadki na pewno
+    się nie nakładają — żaden obiekt nie może pasować do dwóch przypadków jednocześnie.
+  difficulty: 2
+- name: Wybór z powtórzeniami i bez powtórzeń
+  description: 'Wybór z powtórzeniami: ten sam element może wystąpić wielokrotnie (np. cyfry w PIN-ie).
+    Wybór bez powtórzeń: raz użyty element znika z puli (np. losowanie kul bez zwracania, liczby o różnych
+    cyfrach).'
+  explanation: 'To rozstrzyga, czy w regule mnożenia czynniki są stałe (n·n·n…) czy malejące (n·(n−1)·(n−2)…).
+    Szukaj w treści słów: „różne”, „bez zwracania”, „każdy inny” — one oznaczają brak powtórzeń.'
+  difficulty: 2
+- name: 'Znaczenie kolejności: para uporządkowana a para nieuporządkowana'
+  description: Para uporządkowana (a, b) to co innego niż (b, a); para nieuporządkowana {a, b} to ten
+    sam obiekt co {b, a}.
+  explanation: 'Pytanie testowe: czy zamiana miejscami daje nową sytuację? Kod 12 i kod 21 — tak, to inne
+    kody (kolejność ma znaczenie). Uścisk dłoni Ani z Bartkiem i Bartka z Anią — to ten sam uścisk (kolejność
+    nie ma znaczenia). W drugim przypadku każdą parę policzylibyśmy podwójnie, więc wynik dzielimy przez
+    2.'
+  difficulty: 3
+- name: Warunek niezerowej cyfry wiodącej
+  description: W zapisie liczby n-cyfrowej pierwsza cyfra (cyfra setek w liczbie trzycyfrowej, cyfra tysięcy
+    w czterocyfrowej itd.) musi być różna od 0.
+  explanation: 'To najczęstsze dodatkowe ograniczenie w zadaniach o liczbach. Praktyczna zasada: najpierw
+    obsadzaj miejsca z ograniczeniami (pierwsza cyfra, cyfra jedności przy podzielności), a dopiero potem
+    miejsca swobodne.'
+  difficulty: 3
+- name: Zliczanie przez dopełnienie
+  description: Liczba obiektów spełniających warunek = liczba wszystkich obiektów − liczba obiektów, które
+    warunku nie spełniają.
+  explanation: Stosuj, gdy w treści pojawia się „co najmniej jeden”, „przynajmniej”, „choć jedna”. Zaprzeczeniem
+    „co najmniej jedna szóstka” jest „żadnej szóstki”, a to liczy się jedną prostą regułą mnożenia.
+  difficulty: 3
+- name: Zasada włączeń i wyłączeń (dla dwóch warunków)
+  description: Gdy przypadki A i B mogą zachodzić jednocześnie, liczba obiektów spełniających A lub B
+    wynosi |A| + |B| − |A ∩ B|.
+  explanation: Dodając |A| i |B|, obiekty wspólne policzyliśmy dwa razy, więc raz je odejmujemy. Wygodnie
+    ilustrować to dwoma nachodzącymi się kołami (diagram Venna) lub tabelą.
+  difficulty: 3
+- name: Silnia i ustawienia w rzędzie
+  description: n! = 1·2·3·…·n to liczba wszystkich ustawień (permutacji) n różnych elementów w rzędzie;
+    przyjmuje się 0! = 1.
+  explanation: 'To po prostu reguła mnożenia bez powtórzeń: na pierwsze miejsce n kandydatów, na drugie
+    n−1, itd. W zadaniach podstawowych występuje najczęściej dla n ≤ 6 (np. ustawienie 4 osób w kolejce:
+    4! = 24).'
+  difficulty: 3
+- name: Liczba podzbiorów zbioru skończonego
+  description: Zbiór n-elementowy ma 2ⁿ podzbiorów (licząc zbiór pusty i cały zbiór).
+  explanation: 'Uzasadnienie drzewem: dla każdego elementu podejmujemy niezależną decyzję „biorę / nie
+    biorę”, czyli 2 możliwości powtórzone n razy. To typowy model wyborów typu „które dodatki wziąć na
+    pizzę”.'
+  difficulty: 3
+formulas:
+- name: Reguła mnożenia
+  latex_raw: N = n_1 \cdot n_2 \cdot \ldots \cdot n_k
+  conditions: Obiekt powstaje w k etapach; liczba możliwości w etapie i wynosi n_i i nie zależy od tego,
+    co wybrano we wcześniejszych etapach.
+  description: Etapy łączy spójnik „i”.
+- name: Reguła dodawania
+  latex_raw: N = |A_1| + |A_2| + \ldots + |A_m|
+  conditions: Zbiory (przypadki) A_1, …, A_m są parami rozłączne i wyczerpują wszystkie liczone obiekty.
+  description: Przypadki łączy spójnik „albo”.
+- name: Ciągi k-wyrazowe z powtórzeniami
+  latex_raw: N = n^k
+  conditions: Wybieramy k elementów spośród n, kolejność ma znaczenie, elementy mogą się powtarzać (np.
+    kody, PIN-y, wielokrotne rzuty).
+- name: Ciągi k-wyrazowe bez powtórzeń
+  latex_raw: N = n\cdot (n-1)\cdot (n-2)\cdot \ldots \cdot (n-k+1)
+  conditions: Wybieramy k elementów spośród n (k ≤ n), kolejność ma znaczenie, elementy nie mogą się powtarzać.
+  description: Iloczyn ma dokładnie k czynników.
+- name: Permutacje (ustawienia w rzędzie)
+  latex_raw: N = n! = 1\cdot 2\cdot \ldots \cdot n
+  conditions: Ustawiamy wszystkie n różnych elementów w rzędzie, kolejność ma znaczenie.
+- name: Liczba par nieuporządkowanych
+  latex_raw: N = \frac{n(n-1)}{2}
+  conditions: Wybieramy 2 różne elementy z n, kolejność nie ma znaczenia (uściski dłoni, mecze „każdy
+    z każdym” raz, przekątne i boki wielokąta, cięciwy).
+- name: Liczba podzbiorów
+  latex_raw: N = 2^n
+  conditions: Zbiór ma n elementów; liczymy wszystkie podzbiory, w tym pusty i pełny.
+- name: Zliczanie przez dopełnienie
+  latex_raw: '|A| = |U| - |A''|'
+  conditions: U — zbiór wszystkich rozważanych obiektów, A' — obiekty niespełniające warunku. Zawsze upewnij
+    się, że |U| jest policzone dla tej samej sytuacji.
+- name: Włączenia i wyłączenia dla dwóch zbiorów
+  latex_raw: '|A \cup B| = |A| + |B| - |A \cap B|'
+  conditions: A i B mogą mieć elementy wspólne.
+methods:
+- name: Analiza sytuacji przed liczeniem (trzy pytania)
+  when_to_use: Zawsze na początku każdego zadania kombinatorycznego, zanim wybierzesz wzór.
+  steps:
+  - Opisz jednym zdaniem, czym jest jeden liczony obiekt, i podaj jego konkretny przykład.
+  - 'Rozstrzygnij, czy elementy mogą się powtarzać (szukaj słów: „różne”, „bez zwracania”, „ze zwracaniem”).'
+  - Rozstrzygnij, czy kolejność ma znaczenie — sprawdź, czy zamiana dwóch elementów miejscami daje inny
+    obiekt.
+  - Wypisz wszystkie warunki dodatkowe (pierwsza cyfra ≠ 0, liczba parzysta, co najmniej jedna…).
+  - 'Zdecyduj o narzędziu: wypisywanie / tabela / drzewo / reguła mnożenia / podział na przypadki / dopełnienie.'
+- name: Systematyczne wypisywanie
+  when_to_use: Gdy obiektów jest niewiele (do ok. 30) lub gdy warunki są nietypowe i trudno je ująć wzorem;
+    także jako kontrola wyniku otrzymanego wzorem.
+  steps:
+  - Ustal jeden porządek wypisywania (np. rosnąco jako liczby, alfabetycznie jako słowa).
+  - Ustal pierwszy element i wypisz wszystkie obiekty zaczynające się od niego, zmieniając tylko dalsze
+    pozycje.
+  - Przejdź do kolejnej wartości pierwszego elementu i powtórz krok 2.
+  - Po zakończeniu sprawdź, czy każdy obiekt spełnia warunki zadania i czy nie ma powtórzeń.
+  - Policz obiekty, najlepiej grupując je (np. po 5) lub licząc, ile jest w każdej grupie o wspólnym początku.
+- name: Budowa drzewa możliwości
+  when_to_use: Przy wyborze wieloetapowym (2–4 etapy), zwłaszcza gdy liczba możliwości w kolejnym etapie
+    zależy od wcześniejszego wyboru.
+  steps:
+  - 'Narysuj korzeń („start”) i podpisz etapy: I, II, III….'
+  - Z korzenia poprowadź krawędzie — po jednej dla każdej możliwości pierwszego etapu — i podpisz je.
+  - Z każdego powstałego wierzchołka poprowadź krawędzie odpowiadające możliwościom drugiego etapu w tej
+    konkretnej sytuacji (pomiń możliwości zabronione).
+  - Powtarzaj do ostatniego etapu.
+  - Odczytaj obiekty jako ścieżki korzeń → liść; liczba obiektów = liczba liści.
+  - Jeśli szukasz obiektów z warunkiem, zaznacz pasujące liście i policz tylko je.
+- name: Zliczanie za pomocą tabeli
+  when_to_use: Gdy obiekt jest parą wyników dwóch etapów (dwie kostki, dwa losowania, moneta i kostka)
+    i pytamy o warunek dotyczący obu wyników naraz (suma, iloczyn, różnica).
+  steps:
+  - Wypisz możliwe wyniki I etapu w nagłówkach wierszy, wyniki II etapu — w nagłówkach kolumn.
+  - 'Policz wszystkie komórki: liczba wierszy × liczba kolumn — to liczba wszystkich obiektów.'
+  - W komórkach wpisz badaną wielkość (np. sumę oczek) albo zaznacz komórki spełniające warunek.
+  - Policz zaznaczone komórki — to szukana liczba obiektów.
+  - Pamiętaj, że komórki (a, b) i (b, a) to dwa różne wyniki, gdy rozróżniamy etapy (np. kostka biała
+    i czerwona).
+- name: Zliczanie regułą mnożenia z miejscami
+  when_to_use: Gdy obiekt to ciąg pozycji (cyfry liczby, znaki kodu, miejsca w rzędzie), a liczba obiektów
+    jest zbyt duża, by je wypisać.
+  steps:
+  - Narysuj tyle kresek (miejsc), ile pozycji ma obiekt.
+  - Zidentyfikuj miejsca z ograniczeniami (pierwsza cyfra ≠ 0, ostatnia cyfra parzysta, konkretny element
+    na danym miejscu).
+  - Obsadzaj najpierw miejsca najbardziej ograniczone, wpisując nad kreską liczbę dostępnych możliwości.
+  - Przechodząc do kolejnych miejsc, zmniejszaj pulę o już zużyte elementy, jeśli powtórzenia są zabronione.
+  - Pomnóż wszystkie liczby nad kreskami.
+  - 'Sprawdź sensowność: wynik nie może być większy niż liczba wszystkich obiektów bez warunków.'
+- name: Podział na rozłączne przypadki
+  when_to_use: Gdy jedno ograniczenie „psuje” regułę mnożenia (np. warunek na ostatnią cyfrę koliduje
+    z warunkiem na pierwszą) albo gdy zadanie mówi „lub”.
+  steps:
+  - Znajdź cechę, która dzieli obiekty na kilka klas (np. ostatnia cyfra = 0 albo ostatnia cyfra ≠ 0).
+  - Sprawdź, że klasy są rozłączne i obejmują wszystkie obiekty.
+  - Policz obiekty osobno w każdej klasie (zwykle regułą mnożenia).
+  - Dodaj otrzymane liczby.
+  - Jeśli klasy jednak zachodzą na siebie, zastosuj |A ∪ B| = |A| + |B| − |A ∩ B|.
+- name: Zliczanie przez dopełnienie
+  when_to_use: Gdy warunek ma postać „co najmniej jeden…”, „przynajmniej raz”, „choć jedna” — bezpośrednie
+    liczenie wymagałoby wielu przypadków.
+  steps:
+  - Policz N — liczbę wszystkich obiektów bez warunku.
+  - Sformułuj precyzyjnie zaprzeczenie warunku (zaprzeczeniem „co najmniej jeden” jest „ani jeden”).
+  - Policz M — liczbę obiektów spełniających zaprzeczenie.
+  - Wynik to N − M.
+  - Sprawdź, że N i M policzono w tej samej przestrzeni obiektów (te same reguły powtórzeń i kolejności).
+- name: Zliczanie par nieuporządkowanych
+  when_to_use: Uściski dłoni, mecze „każdy z każdym”, wybór dwuosobowej delegacji, odcinki/przekątne między
+    punktami — gdy zamiana miejscami nie tworzy nowego obiektu.
+  steps:
+  - 'Policz najpierw pary uporządkowane: n·(n−1).'
+  - 'Zauważ, że każdą parę {a, b} policzono dwukrotnie: jako (a, b) i (b, a).'
+  - Podziel wynik przez 2, otrzymując n(n−1)/2.
+  - Dla małego n zweryfikuj wynik szybkim wypisaniem lub tabelą (zaznaczając komórki nad przekątną).
+examples:
+- statement: 'W barze można zamówić zestaw obiadowy: jedną z 3 zup (pomidorowa, ogórkowa, rosół), jedno
+    z 4 drugich dań i jeden z 2 deserów. Ile różnych zestawów można zamówić? Ile z nich zawiera rosół?'
+  worked_solution: |-
+    Jeden obiekt to trójka: (zupa, drugie danie, deser). Wybór jest trzyetapowy, a liczba możliwości w każdym etapie nie zależy od wcześniejszych wyborów.
+
+    Drzewo: z korzenia wychodzą 3 krawędzie (zupy). Z każdego z 3 wierzchołków wychodzą 4 krawędzie (dania) — mamy 3·4 = 12 wierzchołków. Z każdego z nich wychodzą 2 krawędzie (desery) — otrzymujemy 12·2 = 24 liście.
+
+    Regułą mnożenia: N = 3·4·2 = 24 zestawy.
+
+    Zestawy z rosołem: pierwszy etap jest już ustalony (1 możliwość), pozostałe bez zmian: 1·4·2 = 8. Kontrola: rosół to jedna z trzech gałęzi startowych, a każda gałąź prowadzi do tylu samo liści, więc 24 : 3 = 8. ✓
+
+    Odpowiedź: 24 zestawy, w tym 8 z rosołem.
+  difficulty: 1
+- statement: 'Rzucamy dwiema kostkami do gry: białą i czerwoną. a) Ile jest wszystkich możliwych wyników?
+    b) W ilu wynikach suma oczek jest równa 8? c) W ilu wynikach wypadnie co najmniej jedna szóstka?'
+  worked_solution: |-
+    a) Wynik to para (oczka na białej, oczka na czerwonej). Kostki są rozróżnialne, więc (2,5) i (5,2) to różne wyniki. Tabela ma 6 wierszy i 6 kolumn: 6·6 = 36 wyników.
+
+    b) Zaznaczamy w tabeli komórki o sumie 8 i wypisujemy je systematycznie, zwiększając pierwszą współrzędną:
+    (2,6), (3,5), (4,4), (5,3), (6,2) — 5 wyników.
+    (1,7) nie istnieje, bo kostka ma tylko 6 ścian, i podobnie (7,1). Odpowiedź: 5.
+
+    c) Warunek „co najmniej jedna szóstka” liczymy przez dopełnienie. Zaprzeczenie: „na żadnej kostce nie ma szóstki”, czyli każda kostka daje wynik ze zbioru {1,2,3,4,5}: 5·5 = 25 wyników.
+    Szukana liczba: 36 − 25 = 11.
+    Kontrola w tabeli: cały ostatni wiersz (6 komórek) i cała ostatnia kolumna (6 komórek), ale komórkę (6,6) policzyliśmy dwa razy: 6 + 6 − 1 = 11. ✓
+  difficulty: 2
+- statement: Ile jest liczb trzycyfrowych o wszystkich cyfrach różnych, utworzonych wyłącznie z cyfr ze
+    zbioru {0, 1, 2, 3, 4}? Ile spośród nich jest parzystych?
+  worked_solution: |-
+    Część 1. Miejsca: setki, dziesiątki, jedności; cyfry nie mogą się powtarzać, kolejność ma znaczenie.
+    Zaczynamy od miejsca z ograniczeniem — setki: cyfra ≠ 0, czyli 4 możliwości (1,2,3,4).
+    Dziesiątki: zostały 4 cyfry z pięciu (zero jest już dozwolone) — 4 możliwości.
+    Jedności: zostały 3 cyfry — 3 możliwości.
+    Razem: 4·4·3 = 48 liczb.
+
+    Część 2. Liczba parzysta ⇔ cyfra jedności ∈ {0, 2, 4}. Warunek na jedności koliduje z warunkiem na setki (obie dotyczą zera), więc dzielimy na dwa rozłączne przypadki.
+    Przypadek A: cyfra jedności = 0. Wtedy setki: dowolna z pozostałych 4 cyfr (1,2,3,4) — 4 możliwości; dziesiątki: 3 pozostałe cyfry. Razem 1·4·3 = 12 (kolejność obsadzania: jedności, setki, dziesiątki).
+    Przypadek B: cyfra jedności ∈ {2, 4} — 2 możliwości. Setki: nie 0 i nie użyta cyfra jedności, czyli spośród {1,2,3,4} zostały 3 możliwości. Dziesiątki: z pięciu cyfr dwie są zużyte — 3 możliwości. Razem 2·3·3 = 18.
+    Przypadki są rozłączne (cyfra jedności albo jest zerem, albo nie), więc dodajemy: 12 + 18 = 30.
+
+    Odpowiedź: 48 liczb, w tym 30 parzystych. Kontrola sensowności: 30 < 48 ✓, a nieparzystych (jedności ∈ {1,3}) jest 2·3·3 = 18 i 30 + 18 = 48 ✓.
+  difficulty: 3
+- statement: W klubie szachowym jest 8 zawodników. a) Rozgrywają turniej systemem „każdy z każdym” — jedna
+    partia dla każdej pary. Ile partii zostanie rozegranych? b) Na zakończenie wybierany jest kapitan
+    i jego zastępca (dwie różne osoby). Na ile sposobów można dokonać takiego wyboru?
+  worked_solution: |-
+    a) Jeden obiekt to para zawodników {A, B}. Partia A z B to ta sama partia co B z A — kolejność NIE ma znaczenia.
+    Najpierw liczymy pary uporządkowane: pierwszego zawodnika wybieramy na 8 sposobów, drugiego (różnego) na 7, czyli 8·7 = 56. Każdą partię policzyliśmy jednak dwukrotnie, więc
+    N = 56 : 2 = 8·7/2 = 28 partii.
+    Kontrola przez wypisywanie „w górę”: zawodnik 1 gra z 7 osobami, zawodnik 2 z pozostałymi 6 (partię z 1 już policzono), 3 z 5, …, 7 z 1, 8 z nikim nowym: 7+6+5+4+3+2+1 = 28 ✓.
+
+    b) Tutaj obiekt to para uporządkowana (kapitan, zastępca) — zamiana ról daje inny wynik. Kapitana wybieramy na 8 sposobów, zastępcę spośród pozostałych 7 osób: 8·7 = 56 sposobów.
+
+    Wniosek: te same 8 osób, dwa różne pytania — różnica polega wyłącznie na tym, czy kolejność (rola) ma znaczenie. W a) dzielimy przez 2, w b) nie.
+  difficulty: 3
+- statement: Kod dostępu składa się z 4 znaków; każdy znak to jedna z cyfr 1, 2, 3, 4, 5 (cyfry mogą się
+    powtarzać). a) Ile jest wszystkich kodów? b) Ile jest kodów, w których nie występuje cyfra 5? c) Ile
+    jest kodów, w których cyfra 5 występuje co najmniej raz? d) Ile jest kodów, w których wszystkie cyfry
+    są różne?
+  worked_solution: |-
+    a) Cztery miejsca, na każdym 5 możliwości, powtórzenia dozwolone i kolejność ma znaczenie:
+    N = 5⁴ = 625 kodów.
+
+    b) Teraz na każdym miejscu dostępne są tylko cyfry 1, 2, 3, 4:
+    M = 4⁴ = 256 kodów.
+
+    c) „Co najmniej raz” — stosujemy dopełnienie. Zaprzeczeniem zdania „cyfra 5 występuje co najmniej raz” jest „cyfra 5 nie występuje ani razu”, a to policzyliśmy w b).
+    N − M = 625 − 256 = 369 kodów.
+    (Uwaga: rozumowanie „wybieram miejsce dla piątki na 4 sposoby i resztę na 5³ sposobów”, dające 4·125 = 500, jest błędne — kody z dwiema lub więcej piątkami zostałyby policzone wielokrotnie, a 500 > 369.)
+
+    d) Bez powtórzeń, czynniki maleją:
+    5·4·3·2 = 120 kodów.
+    Kontrola: 120 < 625 ✓. Kodów z co najmniej jednym powtórzeniem jest zatem 625 − 120 = 505.
+  difficulty: 4
+objectives:
+- statement: Rozpoznać w treści zadania, czym jest pojedynczy liczony obiekt, oraz rozstrzygnąć, czy elementy
+    mogą się powtarzać i czy kolejność ma znaczenie.
+  bloom_level: Rozumienie
+- statement: Wypisać systematycznie wszystkie obiekty w małej sytuacji kombinatorycznej (kilkanaście–kilkadziesiąt)
+    i poprawnie je policzyć, unikając pominięć i powtórzeń.
+  bloom_level: Zastosowanie
+- statement: Zbudować drzewo możliwości dla wyboru dwu- lub trzyetapowego i odczytać z niego liczbę wszystkich
+    obiektów oraz liczbę obiektów spełniających zadany warunek.
+  bloom_level: Zastosowanie
+- statement: Sporządzić tabelę możliwości dla sytuacji dwuetapowej (np. rzut dwiema kostkami) i policzyć
+    w niej wyniki spełniające warunek dotyczący sumy, różnicy lub iloczynu.
+  bloom_level: Zastosowanie
+- statement: Stosować regułę mnożenia do zliczania kodów, liczb wielocyfrowych i ustawień, z uwzględnieniem
+    ograniczeń na poszczególne pozycje (cyfra wiodąca ≠ 0, podzielność, ustalony znak).
+  bloom_level: Zastosowanie
+- statement: Dzielić zbiór obiektów na rozłączne przypadki i stosować regułę dodawania; rozpoznać sytuację,
+    w której przypadki zachodzą na siebie, i użyć zależności |A ∪ B| = |A| + |B| − |A ∩ B|.
+  bloom_level: Analiza
+- statement: Zliczać obiekty przez dopełnienie w zadaniach z warunkiem „co najmniej jeden”, poprawnie
+    formułując zaprzeczenie warunku.
+  bloom_level: Analiza
+- statement: Odróżniać sytuacje, w których liczymy pary uporządkowane, od tych, w których liczymy pary
+    nieuporządkowane, i uzasadnić dzielenie przez 2 (uściski dłoni, mecze, delegacje, odcinki między punktami).
+  bloom_level: Analiza
+- statement: Obliczać liczbę ustawień n różnych elementów w rzędzie (n!) oraz liczbę podzbiorów zbioru
+    n-elementowego (2ⁿ) w prostych sytuacjach praktycznych.
+  bloom_level: Zastosowanie
+- statement: 'Weryfikować otrzymany wynik: porównywać go z liczbą wszystkich obiektów, sprawdzać przez
+    dopełnienie lub przez wypisanie mniejszego przypadku oraz oceniać sensowność rzędu wielkości.'
+  bloom_level: Ocena
+misconceptions:
+- name: Mylenie reguły mnożenia z regułą dodawania
+  incorrect_reasoning: „Mam 3 zupy, 4 drugie dania i 2 desery, więc zestawów jest 3 + 4 + 2 = 9.”
+  correct_reasoning: 'Dodajemy, gdy wybieramy JEDNĄ rzecz z rozłącznych grup („zupa ALBO deser” — 3 +
+    2 = 5 możliwości). Mnożymy, gdy obiekt składa się z kilku części naraz („zupa I danie I deser” — 3·4·2
+    = 24). Test: czy kompletny obiekt zawiera element z każdej grupy?'
+  severity: 4
+- name: Zapominanie, że pierwsza cyfra liczby nie może być zerem
+  incorrect_reasoning: '„Z cyfr 0, 1, 2, 3, 4 bez powtórzeń tworzę liczby trzycyfrowe: 5·4·3 = 60.”'
+  correct_reasoning: 'Ciągi zaczynające się od 0 (np. 0-3-1) nie są liczbami trzycyfrowymi. Setki obsadzamy
+    najpierw i tylko na 4 sposoby, potem dziesiątki (4 pozostałe cyfry) i jedności (3): 4·4·3 = 48.'
+  severity: 4
+- name: Podwójne liczenie par nieuporządkowanych
+  incorrect_reasoning: '„8 osób wita się uściskiem dłoni: każda z 7 pozostałych, więc 8·7 = 56 uścisków.”'
+  correct_reasoning: 'Uścisk Ani z Bartkiem i Bartka z Anią to ten sam uścisk — każdy policzono dwa razy.
+    Poprawnie: 8·7/2 = 28. Dzielimy przez 2 zawsze wtedy, gdy zamiana miejscami nie tworzy nowego obiektu.'
+  severity: 4
+- name: Dzielenie przez 2 tam, gdzie kolejność ma znaczenie
+  incorrect_reasoning: '„Wybieramy kapitana i zastępcę z 8 osób: 8·7/2 = 28.”'
+  correct_reasoning: 'Tu role są różne: (Ala kapitan, Bartek zastępca) to inny wynik niż (Bartek kapitan,
+    Ala zastępca). Nie ma podwójnego liczenia, więc wynik to 8·7 = 56. Dzielimy przez 2 tylko przy parach
+    nieuporządkowanych.'
+  severity: 4
+- name: Błędne liczenie zdarzeń „co najmniej jeden”
+  incorrect_reasoning: '„Kod 4-cyfrowy z cyfr 1–5 ma zawierać co najmniej jedną piątkę: wybieram miejsce
+    dla piątki (4 sposoby) i pozostałe miejsca dowolnie (5³), czyli 4·125 = 500.”'
+  correct_reasoning: 'Kod 5-5-1-2 zostałby policzony dwa razy (raz dla piątki na pierwszym, raz na drugim
+    miejscu). Poprawnie liczymy przez dopełnienie: wszystkie kody 5⁴ = 625 minus kody bez piątki 4⁴ =
+    256, czyli 369.'
+  severity: 5
+- name: Mieszanie sytuacji z powtórzeniami i bez powtórzeń
+  incorrect_reasoning: „Losujemy kolejno 3 kule z 8 ponumerowanych, bez zwracania — jest 8³ = 512 wyników.”
+  correct_reasoning: 'Bez zwracania wylosowana kula znika z puli, więc czynniki maleją: 8·7·6 = 336. Wzór
+    nᵏ obowiązuje tylko wtedy, gdy elementy mogą się powtarzać (losowanie ze zwracaniem, kody, rzuty kostką).'
+  severity: 4
+- name: Dodawanie przypadków, które na siebie zachodzą
+  incorrect_reasoning: „Wyników z szóstką na dwóch kostkach jest 6 (pierwszy wiersz szóstek) + 6 (kolumna
+    szóstek) = 12.”
+  correct_reasoning: Wynik (6,6) należy do obu grup i został policzony dwukrotnie. Stosujemy |A ∪ B| =
+    |A| + |B| − |A ∩ B| = 6 + 6 − 1 = 11. Przed dodaniem zawsze sprawdź rozłączność przypadków.
+  severity: 4
+- name: Chaotyczne wypisywanie zamiast wypisywania systematycznego
+  incorrect_reasoning: '„Wypisuję wszystkie liczby dwucyfrowe z cyfr 1, 2, 3 jak leci: 12, 21, 13, 33,
+    23… chyba już wszystkie.”'
+  correct_reasoning: 'Bez ustalonego porządku łatwo o pominięcie lub powtórzenie. Wypisujemy blokami według
+    pierwszej cyfry: 11, 12, 13 | 21, 22, 23 | 31, 32, 33 — widać od razu 3 bloki po 3, czyli 9 liczb,
+    zgodnie z 3² = 9.'
+  severity: 3
+- name: Złe odczytywanie drzewa możliwości
+  incorrect_reasoning: „Policzę wszystkie wierzchołki (albo wszystkie krawędzie) drzewa — to liczba możliwości.”
+  correct_reasoning: Jeden pełny obiekt to jedna ścieżka od korzenia do liścia, więc liczbą możliwości
+    jest liczba liści (końców ostatniego etapu), a nie liczba wszystkich wierzchołków czy krawędzi drzewa.
+  severity: 3
+- name: Odejmowanie od niewłaściwej całości przy dopełnieniu
+  incorrect_reasoning: '„Liczb trzycyfrowych o różnych cyfrach zawierających cyfrę 7 jest: wszystkie liczby
+    trzycyfrowe (900) minus liczby bez siódemki.”'
+  correct_reasoning: Dopełnienie liczymy w tym samym zbiorze obiektów. Skoro rozważamy liczby o RÓŻNYCH
+    cyfrach, całością jest 9·9·8 = 648, a nie 900; od niej odejmujemy liczby o różnych cyfrach bez siódemki.
+  severity: 4

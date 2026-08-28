@@ -1,0 +1,337 @@
+section: ciag-geometryczny
+name: 'Ciąg geometryczny: n-ty wyraz i suma'
+scope: Recognising a geometric sequence; the nth term and the sum of the first n terms.
+requirements:
+- VI.6
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:11:15.824187'
+  approved_at: '2026-08-28T18:28:06.118099'
+  approved_by: reviewer
+concepts:
+- name: Ciąg geometryczny (definicja)
+  description: Ciąg (a_n) o wyrazach różnych od zera nazywamy geometrycznym, gdy istnieje liczba q ≠ 0
+    taka, że dla każdego n ≥ 1 zachodzi a_{n+1} = a_n · q. Liczbę q nazywamy ilorazem ciągu.
+  explanation: 'Myśl o tym tak: w ciągu arytmetycznym do wyrazu DODAJEMY stałą liczbę, w geometrycznym
+    MNOŻYMY przez stałą liczbę. Każdy krok w prawo to jedno mnożenie przez q. Uwaga: żaden wyraz nie może
+    być zerem (bo wtedy dzielenie przez a_n nie miałoby sensu i wszystkie kolejne wyrazy byłyby zerami).'
+  difficulty: 1
+- name: Iloraz ciągu geometrycznego
+  description: q = a_{n+1} / a_n — iloraz dowolnego wyrazu przez wyraz bezpośrednio go poprzedzający;
+    w ciągu geometrycznym ta wartość jest taka sama dla każdego n.
+  explanation: Iloraz liczymy zawsze 'późniejszy przez wcześniejszy'. Jeśli w konkretnym ciągu a_2/a_1
+    ≠ a_3/a_2, to ciąg NIE jest geometryczny. q może być ujemne (wtedy wyrazy zmieniają znak na przemian)
+    i może być ułamkiem (wtedy wyrazy maleją co do wartości bezwzględnej).
+  difficulty: 1
+- name: Wzór ogólny (n-ty wyraz)
+  description: Jeśli (a_n) jest geometryczny o pierwszym wyrazie a_1 i ilorazie q, to a_n = a_1 · q^{n-1}
+    dla n ≥ 1.
+  explanation: 'Aby dojść od a_1 do a_n, wykonujemy n−1 mnożeń przez q — stąd wykładnik n−1, a nie n.
+    Sprawdzenie pamięciowe: dla n = 1 dostajemy a_1 · q^0 = a_1, co się zgadza.'
+  difficulty: 2
+- name: Zależność między dwoma dowolnymi wyrazami
+  description: 'Dla dowolnych n, k: a_n = a_k · q^{n−k}.'
+  explanation: 'To uogólnienie wzoru ogólnego: żeby przejść od wyrazu k-tego do n-tego, mnożymy przez
+    q dokładnie n−k razy. Bardzo wygodne, gdy w zadaniu dane są np. a_3 i a_7 — wtedy od razu a_7 = a_3
+    · q^4, bez wyznaczania a_1.'
+  difficulty: 2
+- name: Wzór rekurencyjny
+  description: 'Ciąg geometryczny można zadać układem: a_1 = c (c ≠ 0), a_{n+1} = q · a_n dla n ≥ 1.'
+  explanation: Wzór rekurencyjny mówi 'jak zrobić następny wyraz z poprzedniego', wzór ogólny mówi 'jak
+    od razu policzyć wyraz o numerze n'. Z rekurencji łatwo odczytać q — to liczba, przez którą mnożymy.
+  difficulty: 2
+- name: Warunek na trzy kolejne wyrazy (średnia geometryczna)
+  description: 'Liczby a, b, c (wszystkie różne od zera) są kolejnymi wyrazami ciągu geometrycznego wtedy
+    i tylko wtedy, gdy b² = a · c. Równoważnie: (a_{n+1})² = a_n · a_{n+2}.'
+  explanation: Wynika to z równości b/a = c/b. To standardowe narzędzie, gdy trzeba dobrać parametr x
+    tak, by trzy wyrażenia tworzyły ciąg geometryczny. Zawsze na końcu sprawdzamy, czy przy znalezionym
+    x żaden wyraz nie jest zerem.
+  difficulty: 3
+- name: Suma n początkowych wyrazów
+  description: 'S_n = a_1 + a_2 + ... + a_n. Dla ciągu geometrycznego: S_n = a_1 · (1 − q^n)/(1 − q),
+    gdy q ≠ 1, oraz S_n = n · a_1, gdy q = 1.'
+  explanation: 'Skąd się to bierze: S_n − q·S_n = a_1 − a_1q^n, więc S_n(1−q) = a_1(1−q^n). Widać od razu,
+    dlaczego przypadek q = 1 trzeba rozpatrzyć osobno — dzielilibyśmy przez zero. Gdy q = 1, ciąg jest
+    stały i suma to po prostu n razy a_1.'
+  difficulty: 3
+- name: Przypadek szczególny q = 1
+  description: 'Gdy q = 1, ciąg geometryczny jest ciągiem stałym: a_n = a_1 dla każdego n, a S_n = n·a_1.'
+  explanation: Ciąg stały o wyrazach różnych od zera jest jednocześnie arytmetyczny (r = 0) i geometryczny
+    (q = 1). Przy korzystaniu ze wzoru na sumę zawsze najpierw sprawdź, czy q ≠ 1.
+  difficulty: 2
+- name: Monotoniczność i znaki wyrazów
+  description: Dla q < 0 wyrazy mają na przemian przeciwne znaki (ciąg nie jest monotoniczny). Dla q >
+    0 wszystkie wyrazy mają znak a_1; ciąg jest rosnący, gdy (a_1 > 0 i q > 1) lub (a_1 < 0 i 0 < q <
+    1), a malejący, gdy (a_1 > 0 i 0 < q < 1) lub (a_1 < 0 i q > 1). Dla q = 1 ciąg jest stały.
+  explanation: 'Nie ucz się tego na pamięć — wystarczy policzyć a_2 = a_1q i porównać z a_1, albo wypisać
+    kilka wyrazów. Kluczowa obserwacja: samo q > 1 nie gwarantuje wzrostu, bo przy ujemnym a_1 wyrazy
+    maleją (np. −1, −2, −4, ...).'
+  difficulty: 3
+- name: Rozpoznawanie ciągu geometrycznego ze wzoru ogólnego
+  description: Ciąg zadany wzorem a_n jest geometryczny wtedy i tylko wtedy, gdy iloraz a_{n+1}/a_n po
+    uproszczeniu nie zależy od n (i wszystkie wyrazy są różne od zera).
+  explanation: 'Typowa sytuacja: wzór postaci a_n = c · k^n (funkcja wykładnicza) zawsze daje ciąg geometryczny
+    o q = k i a_1 = c·k. Natomiast gdy we wzorze n występuje w podstawie lub w liczniku wielomianowo (np.
+    (n+1)/2^n), iloraz zależy od n i ciąg geometryczny nie jest.'
+  difficulty: 3
+- name: Procent składany i zmiana o p%
+  description: Kolejne wartości wielkości zmieniającej się co okres o stałe p% tworzą ciąg geometryczny
+    o ilorazie q = 1 + p/100 (wzrost) lub q = 1 − p/100 (spadek).
+  explanation: 'Podwyżka o 5% to mnożenie przez 1,05, obniżka o 5% to mnożenie przez 0,95. Kapitał po
+    n latach przy rocznej kapitalizacji: K_n = K_0 · (1 + p/100)^n — to po prostu wzór na n-ty wyraz z
+    przesuniętą numeracją (K_0 traktujemy jako wyraz ''zerowy'').'
+  difficulty: 3
+- name: Porównanie z ciągiem arytmetycznym
+  description: 'W ciągu arytmetycznym a_{n+1} − a_n = r (stała różnica), we wzorze ogólnym n występuje
+    liniowo; w ciągu geometrycznym a_{n+1} : a_n = q (stały iloraz), we wzorze ogólnym n jest w wykładniku.'
+  explanation: Przy rozpoznawaniu ciągu z wypisanych wyrazów sprawdź najpierw różnice, potem ilorazy.
+    Ciąg może nie być ani arytmetyczny, ani geometryczny (np. 1, 2, 4, 7).
+  difficulty: 2
+formulas:
+- name: Definicja (warunek rekurencyjny)
+  latex_raw: a_{n+1} = a_n \cdot q
+  conditions: dla każdego n ≥ 1, a_n ≠ 0, q ≠ 0
+  description: 'Równoważnie: q = a_{n+1}/a_n jest tą samą liczbą dla każdego n.'
+- name: Iloraz ciągu
+  latex_raw: q = \frac{a_{n+1}}{a_n}
+  conditions: a_n ≠ 0
+  description: Zawsze wyraz późniejszy dzielimy przez wcześniejszy.
+- name: n-ty wyraz ciągu geometrycznego
+  latex_raw: a_n = a_1 \cdot q^{\,n-1}
+  conditions: n ≥ 1, a_1 ≠ 0, q ≠ 0
+  description: Wykładnik to n−1, bo od a_1 do a_n wykonujemy n−1 mnożeń.
+- name: Związek dwóch dowolnych wyrazów
+  latex_raw: a_n = a_k \cdot q^{\,n-k}
+  conditions: n, k ≥ 1
+  description: Pozwala pominąć wyznaczanie a_1, gdy dane są dwa wyrazy o dalszych numerach.
+- name: Warunek na trzy kolejne wyrazy
+  latex_raw: 'a_{n+1}^{\,2} = a_n \cdot a_{n+2}\qquad\text{(dla liczb: } b^2 = a\cdot c\text{)}'
+  conditions: wszystkie trzy liczby różne od zera
+  description: Warunek konieczny i wystarczający; po rozwiązaniu równania sprawdzamy, czy wyrazy są niezerowe.
+- name: Suma n początkowych wyrazów (q ≠ 1)
+  latex_raw: S_n = a_1\cdot\frac{1-q^{\,n}}{1-q}
+  conditions: q ≠ 1
+  description: 'Równoważna postać: S_n = a_1·(q^n − 1)/(q − 1) — wygodniejsza, gdy q > 1.'
+- name: Suma n początkowych wyrazów (q = 1)
+  latex_raw: S_n = n\cdot a_1
+  conditions: q = 1 (ciąg stały)
+  description: Osobny przypadek, bo wzór ogólny miałby zero w mianowniku.
+- name: Wartość kapitału przy procencie składanym
+  latex_raw: K_n = K_0\left(1+\frac{p}{100}\right)^{n}
+  conditions: K_0 — kapitał początkowy, p% — oprocentowanie w okresie, n — liczba okresów kapitalizacji
+  description: Przy spadku o p% w miejsce (1 + p/100) wstawiamy (1 − p/100).
+- name: Liczba składników sumy fragmentu ciągu
+  latex_raw: a_k + a_{k+1} + \dots + a_m = S_m - S_{k-1},\quad \text{liczba wyrazów} = m-k+1
+  conditions: 1 ≤ k ≤ m
+  description: 'Częsty błąd: przyjmowanie m − k składników zamiast m − k + 1.'
+methods:
+- name: Sprawdzanie, czy ciąg jest geometryczny
+  when_to_use: Gdy ciąg dany jest wzorem ogólnym lub wypisanymi wyrazami i trzeba rozstrzygnąć, czy jest
+    geometryczny (oraz podać q).
+  steps:
+  - Sprawdź, czy wszystkie wyrazy są różne od zera (jeśli któryś jest zerem, ciąg nie jest geometryczny).
+  - Zapisz iloraz a_{n+1}/a_n, podstawiając n+1 w miejsce n we wzorze ogólnym.
+  - 'Uprość otrzymane wyrażenie (skorzystaj z własności potęg: k^{n+1}/k^n = k).'
+  - Jeśli wynik jest liczbą niezależną od n — ciąg jest geometryczny, a ta liczba to q. Jeśli n zostało
+    w wyrażeniu — ciąg nie jest geometryczny.
+  - 'Dla ciągu podanego liczbami: policz a_2/a_1, a_3/a_2, a_4/a_3 i porównaj; wystarczy jedna niezgodność,
+    by odrzucić.'
+- name: Wyznaczanie a_1 i q z dwóch danych wyrazów
+  when_to_use: Gdy znane są dwa wyrazy (np. a_2 i a_5) i trzeba obliczyć inny wyraz albo sumę.
+  steps:
+  - Zapisz oba dane wyrazy wzorem a_n = a_1 q^{n−1} (lub od razu użyj a_m = a_k q^{m−k}).
+  - Podziel stronami równanie z większym numerem przez równanie z mniejszym — a_1 się skróci i zostanie
+    równanie potęgowe na q.
+  - 'Rozwiąż je: przy nieparzystym wykładniku jest jedno rozwiązanie rzeczywiste, przy parzystym — dwa
+    (q i −q), oba trzeba rozpatrzyć.'
+  - Podstaw q do jednego z równań i wyznacz a_1.
+  - Odpowiedz na pytanie zadania (kolejny wyraz, suma), pamiętając o rozpatrzeniu wszystkich znalezionych
+    par (a_1, q).
+- name: Obliczanie sumy n początkowych wyrazów
+  when_to_use: Gdy trzeba zsumować początkowe wyrazy ciągu geometrycznego lub sumę skończonego szeregu
+    typu 1 + 3 + 9 + ...
+  steps:
+  - 'Zidentyfikuj a_1 oraz q (dla ciągu liczbowego: q = drugi wyraz / pierwszy wyraz).'
+  - Ustal liczbę składników n — jeśli suma zapisana jest jako a_1 + ... + a_1q^{k}, to n = k + 1.
+  - Sprawdź, czy q = 1. Jeśli tak, użyj S_n = n·a_1 i zakończ.
+  - Jeśli q ≠ 1, podstaw do S_n = a_1(1 − q^n)/(1 − q) (lub a_1(q^n − 1)/(q − 1) dla q > 1).
+  - Oblicz potęgę q^n, wykonaj odejmowanie w liczniku i mianowniku, uprość ułamek.
+- name: Dobieranie parametru tak, by liczby tworzyły ciąg geometryczny
+  when_to_use: Gdy dane są trzy wyrażenia z niewiadomą x i mają być kolejnymi wyrazami ciągu geometrycznego.
+  steps:
+  - Zapisz warunek (środkowy)² = (pierwszy)·(trzeci).
+  - Rozwiń obie strony i sprowadź do równania (najczęściej kwadratowego) postaci = 0.
+  - Rozwiąż równanie (delta lub wyłączanie czynnika przed nawias).
+  - Dla każdego rozwiązania oblicz konkretne trzy liczby i odrzuć te przypadki, w których któraś z nich
+    jest zerem.
+  - Podaj iloraz q dla każdego poprawnego rozwiązania (q = drugi/pierwszy).
+- name: Wyznaczanie numeru wyrazu lub liczby składników (równanie wykładnicze)
+  when_to_use: Gdy pytanie brzmi 'którym wyrazem ciągu jest liczba ...' albo 'ile wyrazów należy dodać,
+    aby suma wyniosła ...'.
+  steps:
+  - 'Zapisz równanie: a_1 q^{n−1} = dana liczba lub a_1(q^n − 1)/(q − 1) = dana suma.'
+  - Przekształć je do postaci q^{n} = liczba (lub q^{n−1} = liczba), izolując potęgę.
+  - Przedstaw prawą stronę jako potęgę o podstawie q (np. 6561 = 3^8).
+  - Porównaj wykładniki i wyznacz n.
+  - Sprawdź, czy n jest liczbą naturalną — jeśli nie, taki wyraz/taka suma nie istnieje.
+- name: Model procentu składanego
+  when_to_use: Zadania o lokacie, inflacji, amortyzacji, wzroście liczby osobników — stała zmiana procentowa
+    w kolejnych okresach.
+  steps:
+  - Odczytaj wartość początkową K_0 i procent zmiany p w jednym okresie.
+  - 'Wyznacz iloraz: q = 1 + p/100 przy wzroście, q = 1 − p/100 przy spadku.'
+  - Ustal, ile okresów n upłynęło (uwaga na to, czy wartość początkowa liczy się jako 'wyraz zerowy').
+  - Oblicz K_n = K_0·q^n; jeśli pytanie dotyczy sumy wielu wpłat/wartości, użyj wzoru na S_n.
+  - Zaokrąglij wynik zgodnie z sensem zadania (np. do groszy) i sformułuj odpowiedź w kontekście.
+examples:
+- statement: Ciąg geometryczny (a_n) ma pierwszy wyraz a_1 = 3 i iloraz q = −2. Oblicz a_6 oraz sumę sześciu
+    początkowych wyrazów.
+  worked_solution: |-
+    Wzór ogólny: a_n = a_1 q^{n−1} = 3·(−2)^{n−1}.
+    Dla n = 6: a_6 = 3·(−2)^5 = 3·(−32) = −96.
+    Suma: q = −2 ≠ 1, więc S_6 = a_1·(1 − q^6)/(1 − q) = 3·(1 − (−2)^6)/(1 − (−2)) = 3·(1 − 64)/3 = 3·(−63)/3 = −63.
+    Sprawdzenie przez wypisanie wyrazów: 3, −6, 12, −24, 48, −96; ich suma to 3 − 6 + 12 − 24 + 48 − 96 = −63. ✓
+    Odpowiedź: a_6 = −96, S_6 = −63.
+  difficulty: 1
+- statement: Dany jest ciąg o wzorze ogólnym a_n = 5·2^n. Wykaż, że jest to ciąg geometryczny, podaj a_1
+    i q, a następnie oblicz sumę ośmiu początkowych wyrazów.
+  worked_solution: |-
+    Wszystkie wyrazy są dodatnie, więc różne od zera.
+    Iloraz: a_{n+1}/a_n = (5·2^{n+1})/(5·2^n) = 2^{n+1−n} = 2.
+    Wynik nie zależy od n, więc ciąg jest geometryczny o ilorazie q = 2.
+    Pierwszy wyraz: a_1 = 5·2^1 = 10.
+    Suma: q = 2 ≠ 1, więc S_8 = a_1·(q^8 − 1)/(q − 1) = 10·(256 − 1)/(2 − 1) = 10·255 = 2550.
+    Odpowiedź: ciąg jest geometryczny, a_1 = 10, q = 2, S_8 = 2550.
+    (Uwaga: a_1 = 10, a nie 5 — we wzorze n jest w wykładniku bez przesunięcia.)
+  difficulty: 2
+- statement: W ciągu geometrycznym a_2 = 12 i a_5 = 96. Wyznacz a_1, q oraz S_7.
+  worked_solution: |-
+    Korzystamy z zależności a_5 = a_2·q^{5−2} = a_2·q^3.
+    Stąd 96 = 12·q^3, czyli q^3 = 8, więc q = 2 (wykładnik nieparzysty — jedno rozwiązanie rzeczywiste).
+    Z a_2 = a_1·q: 12 = a_1·2, więc a_1 = 6.
+    Sprawdzenie: 6, 12, 24, 48, 96 — istotnie a_5 = 96. ✓
+    Suma: S_7 = 6·(2^7 − 1)/(2 − 1) = 6·(128 − 1) = 6·127 = 762.
+    Odpowiedź: a_1 = 6, q = 2, S_7 = 762.
+  difficulty: 3
+- statement: Wyznacz wszystkie liczby x, dla których liczby x, 6, x + 9 (w tej kolejności) tworzą ciąg
+    geometryczny. Dla każdego rozwiązania podaj iloraz ciągu.
+  worked_solution: |-
+    Warunek na trzy kolejne wyrazy: (środkowy)² = (pierwszy)·(trzeci), czyli 6² = x(x + 9).
+    36 = x² + 9x  ⇒  x² + 9x − 36 = 0.
+    Δ = 81 + 144 = 225, √Δ = 15, więc x = (−9 − 15)/2 = −12 lub x = (−9 + 15)/2 = 3.
+    Sprawdzenie warunku niezerowości:
+    • x = 3: liczby 3, 6, 12 — wszystkie ≠ 0, q = 6/3 = 2, a 12/6 = 2 ✓;
+    • x = −12: liczby −12, 6, −3 — wszystkie ≠ 0, q = 6/(−12) = −1/2, a (−3)/6 = −1/2 ✓.
+    Odpowiedź: x = 3 (q = 2) lub x = −12 (q = −1/2).
+  difficulty: 3
+- statement: (a) Ile początkowych wyrazów ciągu 1, 3, 9, 27, ... należy dodać, aby otrzymać 3280? (b)
+    Klient wpłacił 4000 zł na lokatę oprocentowaną 5% w skali roku z roczną kapitalizacją odsetek. Jaka
+    kwota będzie na lokacie po 4 latach (bez podatku, wynik zaokrąglij do groszy)?
+  worked_solution: |-
+    (a) Ciąg jest geometryczny: a_1 = 1, q = 3/1 = 3 (i 9/3 = 3 ✓).
+    S_n = a_1(q^n − 1)/(q − 1) = (3^n − 1)/2 = 3280.
+    Stąd 3^n − 1 = 6560, czyli 3^n = 6561.
+    Ponieważ 3^8 = 6561, mamy n = 8.
+    Odpowiedź: należy dodać 8 początkowych wyrazów.
+
+    (b) Każdego roku kapitał mnoży się przez q = 1 + 5/100 = 1,05 — kolejne stany konta tworzą ciąg geometryczny.
+    K_4 = 4000·(1,05)^4.
+    (1,05)^2 = 1,1025; (1,05)^4 = 1,1025² = 1,21550625.
+    K_4 = 4000·1,21550625 = 4862,025 ≈ 4862,03 zł.
+    Odpowiedź: po 4 latach na lokacie będzie około 4862,03 zł.
+  difficulty: 4
+objectives:
+- statement: Podać definicję ciągu geometrycznego i wskazać jego iloraz na podstawie wypisanych wyrazów.
+  bloom_level: zapamiętywanie
+- statement: Wyjaśnić różnicę między ciągiem arytmetycznym a geometrycznym oraz rozstrzygnąć, czy dany
+    ciąg (podany wyrazami lub wzorem ogólnym) jest geometryczny, uzasadniając odpowiedź badaniem ilorazu
+    a_{n+1}/a_n.
+  bloom_level: rozumienie
+- statement: Stosować wzór a_n = a_1·q^{n−1} do obliczania dowolnego wyrazu ciągu, w tym przy ujemnym
+    i ułamkowym ilorazie.
+  bloom_level: stosowanie
+- statement: Wyznaczać a_1 i q, mając dane dwa dowolne wyrazy ciągu geometrycznego, i rozpatrywać wszystkie
+    przypadki przy parzystym wykładniku.
+  bloom_level: stosowanie
+- statement: Obliczać sumę n początkowych wyrazów ciągu geometrycznego, z uwzględnieniem przypadku q =
+    1 i z poprawnym ustaleniem liczby składników.
+  bloom_level: stosowanie
+- statement: Wyznaczać numer wyrazu lub liczbę składników sumy, rozwiązując proste równanie wykładnicze
+    q^n = c.
+  bloom_level: stosowanie
+- statement: Stosować warunek b² = ac do dobierania parametru tak, aby dane liczby tworzyły ciąg geometryczny,
+    oraz weryfikować otrzymane rozwiązania.
+  bloom_level: analiza
+- statement: Modelować sytuacje praktyczne (procent składany, wzrost lub spadek o stały procent) za pomocą
+    ciągu geometrycznego i interpretować wynik w kontekście zadania.
+  bloom_level: analiza
+- statement: Uzasadniać poprawność otrzymanych wyników przez wypisanie kilku wyrazów ciągu lub sprawdzenie
+    stałości ilorazu.
+  bloom_level: ocenianie
+misconceptions:
+- name: Mylenie ilorazu z różnicą
+  incorrect_reasoning: '''W ciągu 2, 6, 18 różnica to 4, potem 12 — a skoro rośnie, to policzę kolejny
+    wyraz jako 18 + 12 = 30'' albo używanie wzoru a_n = a_1 + (n−1)q.'
+  correct_reasoning: W ciągu geometrycznym kolejne wyrazy powstają przez MNOŻENIE przez q, nie przez dodawanie.
+    Tu q = 6/2 = 3, więc kolejny wyraz to 18·3 = 54, a wzór ogólny to a_n = a_1·q^{n−1} = 2·3^{n−1}.
+  severity: 4
+- name: Zły wykładnik we wzorze na n-ty wyraz
+  incorrect_reasoning: Zapisanie a_n = a_1·q^n, przez co np. dla a_1 = 3, q = 2 otrzymujemy a_1 = 6.
+  correct_reasoning: 'Poprawnie a_n = a_1·q^{n−1}, bo od pierwszego do n-tego wyrazu wykonujemy n−1 mnożeń.
+    Kontrola: podstaw n = 1 — musi wyjść a_1, czyli a_1·q^0 = a_1.'
+  severity: 4
+- name: Użycie wzoru na sumę przy q = 1
+  incorrect_reasoning: Dla ciągu stałego 7, 7, 7, ... podstawienie q = 1 do S_n = a_1(1 − q^n)/(1 − q)
+    i uzyskanie 0/0 lub 'zera w mianowniku, więc suma nie istnieje'.
+  correct_reasoning: Wzór z ułamkiem obowiązuje tylko dla q ≠ 1. Gdy q = 1, ciąg jest stały i S_n = n·a_1,
+    np. S_5 = 5·7 = 35.
+  severity: 3
+- name: Odwrócony iloraz
+  incorrect_reasoning: Liczenie q jako a_n/a_{n+1}, np. dla ciągu 8, 4, 2 przyjęcie q = 8/4 = 2 i twierdzenie,
+    że ciąg rośnie.
+  correct_reasoning: 'Iloraz to wyraz późniejszy dzielony przez wcześniejszy: q = 4/8 = 1/2. Ciąg maleje,
+    bo 0 < q < 1 przy dodatnim a_1.'
+  severity: 3
+- name: Błędy przy ujemnym ilorazie
+  incorrect_reasoning: Traktowanie (−2)^6 jako −64 albo zapisanie a_n = −2·3^{n−1} zamiast a_n = 2·(−3)^{n−1},
+    gdy ciąg to 2, −6, 18, ...
+  correct_reasoning: 'Znak minus należy do podstawy potęgi i trzeba go ująć w nawias: (−2)^6 = 64 (parzysty
+    wykładnik daje wynik dodatni), a dla ciągu 2, −6, 18 mamy q = −3 i a_n = 2·(−3)^{n−1}.'
+  severity: 4
+- name: Średnia arytmetyczna zamiast geometrycznej
+  incorrect_reasoning: Aby liczby a, b, c tworzyły ciąg geometryczny, zapisanie warunku b = (a + c)/2.
+  correct_reasoning: To warunek dla ciągu arytmetycznego. Dla geometrycznego b/a = c/b, czyli b² = a·c
+    (b jest średnią geometryczną co do wartości bezwzględnej, może też być ujemne).
+  severity: 4
+- name: Pomijanie warunku, że wyrazy są różne od zera
+  incorrect_reasoning: Podanie x = 0 jako rozwiązania zadania 'dla jakiego x liczby x, 0·coś, ... tworzą
+    ciąg geometryczny', bo równanie b² = ac jest wtedy spełnione.
+  correct_reasoning: Definicja wymaga, by wszystkie wyrazy ciągu geometrycznego były różne od zera (i
+    q ≠ 0). Po rozwiązaniu równania trzeba obliczyć konkretne wyrazy i odrzucić przypadki z zerem.
+  severity: 3
+- name: Zła liczba składników sumy
+  incorrect_reasoning: Dla sumy 1 + 3 + 9 + ... + 3^{10} przyjęcie n = 10, bo najwyższy wykładnik to 10.
+  correct_reasoning: Składniki to 3^0, 3^1, ..., 3^{10}, czyli n = 11 wyrazów. Ogólnie liczba wyrazów
+    od a_k do a_m wynosi m − k + 1.
+  severity: 3
+- name: Zapominanie o drugim rozwiązaniu przy parzystej potędze q
+  incorrect_reasoning: Z równania q^2 = 9 wyciągnięcie tylko q = 3.
+  correct_reasoning: 'Przy parzystym wykładniku są dwa rozwiązania: q = 3 lub q = −3, i oba dają poprawne
+    ciągi geometryczne (o ile zadanie nie narzuca dodatkowego warunku, np. że ciąg jest rosnący). Trzeba
+    rozpatrzyć obie możliwości i podać obie odpowiedzi.'
+  severity: 4
+- name: Błędny iloraz w zadaniach procentowych
+  incorrect_reasoning: Przy wzroście o 5% rocznie przyjęcie q = 0,05 (albo obliczanie odsetek zawsze od
+    kwoty początkowej, czyli traktowanie sytuacji jak ciąg arytmetyczny).
+  correct_reasoning: 'Wzrost o 5% to pomnożenie przez 1 + 0,05 = 1,05 (spadek o 5% — przez 0,95). Przy
+    kapitalizacji odsetki naliczane są od nowego, powiększonego kapitału, dlatego model jest geometryczny:
+    K_n = K_0·1,05^n.'
+  severity: 4
+- name: Uznanie każdego szybko rosnącego ciągu za geometryczny
+  incorrect_reasoning: '''Ciąg 1, 2, 4, 7, 11 rośnie coraz szybciej, więc jest geometryczny.'''
+  correct_reasoning: 'Trzeba sprawdzić stałość ILORAZU: 2/1 = 2, ale 4/2 = 2 i 7/4 = 1,75 — ilorazy nie
+    są równe, więc ciąg nie jest geometryczny (nie jest też arytmetyczny). Ciąg może nie należeć do żadnego
+    z tych typów.'
+  severity: 2

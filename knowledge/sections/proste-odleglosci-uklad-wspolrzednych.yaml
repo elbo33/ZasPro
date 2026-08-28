@@ -1,0 +1,378 @@
+section: proste-odleglosci-uklad-wspolrzednych
+name: Proste i odległości w układzie współrzędnych
+scope: Line equations in slope and general form; relative position of two lines and their common point;
+  distance between two points and length of a segment.
+requirements:
+- IX.1
+- IX.2
+- IX.3
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:11:49.295470'
+  approved_at: '2026-08-28T18:28:20.036320'
+  approved_by: reviewer
+concepts:
+- name: Prostokątny układ współrzędnych i współrzędne punktu
+  description: Układ dwóch prostopadłych osi liczbowych Ox (odciętych) i Oy (rzędnych) o wspólnym początku
+    O=(0,0); każdemu punktowi P płaszczyzny odpowiada dokładnie jedna para liczb P=(x_P, y_P).
+  explanation: Pierwsza współrzędna mówi, jak daleko idziemy w prawo/lewo, druga – w górę/dół. Punkty
+    leżące na osi Ox mają y=0, a leżące na osi Oy mają x=0. To pozwala zamieniać zadania geometryczne
+    na rachunki na liczbach.
+  difficulty: 1
+- name: Równanie prostej jako warunek na współrzędne punktu
+  description: Równanie prostej to warunek, który spełniają współrzędne (x, y) dokładnie tych punktów,
+    które leżą na tej prostej.
+  explanation: 'Myśl o równaniu jak o „teście przynależności”: wstawiasz współrzędne punktu i sprawdzasz,
+    czy równość jest prawdziwa. Jeśli tak – punkt leży na prostej, jeśli nie – nie leży.'
+  difficulty: 1
+- name: Postać kierunkowa prostej
+  description: Równanie y = ax + b, gdzie a to współczynnik kierunkowy, a b to wyraz wolny; opisuje każdą
+    prostą, która nie jest równoległa do osi Oy.
+  explanation: 'To po prostu wzór funkcji liniowej. Prosta jest jednoznacznie wyznaczona przez parę liczb
+    (a, b): a mówi o nachyleniu, b o tym, gdzie prosta przecina oś Oy (punkt (0, b)).'
+  difficulty: 2
+- name: Współczynnik kierunkowy a
+  description: 'Liczba a we wzorze y = ax + b, równa stosunkowi przyrostu rzędnych do przyrostu odciętych:
+    a = Δy/Δx; jest też równa tangensowi kąta nachylenia prostej do osi Ox.'
+  explanation: 'Interpretacja robocza: gdy x rośnie o 1, to y zmienia się o a. Dla a>0 prosta rośnie,
+    dla a<0 maleje, dla a=0 jest pozioma. Im większe |a|, tym prosta „bardziej stroma”.'
+  difficulty: 2
+- name: Wyraz wolny b
+  description: Liczba b we wzorze y = ax + b; rzędna punktu przecięcia prostej z osią Oy.
+  explanation: Prosta y = ax + b przechodzi przez punkt (0, b). Zmiana b to przesuwanie prostej pionowo
+    bez zmiany jej kierunku.
+  difficulty: 1
+- name: Postać ogólna prostej
+  description: Równanie Ax + By + C = 0, gdzie A, B, C są liczbami rzeczywistymi oraz A i B nie są jednocześnie
+    zerami.
+  explanation: Postać ogólna opisuje wszystkie proste, także pionowe (gdy B=0). Ta sama prosta ma nieskończenie
+    wiele postaci ogólnych – można pomnożyć całe równanie przez dowolną liczbę różną od zera.
+  difficulty: 2
+- name: Proste pionowe i poziome
+  description: Prosta pionowa (równoległa do Oy) ma równanie x = c i nie ma postaci kierunkowej ani współczynnika
+    kierunkowego; prosta pozioma (równoległa do Ox) ma równanie y = c, czyli a = 0.
+  explanation: Pionowa prosta „zmienia y bez zmiany x”, więc iloraz Δy/Δx byłby dzieleniem przez zero
+    – dlatego mówimy, że nie ma współczynnika kierunkowego. Trzeba o niej pamiętać jako o przypadku szczególnym.
+  difficulty: 2
+- name: Zamiana postaci równania prostej
+  description: Przejście od Ax + By + C = 0 do y = ax + b (możliwe, gdy B ≠ 0) i odwrotnie – przez przeniesienie
+    wyrazów na jedną stronę i ewentualne pozbycie się ułamków.
+  explanation: 'Z postaci ogólnej: wyznacz y, czyli y = (−A/B)x − C/B. Z kierunkowej: przenieś wszystko
+    na lewo, ax − y + b = 0, i pomnóż przez wspólny mianownik, aby uzyskać ładne współczynniki.'
+  difficulty: 2
+- name: Proste równoległe
+  description: 'Dwie proste są równoległe, gdy mają ten sam kierunek: w postaci kierunkowej a₁ = a₂ (albo
+    obie są pionowe). Jeśli dodatkowo b₁ = b₂, to proste się pokrywają; jeśli b₁ ≠ b₂ – są rozłączne.'
+  explanation: Równość współczynników kierunkowych to „to samo nachylenie”. Aby rozstrzygnąć, czy to jedna
+    i ta sama prosta, sprawdzamy jeszcze wyraz wolny (lub czy punkt jednej prostej spełnia równanie drugiej).
+  difficulty: 2
+- name: Proste prostopadłe
+  description: Dwie nie-pionowe proste są prostopadłe wtedy i tylko wtedy, gdy a₁·a₂ = −1; prosta pionowa
+    x = c jest prostopadła do każdej prostej poziomej y = d.
+  explanation: 'Praktycznie: współczynnik prostopadły to „odwróć ułamek i zmień znak”. Do a = 2/3 prostopadła
+    ma a = −3/2.'
+  difficulty: 3
+- name: Wzajemne położenie dwóch prostych
+  description: Dwie proste na płaszczyźnie mogą się przecinać w dokładnie jednym punkcie, być równoległe
+    rozłączne (brak punktów wspólnych) albo pokrywać się (nieskończenie wiele punktów wspólnych).
+  explanation: Nie ma innych możliwości. Rozpoznanie sprowadza się do porównania kierunków (współczynników),
+    a przy tym samym kierunku – do sprawdzenia, czy proste mają choć jeden wspólny punkt.
+  difficulty: 2
+- name: Punkt wspólny dwóch prostych a układ równań
+  description: Współrzędne punktu wspólnego dwóch prostych to rozwiązanie układu ich równań; układ oznaczony
+    ↔ proste przecinają się, sprzeczny ↔ równoległe rozłączne, nieoznaczony ↔ proste pokrywają się.
+  explanation: Szukanie punktu przecięcia to zwykłe rozwiązywanie układu metodą podstawiania lub przeciwnych
+    współczynników. Sam wynik rachunku (jedno rozwiązanie / sprzeczność / tożsamość) od razu mówi o położeniu
+    prostych.
+  difficulty: 3
+- name: Odległość dwóch punktów w układzie współrzędnych
+  description: Dla A=(x_A, y_A) i B=(x_B, y_B) odległość |AB| = √((x_B−x_A)² + (y_B−y_A)²); jest to jednocześnie
+    długość odcinka AB.
+  explanation: To twierdzenie Pitagorasa dla trójkąta o przyprostokątnych |Δx| i |Δy|. Kolejność punktów
+    nie ma znaczenia, bo różnice są podnoszone do kwadratu. Wynik zawsze jest nieujemny.
+  difficulty: 2
+- name: Wykorzystanie długości odcinków do badania figur
+  description: Obliczając długości wszystkich boków (i porównując je lub sprawdzając twierdzenie odwrotne
+    do Pitagorasa) rozstrzygamy, czy trójkąt jest równoramienny, równoboczny lub prostokątny, a także
+    liczymy obwód.
+  explanation: Warto pracować na kwadratach długości – unika się pierwiastków. Jeśli suma kwadratów dwóch
+    krótszych boków równa się kwadratowi najdłuższego, trójkąt jest prostokątny.
+  difficulty: 3
+formulas:
+- name: Postać kierunkowa prostej
+  latex_raw: y = ax + b
+  conditions: prosta nie jest równoległa do osi Oy
+  description: a – współczynnik kierunkowy, b – rzędna punktu przecięcia z osią Oy
+- name: Postać ogólna prostej
+  latex_raw: Ax + By + C = 0
+  conditions: A² + B² > 0 (A i B nie są jednocześnie zerami)
+  description: opisuje każdą prostą, również pionową (B = 0)
+- name: Współczynnik kierunkowy z postaci ogólnej
+  latex_raw: a = -\frac{A}{B},\qquad b = -\frac{C}{B}
+  conditions: B ≠ 0
+- name: Współczynnik kierunkowy z dwóch punktów
+  latex_raw: a = \frac{y_B - y_A}{x_B - x_A}
+  conditions: x_A ≠ x_B (prosta nie jest pionowa)
+- name: Prosta o danym współczynniku przez dany punkt
+  latex_raw: y - y_0 = a(x - x_0)
+  conditions: prosta o współczynniku kierunkowym a przechodząca przez P=(x₀, y₀)
+- name: Równanie prostej przez dwa punkty
+  latex_raw: (y - y_A)(x_B - x_A) - (y_B - y_A)(x - x_A) = 0
+  conditions: A ≠ B; wzór działa także dla prostej pionowej
+- name: Warunek równoległości (postać kierunkowa)
+  latex_raw: a_1 = a_2
+  conditions: obie proste mają postać kierunkową
+  description: pokrywają się, gdy dodatkowo b₁ = b₂; są rozłączne, gdy b₁ ≠ b₂
+- name: Warunek równoległości (postać ogólna)
+  latex_raw: A_1B_2 - A_2B_1 = 0
+  conditions: dla prostych A₁x + B₁y + C₁ = 0 i A₂x + B₂y + C₂ = 0
+- name: Warunek prostopadłości (postać kierunkowa)
+  latex_raw: a_1 \cdot a_2 = -1
+  conditions: żadna z prostych nie jest pionowa
+  description: równoważnie a₂ = −1/a₁
+- name: Warunek przecinania się prostych
+  latex_raw: a_1 \ne a_2 \quad\text{(lub } A_1B_2 - A_2B_1 \ne 0\text{)}
+  conditions: wtedy istnieje dokładnie jeden punkt wspólny
+- name: Odległość dwóch punktów (długość odcinka)
+  latex_raw: '|AB| = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}'
+  conditions: A=(x_A,y_A), B=(x_B,y_B) — dowolne punkty płaszczyzny
+- name: Kwadrat odległości
+  latex_raw: '|AB|^2 = (x_B - x_A)^2 + (y_B - y_A)^2'
+  conditions: wygodne przy porównywaniu długości i przy twierdzeniu Pitagorasa
+- name: Odległość punktów na prostej równoległej do osi
+  latex_raw: '|AB| = |x_B - x_A| \ \text{(gdy } y_A=y_B),\qquad |AB| = |y_B - y_A| \ \text{(gdy } x_A=x_B)'
+  conditions: przypadki szczególne wzoru na odległość
+methods:
+- name: Wyznaczanie równania prostej przechodzącej przez dwa dane punkty
+  when_to_use: Gdy dane są dwa różne punkty A i B, a szukamy równania prostej AB.
+  steps:
+  - Sprawdź, czy x_A = x_B; jeśli tak, prostą jest x = x_A (pionowa) i kończysz.
+  - Oblicz współczynnik kierunkowy a = (y_B − y_A)/(x_B − x_A).
+  - Wstaw a i współrzędne jednego z punktów do y = ax + b i wyznacz b (albo od razu użyj y − y_A = a(x
+    − x_A)).
+  - Zapisz równanie w postaci kierunkowej y = ax + b.
+  - W razie potrzeby przekształć do postaci ogólnej i sprawdź wynik, wstawiając współrzędne drugiego punktu.
+- name: Zamiana postaci ogólnej na kierunkową i odwrotnie
+  when_to_use: Gdy trzeba porównać nachylenia prostych danych w różnych postaciach lub podać odpowiedź
+    w konkretnej postaci.
+  steps:
+  - 'Z ogólnej na kierunkową: sprawdź, czy B ≠ 0 (jeśli B = 0, prosta jest pionowa: x = −C/A).'
+  - 'Przenieś Ax i C na prawą stronę: By = −Ax − C, następnie podziel przez B: y = (−A/B)x − C/B.'
+  - 'Z kierunkowej na ogólną: przenieś wszystko na lewą stronę: ax − y + b = 0.'
+  - Pomnóż obie strony przez wspólny mianownik, aby usunąć ułamki, i uporządkuj współczynniki (zwykle
+    tak, by A > 0).
+- name: Wyznaczanie prostej równoległej lub prostopadłej do danej, przechodzącej przez dany punkt
+  when_to_use: Gdy w zadaniu pada warunek „równoległa do…”, „prostopadła do…” i podany jest punkt.
+  steps:
+  - Sprowadź daną prostą do postaci kierunkowej i odczytaj jej współczynnik a₁.
+  - Dla równoległej przyjmij a = a₁; dla prostopadłej przyjmij a = −1/a₁.
+  - Wstaw a oraz współrzędne danego punktu do y = ax + b i wylicz b (lub użyj y − y₀ = a(x − x₀)).
+  - Zapisz równanie; w przypadku równoległości sprawdź, czy nie wyszła ta sama prosta (jeśli punkt leżał
+    na danej prostej).
+  - Jeśli dana prosta jest pionowa (x = c), to równoległa ma postać x = x₀, a prostopadła y = y₀.
+- name: Badanie wzajemnego położenia dwóch prostych
+  when_to_use: Gdy trzeba rozstrzygnąć, czy proste się przecinają, są równoległe rozłączne, czy pokrywają
+    się.
+  steps:
+  - Sprowadź oba równania do postaci kierunkowej (lub obu do postaci ogólnej).
+  - 'Porównaj współczynniki kierunkowe: jeśli a₁ ≠ a₂ — proste przecinają się w jednym punkcie.'
+  - 'Jeśli a₁ = a₂, porównaj wyrazy wolne: b₁ = b₂ — proste pokrywają się; b₁ ≠ b₂ — proste są równoległe
+    rozłączne.'
+  - Dodatkowo, gdy a₁·a₂ = −1, proste są prostopadłe (szczególny przypadek przecinania się).
+  - 'Dla postaci ogólnych: policz A₁B₂ − A₂B₁; jeśli ≠ 0 — przecinają się, jeśli = 0 — sprawdź, czy któryś
+    punkt jednej prostej spełnia równanie drugiej.'
+- name: Wyznaczanie punktu wspólnego dwóch prostych
+  when_to_use: Gdy szukamy współrzędnych punktu przecięcia prostych (lub punktu przecięcia z osią układu).
+  steps:
+  - Zapisz układ dwóch równań prostych.
+  - 'Rozwiąż go metodą podstawiania (najwygodniej, gdy obie proste są w postaci kierunkowej: przyrównaj
+    ax + b) lub metodą przeciwnych współczynników.'
+  - Z otrzymanego x wylicz y, wstawiając do jednego z równań.
+  - Sprawdź rozwiązanie, wstawiając (x, y) do drugiego równania.
+  - Jeśli w trakcie rachunku otrzymasz sprzeczność (np. 0 = 5) — proste są równoległe rozłączne; jeśli
+    tożsamość (0 = 0) — proste pokrywają się.
+- name: Obliczanie odległości dwóch punktów i długości odcinka
+  when_to_use: Gdy dane są współrzędne końców odcinka albo wierzchołków figury i trzeba policzyć długość,
+    obwód lub porównać boki.
+  steps:
+  - Zapisz współrzędne obu punktów i oblicz różnice Δx = x_B − x_A oraz Δy = y_B − y_A.
+  - 'Podnieś obie różnice do kwadratu i dodaj: |AB|² = Δx² + Δy².'
+  - 'Wyciągnij pierwiastek: |AB| = √(Δx² + Δy²).'
+  - Uprość pierwiastek, wyłączając czynnik przed znak pierwiastka (np. √50 = 5√2).
+  - Jeśli porównujesz tylko długości, możesz zatrzymać się na kwadratach |AB|² i uniknąć pierwiastków.
+- name: Rozpoznawanie rodzaju figury na podstawie współczynników i długości
+  when_to_use: Gdy dane są wierzchołki trójkąta lub czworokąta i trzeba stwierdzić, czy figura jest np.
+    równoramienna, prostokątna, jest równoległobokiem lub prostokątem.
+  steps:
+  - Wypisz współrzędne wierzchołków i naszkicuj figurę w układzie.
+  - Oblicz współczynniki kierunkowe boków — równość współczynników oznacza równoległość, iloczyn równy
+    −1 prostopadłość.
+  - Oblicz kwadraty długości boków (i ewentualnie przekątnych).
+  - 'Porównaj wyniki: równe długości → boki równe; a₁·a₂ = −1 lub |a|²+|b|²=|c|² → kąt prosty.'
+  - Sformułuj wniosek o rodzaju figury i, jeśli trzeba, policz obwód.
+examples:
+- statement: Dane są punkty A = (−1, 2), B = (3, 4), C = (5, 0). Oblicz długości boków trójkąta ABC i
+    wykaż, że jest on równoramienny i prostokątny. Podaj jego obwód.
+  worked_solution: |-
+    |AB|² = (3 − (−1))² + (4 − 2)² = 4² + 2² = 16 + 4 = 20, więc |AB| = √20 = 2√5.
+    |BC|² = (5 − 3)² + (0 − 4)² = 2² + (−4)² = 4 + 16 = 20, więc |BC| = 2√5.
+    |AC|² = (5 − (−1))² + (0 − 2)² = 6² + (−2)² = 36 + 4 = 40, więc |AC| = √40 = 2√10.
+    Ponieważ |AB| = |BC| = 2√5, trójkąt jest równoramienny.
+    Sprawdzamy twierdzenie odwrotne do Pitagorasa: |AB|² + |BC|² = 20 + 20 = 40 = |AC|², zatem kąt przy wierzchołku B jest prosty — trójkąt jest prostokątny.
+    Obwód: 2√5 + 2√5 + 2√10 = 4√5 + 2√10.
+  difficulty: 2
+- statement: Wyznacz równanie prostej przechodzącej przez punkty A = (−2, 3) i B = (4, −5) w postaci kierunkowej
+    i ogólnej. Sprawdź, czy punkt C = (1, −1) leży na tej prostej.
+  worked_solution: |-
+    Ponieważ x_A = −2 ≠ 4 = x_B, prosta nie jest pionowa.
+    a = (y_B − y_A)/(x_B − x_A) = (−5 − 3)/(4 − (−2)) = −8/6 = −4/3.
+    Wstawiamy punkt A do y = ax + b: 3 = (−4/3)·(−2) + b, czyli 3 = 8/3 + b, stąd b = 3 − 8/3 = 1/3.
+    Postać kierunkowa: y = −(4/3)x + 1/3.
+    Postać ogólna: mnożymy obie strony przez 3: 3y = −4x + 1, czyli 4x + 3y − 1 = 0.
+    Sprawdzenie punktu B: 4·4 + 3·(−5) − 1 = 16 − 15 − 1 = 0 ✓.
+    Sprawdzenie punktu C = (1, −1): 4·1 + 3·(−1) − 1 = 4 − 3 − 1 = 0, więc C leży na prostej AB (punkty A, B, C są współliniowe).
+  difficulty: 3
+- statement: 'Dana jest prosta k: 3x − y + 2 = 0. Wyznacz równanie prostej l równoległej do k i przechodzącej
+    przez punkt P = (−1, 2). Następnie znajdź punkt wspólny prostej l i prostej m: x + y + 3 = 0 oraz
+    oblicz jego odległość od punktu P.'
+  worked_solution: |-
+    Sprowadzamy k do postaci kierunkowej: −y = −3x − 2, czyli y = 3x + 2, zatem a_k = 3.
+    Prosta równoległa ma ten sam współczynnik: l: y = 3x + b. Wstawiamy P = (−1, 2): 2 = 3·(−1) + b, stąd b = 5.
+    l: y = 3x + 5 (postać ogólna: 3x − y + 5 = 0). Ponieważ 5 ≠ 2, proste k i l są rozłączne, a nie pokrywają się.
+    Prosta m: x + y + 3 = 0, czyli y = −x − 3; jej współczynnik to −1 ≠ 3, więc l i m przecinają się.
+    Układ: 3x + 5 = −x − 3 ⟹ 4x = −8 ⟹ x = −2, wtedy y = −(−2) − 3 = −1.
+    Punkt wspólny S = (−2, −1). Sprawdzenie: 3·(−2) − (−1) + 5 = −6 + 1 + 5 = 0 ✓ oraz (−2) + (−1) + 3 = 0 ✓.
+    Odległość: |PS| = √((−2 − (−1))² + (−1 − 2)²) = √((−1)² + (−3)²) = √(1 + 9) = √10.
+  difficulty: 3
+- statement: 'Dane są proste k: y = (m − 1)x + 3 oraz l: 2x + y − 4 = 0, gdzie m jest parametrem. Dla
+    jakich wartości m proste te: a) są równoległe, b) są prostopadłe, c) mają dokładnie jeden punkt wspólny?'
+  worked_solution: |-
+    Sprowadzamy l do postaci kierunkowej: y = −2x + 4, więc a_l = −2, b_l = 4. Dla k mamy a_k = m − 1, b_k = 3.
+    a) Równoległość: a_k = a_l, czyli m − 1 = −2, stąd m = −1. Wtedy k: y = −2x + 3, a ponieważ 3 ≠ 4, proste są równoległe i rozłączne (nie pokrywają się dla żadnego m).
+    b) Prostopadłość: a_k · a_l = −1, czyli (m − 1)·(−2) = −1, stąd m − 1 = 1/2, więc m = 3/2.
+    c) Jeden punkt wspólny mamy dokładnie wtedy, gdy proste nie są równoległe: m − 1 ≠ −2, czyli m ≠ −1.
+    Odpowiedź: a) m = −1, b) m = 3/2, c) m ∈ R \ {−1}.
+  difficulty: 4
+- statement: Dane są punkty A = (−2, −1), B = (4, 1), C = (3, 4), D = (−3, 2). Wykaż, że czworokąt ABCD
+    jest prostokątem i oblicz jego obwód.
+  worked_solution: |-
+    Współczynniki kierunkowe boków:
+    a_AB = (1 − (−1))/(4 − (−2)) = 2/6 = 1/3,
+    a_DC = (4 − 2)/(3 − (−3)) = 2/6 = 1/3,
+    a_AD = (2 − (−1))/(−3 − (−2)) = 3/(−1) = −3,
+    a_BC = (4 − 1)/(3 − 4) = 3/(−1) = −3.
+    Ponieważ a_AB = a_DC oraz a_AD = a_BC, przeciwległe boki są parami równoległe — ABCD jest równoległobokiem.
+    Dodatkowo a_AB · a_AD = (1/3)·(−3) = −1, więc bok AB jest prostopadły do boku AD — kąt przy wierzchołku A jest prosty. Równoległobok z kątem prostym to prostokąt.
+    Długości boków:
+    |AB| = √((4 + 2)² + (1 + 1)²) = √(36 + 4) = √40 = 2√10,
+    |AD| = √((−3 + 2)² + (2 + 1)²) = √(1 + 9) = √10.
+    (Analogicznie |DC| = 2√10 i |BC| = √10, co potwierdza wynik.)
+    Obwód: 2·(2√10 + √10) = 2·3√10 = 6√10.
+  difficulty: 4
+objectives:
+- statement: Odczytać współczynnik kierunkowy i wyraz wolny z równania prostej danej w postaci kierunkowej
+    oraz podać ich interpretację geometryczną (nachylenie, punkt przecięcia z osią Oy).
+  bloom_level: Rozumienie
+- statement: Przekształcać równanie prostej z postaci ogólnej na kierunkową i odwrotnie, rozpoznając przypadek
+    prostej pionowej.
+  bloom_level: Zastosowanie
+- statement: Sprawdzać, czy dany punkt należy do prostej o danym równaniu, i wyznaczać brakującą współrzędną
+    punktu leżącego na prostej.
+  bloom_level: Zastosowanie
+- statement: Wyznaczać równanie prostej przechodzącej przez dwa dane punkty oraz prostej o danym współczynniku
+    kierunkowym przechodzącej przez dany punkt.
+  bloom_level: Zastosowanie
+- statement: Wyznaczać równanie prostej równoległej lub prostopadłej do danej prostej i przechodzącej
+    przez dany punkt.
+  bloom_level: Zastosowanie
+- statement: Rozpoznawać wzajemne położenie dwóch prostych (przecinające się, równoległe rozłączne, pokrywające
+    się, prostopadłe) na podstawie ich równań w dowolnej postaci.
+  bloom_level: Analiza
+- statement: Wyznaczać współrzędne punktu wspólnego dwóch prostych, rozwiązując odpowiedni układ równań,
+    oraz interpretować brak rozwiązań i nieskończenie wiele rozwiązań.
+  bloom_level: Zastosowanie
+- statement: Wyznaczać wartości parametru, dla których dwie proste są równoległe, prostopadłe lub przecinają
+    się w jednym punkcie.
+  bloom_level: Analiza
+- statement: Obliczać odległość dwóch punktów w układzie współrzędnych i długość odcinka o danych końcach,
+    upraszczając wynik z pierwiastkiem.
+  bloom_level: Zastosowanie
+- statement: Wykorzystywać długości odcinków i współczynniki kierunkowe do badania własności figur (obwód,
+    równoramienność, prostopadłość boków, rodzaj czworokąta) i uzasadniać wnioski.
+  bloom_level: Analiza
+- statement: Ocenić poprawność otrzymanego równania prostej lub punktu przecięcia przez podstawienie i
+    wykryć typowe błędy znakowe.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Odwrócony wzór na współczynnik kierunkowy
+  incorrect_reasoning: Uczeń liczy a = (x_B − x_A)/(y_B − y_A), czyli „przyrost x przez przyrost y”.
+  correct_reasoning: 'Współczynnik kierunkowy to a = Δy/Δx = (y_B − y_A)/(x_B − x_A). Kontrola: dla A=(0,0),
+    B=(1,2) prosta y = 2x, więc a = 2, a nie 1/2.'
+  severity: 4
+- name: Pomieszanie kolejności odejmowania w liczniku i mianowniku
+  incorrect_reasoning: Uczeń pisze a = (y_B − y_A)/(x_A − x_B), mieszając kolejność punktów, przez co
+    otrzymuje przeciwny znak.
+  correct_reasoning: 'W liczniku i mianowniku odejmujemy w tej samej kolejności: (y_B − y_A)/(x_B − x_A)
+    albo (y_A − y_B)/(x_A − x_B) — oba dają ten sam wynik.'
+  severity: 3
+- name: Błąd znaku przy zamianie postaci ogólnej na kierunkową
+  incorrect_reasoning: Z równania 2x + 3y − 6 = 0 uczeń odczytuje a = 2/3 (albo a = A/B), bo „przy x stoi
+    2, a przy y stoi 3”.
+  correct_reasoning: 'Trzeba wyznaczyć y: 3y = −2x + 6, czyli y = −(2/3)x + 2. Zatem a = −A/B = −2/3,
+    b = 2.'
+  severity: 4
+- name: Zapominanie o prostych pionowych
+  incorrect_reasoning: Uczeń dla punktów A=(3,−1) i B=(3,5) liczy a = (5+1)/(3−3) = 6/0 i zapisuje „a
+    = 0” lub „prosta y = 0x + b”.
+  correct_reasoning: Gdy x_A = x_B, dzielenie przez zero jest niewykonalne — prosta jest pionowa i ma
+    równanie x = 3. Nie ma ona postaci kierunkowej ani współczynnika kierunkowego.
+  severity: 3
+- name: Utożsamianie równości współczynników kierunkowych z pokrywaniem się prostych
+  incorrect_reasoning: „Skoro a₁ = a₂, to są to te same proste, więc mają nieskończenie wiele punktów
+    wspólnych.”
+  correct_reasoning: 'Równość a₁ = a₂ oznacza tylko ten sam kierunek. Trzeba jeszcze porównać wyrazy wolne:
+    b₁ = b₂ → proste pokrywają się, b₁ ≠ b₂ → są równoległe i nie mają punktów wspólnych.'
+  severity: 4
+- name: Zły warunek prostopadłości
+  incorrect_reasoning: Uczeń przyjmuje a₂ = −a₁ (np. do a₁ = 2 podaje a₂ = −2) albo a₁·a₂ = 1.
+  correct_reasoning: Warunek prostopadłości to a₁·a₂ = −1, czyli a₂ = −1/a₁. Do a₁ = 2 prostopadła ma
+    a₂ = −1/2, do a₁ = −3/4 prostopadła ma a₂ = 4/3.
+  severity: 4
+- name: Porównywanie współczynników postaci ogólnej bez uwzględnienia proporcjonalności
+  incorrect_reasoning: Uczeń twierdzi, że proste 2x − 4y + 5 = 0 i x − 2y + 1 = 0 nie są równoległe, bo
+    „mają różne współczynniki A i B”.
+  correct_reasoning: 'W postaci ogólnej liczy się proporcja: A₁B₂ − A₂B₁ = 2·(−2) − 1·(−4) = −4 + 4 =
+    0, więc proste są równoległe (a ponieważ 2/1 ≠ 5/1, nie pokrywają się). Bezpiecznie jest sprowadzić
+    oba równania do postaci kierunkowej.'
+  severity: 3
+- name: Zapominanie o pierwiastku lub o kwadratach we wzorze na odległość
+  incorrect_reasoning: Uczeń liczy |AB| = (x_B − x_A)² + (y_B − y_A)² (bez pierwiastka) albo |AB| = √(x_B
+    − x_A) + √(y_B − y_A).
+  correct_reasoning: '|AB| = √((x_B − x_A)² + (y_B − y_A)²) — najpierw kwadraty różnic, potem suma, na
+    końcu jeden pierwiastek z całości.'
+  severity: 5
+- name: Odejmowanie zamiast dodawania pod pierwiastkiem
+  incorrect_reasoning: Uczeń stosuje wzór |AB| = √((x_B − x_A)² − (y_B − y_A)²), myląc go z twierdzeniem
+    Pitagorasa dla przyprostokątnej.
+  correct_reasoning: 'Odcinek AB jest przeciwprostokątną trójkąta o przyprostokątnych |Δx| i |Δy|, więc
+    kwadraty się dodają: |AB|² = Δx² + Δy².'
+  severity: 4
+- name: Kłopot ze znakami przy współrzędnych ujemnych
+  incorrect_reasoning: Dla A = (−2, 3) i B = (1, −4) uczeń liczy Δx = 1 − 2 = −1 zamiast 1 − (−2) = 3.
+  correct_reasoning: 'Odejmowanie liczby ujemnej to dodawanie: x_B − x_A = 1 − (−2) = 3, y_B − y_A = −4
+    − 3 = −7. Warto wstawiać współrzędne w nawiasach.'
+  severity: 3
+- name: Przekonanie, że dwie proste zawsze mają punkt wspólny
+  incorrect_reasoning: Uczeń rozwiązuje układ, dochodzi do sprzeczności typu 0 = 7 i zapisuje „x = 0”
+    lub szuka błędu rachunkowego, zakładając, że punkt przecięcia musi istnieć.
+  correct_reasoning: Sprzeczność w układzie oznacza, że proste są równoległe i rozłączne — nie mają punktu
+    wspólnego. Tożsamość 0 = 0 oznacza, że proste się pokrywają.
+  severity: 4
+- name: Wstawianie punktu do niewłaściwego miejsca w równaniu
+  incorrect_reasoning: Sprawdzając, czy P = (2, −3) leży na prostej y = 4x − 1, uczeń podstawia x = −3
+    i y = 2 (zamienia współrzędne).
+  correct_reasoning: 'Pierwsza współrzędna to x, druga to y: sprawdzamy, czy −3 = 4·2 − 1 = 7, co jest
+    fałszem, więc P nie leży na prostej.'
+  severity: 3

@@ -1,0 +1,397 @@
+section: dowody-podzielnosci
+name: Dowody dotyczące podzielności liczb całkowitych
+scope: Divisibility and remainders; representing integers by form (2k, 3k+1, ...); short direct proofs
+  about divisibility and parity.
+requirements:
+- I.2
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:11:28.017243'
+  approved_at: '2026-08-28T18:28:01.949916'
+  approved_by: reviewer
+concepts:
+- name: Podzielność liczb całkowitych
+  description: Mówimy, że liczba całkowita a dzieli liczbę całkowitą b (piszemy a | b), gdy istnieje liczba
+    całkowita k taka, że b = a·k. Wtedy a nazywamy dzielnikiem b, a b — wielokrotnością a.
+  explanation: 'To jest DEFINICJA, którą w dowodach się wykorzystuje w obie strony: z założenia „a | b"
+    wyciągamy istnienie k (b = ak), a żeby udowodnić tezę „a | b", doprowadzamy wyrażenie do postaci a·(coś
+    całkowitego). Cały schemat dowodu o podzielności sprowadza się do wyłączenia odpowiedniego czynnika
+    przed nawias i sprawdzenia, że to, co zostało w nawiasie, jest liczbą całkowitą.'
+  difficulty: 1
+- name: Wielokrotność liczby
+  description: Liczba postaci n·k, gdzie k jest liczbą całkowitą; wielokrotnościami 5 są …, −10, −5, 0,
+    5, 10, …
+  explanation: 'Uwaga: 0 jest wielokrotnością każdej liczby (0 = a·0), więc każda liczba całkowita dzieli
+    0. Wielokrotności mogą być ujemne — dowody mają działać dla wszystkich liczb całkowitych, nie tylko
+    dodatnich.'
+  difficulty: 1
+- name: Liczba parzysta i nieparzysta
+  description: Liczba całkowita n jest parzysta, gdy n = 2k dla pewnej liczby całkowitej k; jest nieparzysta,
+    gdy n = 2k + 1 dla pewnej liczby całkowitej k.
+  explanation: Każda liczba całkowita jest dokładnie jednego z tych dwóch typów — to najprostszy przykład
+    podziału na przypadki według reszty z dzielenia (przez 2). Zapis 2k+1 jest równoważny zapisowi 2k−1
+    (inne k), więc obu można używać; ważne, by w jednym dowodzie nie mieszać znaczeń tej samej litery.
+  difficulty: 1
+- name: Twierdzenie o dzieleniu z resztą
+  description: Dla każdej liczby całkowitej a i każdej liczby całkowitej dodatniej b istnieje dokładnie
+    jedna para liczb całkowitych q, r taka, że a = b·q + r oraz 0 ≤ r < b.
+  explanation: 'Liczbę q nazywamy ilorazem (całkowitym), r — resztą. Kluczowe są dwa warunki: r jest całkowite
+    i mieści się w przedziale od 0 do b−1. To twierdzenie daje nam prawo pisać: „każda liczba całkowita
+    jest postaci 3k, 3k+1 albo 3k+2" — bo reszta z dzielenia przez 3 może być tylko 0, 1 lub 2.'
+  difficulty: 2
+- name: Reszta z dzielenia
+  description: Liczba r z twierdzenia o dzieleniu z resztą; a i b dają tę samą resztę z dzielenia przez
+    n dokładnie wtedy, gdy n | (a − b).
+  explanation: 'Warto myśleć o reszcie jako o „etykiecie" liczby: dzieli ona wszystkie liczby całkowite
+    na n rozłącznych klas. Reszta nigdy nie jest ujemna, np. −7 = 3·(−3) + 2, więc −7 daje resztę 2 (a
+    nie −1) przy dzieleniu przez 3.'
+  difficulty: 2
+- name: Ogólna postać liczby o zadanej reszcie
+  description: Liczby dające resztę r z dzielenia przez n to dokładnie liczby postaci nk + r, gdzie k
+    przebiega zbiór liczb całkowitych.
+  explanation: 'To narzędzie numer jeden w dowodach: „liczba podzielna przez 5" → 5k; „liczba dająca resztę
+    1 z dzielenia przez 4" → 4k+1; „liczba nieparzysta" → 2k+1. Litera k musi być za każdym razem nowa
+    dla nowej liczby.'
+  difficulty: 2
+- name: Zapis kolejnych liczb całkowitych
+  description: 'Trzy kolejne liczby całkowite: n, n+1, n+2 (lub n−1, n, n+1); kolejne liczby parzyste:
+    2k, 2k+2, 2k+4; kolejne liczby nieparzyste: 2k+1, 2k+3.'
+  explanation: Wybór „symetrycznego" zapisu (n−1, n, n+1) często upraszcza rachunki, bo sumy skracają
+    się do wielokrotności. Kolejne liczby nieparzyste różnią się o 2, a nie o 1 — to częste źródło błędu.
+  difficulty: 2
+- name: Podstawowe własności podzielności
+  description: 'Jeśli a | b i a | c, to a | (b + c), a | (b − c) oraz a | (b·m) dla każdej całkowitej
+    m. Ponadto podzielność jest przechodnia: jeśli a | b i b | c, to a | c.'
+  explanation: 'Te własności pozwalają rozbijać wyrażenia: skoro chcemy pokazać 6 | (3n² + 3n), wystarczy
+    zauważyć, że 3n²+3n = 3n(n+1), a n(n+1) jest parzyste. Wszystkie te własności dowodzi się jednym ruchem
+    z definicji: b = ak, c = am ⇒ b + c = a(k+m).'
+  difficulty: 3
+- name: Iloczyn kolejnych liczb całkowitych
+  description: Iloczyn dwóch kolejnych liczb całkowitych n(n+1) jest podzielny przez 2; iloczyn trzech
+    kolejnych liczb n(n+1)(n+2) jest podzielny przez 6.
+  explanation: 'Uzasadnienie: wśród dwóch kolejnych liczb dokładnie jedna jest parzysta; wśród trzech
+    kolejnych dokładnie jedna jest podzielna przez 3 i co najmniej jedna przez 2, a NWD(2,3)=1. To gotowy
+    „klocek", którym można się posługiwać w dowodach, o ile go krótko uzasadnimy.'
+  difficulty: 3
+- name: Dowód wprost
+  description: Rozumowanie, w którym z założenia, definicji i przekształceń algebraicznych dochodzimy
+    bezpośrednio do tezy.
+  explanation: 'Schemat: (1) wprowadź oznaczenia zgodne z założeniem, (2) zapisz badane wyrażenie, (3)
+    przekształć je (wyłącz czynnik, zwiń wzór skróconego mnożenia), (4) wskaż, że otrzymana postać to
+    iloczyn żądanego dzielnika i liczby całkowitej, (5) sformułuj wniosek. Punkt (5) — jawne zdanie „a
+    zatem…" — jest częścią dowodu, nie ozdobnikiem.'
+  difficulty: 2
+- name: Dowód przez rozpatrzenie przypadków
+  description: Metoda polegająca na podzieleniu wszystkich liczb całkowitych na skończenie wiele klas
+    (np. według reszty z dzielenia przez 2, 3 lub 4) i udowodnieniu tezy osobno w każdej klasie.
+  explanation: 'Warunek poprawności: przypadki muszą wyczerpywać wszystkie możliwości. Jeśli dzielimy
+    według reszty z dzielenia przez 3, muszą wystąpić wszystkie trzy przypadki: 3k, 3k+1, 3k+2. Pominięcie
+    jednego unieważnia dowód.'
+  difficulty: 3
+- name: Kontrprzykład a dowód
+  description: Aby obalić zdanie ogólne („dla każdego n…") wystarczy jeden kontrprzykład; aby je udowodnić,
+    nie wystarczy żadna liczba przykładów — potrzebne jest rozumowanie ogólne z literą.
+  explanation: 'Sprawdzenie tezy dla n = 1, 2, 3, 10 to co najwyżej sprawdzenie hipotezy, nie dowód. Odwrotnie:
+    zdanie „istnieje n takie, że…" udowadnia się właśnie przez wskazanie konkretnego przykładu.'
+  difficulty: 2
+- name: Wzory skróconego mnożenia jako narzędzie dowodowe
+  description: Tożsamości a² − b² = (a−b)(a+b), (a±b)² = a² ± 2ab + b², a³ − b³ = (a−b)(a²+ab+b²) wykorzystywane
+    do rozkładu wyrażeń na czynniki.
+  explanation: 'Rozkład na czynniki to najkrótsza droga do podzielności: gdy w iloczynie widać czynnik
+    4, 6 czy (n−1)n(n+1), teza jest natychmiastowa. Warto uczyć się rozpoznawać n² − 1 = (n−1)(n+1) oraz
+    n³ − n = (n−1)n(n+1).'
+  difficulty: 3
+- name: Cechy podzielności
+  description: Liczba jest podzielna przez 2 (5), gdy jej ostatnia cyfra jest podzielna przez 2 (5); przez
+    4 — gdy liczba z dwóch ostatnich cyfr; przez 3 (9) — gdy suma cyfr jest podzielna przez 3 (9); przez
+    10 — gdy kończy się cyfrą 0.
+  explanation: Przydatne do szybkiego sprawdzania hipotez i do zadań z zapisem dziesiętnym, np. liczba
+    dwucyfrowa to 10a + b. Zapis pozycyjny (10a+b, 100a+10b+c) jest szczególnym przypadkiem „reprezentowania
+    liczby przez wzór".
+  difficulty: 2
+- name: Podzielność przez iloczyn dwóch liczb względnie pierwszych
+  description: Jeśli a | n i b | n oraz NWD(a, b) = 1, to (a·b) | n.
+  explanation: Dlatego z „podzielne przez 2 i przez 3" wynika „podzielne przez 6". Ale z „podzielne przez
+    2 i przez 4" NIE wynika „podzielne przez 8" (np. 4), bo NWD(2,4)=2 ≠ 1. Ta subtelność decyduje o poprawności
+    wielu dowodów.
+  difficulty: 3
+formulas:
+- name: Definicja podzielności
+  latex_raw: 'a \mid b \iff \exists\, k \in \mathbb{Z}: \; b = a\cdot k'
+  conditions: a, b liczby całkowite
+  description: 'Podstawa każdego dowodu: teza „a | b" oznacza doprowadzenie wyrażenia do postaci a·(liczba
+    całkowita).'
+- name: Dzielenie z resztą
+  latex_raw: a = b\cdot q + r, \qquad 0 \le r < b
+  conditions: a całkowite, b całkowite dodatnie; q, r całkowite i wyznaczone jednoznacznie
+  description: Reszta nigdy nie jest ujemna ani równa b.
+- name: Postać liczby parzystej i nieparzystej
+  latex_raw: n = 2k \quad \text{lub} \quad n = 2k+1, \; k \in \mathbb{Z}
+  conditions: dla dowolnej liczby całkowitej n zachodzi dokładnie jeden z tych przypadków
+- name: Postacie liczby ze względu na resztę z dzielenia przez 3
+  latex_raw: n = 3k \;\lor\; n = 3k+1 \;\lor\; n = 3k+2, \; k \in \mathbb{Z}
+  conditions: 'dla dowolnej liczby całkowitej n; analogicznie dla dzielnika 4: 4k, 4k+1, 4k+2, 4k+3'
+- name: Liniowość podzielności
+  latex_raw: (a \mid b \;\land\; a \mid c) \Rightarrow a \mid (mb + nc)
+  conditions: m, n dowolne liczby całkowite
+- name: Kwadrat liczby nieparzystej
+  latex_raw: (2k+1)^2 = 4k^2+4k+1 = 4k(k+1)+1 = 8m+1
+  conditions: k całkowite; m całkowite, bo k(k+1) jest parzyste
+  description: 'Stąd: kwadrat liczby nieparzystej daje resztę 1 z dzielenia przez 8.'
+- name: Kwadrat liczby parzystej
+  latex_raw: (2k)^2 = 4k^2
+  conditions: k całkowite
+  description: Kwadrat liczby całkowitej jest więc zawsze postaci 4m lub 8m+1.
+- name: Różnica kwadratów
+  latex_raw: a^2 - b^2 = (a-b)(a+b)
+  conditions: dla dowolnych a, b
+- name: Rozkład n³ − n
+  latex_raw: n^3 - n = n(n^2-1) = (n-1)n(n+1)
+  conditions: n całkowite
+  description: Iloczyn trzech kolejnych liczb całkowitych, więc zawsze podzielny przez 6.
+- name: Suma trzech kolejnych liczb całkowitych
+  latex_raw: (n-1) + n + (n+1) = 3n
+  conditions: n całkowite
+  description: Analogicznie suma pięciu kolejnych liczb wynosi 5n, a suma dwóch kolejnych, 2n+1, jest
+    zawsze nieparzysta.
+- name: Zapis dziesiętny liczby dwu- i trzycyfrowej
+  latex_raw: \overline{ab} = 10a + b, \qquad \overline{abc} = 100a + 10b + c
+  conditions: a ∈ {1,…,9}, b, c ∈ {0,…,9}
+- name: Reszty a różnica
+  latex_raw: a \equiv b \ (\mathrm{mod}\ n) \iff n \mid (a-b)
+  conditions: n dodatnie całkowite
+  description: 'Czyli: a i b dają tę samą resztę z dzielenia przez n dokładnie wtedy, gdy n dzieli ich
+    różnicę.'
+methods:
+- name: Dowód podzielności przez wyłączenie czynnika (dowód wprost)
+  when_to_use: Gdy teza ma postać „wyrażenie zależne od n jest podzielne przez d" i wyrażenie da się przekształcić
+    algebraicznie.
+  steps:
+  - Nazwij literą dowolną liczbę spełniającą założenia (np. „niech n będzie dowolną liczbą całkowitą").
+  - 'Jeśli założenie mówi o typie liczby, zapisz ją wzorem: parzysta → 2k, nieparzysta → 2k+1, podzielna
+    przez 5 → 5k, dająca resztę 2 z dzielenia przez 3 → 3k+2 (k całkowite).'
+  - Zapisz badane wyrażenie i wykonaj działania (potęgowanie, redukcja wyrazów podobnych).
+  - Wyłącz przed nawias dzielnik d z tezy lub zastosuj wzór skróconego mnożenia, aby otrzymać iloczyn
+    d · (wyrażenie).
+  - Uzasadnij, że wyrażenie w nawiasie jest liczbą całkowitą (suma i iloczyn liczb całkowitych są całkowite).
+  - 'Zapisz wniosek: „zatem badana liczba jest podzielna przez d, c.n.d."'
+- name: Dowód przez rozpatrzenie reszt z dzielenia
+  when_to_use: Gdy przekształcenie algebraiczne nie wystarcza, a teza zależy od tego, jaką resztę daje
+    n przy dzieleniu przez 2, 3 lub 4 (np. „n² daje resztę 0 lub 1 przy dzieleniu przez 3").
+  steps:
+  - Wybierz dzielnik m, według którego dzielisz przypadki (zwykle ten, który występuje w tezie).
+  - 'Wypisz wszystkie możliwe postacie liczby: n = mk, mk+1, …, mk+(m−1) — i zaznacz, że innych nie ma
+    (twierdzenie o dzieleniu z resztą).'
+  - W każdym przypadku osobno podstaw i przekształć wyrażenie do postaci m·(coś) + r.
+  - Odczytaj w każdym przypadku resztę lub sprawdź tezę.
+  - 'Podsumuj: skoro teza zachodzi we wszystkich przypadkach, a przypadki wyczerpują wszystkie liczby
+    całkowite, teza jest prawdziwa.'
+- name: Dowód własności kolejnych liczb
+  when_to_use: Gdy w treści występują „kolejne liczby całkowite", „kolejne liczby parzyste/nieparzyste"
+    i pytamy o podzielność ich sumy, różnicy, iloczynu lub sumy kwadratów.
+  steps:
+  - 'Zapisz liczby jednym parametrem: n, n+1, n+2 albo symetrycznie n−1, n, n+1; kolejne parzyste: 2k,
+    2k+2; kolejne nieparzyste: 2k+1, 2k+3.'
+  - Utwórz wyrażenie opisane w treści (suma, iloczyn, różnica kwadratów).
+  - Uprość i wyłącz wspólny czynnik.
+  - Jeśli w iloczynie pozostaje n(n+1) lub podobny blok, zauważ i uzasadnij jego parzystość.
+  - Sformułuj wniosek o podzielności.
+- name: Dowód podzielności przez liczbę złożoną (rozbicie na czynniki względnie pierwsze)
+  when_to_use: Gdy trzeba wykazać podzielność przez 6, 12, 15, 24 itp.
+  steps:
+  - Rozłóż dzielnik na czynniki względnie pierwsze, np. 6 = 2·3, 12 = 4·3, 15 = 3·5.
+  - 'Udowodnij osobno podzielność przez każdy z tych czynników (często wygodnie osobnymi argumentami:
+    parzystość i podzielność przez 3).'
+  - 'Powołaj się na fakt: jeśli liczby a i b są względnie pierwsze i obie dzielą n, to a·b dzieli n.'
+  - Zapisz wniosek.
+  - Sprawdź, czy czynniki naprawdę są względnie pierwsze — np. rozkład 8 = 2·4 nie działa.
+- name: Praca z zapisem dziesiętnym liczby
+  when_to_use: Gdy zadanie mówi o cyfrach liczby, o zamianie cyfr miejscami, o sumie cyfr lub o liczbie
+    dwucyfrowej/trzycyfrowej.
+  steps:
+  - 'Zapisz liczbę wzorem: dwucyfrowa 10a+b, trzycyfrowa 100a+10b+c, z warunkami a ≠ 0 i cyfry ∈ {0,…,9}.'
+  - 'Zapisz drugą liczbę występującą w zadaniu tym samym zestawem liter (np. po zamianie cyfr: 10b+a).'
+  - Wykonaj wskazane działanie i uprość.
+  - Wyłącz czynnik i odczytaj podzielność (np. (10a+b) − (10b+a) = 9(a−b)).
+- name: Obalanie hipotezy kontrprzykładem
+  when_to_use: Gdy zdanie ogólne o podzielności wydaje się fałszywe (np. „jeśli n² jest podzielne przez
+    4, to n jest podzielne przez 4").
+  steps:
+  - 'Zapisz dokładnie, co znaczy fałszywość zdania: istnieje liczba spełniająca założenie i niespełniająca
+    tezy.'
+  - Przetestuj małe liczby całkowite, także 0 i ujemne.
+  - Wskaż konkretną liczbę i pokaż rachunkiem, że założenie zachodzi, a teza nie.
+  - 'Napisz wniosek: „zdanie jest fałszywe".'
+examples:
+- statement: Wykaż, że suma trzech kolejnych liczb całkowitych jest podzielna przez 3, a suma czterech
+    kolejnych liczb całkowitych nie jest podzielna przez 4.
+  worked_solution: |-
+    Część 1. Niech n będzie dowolną liczbą całkowitą. Trzy kolejne liczby całkowite zapiszemy jako n−1, n, n+1 (taki zapis jest wygodny, bo −1 i +1 się skrócą). Ich suma wynosi
+    (n−1) + n + (n+1) = 3n.
+    Liczba n jest całkowita, więc 3n jest iloczynem liczby 3 i liczby całkowitej, czyli — zgodnie z definicją podzielności — jest podzielna przez 3. c.n.d.
+
+    Część 2. Cztery kolejne liczby całkowite zapiszemy jako n, n+1, n+2, n+3. Ich suma to
+    n + (n+1) + (n+2) + (n+3) = 4n + 6 = 4(n+1) + 2.
+    Liczba 4(n+1) jest podzielna przez 4, więc suma daje przy dzieleniu przez 4 resztę 2 (bo 0 ≤ 2 < 4). Reszta jest różna od zera, zatem suma czterech kolejnych liczb całkowitych nigdy nie jest podzielna przez 4. c.n.d.
+
+    Komentarz: w części 2. otrzymaliśmy przy okazji więcej niż trzeba — znamy dokładną resztę, a nie tylko fakt niepodzielności.
+  difficulty: 1
+- statement: Wykaż, że kwadrat dowolnej liczby nieparzystej pomniejszony o 1 jest podzielny przez 8.
+  worked_solution: |-
+    Niech n będzie dowolną liczbą nieparzystą. Wtedy istnieje liczba całkowita k taka, że n = 2k + 1.
+    Obliczamy:
+    n² − 1 = (2k+1)² − 1 = 4k² + 4k + 1 − 1 = 4k² + 4k = 4k(k+1).
+    Otrzymaliśmy iloczyn 4·k·(k+1). Zauważmy, że k i k+1 to dwie kolejne liczby całkowite, więc jedna z nich jest parzysta — istnieje zatem liczba całkowita m taka, że k(k+1) = 2m. (Uzasadnienie: jeśli k = 2t, to k(k+1) = 2·t(k+1); jeśli k = 2t+1, to k+1 = 2(t+1) i k(k+1) = 2·k(t+1).)
+    Stąd
+    n² − 1 = 4·2m = 8m,
+    gdzie m jest liczbą całkowitą. Zgodnie z definicją podzielności 8 | (n² − 1). c.n.d.
+
+    Alternatywnie: n² − 1 = (n−1)(n+1) to iloczyn dwóch kolejnych liczb parzystych, czyli 2t·(2t+2) = 4t(t+1), i dalej jak wyżej.
+  difficulty: 2
+- statement: Wykaż, że dla każdej liczby całkowitej n liczba n³ − n jest podzielna przez 6.
+  worked_solution: |-
+    Niech n będzie dowolną liczbą całkowitą. Rozkładamy wyrażenie na czynniki:
+    n³ − n = n(n² − 1) = n(n−1)(n+1) = (n−1)·n·(n+1).
+    Jest to iloczyn trzech kolejnych liczb całkowitych. Ponieważ 6 = 2·3 oraz NWD(2,3) = 1, wystarczy pokazać podzielność przez 2 i przez 3.
+
+    Podzielność przez 2: wśród dwóch kolejnych liczb n i n+1 dokładnie jedna jest parzysta, więc iloczyn n(n+1) jest podzielny przez 2, a zatem i cały iloczyn (n−1)n(n+1).
+
+    Podzielność przez 3: z twierdzenia o dzieleniu z resztą n ma jedną z postaci 3k, 3k+1, 3k+2.
+    • Jeśli n = 3k, to czynnik n jest podzielny przez 3.
+    • Jeśli n = 3k+1, to n − 1 = 3k jest podzielne przez 3.
+    • Jeśli n = 3k+2, to n + 1 = 3k+3 = 3(k+1) jest podzielne przez 3.
+    W każdym z trzech przypadków (a innych nie ma) jeden z czynników iloczynu dzieli się przez 3, więc cały iloczyn dzieli się przez 3.
+
+    Liczba (n−1)n(n+1) jest więc podzielna zarówno przez 2, jak i przez 3, a ponieważ liczby 2 i 3 są względnie pierwsze, jest podzielna przez 6. Zatem 6 | (n³ − n). c.n.d.
+  difficulty: 3
+- statement: Wykaż, że kwadrat liczby całkowitej niepodzielnej przez 3 daje resztę 1 przy dzieleniu przez
+    3. Wywnioskuj stąd, że liczba 3n² + 2 nigdy nie jest kwadratem liczby całkowitej.
+  worked_solution: |-
+    Część 1. Niech m będzie liczbą całkowitą niepodzielną przez 3. Z twierdzenia o dzieleniu z resztą m daje resztę 0, 1 albo 2 przy dzieleniu przez 3; reszta 0 jest wykluczona, zostają dwa przypadki.
+
+    Przypadek I: m = 3k + 1 dla pewnej całkowitej k. Wtedy
+    m² = 9k² + 6k + 1 = 3(3k² + 2k) + 1.
+    Liczba 3k² + 2k jest całkowita, a 0 ≤ 1 < 3, więc reszta z dzielenia m² przez 3 wynosi 1.
+
+    Przypadek II: m = 3k + 2 dla pewnej całkowitej k. Wtedy
+    m² = 9k² + 12k + 4 = 9k² + 12k + 3 + 1 = 3(3k² + 4k + 1) + 1.
+    Znów reszta wynosi 1.
+
+    Przypadki wyczerpują wszystkie możliwości, więc teza jest udowodniona. (Przy okazji: gdy 3 | m, czyli m = 3k, mamy m² = 3·3k² — reszta 0. Wniosek ogólny: kwadrat liczby całkowitej daje przy dzieleniu przez 3 resztę 0 albo 1, nigdy 2.)
+
+    Część 2. Przypuśćmy, że dla pewnej liczby całkowitej n liczba 3n² + 2 jest kwadratem liczby całkowitej, tzn. 3n² + 2 = m² dla pewnej całkowitej m. Liczba 3n² jest podzielna przez 3, więc 3n² + 2 daje przy dzieleniu przez 3 resztę 2. Ale z części 1. kwadrat liczby całkowitej daje resztę 0 albo 1 — nigdy 2. Otrzymana sprzeczność dowodzi, że takie m nie istnieje. Zatem 3n² + 2 nigdy nie jest kwadratem liczby całkowitej. c.n.d.
+  difficulty: 4
+- statement: Liczba dwucyfrowa ma cyfrę dziesiątek a i cyfrę jedności b. Wykaż, że różnica tej liczby
+    i liczby powstałej po zamianie cyfr miejscami jest podzielna przez 9. Zbadaj też, kiedy różnica ta
+    jest podzielna przez 18.
+  worked_solution: |-
+    Zapisujemy liczby wzorami: pierwsza liczba to 10a + b, gdzie a ∈ {1,2,…,9}, b ∈ {0,1,…,9}; po zamianie cyfr otrzymujemy 10b + a.
+    Różnica:
+    (10a + b) − (10b + a) = 10a + b − 10b − a = 9a − 9b = 9(a − b).
+    Liczby a i b są całkowite, więc a − b jest całkowite, a zatem 9(a − b) jest podzielne przez 9. c.n.d.
+
+    Podzielność przez 18: 18 = 9·2, przy czym NWD(9,2)=1, więc 18 | 9(a−b) dokładnie wtedy, gdy liczba 9(a−b) jest dodatkowo parzysta, czyli gdy a − b jest parzyste (bo 9 jest nieparzyste). To zachodzi wtedy i tylko wtedy, gdy cyfry a i b są tej samej parzystości (obie parzyste albo obie nieparzyste).
+    Przykład sprawdzający: 73 − 37 = 36 = 18·2 (obie cyfry nieparzyste); 72 − 27 = 45, które nie jest podzielne przez 18 (cyfry różnej parzystości) — zgodnie z wnioskiem.
+  difficulty: 3
+objectives:
+- statement: Podać definicję podzielności liczb całkowitych i sformułować twierdzenie o dzieleniu z resztą,
+    wskazując warunek 0 ≤ r < b.
+  bloom_level: Zapamiętywanie
+- statement: Wyjaśnić, dlaczego każdą liczbę całkowitą można zapisać w jednej z postaci 2k, 2k+1 lub w
+    jednej z postaci 3k, 3k+1, 3k+2.
+  bloom_level: Rozumienie
+- statement: 'Zapisywać za pomocą wzoru liczby o zadanych własnościach: parzyste, nieparzyste, podzielne
+    przez n, dające zadaną resztę, kolejne liczby całkowite/parzyste/nieparzyste, liczby dwu- i trzycyfrowe.'
+  bloom_level: Stosowanie
+- statement: Wyznaczać resztę z dzielenia danej liczby (także ujemnej) lub wyrażenia postaci an + b przez
+    zadaną liczbę naturalną.
+  bloom_level: Stosowanie
+- statement: Przeprowadzać krótkie dowody wprost o podzielności, doprowadzając wyrażenie do postaci iloczynu
+    dzielnika i liczby całkowitej (wyłączanie czynnika, wzory skróconego mnożenia).
+  bloom_level: Stosowanie
+- statement: Przeprowadzać dowody przez rozpatrzenie wszystkich przypadków reszt z dzielenia przez 2,
+    3 lub 4 i uzasadniać, że przypadki wyczerpują wszystkie możliwości.
+  bloom_level: Analizowanie
+- statement: Dowodzić podzielności przez liczbę złożoną (6, 12, 15), rozbijając ją na czynniki względnie
+    pierwsze i uzasadniając poprawność takiego rozbicia.
+  bloom_level: Analizowanie
+- statement: 'Rozstrzygać o prawdziwości zdań o podzielności: dowodzić prawdziwe rozumowaniem ogólnym,
+    a fałszywe obalać kontrprzykładem.'
+  bloom_level: Ocenianie
+- statement: 'Oceniać poprawność cudzego dowodu o podzielności, wykrywając typowe błędy: użycie tej samej
+    litery dla różnych liczb, brak przypadku, sprawdzenie przykładów zamiast dowodu, bezpodstawne łączenie
+    dzielników.'
+  bloom_level: Ocenianie
+- statement: 'Zapisywać kompletny, poprawnie sformułowany dowód: wprowadzenie oznaczeń, przekształcenia
+    z uzasadnieniem i jawny wniosek końcowy.'
+  bloom_level: Tworzenie
+misconceptions:
+- name: Sprawdzenie przykładów uznane za dowód
+  incorrect_reasoning: „Dla n = 1, 2, 3, 4 liczba n³ − n wynosi 0, 6, 24, 60 — wszystkie dzielą się przez
+    6, więc teza jest udowodniona."
+  correct_reasoning: Sprawdzenie skończenie wielu przypadków nie dowodzi zdania o WSZYSTKICH liczbach
+    całkowitych (jest ich nieskończenie wiele, w tym ujemne). Trzeba przeprowadzić rozumowanie z literą
+    n, np. rozłożyć n³ − n = (n−1)n(n+1) i uzasadnić podzielność przez 2 i przez 3. Przykłady służą jedynie
+    do postawienia lub obalenia hipotezy.
+  severity: 5
+- name: Ta sama litera dla dwóch różnych liczb
+  incorrect_reasoning: „Niech m i n będą parzyste, czyli m = 2k i n = 2k. Wtedy m + n = 4k, więc suma
+    dwóch liczb parzystych jest podzielna przez 4."
+  correct_reasoning: 'Zapis m = 2k, n = 2k wymusza m = n. Dla różnych liczb trzeba użyć różnych parametrów:
+    m = 2k, n = 2l, skąd m + n = 2(k+l) — suma jest parzysta, ale niekoniecznie podzielna przez 4 (np.
+    2 + 4 = 6). Każda nowa liczba to nowa litera.'
+  severity: 5
+- name: Reszta ujemna lub większa od dzielnika
+  incorrect_reasoning: „−7 przy dzieleniu przez 3 daje resztę −1" albo „liczba 3k+3 daje resztę 3 z dzielenia
+    przez 3".
+  correct_reasoning: Z twierdzenia o dzieleniu z resztą reszta spełnia 0 ≤ r < b. Mamy −7 = 3·(−3) + 2,
+    więc reszta wynosi 2. A 3k + 3 = 3(k+1) — reszta wynosi 0, liczba jest podzielna przez 3. Po przekształceniu
+    zawsze sprawdzaj, czy wyraz wolny mieści się w przedziale [0, b).
+  severity: 4
+- name: Niepełny podział na przypadki
+  incorrect_reasoning: „Rozpatrzmy n = 3k i n = 3k+1 — w obu przypadkach teza zachodzi, więc jest prawdziwa."
+  correct_reasoning: 'Pominięto przypadek n = 3k+2. Podział na przypadki musi wyczerpywać wszystkie liczby
+    całkowite: przy dzielniku 3 są dokładnie trzy przypadki (reszty 0, 1, 2), przy dzielniku 4 — cztery.
+    Brak jednego przypadku unieważnia cały dowód.'
+  severity: 5
+- name: Podzielność przez iloczyn bez względnej pierwszości
+  incorrect_reasoning: „Liczba jest podzielna przez 2 i przez 4, więc jest podzielna przez 8." albo „skoro
+    dzieli się przez 4 i przez 6, to dzieli się przez 24".
+  correct_reasoning: Wniosek „a | n i b | n ⇒ ab | n" wymaga NWD(a,b) = 1. Liczba 4 dzieli się przez 2
+    i przez 4, ale nie przez 8; liczba 12 dzieli się przez 4 i przez 6, ale nie przez 24. Poprawnie działa
+    np. 2 i 3 → 6, 3 i 5 → 15, 4 i 3 → 12.
+  severity: 4
+- name: Mylenie dzielnika z wielokrotnością
+  incorrect_reasoning: „12 | 4, bo 12 dzieli się na 4 części" — zapis a | b czytany jako „a jest podzielne
+    przez b".
+  correct_reasoning: 'Zapis a | b znaczy „a dzieli b", czyli b = a·k, a więc b jest wielokrotnością a.
+    Poprawnie: 4 | 12, bo 12 = 4·3. Warto zawsze wracać do definicji z literą k.'
+  severity: 3
+- name: Zły zapis kolejnych liczb nieparzystych
+  incorrect_reasoning: „Kolejne liczby nieparzyste to 2k+1 i 2k+2" albo „n i n+1".
+  correct_reasoning: 'Kolejne liczby nieparzyste różnią się o 2: 2k+1 i 2k+3. Zapis 2k+2 opisuje liczbę
+    parzystą. Analogicznie kolejne liczby parzyste to 2k i 2k+2.'
+  severity: 4
+- name: Zatrzymanie dowodu przed wnioskiem
+  incorrect_reasoning: Uczeń przekształca wyrażenie do postaci 8k(k+1) i kończy pracę, nie zauważając,
+    że trzeba jeszcze uzasadnić całkowitość czynnika lub jawnie stwierdzić podzielność.
+  correct_reasoning: 'Dowód musi się kończyć powołaniem na definicję: „liczba k(k+1) jest całkowita, więc
+    badane wyrażenie jest iloczynem 8 i liczby całkowitej, a zatem jest podzielne przez 8". Bez tego zdania
+    rozumowanie jest niedomknięte; jeśli w nawiasie potrzebna jest dodatkowa własność (np. parzystość
+    k(k+1)), trzeba ją uzasadnić.'
+  severity: 3
+- name: Odwracanie implikacji o podzielności
+  incorrect_reasoning: „Skoro n² jest podzielne przez 4, to n jest podzielne przez 4."
+  correct_reasoning: 'To zdanie jest fałszywe — kontrprzykład n = 2: n² = 4 dzieli się przez 4, ale n
+    = 2 nie. Prawdziwe jest jedynie: jeśli n² jest podzielne przez 4, to n jest parzyste. Implikacji o
+    podzielności nie wolno odwracać bez dowodu.'
+  severity: 4
+- name: Dzielenie stronami przez wyrażenie z niewiadomą
+  incorrect_reasoning: „Z równości 6 | 3n(n+1) dzielę przez 3 i dostaję 2 | n(n+1), więc… " — a dalej
+    przez n, dopuszczając n = 0.
+  correct_reasoning: 'Przekształcenia w dowodach o podzielności prowadzimy przez wyłączanie czynników
+    i powoływanie się na własności podzielności, a nie przez dzielenie stronami — wyrażenie może być zerem,
+    a zero jest podzielne przez każdą liczbę. Bezpiecznie: zapisz liczbę jako iloczyn i odczytaj czynniki.'
+  severity: 3

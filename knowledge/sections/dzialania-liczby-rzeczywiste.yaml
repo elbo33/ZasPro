@@ -1,0 +1,430 @@
+section: dzialania-liczby-rzeczywiste
+name: Działania w zbiorze liczb rzeczywistych; przedziały liczbowe
+scope: The four operations plus powers, roots and logarithms as operations on real numbers; order of operations
+  and estimation; number intervals and their marking on the axis.
+requirements:
+- I.1
+- I.6
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T13:51:56.319390'
+  approved_at: '2026-08-28T18:27:10.159819'
+  approved_by: reviewer
+concepts:
+- name: Zbiór liczb rzeczywistych R i jego podzbiory
+  description: 'R to zbiór wszystkich liczb, które można przedstawić w postaci rozwinięcia dziesiętnego
+    (skończonego lub nieskończonego). Zawiera on: liczby naturalne N = {0, 1, 2, ...}, liczby całkowite
+    C, liczby wymierne W (dające się zapisać jako ułamek p/q, gdzie p ∈ C, q ∈ C \ {0}) oraz liczby niewymierne
+    NW (o rozwinięciu nieskończonym nieokresowym, np. √2, π, log₂3).'
+  explanation: 'Myśl o tym jak o matrioszce: N ⊂ C ⊂ W ⊂ R, a NW = R \ W jest ''resztą'' osi liczbowej.
+    Test na wymierność: liczba jest wymierna wtedy i tylko wtedy, gdy jej rozwinięcie dziesiętne jest
+    skończone albo okresowe. Każdemu punktowi osi liczbowej odpowiada dokładnie jedna liczba rzeczywista
+    i odwrotnie — dlatego oś liczbową nazywamy modelem zbioru R.'
+  difficulty: 1
+- name: Działania w zbiorze R i ich wykonalność
+  description: 'W zbiorze R zawsze wykonalne są: dodawanie, odejmowanie, mnożenie i dzielenie (przez liczbę
+    różną od zera). Dzielenie przez zero nie jest wykonalne — wyrażenie a/0 nie ma wartości.'
+  explanation: 'Zbiór R jest ''zamknięty'' na cztery działania: wynik dodawania, odejmowania, mnożenia
+    i dzielenia liczb rzeczywistych znowu jest liczbą rzeczywistą. Uwaga: N nie jest zamknięty na odejmowanie,
+    a C na dzielenie — dlatego rozszerzamy zbiory liczbowe.'
+  difficulty: 1
+- name: 'Prawa działań: przemienność, łączność, rozdzielność'
+  description: 'Dla dowolnych a, b, c ∈ R: a + b = b + a, ab = ba (przemienność); (a+b)+c = a+(b+c), (ab)c
+    = a(bc) (łączność); a(b+c) = ab + ac (rozdzielność mnożenia względem dodawania).'
+  explanation: To narzędzia do 'przestawiania' rachunków, np. 25 · 17 · 4 = (25·4) · 17 = 1700. Pamiętaj,
+    że odejmowanie i dzielenie NIE są przemienne ani łączne.
+  difficulty: 1
+- name: Kolejność wykonywania działań
+  description: 'Umowa: najpierw działania w nawiasach (od najbardziej wewnętrznych), potem potęgowanie
+    i pierwiastkowanie (oraz obliczanie logarytmów), następnie mnożenie i dzielenie (od lewej do prawej),
+    na końcu dodawanie i odejmowanie (od lewej do prawej).'
+  explanation: 'Kreska ułamkowa i znak pierwiastka pełnią rolę nawiasu: całą kreskę licznika liczymy osobno,
+    całe wyrażenie pod pierwiastkiem osobno. Przy równorzędnych działaniach zawsze idziemy od lewej: 12
+    : 3 · 2 = 8, a nie 2.'
+  difficulty: 2
+- name: Potęga o wykładniku naturalnym i całkowitym
+  description: 'Dla a ∈ R i n ∈ N₊: aⁿ = a·a·...·a (n czynników). Ponadto a⁰ = 1 dla a ≠ 0 oraz a⁻ⁿ =
+    1/aⁿ dla a ≠ 0.'
+  explanation: 'Ujemny wykładnik to nie ujemny wynik — to odwrotność: 2⁻³ = 1/8. Zapamiętaj też (a/b)⁻ⁿ
+    = (b/a)ⁿ, co bardzo skraca rachunki na ułamkach.'
+  difficulty: 2
+- name: Pierwiastek arytmetyczny stopnia n
+  description: 'Dla a ≥ 0 i n ∈ N, n ≥ 2: ⁿ√a to taka liczba b ≥ 0, że bⁿ = a. Dla nieparzystego n pierwiastek
+    określamy także dla a < 0: ⁿ√a to taka liczba b, że bⁿ = a (wtedy b < 0).'
+  explanation: '√ z liczby nieujemnej jest zawsze nieujemny: √9 = 3 (a nie ±3). Natomiast ³√(−8) = −2,
+    bo stopień jest nieparzysty. Kluczowa tożsamość: √(a²) = |a| — pierwiastek ''zjada'' znak minus.'
+  difficulty: 2
+- name: Potęga o wykładniku wymiernym
+  description: 'Dla a > 0 oraz p ∈ C, q ∈ N₊, q ≥ 2: a^(p/q) = �q√(a^p). W szczególności a^(1/2) = √a,
+    a^(1/3) = ³√a.'
+  explanation: 'To ''most'' między pierwiastkami a potęgami: każde wyrażenie pierwiastkowe można zamienić
+    na potęgowe i liczyć wygodnymi prawami działań na potęgach. Np. 8^(2/3) = (³√8)² = 4.'
+  difficulty: 3
+- name: Logarytm
+  description: 'Dla a > 0, a ≠ 1 oraz b > 0: log_a b = c ⟺ a^c = b. Liczbę a nazywamy podstawą, b — liczbą
+    logarytmowaną.'
+  explanation: 'Logarytm odpowiada na pytanie: ''do której potęgi podnieść podstawę, żeby otrzymać b?''.
+    Stąd log₂8 = 3, bo 2³ = 8. Zapis log b (bez podstawy) oznacza log₁₀ b. Założenia a > 0, a ≠ 1, b >
+    0 muszą być spełnione — logarytm z liczby ujemnej lub z zera nie istnieje.'
+  difficulty: 3
+- name: Zaokrąglanie i szacowanie wartości
+  description: Zaokrąglenie liczby do danego rzędu polega na zastąpieniu jej najbliższą liczbą o żądanej
+    dokładności (cyfry 0–4 w dół, 5–9 w górę). Szacowanie to wyznaczanie przybliżonej wartości lub przedziału,
+    w którym leży dana liczba, bez dokładnych obliczeń.
+  explanation: 'Przydaje się przy porównywaniu liczb niewymiernych: skoro 2² = 4 < 7 < 9 = 3², to 2 <
+    √7 < 3. Warto znać przybliżenia: √2 ≈ 1,41; √3 ≈ 1,73; √5 ≈ 2,24; π ≈ 3,14.'
+  difficulty: 2
+- name: Porównywanie liczb rzeczywistych
+  description: Liczba a jest mniejsza od b (a < b), gdy różnica b − a jest dodatnia; na osi liczbowej
+    a leży wtedy na lewo od b.
+  explanation: 'Praktyczne techniki porównywania liczb z pierwiastkami: (1) wciągnięcie czynnika pod pierwiastek,
+    np. 3√2 = √18 i 2√3 = √12, więc 3√2 > 2√3; (2) podniesienie obu (nieujemnych) liczb do kwadratu; (3)
+    oszacowanie przybliżeniami dziesiętnymi.'
+  difficulty: 3
+- name: Oś liczbowa
+  description: Prosta z zaznaczonym punktem 0 (początkiem), jednostką i zwrotem, na której każdemu punktowi
+    odpowiada dokładnie jedna liczba rzeczywista.
+  explanation: Na osi 'widać' porządek liczb i zbiory rozwiązań nierówności. To podstawowe narzędzie graficzne
+    przy działaniach na przedziałach.
+  difficulty: 1
+- name: Przedział liczbowy
+  description: 'Przedział to zbiór wszystkich liczb rzeczywistych leżących między dwoma końcami (ewentualnie
+    wraz z końcami) lub wszystkich liczb większych/mniejszych od danej. Rozróżniamy przedziały: otwarty
+    (a, b), domknięty ⟨a, b⟩ (zapis równoważny [a, b]), jednostronnie domknięte ⟨a, b) i (a, b⟩ oraz nieograniczone:
+    (a, +∞), ⟨a, +∞), (−∞, b), (−∞, b⟩, (−∞, +∞) = R.'
+  explanation: 'Nawias okrągły = koniec NIE należy do przedziału (na osi kółko puste), nawias ostry/kwadratowy
+    = koniec należy (kółko pełne). Warunek sensowności: w zapisie przedziału ograniczonego zawsze a <
+    b. Symbole −∞ i +∞ nie są liczbami, więc przy nich zawsze stoi nawias okrągły.'
+  difficulty: 2
+- name: Przedział jako zbiór rozwiązań nierówności
+  description: 'Zbiór {x ∈ R : a ≤ x < b} to przedział ⟨a, b); ogólnie każdy warunek postaci x > a, x
+    ≥ a, x < b, x ≤ b lub ich koniunkcja opisuje przedział.'
+  explanation: 'Tłumaczenie w obie strony: ''x ≤ 5'' to (−∞, 5⟩, a przedział (−2, +∞) to ''x > −2''. Ostry
+    znak nierówności ↔ nawias okrągły, znak ≤ lub ≥ ↔ nawias domknięty.'
+  difficulty: 2
+- name: Suma, iloczyn (część wspólna) i różnica przedziałów
+  description: A ∪ B to zbiór liczb należących do A lub do B; A ∩ B to zbiór liczb należących jednocześnie
+    do A i do B; A \ B to zbiór liczb należących do A i nienależących do B.
+  explanation: 'Najprościej zaznaczyć oba przedziały jeden pod drugim na osi: część wspólna to ''zakładka'',
+    suma to wszystko, co zamalowane. Uwaga: jeśli przedziały są rozłączne, ich suma nie jest przedziałem
+    i zapisujemy ją jako sumę dwóch przedziałów, np. (−∞, 1) ∪ ⟨3, +∞).'
+  difficulty: 3
+- name: Przedziały ograniczone i nieograniczone, długość przedziału
+  description: Przedział ograniczony ma oba końce skończone; jego długość to b − a. Przedział nieograniczony
+    ma co najmniej jeden koniec ±∞.
+  explanation: Środek przedziału ograniczonego o końcach a, b to (a+b)/2 — przydaje się przy opisie zbiorów
+    typu 'liczby odległe od 3 o mniej niż 2', czyli (1, 5).
+  difficulty: 2
+formulas:
+- name: Prawa działań na potęgach
+  latex_raw: a^m \cdot a^n = a^{m+n},\quad \frac{a^m}{a^n}=a^{m-n},\quad (a^m)^n = a^{mn},\quad (ab)^n
+    = a^n b^n,\quad \left(\frac{a}{b}\right)^n = \frac{a^n}{b^n}
+  conditions: a, b > 0 oraz m, n ∈ R (dla wykładników całkowitych wystarczy a ≠ 0, b ≠ 0)
+  description: Nie ma wzoru na a^m + a^n — potęg o tej samej podstawie nie da się 'dodać wykładników'
+    przy dodawaniu.
+- name: Potęga o wykładniku zerowym i ujemnym
+  latex_raw: a^0 = 1,\qquad a^{-n} = \frac{1}{a^n},\qquad \left(\frac{a}{b}\right)^{-n} = \left(\frac{b}{a}\right)^{n}
+  conditions: a ≠ 0, b ≠ 0, n ∈ N₊
+- name: Związek pierwiastka z potęgą
+  latex_raw: \sqrt[n]{a^m} = a^{\frac{m}{n}},\qquad \sqrt[n]{a}=a^{\frac1n}
+  conditions: a > 0, n ∈ N, n ≥ 2, m ∈ C
+- name: Działania na pierwiastkach
+  latex_raw: \sqrt[n]{a}\cdot\sqrt[n]{b}=\sqrt[n]{ab},\qquad \frac{\sqrt[n]{a}}{\sqrt[n]{b}}=\sqrt[n]{\frac{a}{b}},\qquad
+    \left(\sqrt[n]{a}\right)^n = a
+  conditions: a ≥ 0, b ≥ 0 (przy dzieleniu b > 0), n ≥ 2; dla n nieparzystego wzory zachodzą też dla liczb
+    ujemnych
+  description: 'Pierwiastków NIE wolno rozdzielać względem dodawania: √(a+b) ≠ √a + √b.'
+- name: Pierwiastek z kwadratu
+  latex_raw: \sqrt{a^2} = |a|
+  conditions: a ∈ R
+  description: W szczególności √((−5)²) = 5, a nie −5.
+- name: Usuwanie niewymierności z mianownika
+  latex_raw: \frac{a}{\sqrt{b}} = \frac{a\sqrt{b}}{b},\qquad \frac{c}{\sqrt{a}+\sqrt{b}} = \frac{c(\sqrt{a}-\sqrt{b})}{a-b}
+  conditions: b > 0; w drugim wzorze a, b ≥ 0 i a ≠ b
+- name: Definicja logarytmu
+  latex_raw: \log_a b = c \iff a^c = b
+  conditions: a > 0, a ≠ 1, b > 0
+- name: Logarytmy szczególne
+  latex_raw: \log_a 1 = 0,\qquad \log_a a = 1,\qquad \log_a a^k = k,\qquad a^{\log_a b} = b
+  conditions: a > 0, a ≠ 1, b > 0, k ∈ R
+- name: Prawa działań na logarytmach
+  latex_raw: \log_a(xy)=\log_a x+\log_a y,\qquad \log_a\frac{x}{y}=\log_a x-\log_a y,\qquad \log_a x^k
+    = k\log_a x
+  conditions: a > 0, a ≠ 1, x > 0, y > 0, k ∈ R
+  description: Brak wzoru na log_a(x + y).
+- name: Zapis przedziałów za pomocą nierówności
+  latex_raw: '(a,b)=\{x\in\mathbb{R}: a<x<b\},\ \langle a,b\rangle=\{x: a\le x\le b\},\ \langle a,b)=\{x:
+    a\le x<b\},\ (a,+\infty)=\{x: x>a\}'
+  conditions: a, b ∈ R, a < b
+  description: Zapis ⟨a, b⟩ i [a, b] znaczą to samo.
+- name: Długość i środek przedziału ograniczonego
+  latex_raw: d = b-a,\qquad x_0=\frac{a+b}{2}
+  conditions: przedział o końcach a < b (dowolnego typu)
+methods:
+- name: Obliczanie wartości wyrażenia arytmetycznego
+  when_to_use: Gdy trzeba wyznaczyć wartość liczbową wyrażenia zawierającego nawiasy, ułamki, potęgi,
+    pierwiastki i logarytmy.
+  steps:
+  - 'Zaznacz (np. podkreśl) wszystkie ''ukryte nawiasy'': wyrażenia pod kreską ułamkową i pod pierwiastkiem.'
+  - Wykonaj działania w nawiasach, zaczynając od najbardziej wewnętrznych.
+  - 'Oblicz potęgi, pierwiastki i logarytmy — zwróć uwagę na znaki: (−2)⁴ = 16, ale −2⁴ = −16.'
+  - Wykonaj mnożenia i dzielenia w kolejności od lewej do prawej.
+  - Wykonaj dodawania i odejmowania od lewej do prawej.
+  - Sprawdź wynik szacunkowo (rząd wielkości, znak).
+- name: Upraszczanie wyrażeń z potęgami
+  when_to_use: Gdy wyrażenie jest iloczynem/ilorazem potęg, ewentualnie o różnych podstawach będących
+    potęgami tej samej liczby.
+  steps:
+  - Sprowadź wszystkie podstawy do wspólnej podstawy (np. 4 = 2², 27 = 3³, 0,5 = 2⁻¹).
+  - Zamień pierwiastki na potęgi o wykładnikach wymiernych.
+  - 'Zastosuj prawa działań: mnożenie → dodaj wykładniki, dzielenie → odejmij, potęga potęgi → pomnóż.'
+  - Uprość wykładnik i, jeśli trzeba, wróć do zapisu bez ujemnych wykładników (a⁻ⁿ = 1/aⁿ).
+  - Oblicz wartość liczbową.
+- name: Przekształcanie wyrażeń z pierwiastkami
+  when_to_use: Gdy należy dodać, odjąć, pomnożyć pierwiastki lub usunąć niewymierność z mianownika.
+  steps:
+  - Rozłóż liczby podpierwiastkowe na czynniki, wyłączając największy pełny kwadrat (lub sześcian), np.
+    √50 = √(25·2) = 5√2.
+  - Dodawaj/odejmuj tylko pierwiastki 'podobne' (o tej samej liczbie podpierwiastkowej), traktując je
+    jak jednomiany.
+  - Mnożąc, korzystaj z √a·√b = √(ab) i ze wzorów skróconego mnożenia (np. (√a − √b)(√a + √b) = a − b).
+  - Aby usunąć niewymierność, pomnóż licznik i mianownik przez √b lub przez wyrażenie sprzężone.
+  - Skróć i uporządkuj wynik.
+- name: Obliczanie logarytmu z definicji
+  when_to_use: Gdy trzeba obliczyć log_a b dla 'ładnych' liczb, np. log₃(1/81), log₂√2.
+  steps:
+  - 'Sprawdź założenia: a > 0, a ≠ 1, b > 0.'
+  - 'Zapisz liczbę logarytmowaną jako potęgę podstawy: b = a^k (pomogą zapisy typu 1/81 = 3⁻⁴, √2 = 2^(1/2)).'
+  - Skorzystaj ze wzoru log_a a^k = k — wynikiem jest wykładnik k.
+  - Jeśli nie da się zapisać b jako potęgi a, użyj najpierw praw działań na logarytmach (suma/różnica/współczynnik)
+    i dopiero potem definicji.
+- name: Obliczanie wyrażeń logarytmicznych z użyciem praw działań
+  when_to_use: Gdy wyrażenie jest sumą lub różnicą logarytmów o tej samej podstawie, których pojedynczo
+    nie umiemy obliczyć (np. log₆4 + log₆9).
+  steps:
+  - Sprawdź, czy wszystkie logarytmy mają tę samą podstawę.
+  - 'Zamień współczynniki na wykładniki: k·log_a x = log_a x^k.'
+  - Sumę zwiń do logarytmu iloczynu, różnicę — do logarytmu ilorazu.
+  - Oblicz otrzymany pojedynczy logarytm z definicji.
+  - W razie potrzeby wykonaj pozostałe działania arytmetyczne.
+- name: Szacowanie i porównywanie liczb niewymiernych
+  when_to_use: Gdy trzeba wskazać, między jakimi liczbami całkowitymi leży dana liczba, albo porównać
+    dwie liczby z pierwiastkami bez kalkulatora.
+  steps:
+  - 'Dla √a znajdź kolejne kwadraty liczb naturalnych, między którymi leży a: n² < a < (n+1)², stąd n
+    < √a < n+1.'
+  - 'Aby porównać liczby postaci p√q, wciągnij czynnik pod pierwiastek: p√q = √(p²q).'
+  - Porównaj liczby podpierwiastkowe — większa liczba podpierwiastkowa daje większy pierwiastek (dla liczb
+    nieujemnych).
+  - Alternatywnie podnieś obie (nieujemne) liczby do kwadratu i porównaj wyniki.
+  - Sformułuj wniosek, w razie potrzeby podaj przybliżenie dziesiętne i zaokrąglij do żądanego rzędu.
+- name: Zapisywanie i zaznaczanie przedziału na osi liczbowej
+  when_to_use: Gdy zbiór opisany słownie lub nierównością trzeba przedstawić jako przedział i narysować.
+  steps:
+  - Wypisz warunki na x w postaci nierówności (np. x ≥ −1 i x < 4).
+  - 'Ustal końce przedziału i sprawdź, czy należą do zbioru: znak < lub > → nawias okrągły i kółko puste;
+    ≤ lub ≥ → nawias domknięty i kółko pełne.'
+  - Zapisz przedział, pamiętając, że lewy koniec jest zawsze mniejszy od prawego, a przy ±∞ stoi nawias
+    okrągły.
+  - Narysuj oś z jednostką, zaznacz końce i zamaluj (pogrub) odpowiedni fragment; przy przedziale nieograniczonym
+    zaznacz strzałkę.
+  - 'Sprawdź kontrolnie kilka liczb: jedną z wnętrza, jedną z zewnątrz i końce.'
+- name: Wyznaczanie sumy, części wspólnej i różnicy przedziałów
+  when_to_use: Gdy zbiór jest opisany koniunkcją lub alternatywą warunków, albo gdy trzeba wykonać działania
+    na dwóch przedziałach.
+  steps:
+  - Narysuj oś i zaznacz oba przedziały jeden pod drugim, dokładnie w tej samej skali.
+  - Do części wspólnej (A ∩ B) weź fragment zamalowany na obu rysunkach; do sumy (A ∪ B) — zamalowany
+    na co najmniej jednym.
+  - Dla różnicy A \ B weź to, co należy do A, ale nie należy do B.
+  - 'Rozstrzygnij o każdym końcu osobno: należy do wyniku tylko wtedy, gdy spełnia wymagany warunek (dla
+    ∩ musi należeć do obu zbiorów).'
+  - Zapisz wynik; jeśli otrzymany zbiór składa się z dwóch rozłącznych kawałków, zapisz go jako sumę przedziałów,
+    a jeśli jest pusty — jako ∅.
+examples:
+- statement: 'Oblicz wartość wyrażenia: (−3)² − 2 · (−4) + (5 − 8)³ : 9 − √{36} .'
+  worked_solution: |-
+    Krok 1 — nawiasy: 5 − 8 = −3, więc (5 − 8)³ = (−3)³ = −27.
+    Krok 2 — potęgi i pierwiastki: (−3)² = 9 (podstawa ujemna w nawiasie, wykładnik parzysty → wynik dodatni), √36 = 6.
+    Wyrażenie ma teraz postać: 9 − 2·(−4) + (−27) : 9 − 6.
+    Krok 3 — mnożenie i dzielenie od lewej: 2·(−4) = −8, (−27) : 9 = −3.
+    Mamy: 9 − (−8) + (−3) − 6.
+    Krok 4 — dodawanie i odejmowanie od lewej: 9 + 8 = 17; 17 − 3 = 14; 14 − 6 = 8.
+    Odpowiedź: 8.
+  difficulty: 1
+- statement: 'Oblicz: a) (2⁻³ · 2⁵) : 4 ,  b) 27^{2/3} · 9^{-1/2} ,  c) √50 − √18 + 2√8 .'
+  worked_solution: |-
+    a) W liczniku dodajemy wykładniki: 2⁻³ · 2⁵ = 2^(−3+5) = 2² = 4. Dalej 4 : 4 = 1. (Można też: 4 = 2², więc 2² : 2² = 2⁰ = 1.)
+
+    b) Sprowadzamy do wspólnych podstaw: 27 = 3³, więc 27^(2/3) = (3³)^(2/3) = 3^(3·2/3) = 3² = 9. Podobnie 9 = 3², więc 9^(−1/2) = (3²)^(−1/2) = 3^(−1) = 1/3.
+    Razem: 9 · (1/3) = 3.
+
+    c) Wyłączamy pełne kwadraty: √50 = √(25·2) = 5√2; √18 = √(9·2) = 3√2; √8 = √(4·2) = 2√2, więc 2√8 = 4√2.
+    Wszystkie składniki są 'podobne' (mają √2), więc: 5√2 − 3√2 + 4√2 = (5 − 3 + 4)√2 = 6√2.
+    Odpowiedzi: a) 1, b) 3, c) 6√2.
+  difficulty: 2
+- statement: 'Oblicz wartość wyrażenia: log₂8 + log₃(1/9) − log 1000 + log₆4 + log₆9.'
+  worked_solution: |-
+    Każdy logarytm liczymy z definicji, a dwa ostatnie najpierw zwijamy.
+    • log₂8: 8 = 2³, więc log₂8 = 3.
+    • log₃(1/9): 1/9 = 3⁻², więc log₃(1/9) = −2.
+    • log 1000 = log₁₀1000: 1000 = 10³, więc log 1000 = 3.
+    • log₆4 + log₆9 = log₆(4·9) = log₆36 = 2, bo 6² = 36.
+    Składamy: 3 + (−2) − 3 + 2 = 0.
+    Odpowiedź: 0.
+    Komentarz: logarytmów log₆4 i log₆9 nie da się obliczyć osobno (4 i 9 nie są potęgami szóstki) — dopiero po zwinięciu sumy w logarytm iloczynu wynik staje się 'ładny'.
+  difficulty: 3
+- statement: Wykaż bez kalkulatora, że liczba 3√5 jest większa od 5√2, oraz podaj dwie kolejne liczby
+    całkowite, między którymi leży √47.
+  worked_solution: |-
+    Porównanie: obie liczby są dodatnie, więc możemy wciągnąć czynniki pod pierwiastek.
+    3√5 = √(3²·5) = √45,  5√2 = √(5²·2) = √50.
+    Ponieważ 45 < 50 i funkcja pierwiastkowa zachowuje porządek dla liczb nieujemnych, mamy √45 < √50, czyli 3√5 < 5√2.
+    Zatem — wbrew treści — to 5√2 jest większa; poprawny wniosek: 3√5 < 5√2. (Kontrola przybliżeniami: 3·2,236 ≈ 6,71 oraz 5·1,414 ≈ 7,07.)
+
+    Szacowanie √47: szukamy kolejnych kwadratów: 6² = 36, 7² = 49. Skoro 36 < 47 < 49, to 6 < √47 < 7. Liczba √47 leży więc między 6 a 7, bliżej 7 (bo 47 jest bliżej 49 niż 36); istotnie √47 ≈ 6,86.
+    Odpowiedź: 3√5 < 5√2 oraz 6 < √47 < 7.
+    Morał: warto sprawdzać własne przypuszczenia rachunkiem — szacowanie 'na oko' bywa mylące.
+  difficulty: 3
+- statement: Dane są zbiory A = (−3, 5⟩ oraz B = ⟨2, +∞). Zaznacz je na osi liczbowej i wyznacz A ∩ B,
+    A ∪ B, A \ B oraz B \ A. Podaj długość przedziału A i liczbę liczb całkowitych należących do A ∩ B.
+  worked_solution: |-
+    Rysunek: na jednej osi zaznaczamy A — odcinek od −3 (kółko puste, bo nawias okrągły) do 5 (kółko pełne), pogrubiony. Pod spodem B — półprosta od 2 (kółko pełne) w prawo, ze strzałką.
+
+    A ∩ B (część wspólna, 'zakładka'): liczby x spełniające jednocześnie −3 < x ≤ 5 oraz x ≥ 2, czyli 2 ≤ x ≤ 5. Koniec 2 należy do obu zbiorów (do A, bo 2 > −3 i 2 ≤ 5; do B, bo B jest domknięty w 2), więc A ∩ B = ⟨2, 5⟩.
+
+    A ∪ B (wszystko zamalowane): od −3 (bez −3) w prawo bez ograniczenia, bo A pokrywa (−3, 5⟩, a B ciągnie się od 2 w nieskończoność i zbiory zachodzą na siebie. Zatem A ∪ B = (−3, +∞).
+
+    A \ B: liczby z A, które nie są w B, czyli −3 < x ≤ 5 oraz x < 2. Daje to A \ B = (−3, 2).
+
+    B \ A: liczby z B, których nie ma w A, czyli x ≥ 2 oraz x > 5 (bo do 5 włącznie należą do A). Daje to B \ A = (5, +∞).
+
+    Długość przedziału A: 5 − (−3) = 8.
+    Liczby całkowite w A ∩ B = ⟨2, 5⟩: 2, 3, 4, 5 — jest ich 4.
+  difficulty: 3
+- statement: 'Zapisz w postaci przedziału (lub sumy przedziałów) zbiór wszystkich liczb rzeczywistych
+    x, które spełniają warunek: x ≥ −4 i x < 1, a następnie zbiór liczb spełniających warunek: x ≤ −4
+    lub x > 1. Zaznacz oba zbiory na osi i sprawdź, czy 1, −4 oraz 0 należą do nich.'
+  worked_solution: "Zbiór pierwszy (koniunkcja): −4 ≤ x < 1. Lewy koniec należy (znak ≥ → nawias domknięty,\
+    \ kółko pełne), prawy nie należy (znak < → nawias okrągły, kółko puste). Zatem zbiór to ⟨−4, 1). Na\
+    \ osi: pogrubiony odcinek od −4 do 1, pełne kółko w −4, puste w 1.\n\nZbiór drugi (alternatywa): x\
+    \ ≤ −4 lub x > 1. To dwie rozłączne części osi: półprosta w lewo od −4 wraz z −4 oraz półprosta w\
+    \ prawo od 1 bez 1. Zapis: (−∞, −4⟩ ∪ (1, +∞). Nie jest to jeden przedział, bo między −4 a 1 mamy\
+    \ 'dziurę'. Na osi: dwie pogrubione półproste ze strzałkami, pełne kółko w −4, puste w 1.\n\nSprawdzenie:\
+    \ \n• 1: nie należy do ⟨−4, 1) (bo koniec otwarty) i nie należy do (−∞, −4⟩ ∪ (1, +∞) (bo warunek\
+    \ x > 1 jest ostry).\n• −4: należy do ⟨−4, 1) oraz należy do (−∞, −4⟩.\n• 0: należy do ⟨−4, 1); nie\
+    \ należy do drugiego zbioru.\nZauważ, że oba zbiory razem 'wypełniają' całą oś poza punktem 1 — drugi\
+    \ zbiór to dopełnienie pierwszego z dokładnością do punktu 1, co dobrze widać na rysunku."
+  difficulty: 2
+objectives:
+- statement: Rozpoznawać, do których zbiorów liczbowych (N, C, W, NW, R) należy dana liczba, i uzasadniać
+    to rozwinięciem dziesiętnym lub zapisem ułamkowym.
+  bloom_level: Rozumienie
+- statement: Obliczać wartości wyrażeń arytmetycznych zawierających nawiasy, ułamki, potęgi, pierwiastki
+    i logarytmy, stosując poprawną kolejność działań.
+  bloom_level: Zastosowanie
+- statement: Stosować prawa działań na potęgach o wykładnikach całkowitych i wymiernych do upraszczania
+    i obliczania wyrażeń.
+  bloom_level: Zastosowanie
+- statement: 'Wykonywać działania na pierwiastkach: wyłączać czynnik przed znak pierwiastka, redukować
+    pierwiastki podobne, mnożyć i dzielić pierwiastki oraz usuwać niewymierność z mianownika.'
+  bloom_level: Zastosowanie
+- statement: Wyjaśniać definicję logarytmu i obliczać logarytmy z definicji, sprawdzając założenia a >
+    0, a ≠ 1, b > 0.
+  bloom_level: Rozumienie
+- statement: Stosować prawa działań na logarytmach (logarytm iloczynu, ilorazu, potęgi) do obliczania
+    wartości wyrażeń logarytmicznych.
+  bloom_level: Zastosowanie
+- statement: Szacować wartości liczb niewymiernych, wskazywać kolejne liczby całkowite, między którymi
+    leży dana liczba, i porównywać liczby postaci p√q bez użycia kalkulatora.
+  bloom_level: Analiza
+- statement: Zaokrąglać liczby do zadanego rzędu i oceniać, czy otrzymany wynik obliczeń jest wiarygodny
+    co do znaku i rzędu wielkości.
+  bloom_level: Ocenianie
+- statement: Zapisywać zbiory opisane nierównościami lub słownie w postaci przedziałów (otwartych, domkniętych,
+    jednostronnie domkniętych, nieograniczonych) i odwrotnie — odczytywać warunek z zapisu przedziału.
+  bloom_level: Rozumienie
+- statement: Zaznaczać przedziały na osi liczbowej, poprawnie odróżniając końce należące i nienależące
+    do zbioru.
+  bloom_level: Zastosowanie
+- statement: Wyznaczać sumę, część wspólną i różnicę dwóch przedziałów, rozstrzygając o przynależności
+    końców i zapisując wynik jako przedział, sumę przedziałów lub zbiór pusty.
+  bloom_level: Analiza
+- statement: Wykrywać i poprawiać błędy w gotowych rachunkach na potęgach, pierwiastkach, logarytmach
+    i przedziałach, wskazując naruszone prawo działań lub definicję.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Pierwiastek (lub potęga) sumy rozdzielany na składniki
+  incorrect_reasoning: √(9 + 16) = √9 + √16 = 3 + 4 = 7; podobnie (a + b)² = a² + b².
+  correct_reasoning: Pierwiastkowanie i potęgowanie są rozdzielne tylko względem mnożenia i dzielenia.
+    √(9+16) = √25 = 5 ≠ 7. Poprawnie (a+b)² = a² + 2ab + b².
+  severity: 5
+- name: Mylenie −aⁿ z (−a)ⁿ
+  incorrect_reasoning: −2⁴ = (−2)⁴ = 16, bo 'minus przy podnoszeniu do parzystej potęgi znika'.
+  correct_reasoning: 'Bez nawiasu potęgujemy tylko liczbę 2, a minus zostaje z przodu: −2⁴ = −(2⁴) = −16.
+    Dopiero (−2)⁴ = 16. Nawias decyduje o tym, co jest podstawą potęgi.'
+  severity: 4
+- name: Ujemny wykładnik daje ujemny wynik
+  incorrect_reasoning: 3⁻² = −9, bo wykładnik jest ujemny.
+  correct_reasoning: 'Ujemny wykładnik oznacza odwrotność: 3⁻² = 1/3² = 1/9 > 0. Potęga liczby dodatniej
+    jest zawsze dodatnia, niezależnie od znaku wykładnika.'
+  severity: 4
+- name: √(a²) = a zamiast |a|
+  incorrect_reasoning: √((−7)²) = −7, bo pierwiastek 'kasuje' kwadrat.
+  correct_reasoning: Pierwiastek arytmetyczny jest zawsze nieujemny, więc √((−7)²) = √49 = 7 = |−7|. Ogólnie
+    √(a²) = |a|.
+  severity: 4
+- name: Przekonanie, że √9 = ±3
+  incorrect_reasoning: Skoro 3² = 9 i (−3)² = 9, to √9 = ±3.
+  correct_reasoning: Symbol √ oznacza pierwiastek arytmetyczny, czyli jedyną liczbę nieujemną o kwadracie
+    9; zatem √9 = 3. Dwa rozwiązania (±3) ma dopiero równanie x² = 9.
+  severity: 3
+- name: Ignorowanie kolejności działań przy równorzędnych operacjach
+  incorrect_reasoning: '24 : 4 · 3 = 24 : 12 = 2, bo mnożenie ''jest ważniejsze'' od dzielenia.'
+  correct_reasoning: 'Mnożenie i dzielenie są równorzędne i wykonujemy je od lewej do prawej: 24 : 4 ·
+    3 = 6 · 3 = 18.'
+  severity: 3
+- name: Wymyślone 'prawa' logarytmów
+  incorrect_reasoning: log₂(8 + 8) = log₂8 + log₂8 = 6; albo log_a x / log_a y = log_a(x/y).
+  correct_reasoning: 'Logarytm sumy nie rozkłada się na sumę logarytmów: log₂16 = 4. Wzory dotyczą iloczynu
+    i ilorazu liczby logarytmowanej: log_a(xy) = log_a x + log_a y, log_a(x/y) = log_a x − log_a y. Iloraz
+    logarytmów to zupełnie inne wyrażenie.'
+  severity: 5
+- name: Logarytm z liczby ujemnej lub podstawa 1
+  incorrect_reasoning: log₂(−8) = −3, bo 2⁻³ 'ma minus'; log₁5 to jakaś liczba.
+  correct_reasoning: Definicja wymaga b > 0 oraz a > 0 i a ≠ 1. Potęga liczby dodatniej nigdy nie jest
+    ujemna, więc log₂(−8) nie istnieje; podstawy 1 nie dopuszczamy, bo 1^c = 1 dla każdego c.
+  severity: 4
+- name: Zapisywanie przedziału z końcami w złej kolejności
+  incorrect_reasoning: Zbiór liczb od 5 w dół do −2 zapisuję jako (5, −2).
+  correct_reasoning: 'W zapisie przedziału zawsze najpierw idzie koniec mniejszy: (−2, 5). Zapis z odwrotną
+    kolejnością nie oznacza żadnego niepustego zbioru.'
+  severity: 3
+- name: Domykanie nieskończoności
+  incorrect_reasoning: Zbiór x ≥ 3 zapisuję jako ⟨3, +∞⟩.
+  correct_reasoning: '+∞ i −∞ nie są liczbami, więc nie mogą należeć do zbioru — przy nich zawsze stoi
+    nawias okrągły: ⟨3, +∞).'
+  severity: 3
+- name: Zły dobór nawiasu do znaku nierówności
+  incorrect_reasoning: Nierówność x < 4 opisuje przedział (−∞, 4⟩, przecież 4 to 'granica'.
+  correct_reasoning: 'Ostry znak nierówności oznacza, że koniec nie należy do zbioru: (−∞, 4). Nawias
+    domknięty (i pełne kółko na osi) rezerwujemy dla ≤ i ≥.'
+  severity: 4
+- name: Suma rozłącznych przedziałów zapisana jako jeden przedział
+  incorrect_reasoning: x < −1 lub x > 3 to przedział (−1, 3) albo (−∞, +∞).
+  correct_reasoning: 'Te warunki opisują dwie rozłączne półproste; zbiór zapisujemy jako sumę: (−∞, −1)
+    ∪ (3, +∞). Przedział (−1, 3) to dokładnie liczby, które NIE spełniają tych warunków (poza końcami).'
+  severity: 4
+- name: Mylenie spójników 'i' oraz 'lub' przy działaniach na przedziałach
+  incorrect_reasoning: Dla A = ⟨0, 6⟩ i B = ⟨4, 10⟩ część wspólna to ⟨0, 10⟩, bo 'razem' obejmują ten
+    zakres.
+  correct_reasoning: Część wspólna to liczby należące jednocześnie do obu zbiorów, czyli A ∩ B = ⟨4, 6⟩;
+    zbiór ⟨0, 10⟩ to suma A ∪ B. Rysunek dwóch przedziałów jeden pod drugim natychmiast to rozstrzyga.
+  severity: 4
+- name: Zaokrąglanie w trakcie rachunku
+  incorrect_reasoning: √2 · √8 ≈ 1,41 · 2,83 ≈ 3,99, więc wynik to około 3,99 (a nie 4).
+  correct_reasoning: 'Najpierw przekształcamy dokładnie: √2·√8 = √16 = 4. Zaokrąglenia wprowadzamy dopiero
+    na końcu i tylko wtedy, gdy wynik ma być przybliżony — inaczej gubimy dokładną wartość.'
+  severity: 2

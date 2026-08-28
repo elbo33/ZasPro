@@ -1,0 +1,316 @@
+section: logarytm-i-jego-wlasnosci
+name: Logarytm i jego własności
+scope: Logarithm as the inverse of exponentiation; evaluating logarithms; the formulas for the logarithm
+  of a product, a quotient and a power.
+requirements:
+- I.9
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:04:59.390344'
+  approved_at: '2026-08-28T18:28:01.593699'
+  approved_by: reviewer
+concepts:
+- name: Potęga jako punkt wyjścia do logarytmu
+  description: 'Dla a > 0 i dowolnego wykładnika rzeczywistego x określona jest potęga a^x > 0. Logarytm
+    jest operacją odwrotną: szukamy wykładnika, a nie wyniku potęgowania.'
+  explanation: W równaniu a^x = b znane są dwie z trzech wielkości. Jeśli szukamy b — potęgujemy. Jeśli
+    szukamy a — pierwiastkujemy. Jeśli szukamy x — logarytmujemy. Warto od razu utrwalić, że potęga liczby
+    dodatniej jest zawsze dodatnia, bo to tłumaczy późniejsze założenia.
+  difficulty: 1
+- name: Definicja logarytmu
+  description: Niech a > 0, a ≠ 1 oraz b > 0. Logarytmem liczby b przy podstawie a nazywamy taki wykładnik
+    c, że a^c = b. Zapisujemy log_a b = c.
+  explanation: 'Czytaj to zawsze zdaniem: ''log_a b to wykładnik, do którego trzeba podnieść a, żeby otrzymać
+    b''. Każde zadanie na obliczanie logarytmu zamieniaj natychmiast na równanie potęgowe a^c = b.'
+  difficulty: 1
+- name: Podstawa logarytmu i założenia a > 0, a ≠ 1
+  description: Liczbę a nazywamy podstawą logarytmu; musi być dodatnia i różna od 1.
+  explanation: Gdyby a = 1, to 1^c = 1 dla każdego c, więc log_1 b nie byłby jednoznaczny (a dla b ≠ 1
+    nie istniałby wcale). Gdyby a < 0, potęgi o wykładniku rzeczywistym nie byłyby dobrze określone. Stąd
+    stały warunek a > 0 i a ≠ 1.
+  difficulty: 2
+- name: Liczba logarytmowana i warunek b > 0
+  description: Liczba b w zapisie log_a b to liczba logarytmowana; musi być dodatnia.
+  explanation: Skoro a^c > 0 zawsze, to równanie a^c = b nie ma rozwiązania dla b ≤ 0. Dlatego wyrażenia
+    log_2 0 czy log_3 (−5) po prostu nie istnieją — to nie jest 'wynik ujemny', tylko brak wartości.
+  difficulty: 2
+- name: Logarytm dziesiętny
+  description: Logarytm o podstawie 10; zapisywany log b lub lg b, czyli log b = log_10 b.
+  explanation: 'Gdy w zadaniu nie ma podstawy, domyślnie chodzi o 10. Wygodny dla potęg dziesiątki: log
+    1000 = 3, log 0,01 = −2.'
+  difficulty: 1
+- name: Wartość logarytmu — znak i wielkość
+  description: 'Dla a > 1: log_a b > 0 gdy b > 1, log_a b = 0 gdy b = 1, log_a b < 0 gdy 0 < b < 1. Dla
+    0 < a < 1 znaki są odwrotne.'
+  explanation: To szybka kontrola sensowności wyniku. Np. log_2 0,25 musi być ujemny (bo 0,25 < 1, a podstawa
+    > 1) — i rzeczywiście wynosi −2. Natomiast log_{1/2} 8 = −3, bo podstawa jest mniejsza od 1.
+  difficulty: 3
+- name: Logarytm jako działanie odwrotne do potęgowania
+  description: 'Złożenie operacji potęgowania i logarytmowania o tej samej podstawie daje liczbę wyjściową:
+    log_a (a^x) = x oraz a^{log_a b} = b.'
+  explanation: Te dwie tożsamości to formalny zapis zdania 'logarytm cofa potęgowanie'. Druga z nich pozwala
+    uprościć wyrażenia typu 5^{log_5 7} = 7 bez żadnych rachunków.
+  difficulty: 3
+- name: Prawa działań na logarytmach
+  description: 'Zbiór trzech wzorów: logarytm iloczynu = suma logarytmów, logarytm ilorazu = różnica logarytmów,
+    logarytm potęgi = wykładnik razy logarytm.'
+  explanation: 'Logarytmowanie ''obniża poziom działania'': mnożenie zamienia na dodawanie, dzielenie
+    na odejmowanie, potęgowanie na mnożenie. Wszystkie trzy wzory wynikają z praw działań na potęgach.'
+  difficulty: 2
+- name: Zwijanie i rozwijanie wyrażeń logarytmicznych
+  description: Rozwijanie to zastąpienie jednego logarytmu sumą/różnicą/wielokrotnością logarytmów; zwijanie
+    to działanie odwrotne — zapisanie wyrażenia jako jednego logarytmu.
+  explanation: Zwijamy, gdy chcemy obliczyć wartość liczbową (np. log_2 48 − log_2 3 = log_2 16 = 4).
+    Rozwijamy, gdy mamy wyrazić logarytm przez dane wielkości (np. log 45 przez log 2 i log 3).
+  difficulty: 3
+- name: Zamiana podstawy logarytmu
+  description: 'Każdy logarytm można wyrazić przy dowolnej innej dopuszczalnej podstawie: log_a b = log_c
+    b / log_c a.'
+  explanation: Przydaje się, gdy w jednym wyrażeniu występują różne podstawy albo gdy podstawa i liczba
+    logarytmowana są potęgami tej samej liczby (np. log_4 8 = log_2 8 / log_2 4 = 3/2).
+  difficulty: 4
+- name: Założenia (dziedzina) wyrażenia logarytmicznego
+  description: Aby wyrażenie log_{f(x)} g(x) miało sens, musi zachodzić g(x) > 0 oraz f(x) > 0 i f(x)
+    ≠ 1.
+  explanation: Założenia wypisujemy zawsze PRZED rozwiązywaniem równania, a otrzymane rozwiązania sprawdzamy
+    z nimi na końcu. To najczęstsze źródło utraty poprawności w zadaniach z niewiadomą pod logarytmem.
+  difficulty: 3
+formulas:
+- name: Definicja logarytmu
+  latex_raw: \log_a b = c \iff a^c = b
+  conditions: a>0,\ a\neq 1,\ b>0
+  description: 'Podstawowe narzędzie: każde obliczenie logarytmu zamieniamy na równanie potęgowe.'
+- name: Logarytm jedynki
+  latex_raw: \log_a 1 = 0
+  conditions: a>0,\ a\neq 1
+  description: Bo a^0 = 1.
+- name: Logarytm podstawy
+  latex_raw: \log_a a = 1
+  conditions: a>0,\ a\neq 1
+  description: Bo a^1 = a.
+- name: Logarytm potęgi podstawy
+  latex_raw: \log_a a^{\,k} = k
+  conditions: a>0,\ a\neq 1,\ k\in\mathbb{R}
+  description: Najszybszy sposób liczenia logarytmów 'ładnych' liczb.
+- name: Tożsamość odwrotności
+  latex_raw: a^{\log_a b} = b
+  conditions: a>0,\ a\neq 1,\ b>0
+  description: Pozwala uprościć wyrażenia wykładnicze z logarytmem w wykładniku.
+- name: Logarytm iloczynu
+  latex_raw: \log_a (b\cdot c) = \log_a b + \log_a c
+  conditions: a>0,\ a\neq 1,\ b>0,\ c>0
+- name: Logarytm ilorazu
+  latex_raw: \log_a \frac{b}{c} = \log_a b - \log_a c
+  conditions: a>0,\ a\neq 1,\ b>0,\ c>0
+- name: Logarytm potęgi
+  latex_raw: \log_a b^{\,r} = r\cdot \log_a b
+  conditions: a>0,\ a\neq 1,\ b>0,\ r\in\mathbb{R}
+  description: Wykładnik 'schodzi' przed logarytm tylko wtedy, gdy dotyczy całej liczby logarytmowanej.
+- name: Logarytm odwrotności
+  latex_raw: \log_a \frac{1}{b} = -\log_a b
+  conditions: a>0,\ a\neq 1,\ b>0
+  description: Szczególny przypadek wzoru na logarytm ilorazu (albo potęgi o wykładniku −1).
+- name: Logarytm pierwiastka
+  latex_raw: \log_a \sqrt[n]{b} = \frac{1}{n}\log_a b
+  conditions: a>0,\ a\neq 1,\ b>0,\ n\in\mathbb{N},\ n\ge 2
+  description: Pierwiastek zapisujemy jako potęgę o wykładniku 1/n.
+- name: Zamiana podstawy logarytmu
+  latex_raw: \log_a b = \frac{\log_c b}{\log_c a}
+  conditions: a,c>0,\ a\neq1,\ c\neq1,\ b>0
+  description: Najczęściej wybieramy c = 10 lub podstawę wspólną dla a i b.
+- name: Logarytm dziesiętny potęgi dziesiątki
+  latex_raw: \log 10^{\,k} = k
+  conditions: k\in\mathbb{R}
+  description: Stąd log 1 = 0, log 10 = 1, log 0{,}001 = −3.
+methods:
+- name: Obliczanie logarytmu wprost z definicji
+  when_to_use: Gdy trzeba podać wartość liczbową logarytmu, a podstawa i liczba logarytmowana są 'ładne'
+    (potęgi tej samej liczby, pierwiastki, ułamki dziesiętne).
+  steps:
+  - 'Oznacz szukaną wartość: log_a b = c.'
+  - Zapisz równoważne równanie potęgowe a^c = b.
+  - Zapisz b jako potęgę liczby a (skorzystaj z pierwiastków jako potęg ułamkowych i z ujemnych wykładników
+    dla ułamków).
+  - Porównaj wykładniki przy tej samej podstawie i odczytaj c.
+  - 'Sprawdź znak wyniku regułą: podstawa > 1 i liczba < 1 ⇒ wynik ujemny.'
+- name: Sprowadzanie do wspólnej podstawy potęgi
+  when_to_use: Gdy podstawa logarytmu i liczba logarytmowana są potęgami tej samej liczby, np. log_4 32,
+    log_{1/3} 81, log_{0,5} 8.
+  steps:
+  - Znajdź liczbę p taką, że a = p^m i b = p^n (np. p = 2 dla 4, 8, 32, 0,5).
+  - Zapisz log_a b = log_{p^m} p^n.
+  - 'Skorzystaj z zamiany podstawy: log_{p^m} p^n = log_p p^n / log_p p^m = n/m.'
+  - Podaj wynik jako liczbę (ewentualnie ułamek).
+- name: Zwijanie wyrażenia do jednego logarytmu
+  when_to_use: Gdy mamy sumę lub różnicę logarytmów o tej samej podstawie i chcemy obliczyć wartość liczbową
+    wyrażenia.
+  steps:
+  - Sprawdź, czy wszystkie logarytmy mają tę samą podstawę.
+  - Współczynniki stojące przed logarytmami wciągnij do środka jako wykładniki (r·log_a b = log_a b^r).
+  - Sumy zamień na logarytm iloczynu, różnice na logarytm ilorazu.
+  - Wykonaj działania arytmetyczne na liczbie logarytmowanej.
+  - Oblicz powstały pojedynczy logarytm z definicji.
+- name: Rozwijanie logarytmu i wyrażanie go przez dane
+  when_to_use: Gdy dane są np. log 2 = a, log 3 = b i trzeba wyrazić inny logarytm przez a i b.
+  steps:
+  - Rozłóż liczbę logarytmowaną na czynniki będące potęgami liczb, których logarytmy znasz (np. 45 = 3^2·5,
+    a 5 = 10/2).
+  - Zastosuj wzór na logarytm iloczynu i ilorazu, rozbijając logarytm na sumę i różnicę.
+  - Wykładniki wyprowadź przed logarytmy wzorem na logarytm potęgi.
+  - Podstaw dane wartości i uprość wyrażenie (pamiętaj log 10 = 1).
+- name: Rozwiązywanie prostego równania logarytmicznego log_a f(x) = c
+  when_to_use: Gdy niewiadoma występuje pod logarytmem o znanej podstawie liczbowej.
+  steps:
+  - 'Wypisz założenie: f(x) > 0.'
+  - 'Zamień równanie na postać potęgową: f(x) = a^c.'
+  - Rozwiąż powstałe równanie algebraiczne.
+  - Sprawdź, czy otrzymane rozwiązanie spełnia założenie; odrzuć te, które go nie spełniają.
+  - Zapisz odpowiedź.
+- name: Rozwiązywanie równania z niewiadomą w podstawie log_x b = c
+  when_to_use: Gdy szukamy podstawy logarytmu.
+  steps:
+  - 'Wypisz założenia: x > 0 i x ≠ 1 (oraz b > 0).'
+  - Zapisz x^c = b.
+  - Rozwiąż równanie potęgowe (dla c parzystego pamiętaj o dwóch potencjalnych pierwiastkach).
+  - Odrzuć rozwiązania ujemne i równe 1.
+  - Zapisz odpowiedź.
+- name: Upraszczanie wyrażeń typu a^{log_a b}
+  when_to_use: Gdy logarytm stoi w wykładniku potęgi, a podstawy są ze sobą powiązane.
+  steps:
+  - Zapisz podstawę potęgi jako potęgę podstawy logarytmu (np. 4 = 2^2, 9 = 3^2).
+  - Skorzystaj ze wzoru (p^m)^{x} = (p^{x})^{m}.
+  - Zastosuj tożsamość p^{log_p b} = b.
+  - Wykonaj pozostałe działania arytmetyczne.
+examples:
+- statement: 'Oblicz: a) log_2 32, b) log_3 (1/9), c) log 0,001, d) log_{1/2} 8, e) log_5 √5.'
+  worked_solution: |-
+    a) Szukamy c takiego, że 2^c = 32. Ponieważ 32 = 2^5, mamy c = 5, czyli log_2 32 = 5.
+    b) 3^c = 1/9 = 3^{−2}, więc c = −2, czyli log_3(1/9) = −2.
+    c) Podstawa domyślna to 10: 10^c = 0,001 = 10^{−3}, więc log 0,001 = −3.
+    d) (1/2)^c = 8. Zapiszmy obie strony przy podstawie 2: (2^{−1})^c = 2^3, czyli 2^{−c} = 2^3, stąd −c = 3 i c = −3. Zatem log_{1/2} 8 = −3.
+    e) 5^c = √5 = 5^{1/2}, więc c = 1/2.
+    Kontrola znaków: w b) i c) liczba logarytmowana jest mniejsza od 1, a podstawa większa od 1 — wynik ujemny, zgodnie z oczekiwaniem. W d) podstawa jest mniejsza od 1, a liczba większa od 1 — też wynik ujemny.
+  difficulty: 1
+- statement: 'Oblicz wartość wyrażenia: a) log_6 4 + log_6 9, b) log_2 48 − log_2 3, c) 2·log_5 √5 + log_3
+    81.'
+  worked_solution: |-
+    a) Obie podstawy są równe 6, więc korzystamy ze wzoru na logarytm iloczynu:
+    log_6 4 + log_6 9 = log_6 (4·9) = log_6 36 = 2, bo 6^2 = 36.
+    b) Wzór na logarytm ilorazu: log_2 48 − log_2 3 = log_2 (48:3) = log_2 16 = 4, bo 2^4 = 16.
+    c) 2·log_5 √5 = log_5 (√5)^2 = log_5 5 = 1 (albo krócej: log_5 √5 = 1/2, więc podwojone daje 1).
+    log_3 81 = 4, bo 3^4 = 81.
+    Razem: 1 + 4 = 5.
+    Uwaga: w a) i b) nie wolno było liczyć osobno log_6 4 ani log_2 48 — to liczby niewymierne; cała sztuka polega na zwinięciu wyrażenia w jeden logarytm.
+  difficulty: 2
+- statement: 'Wiedząc, że log 2 = a oraz log 3 = b, wyraź za pomocą a i b liczby: log 45 oraz log (4/15).
+    (Logarytmy dziesiętne.)'
+  worked_solution: |-
+    Kluczowa uwaga: log 5 = log(10/2) = log 10 − log 2 = 1 − a.
+    log 45: rozkładamy 45 = 9·5 = 3^2·5.
+    log 45 = log(3^2·5) = log 3^2 + log 5 = 2log 3 + (1 − log 2) = 2b + 1 − a.
+    log(4/15): 4 = 2^2, 15 = 3·5.
+    log(4/15) = log 4 − log 15 = 2log 2 − (log 3 + log 5) = 2a − b − (1 − a) = 3a − b − 1.
+    Sprawdzenie rzędu wielkości: 4/15 ≈ 0,27 < 1, więc wynik powinien być ujemny. Dla a ≈ 0,301 i b ≈ 0,477 mamy 3·0,301 − 0,477 − 1 ≈ −0,574, a log 0,27 ≈ −0,57 — zgadza się.
+  difficulty: 3
+- statement: 'Rozwiąż równania: a) log_3 (2x − 5) = 2, b) log_x 27 = 3, c) log_2 (x − 1) + log_2 (x +
+    1) = 3.'
+  worked_solution: |-
+    a) Założenie: 2x − 5 > 0, czyli x > 2,5.
+    Z definicji: 2x − 5 = 3^2 = 9, stąd 2x = 14 i x = 7. Warunek x > 2,5 jest spełniony, więc x = 7.
+    b) Założenia: x > 0 i x ≠ 1.
+    Z definicji: x^3 = 27, więc x = 3 (jedyny pierwiastek rzeczywisty). Spełnia założenia, zatem x = 3.
+    c) Założenia: x − 1 > 0 i x + 1 > 0, czyli łącznie x > 1.
+    Lewa strona: log_2(x−1) + log_2(x+1) = log_2[(x−1)(x+1)] = log_2(x^2 − 1).
+    Równanie: x^2 − 1 = 2^3 = 8, czyli x^2 = 9, więc x = 3 lub x = −3.
+    Warunek x > 1 odrzuca x = −3. Odpowiedź: x = 3.
+    To ostatnie podpunkt pokazuje, po co wypisujemy założenia: równanie algebraiczne ma dwa rozwiązania, ale tylko jedno jest rozwiązaniem równania logarytmicznego.
+  difficulty: 3
+- statement: Oblicz wartość wyrażenia W = 4^{log_2 3} + log_4 8 − log_6 2 − log_6 3.
+  worked_solution: |-
+    Składnik 1: 4^{log_2 3} = (2^2)^{log_2 3} = (2^{log_2 3})^2 = 3^2 = 9, bo 2^{log_2 3} = 3.
+    Składnik 2: log_4 8. Obie liczby są potęgami dwójki: 4 = 2^2, 8 = 2^3. Z zamiany podstawy:
+    log_4 8 = log_2 8 / log_2 4 = 3/2 = 1,5.
+    (Alternatywnie z definicji: 4^c = 8 ⇒ 2^{2c} = 2^3 ⇒ c = 3/2.)
+    Składniki 3 i 4: −log_6 2 − log_6 3 = −(log_6 2 + log_6 3) = −log_6 6 = −1.
+    Razem: W = 9 + 1,5 − 1 = 9,5.
+  difficulty: 4
+objectives:
+- statement: Podać definicję logarytmu i przekształcić równość logarytmiczną log_a b = c w równoważną
+    równość potęgową a^c = b (i odwrotnie).
+  bloom_level: Rozumienie
+- statement: Wskazać założenia, przy których wyrażenie log_a b ma sens (a > 0, a ≠ 1, b > 0), i uzasadnić,
+    dlaczego są konieczne.
+  bloom_level: Rozumienie
+- statement: Obliczać wartości logarytmów liczb będących potęgami, pierwiastkami i ułamkami dziesiętnymi
+    podstawy, w tym logarytmów dziesiętnych.
+  bloom_level: Zastosowanie
+- statement: Stosować wzory na logarytm iloczynu, ilorazu i potęgi do zwijania wyrażeń logarytmicznych
+    i obliczania ich wartości.
+  bloom_level: Zastosowanie
+- statement: Rozwijać logarytm liczby złożonej i wyrażać go za pomocą danych logarytmów (np. przez log
+    2 i log 3).
+  bloom_level: Zastosowanie
+- statement: Upraszczać wyrażenia wykorzystujące odwrotność potęgowania i logarytmowania, np. a^{log_a
+    b}, log_a a^k, oraz stosować wzór na zamianę podstawy.
+  bloom_level: Zastosowanie
+- statement: Rozwiązywać proste równania logarytmiczne z niewiadomą pod logarytmem lub w podstawie, wypisując
+    założenia i weryfikując rozwiązania.
+  bloom_level: Analiza
+- statement: Oceniać poprawność przekształceń logarytmicznych — rozpoznawać i korygować błędne 'wzory'
+    typu log(b + c) = log b + log c.
+  bloom_level: Ocena
+misconceptions:
+- name: Logarytm sumy jako suma logarytmów
+  incorrect_reasoning: log_a (b + c) = log_a b + log_a c, np. log_2 (8 + 8) = log_2 8 + log_2 8 = 6.
+  correct_reasoning: 'Wzór dotyczy iloczynu, nie sumy. Logarytmu sumy nie da się rozbić. Sprawdzenie:
+    log_2 16 = 4, a nie 6. Poprawnie: log_2 b + log_2 c = log_2 (b·c).'
+  severity: 5
+- name: Zamiana iloczynu logarytmów na logarytm iloczynu
+  incorrect_reasoning: log_a b · log_a c = log_a (b·c), np. log_2 4 · log_2 8 = log_2 32 = 5.
+  correct_reasoning: Suma logarytmów daje logarytm iloczynu, a nie ich iloczyn. Tutaj log_2 4 · log_2
+    8 = 2·3 = 6, natomiast log_2 4 + log_2 8 = log_2 32 = 5.
+  severity: 4
+- name: Iloraz logarytmów mylony z logarytmem ilorazu
+  incorrect_reasoning: log_a b / log_a c = log_a (b/c), np. log_2 8 / log_2 4 = log_2 2 = 1.
+  correct_reasoning: 'log_a b − log_a c = log_a(b/c); iloraz logarytmów to co innego — to wzór na zamianę
+    podstawy: log_a b / log_a c = log_c b. Tutaj log_2 8 / log_2 4 = 3/2 = log_4 8, a log_2(8/4) = 1.'
+  severity: 4
+- name: Mylenie (log_a b)^r z log_a b^r
+  incorrect_reasoning: (log_2 8)^2 = 2·log_2 8 = 6 albo log_2 8^2 = (log_2 8)^2 = 9.
+  correct_reasoning: 'Wykładnik schodzi przed logarytm tylko wtedy, gdy dotyczy liczby logarytmowanej:
+    log_2 8^2 = 2·log_2 8 = 6. Kwadrat całego logarytmu to (log_2 8)^2 = 3^2 = 9 i nie da się go uprościć
+    wzorem.'
+  severity: 4
+- name: Ujemna liczba logarytmowana daje ujemny logarytm
+  incorrect_reasoning: log_2 (−8) = −3, bo 'minus przechodzi przed logarytm'.
+  correct_reasoning: Potęga liczby dodatniej jest zawsze dodatnia, więc równanie 2^c = −8 nie ma rozwiązania
+    — log_2(−8) w ogóle nie istnieje. Ujemne mogą być wartości logarytmu (np. log_2 0,25 = −2), ale nie
+    liczba logarytmowana.
+  severity: 5
+- name: Pomijanie założeń w równaniach logarytmicznych
+  incorrect_reasoning: Z log_2(x−1) + log_2(x+1) = 3 wynika x^2 = 9, więc x = 3 lub x = −3 — podaję oba.
+  correct_reasoning: Po zwinięciu logarytmów dziedzina mogła się 'poszerzyć'. Trzeba było najpierw zapisać
+    x − 1 > 0 i x + 1 > 0, czyli x > 1; wtedy x = −3 odpada i jedynym rozwiązaniem jest x = 3.
+  severity: 4
+- name: Stosowanie wzorów do logarytmów o różnych podstawach
+  incorrect_reasoning: log_2 5 + log_3 5 = log_6 25 albo log_2 8 + log_4 8 = log_8 8.
+  correct_reasoning: Wzory na logarytm iloczynu i ilorazu wymagają tej samej podstawy. Przy różnych podstawach
+    należy najpierw sprowadzić je do wspólnej podstawy wzorem log_a b = log_c b / log_c a.
+  severity: 3
+- name: Mylenie roli podstawy i liczby logarytmowanej
+  incorrect_reasoning: log_8 2 = 3, bo 2^3 = 8.
+  correct_reasoning: 'log_8 2 to wykładnik, do którego podnosimy 8, by dostać 2: 8^c = 2 ⇒ 2^{3c} = 2^1
+    ⇒ c = 1/3. To log_2 8 = 3. Zawsze czytaj: ''do której potęgi podnieść PODSTAWĘ (dolny indeks)''.'
+  severity: 4
+- name: log_a 0 = 0 lub log_a 1 = 1
+  incorrect_reasoning: log_5 0 = 0, bo 'zero daje zero'; log_5 1 = 1, bo 'jedynka daje jedynkę'.
+  correct_reasoning: log_a 1 = 0, bo a^0 = 1. Natomiast log_a 0 nie istnieje, bo żadna potęga liczby dodatniej
+    nie jest równa 0.
+  severity: 3
+- name: Brak kontroli znaku przy podstawie mniejszej od 1
+  incorrect_reasoning: log_{1/2} 8 = 3, bo 2^3 = 8.
+  correct_reasoning: Podstawą jest 1/2, więc (1/2)^c = 8 ⇒ 2^{−c} = 2^3 ⇒ c = −3. Dla podstawy z przedziału
+    (0,1) logarytmy liczb większych od 1 są ujemne.
+  severity: 3

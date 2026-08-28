@@ -1,0 +1,374 @@
+section: trojkaty-prostokatne-trygonometria
+name: Rozwiązywanie trójkątów prostokątnych
+scope: sin, cos, tan in a right triangle; finding sides and angles from the given data.
+requirements:
+- VII.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:17:42.639620'
+  approved_at: '2026-08-28T18:28:06.525309'
+  approved_by: reviewer
+concepts:
+- name: Trójkąt prostokątny – nazewnictwo boków
+  description: Trójkąt, w którym jeden kąt ma miarę 90°. Boki tworzące kąt prosty to przyprostokątne,
+    bok leżący naprzeciw kąta prostego to przeciwprostokątna.
+  explanation: 'Przeciwprostokątna jest zawsze najdłuższym bokiem, bo leży naprzeciw największego kąta.
+    Przy każdym zadaniu warto najpierw podpisać na rysunku: która przyprostokątna leży NAPRZECIW rozważanego
+    kąta ostrego, a która PRZY nim. To jedyna decyzja, od której zależy wybór funkcji trygonometrycznej.'
+  difficulty: 1
+- name: Kąty ostre trójkąta prostokątnego
+  description: Dwa kąty różne od prostego; ich miary są dodatnie i sumują się do 90° (są kątami dopełniającymi
+    się).
+  explanation: Skoro suma kątów trójkąta to 180°, a jeden ma 90°, to α + β = 90°. Dzięki temu, znając
+    jeden kąt ostry, drugi dostajemy odejmowaniem — nigdy nie liczymy go trygonometrią po raz drugi.
+  difficulty: 1
+- name: Sinus kąta ostrego
+  description: 'Dla kąta ostrego α w trójkącie prostokątnym: sin α = (długość przyprostokątnej leżącej
+    naprzeciw α) / (długość przeciwprostokątnej).'
+  explanation: „Naprzeciw przez przeciwprostokątną”. Ponieważ przyprostokątna jest krótsza od przeciwprostokątnej,
+    zawsze 0 < sin α < 1 — to darmowy test poprawności wyniku.
+  difficulty: 2
+- name: Cosinus kąta ostrego
+  description: cos α = (długość przyprostokątnej leżącej przy kącie α) / (długość przeciwprostokątnej).
+  explanation: '„Przy przez przeciwprostokątną”. Też zawsze między 0 a 1. Uwaga: „przy kącie α” oznacza
+    tę przyprostokątną, która jest ramieniem kąta α (nie przeciwprostokątną, która też jest ramieniem!).'
+  difficulty: 2
+- name: Tangens kąta ostrego
+  description: tg α = (przyprostokątna naprzeciw α) / (przyprostokątna przy α).
+  explanation: 'Iloraz dwóch przyprostokątnych — przeciwprostokątna w nim nie występuje. Tangens może
+    być dowolną liczbą dodatnią: jest mały dla kątów bliskich 0°, równy 1 dla 45°, duży dla kątów bliskich
+    90°.'
+  difficulty: 2
+- name: Niezależność wartości funkcji od wielkości trójkąta
+  description: Wartość sin α, cos α, tg α zależy wyłącznie od miary kąta α, a nie od rozmiarów trójkąta.
+  explanation: 'Wszystkie trójkąty prostokątne o tym samym kącie ostrym są podobne (cecha kkk), więc stosunki
+    odpowiednich boków są równe. Dlatego można korzystać z tablic wartości: raz policzone dla „wzorcowego”
+    trójkąta działają dla każdego.'
+  difficulty: 2
+- name: Trójkąt o kątach 45°, 45°, 90°
+  description: 'Połowa kwadratu: obie przyprostokątne równe a, przeciwprostokątna a√2.'
+  explanation: 'Warto pamiętać ten obrazek zamiast wzorów: z niego natychmiast odczytujemy sin45° = cos45°
+    = a/(a√2) = √2/2 oraz tg45° = 1.'
+  difficulty: 2
+- name: Trójkąt o kątach 30°, 60°, 90°
+  description: 'Połowa trójkąta równobocznego: krótsza przyprostokątna a (naprzeciw 30°), dłuższa a√3
+    (naprzeciw 60°), przeciwprostokątna 2a.'
+  explanation: 'Z tego rysunku odczytamy wszystkie wartości dla 30° i 60° bez tablic. Zapamiętaj regułę:
+    naprzeciw kąta 30° leży połowa przeciwprostokątnej.'
+  difficulty: 2
+- name: Rozwiązywanie trójkąta prostokątnego
+  description: Wyznaczenie wszystkich nieznanych długości boków i miar kątów trójkąta na podstawie danych.
+  explanation: 'Trójkąt prostokątny jest wyznaczony, gdy znamy: dwa boki albo bok i kąt ostry (kąt prosty
+    znamy zawsze). Sam jeden kąt ostry nie wystarcza — daje tylko kształt, nie rozmiar.'
+  difficulty: 2
+- name: Twierdzenie Pitagorasa jako narzędzie w rozwiązywaniu trójkątów
+  description: W trójkącie prostokątnym o przyprostokątnych a, b i przeciwprostokątnej c zachodzi a² +
+    b² = c².
+  explanation: Używamy go zawsze, gdy znamy dwa boki, a szukamy trzeciego — jest dokładniejsze i szybsze
+    niż droga przez kąt i tablice.
+  difficulty: 1
+- name: Tablice wartości funkcji trygonometrycznych
+  description: 'Zestawienie przybliżonych wartości sin, cos, tg dla kątów od 0° do 90° (co 1°), używane
+    w obu kierunkach: kąt → wartość oraz wartość → kąt.'
+  explanation: Idąc „w tył” szukamy w kolumnie wartości liczby najbliższej obliczonej i odczytujemy odpowiadający
+    jej kąt. Wynik podajemy wtedy jako przybliżenie, np. α ≈ 23°.
+  difficulty: 2
+- name: Kąt wzniesienia i kąt depresji
+  description: Kąt wzniesienia to kąt między poziomem a kierunkiem patrzenia na obiekt położony wyżej;
+    kąt depresji – na obiekt położony niżej.
+  explanation: W zadaniach praktycznych zawsze rysujemy poziomą linię wzroku i pion (wysokość) — powstaje
+    trójkąt prostokątny, w którym kąt wzniesienia jest kątem ostrym przy obserwatorze.
+  difficulty: 2
+- name: Jedynka trygonometryczna i związek tangensa z sin i cos
+  description: 'Dla kąta ostrego α: sin²α + cos²α = 1 oraz tg α = sin α / cos α (dla cos α ≠ 0).'
+  explanation: Pierwsza tożsamość to twierdzenie Pitagorasa zapisane w ilorazach (a² + b² = c² podzielone
+    przez c²). Pozwala z jednej znanej wartości wyliczyć pozostałe, bez znajomości samego kąta.
+  difficulty: 3
+- name: Funkcje kątów dopełniających
+  description: 'Dla 0° < α < 90°: sin(90° − α) = cos α, cos(90° − α) = sin α, tg(90° − α) = 1/tg α.'
+  explanation: 'To ten sam trójkąt oglądany „z drugiego wierzchołka”: przyprostokątna naprzeciw jednego
+    kąta ostrego leży przy drugim. Stąd np. sin 60° = cos 30°.'
+  difficulty: 3
+- name: Zapis kąta w stopniach i minutach
+  description: 1° = 60′, więc np. 22°30′ = 22,5°.
+  explanation: Tablice bywają podane co 1°, ale wyniki zadań czasem podaje się w stopniach i minutach;
+    przy zaokrąglaniu pamiętaj, że 0,5° = 30′.
+  difficulty: 2
+- name: Pole trójkąta prostokątnego
+  description: P = ½·a·b, gdzie a, b to długości przyprostokątnych.
+  explanation: Jedna przyprostokątna jest podstawą, druga wysokością. W zadaniach mieszanych często najpierw
+    wyznaczamy brakującą przyprostokątną trygonometrią, a dopiero potem liczymy pole.
+  difficulty: 2
+formulas:
+- name: Definicje funkcji trygonometrycznych kąta ostrego
+  latex_raw: \sin\alpha=\frac{a}{c},\qquad \cos\alpha=\frac{b}{c},\qquad \operatorname{tg}\alpha=\frac{a}{b}
+  conditions: α – kąt ostry trójkąta prostokątnego, a – przyprostokątna naprzeciw α, b – przyprostokątna
+    przy α, c – przeciwprostokątna
+  description: Zawsze najpierw podpisz boki względem TEGO kąta, o który pytasz.
+- name: Twierdzenie Pitagorasa
+  latex_raw: a^2+b^2=c^2
+  conditions: a, b – przyprostokątne, c – przeciwprostokątna trójkąta prostokątnego
+- name: Suma kątów ostrych
+  latex_raw: \alpha+\beta=90^\circ
+  conditions: α, β – kąty ostre trójkąta prostokątnego
+- name: Zakres wartości dla kąta ostrego
+  latex_raw: 0<\sin\alpha<1,\quad 0<\cos\alpha<1,\quad \operatorname{tg}\alpha>0
+  conditions: 0° < α < 90°
+  description: Szybki test sensowności wyniku.
+- name: Jedynka trygonometryczna
+  latex_raw: \sin^2\alpha+\cos^2\alpha=1
+  conditions: dowolny kąt ostry α
+  description: 'Zapis: sin²α oznacza (sin α)².'
+- name: Tangens przez sinus i cosinus
+  latex_raw: \operatorname{tg}\alpha=\frac{\sin\alpha}{\cos\alpha}
+  conditions: cos α ≠ 0, czyli α ≠ 90°
+- name: Funkcje kątów dopełniających
+  latex_raw: \sin(90^\circ-\alpha)=\cos\alpha,\qquad \cos(90^\circ-\alpha)=\sin\alpha,\qquad \operatorname{tg}(90^\circ-\alpha)=\frac{1}{\operatorname{tg}\alpha}
+  conditions: 0° < α < 90°
+- name: Wartości dla kątów 30°, 45°, 60°
+  latex_raw: \begin{array}{c|ccc} & 30^\circ & 45^\circ & 60^\circ\\ \hline \sin & \tfrac12 & \tfrac{\sqrt2}{2}
+    & \tfrac{\sqrt3}{2}\\ \cos & \tfrac{\sqrt3}{2} & \tfrac{\sqrt2}{2} & \tfrac12\\ \operatorname{tg}
+    & \tfrac{\sqrt3}{3} & 1 & \sqrt3 \end{array}
+  conditions: wartości dokładne, do zapamiętania lub odczytania z rysunku ekierek
+  description: tg 30° = √3/3 = 1/√3.
+- name: Boki ekierki 45°, 45°, 90°
+  latex_raw: a,\; a,\; a\sqrt2
+  conditions: trójkąt prostokątny równoramienny o przyprostokątnej a
+- name: Boki ekierki 30°, 60°, 90°
+  latex_raw: a,\; a\sqrt3,\; 2a
+  conditions: a – przyprostokątna naprzeciw kąta 30°, a√3 – naprzeciw 60°, 2a – przeciwprostokątna
+- name: Wyznaczanie boku z kąta
+  latex_raw: a=c\sin\alpha,\qquad b=c\cos\alpha,\qquad a=b\operatorname{tg}\alpha,\qquad c=\frac{a}{\sin\alpha}
+  conditions: oznaczenia jak w definicjach; wzory to przekształcone definicje
+  description: Nie uczymy się ich na pamięć — powstają z definicji przez mnożenie/dzielenie.
+- name: Pole trójkąta prostokątnego
+  latex_raw: P=\tfrac12ab
+  conditions: a, b – przyprostokątne
+- name: Wysokość opuszczona na przeciwprostokątną
+  latex_raw: a\cdot b=c\cdot h
+  conditions: h – wysokość poprowadzona z wierzchołka kąta prostego
+  description: Wynika z dwóch sposobów liczenia pola.
+methods:
+- name: Wybór właściwej funkcji trygonometrycznej (metoda „mam – szukam”)
+  when_to_use: Za każdym razem, gdy w trójkącie prostokątnym dany jest jeden bok i kąt ostry albo dwa
+    boki, a chcemy powiązać je jednym równaniem.
+  steps:
+  - Zaznacz na rysunku kąt ostry, o którym mowa (albo ten, który chcesz wyznaczyć).
+  - 'Podpisz boki względem tego kąta: „naprzeciw”, „przy”, „przeciwprostokątna”.'
+  - Wypisz, który bok MASZ (dana) i który SZUKASZ.
+  - Jeśli w parze występuje przeciwprostokątna i bok naprzeciw – użyj sinusa; przeciwprostokątna i bok
+    przy – cosinusa; dwie przyprostokątne – tangensa.
+  - Zapisz równanie z definicji, np. sin α = a/c, i przekształć je względem szukanej wielkości.
+- name: Rozwiązywanie trójkąta, gdy dane są dwa boki
+  when_to_use: Znane długości dwóch boków, szukamy trzeciego boku i obu kątów ostrych.
+  steps:
+  - Trzeci bok wyznacz z twierdzenia Pitagorasa (uważaj, czy szukasz przeciwprostokątnej, czy przyprostokątnej).
+  - Dla jednego kąta ostrego zapisz wartość funkcji, którą liczy się bezpośrednio z danych (np. tg α =
+    a/b), i oblicz ją jako ułamek dziesiętny.
+  - Odczytaj przybliżoną miarę kąta z tablic, wybierając wartość najbliższą obliczonej.
+  - Drugi kąt ostry oblicz jako 90° minus pierwszy — nie licz go ponownie z tablic.
+  - 'Sprawdź: naprzeciw dłuższego boku musi leżeć większy kąt.'
+- name: Rozwiązywanie trójkąta, gdy dane są bok i kąt ostry
+  when_to_use: 'Znane: jeden bok i miara jednego kąta ostrego.'
+  steps:
+  - 'Drugi kąt ostry: β = 90° − α.'
+  - Dla każdego z dwóch brakujących boków dobierz funkcję metodą „mam – szukam”, biorąc zawsze bok DANY
+    (żeby nie powielać błędu zaokrąglenia).
+  - 'Przekształć równanie: bok w liczniku → mnożysz, bok w mianowniku → dzielisz.'
+  - Wstaw wartość funkcji (dokładną dla 30°, 45°, 60°, przybliżoną z tablic w pozostałych przypadkach)
+    i oblicz.
+  - Zaokrąglij zgodnie z poleceniem i dopisz jednostki; sprawdź, czy przeciwprostokątna wyszła najdłuższa.
+- name: Wyznaczanie pozostałych funkcji, gdy dana jest jedna wartość
+  when_to_use: Dane np. sin α = 3/5 lub tg α = 2, a trzeba obliczyć cos α, tg α lub wyrażenie z nimi —
+    bez znajomości miary kąta.
+  steps:
+  - 'Sposób I (trójkąt pomocniczy): narysuj trójkąt prostokątny, w którym dane boki mają długości zgodne
+    z podanym ułamkiem (np. przy sin α = 3/5: naprzeciw 3, przeciwprostokątna 5).'
+  - 'Brakujący bok policz z twierdzenia Pitagorasa (tu: √(25−9) = 4).'
+  - Odczytaj z rysunku pozostałe funkcje (cos α = 4/5, tg α = 3/4).
+  - 'Sposób II (rachunkowy): z jedynki trygonometrycznej cos α = √(1 − sin²α) (dla kąta ostrego bierzemy
+    pierwiastek dodatni), a następnie tg α = sin α / cos α.'
+  - Sprawdź, czy sinus i cosinus wyszły z przedziału (0, 1).
+- name: Zadanie z treścią (praktyczne) z kątem wzniesienia
+  when_to_use: Wysokość drzewa/masztu/budynku, długość drabiny, nachylenie zbocza, cień, kąt patrzenia.
+  steps:
+  - 'Wykonaj rysunek: poziom (podłoże, linia wzroku) i pion (wysokość) tworzą kąt prosty.'
+  - Wpisz na rysunku wszystkie dane z treści i oznacz literą szukaną wielkość.
+  - Sprawdź, do którego trójkąta prostokątnego należą dane i szukana; jeśli figura jest złożona, rozetnij
+    ją na trójkąty prostokątne.
+  - Ułóż równanie metodą „mam – szukam” i rozwiąż.
+  - Jeśli w zadaniu występuje wysokość oczu obserwatora lub podmurówka, dodaj ją na końcu do wyniku z
+    trójkąta.
+  - Odpowiedz pełnym zdaniem z jednostką i wymaganym zaokrągleniem.
+- name: Wykorzystanie ekierek 30-60-90 i 45-45-90
+  when_to_use: Gdy w zadaniu pojawia się kąt 30°, 45° lub 60° i oczekiwany jest wynik dokładny (z pierwiastkiem),
+    a nie przybliżony.
+  steps:
+  - Rozpoznaj typ trójkąta po kątach.
+  - Przypisz danemu bokowi odpowiednią rolę w schemacie (a, a√3, 2a albo a, a, a√2).
+  - Ułóż proste równanie, np. a√3 = 12, i wyznacz a.
+  - Wyraź pozostałe boki przez a.
+  - Usuń niewymierność z mianownika, jeśli trzeba (np. 12/√3 = 4√3).
+- name: Rozbijanie figury na trójkąty prostokątne
+  when_to_use: Zadania o prostokątach, rombach, trapezach równoramiennych, trójkątach równoramiennych,
+    przekątnych i wysokościach.
+  steps:
+  - Poprowadź wysokość lub przekątną tak, by powstał trójkąt prostokątny zawierający dane i szukaną.
+  - 'Wykorzystaj własności figury: w trapezie równoramiennym odcinek odcięty na dłuższej podstawie to
+    (a − b)/2; w rombie przekątne przecinają się pod kątem prostym i połowią kąty.'
+  - W otrzymanym trójkącie prostokątnym zastosuj definicje funkcji trygonometrycznych lub twierdzenie
+    Pitagorasa.
+  - Wróć do pytania zadania (obwód, pole, długość przekątnej) i złóż wynik z obliczonych fragmentów.
+examples:
+- statement: W trójkącie prostokątnym przyprostokątne mają długości 5 i 12. Oblicz długość przeciwprostokątnej,
+    wartości sin, cos i tg kąta α leżącego naprzeciw boku długości 5 oraz przybliżone miary obu kątów
+    ostrych (sin 22° ≈ 0,3746; sin 23° ≈ 0,3907).
+  worked_solution: |-
+    1) Przeciwprostokątna z twierdzenia Pitagorasa: c² = 5² + 12² = 25 + 144 = 169, więc c = 13.
+    2) Względem kąta α: bok naprzeciw = 5, bok przy = 12, przeciwprostokątna = 13. Zatem:
+     sin α = 5/13 ≈ 0,3846; cos α = 12/13 ≈ 0,9231; tg α = 5/12 ≈ 0,4167.
+     Kontrola: sinus i cosinus leżą w przedziale (0, 1). ✓
+    3) Miara α: wartość 0,3846 leży między sin 22° ≈ 0,3746 a sin 23° ≈ 0,3907, bliżej 0,3907, więc α ≈ 23°.
+    4) Drugi kąt ostry: β = 90° − 23° = 67°.
+    5) Sprawdzenie sensowności: naprzeciw krótszej przyprostokątnej (5) wyszedł mniejszy kąt (23°). ✓
+  difficulty: 2
+- statement: W trójkącie prostokątnym przeciwprostokątna ma długość 10, a jeden z kątów ostrych 30°. Oblicz
+    dokładne długości obu przyprostokątnych i pole trójkąta.
+  worked_solution: |-
+    Sposób I – z definicji:
+     Przyprostokątna a naprzeciw kąta 30°: sin 30° = a/10, czyli a = 10 · 1/2 = 5.
+     Przyprostokątna b przy kącie 30° (naprzeciw 60°): cos 30° = b/10, czyli b = 10 · (√3/2) = 5√3.
+    Sposób II – ekierka 30-60-90: boki mają się jak a : a√3 : 2a. Skoro 2a = 10, to a = 5 oraz a√3 = 5√3 — ten sam wynik.
+    Pole: P = ½ · 5 · 5√3 = 25√3/2 = 12,5√3 ≈ 21,65.
+    Kontrola: 5 < 5√3 ≈ 8,66 < 10 — przeciwprostokątna jest najdłuższa. ✓
+  difficulty: 2
+- statement: Drabina o długości 6 m opiera się o pionową ścianę i tworzy z poziomym podłożem kąt 70°.
+    Na jakiej wysokości drabina dotyka ściany i jak daleko jej podstawa stoi od ściany? Wyniki zaokrąglij
+    do 0,1 m. (sin 70° ≈ 0,9397; cos 70° ≈ 0,3420)
+  worked_solution: |-
+    Rysunek: drabina to przeciwprostokątna c = 6 m, ściana (wysokość h) jest pionowa, podłoże (odległość d) poziome, kąt między drabiną a podłożem α = 70°.
+    1) Wysokość h leży NAPRZECIW kąta 70°, dana jest przeciwprostokątna → sinus:
+     sin 70° = h/6, więc h = 6 · 0,9397 = 5,6382 ≈ 5,6 m.
+    2) Odległość d leży PRZY kącie 70°, dana przeciwprostokątna → cosinus:
+     cos 70° = d/6, więc d = 6 · 0,3420 = 2,052 ≈ 2,1 m.
+    3) Sprawdzenie twierdzeniem Pitagorasa: 5,64² + 2,05² ≈ 31,8 + 4,2 = 36,0 = 6². ✓
+    Odpowiedź: drabina sięga na wysokość około 5,6 m, a jej podstawa stoi około 2,1 m od ściany.
+  difficulty: 3
+- statement: Kąt α jest kątem ostrym i sin α = 0,6. Oblicz cos α oraz tg α, a następnie długości przyprostokątnych
+    trójkąta prostokątnego o kącie α i przeciwprostokątnej długości 20.
+  worked_solution: |-
+    1) Zauważmy, że sin α = 0,6 = 3/5. Trójkąt pomocniczy: bok naprzeciw α ma 3, przeciwprostokątna 5, więc bok przy α: √(5² − 3²) = √16 = 4.
+     Stąd cos α = 4/5 = 0,8 oraz tg α = 3/4 = 0,75.
+    2) Sprawdzenie jedynką trygonometryczną: 0,6² + 0,8² = 0,36 + 0,64 = 1. ✓
+    3) Trójkąt o przeciwprostokątnej 20:
+     a = c · sin α = 20 · 0,6 = 12 (bok naprzeciw α),
+     b = c · cos α = 20 · 0,8 = 16 (bok przy α).
+    4) Kontrola: 12² + 16² = 144 + 256 = 400 = 20². ✓ (To trójkąt podobny do 3-4-5 w skali 4.)
+  difficulty: 3
+- statement: W trapezie równoramiennym dłuższa podstawa ma długość 10, krótsza 4, a kąt przy dłuższej
+    podstawie ma miarę 60°. Oblicz długość ramienia, wysokość trapezu i jego pole (wyniki dokładne).
+  worked_solution: |-
+    1) Rysujemy obie wysokości z końców krótszej podstawy. Dzielą one dłuższą podstawę na trzy odcinki: x, 4, x, przy czym 2x + 4 = 10, więc x = 3.
+    2) Powstał trójkąt prostokątny o kącie ostrym 60°, w którym odcinek x = 3 leży PRZY tym kącie, wysokość h leży NAPRZECIW niego, a ramię r jest przeciwprostokątną.
+    3) Ramię: cos 60° = 3/r, czyli 1/2 = 3/r, stąd r = 6.
+    4) Wysokość: tg 60° = h/3, czyli h = 3·√3 = 3√3. (Kontrola Pitagorasem: 3² + (3√3)² = 9 + 27 = 36 = 6². ✓)
+    5) Pole: P = ((10 + 4)/2) · 3√3 = 7 · 3√3 = 21√3 ≈ 36,4.
+    Odpowiedź: ramię ma długość 6, wysokość 3√3, pole 21√3.
+  difficulty: 4
+objectives:
+- statement: Wskazać w trójkącie prostokątnym przeciwprostokątną oraz przyprostokątną leżącą naprzeciw
+    i przy danym kącie ostrym.
+  bloom_level: Rozumienie
+- statement: Podać definicje sinusa, cosinusa i tangensa kąta ostrego jako stosunków odpowiednich boków
+    trójkąta prostokątnego.
+  bloom_level: Zapamiętywanie
+- statement: Obliczyć wartości sin, cos i tg obu kątów ostrych trójkąta o danych długościach boków (w
+    razie potrzeby po wyznaczeniu trzeciego boku z twierdzenia Pitagorasa).
+  bloom_level: Stosowanie
+- statement: Wyznaczyć długość brakującego boku trójkąta prostokątnego, mając dany jeden bok i miarę kąta
+    ostrego, dobierając właściwą funkcję i przekształcając równanie.
+  bloom_level: Stosowanie
+- statement: Odczytać przybliżoną miarę kąta ostrego z tablic wartości funkcji trygonometrycznych i wyznaczyć
+    drugi kąt ostry jako dopełnienie do 90°.
+  bloom_level: Stosowanie
+- statement: Stosować dokładne wartości funkcji trygonometrycznych kątów 30°, 45° i 60° oraz zależności
+    między bokami ekierek, podając wyniki w postaci dokładnej.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć pozostałe wartości funkcji trygonometrycznych kąta ostrego, mając daną jedną z
+    nich, korzystając z trójkąta pomocniczego lub jedynki trygonometrycznej.
+  bloom_level: Analiza
+- statement: Przełożyć sytuację praktyczną (drabina, maszt, cień, kąt wzniesienia, nachylenie) na model
+    z trójkątem prostokątnym, rozwiązać go i zinterpretować wynik z jednostką i właściwym zaokrągleniem.
+  bloom_level: Analiza
+- statement: Rozbić figurę płaską (trójkąt równoramienny, prostokąt, romb, trapez) na trójkąty prostokątne
+    i wykorzystać trygonometrię do obliczenia jej boków, wysokości, przekątnych, obwodu lub pola.
+  bloom_level: Analiza
+- statement: Ocenić poprawność otrzymanych wyników, korzystając z warunków 0 < sin α < 1, 0 < cos α <
+    1, zależności między długościami boków a miarami kątów oraz kontroli twierdzeniem Pitagorasa.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Mylenie boku „naprzeciw” z bokiem „przy”
+  incorrect_reasoning: Uczeń podpisuje boki raz na zawsze (a = naprzeciw, b = przy) i używa tych samych
+    wzorów dla drugiego kąta ostrego, otrzymując np. sin β = a/c zamiast cos β = a/c.
+  correct_reasoning: 'Role boków zmieniają się wraz z wyborem kąta: przyprostokątna leżąca naprzeciw kąta
+    α leży PRZY kącie β. Przed każdym równaniem trzeba na nowo podpisać boki względem rozważanego kąta;
+    stąd sin β = cos α.'
+  severity: 5
+- name: Stosowanie funkcji trygonometrycznych w trójkącie nieprostokątnym
+  incorrect_reasoning: „Skoro sin to stosunek boków, to w dowolnym trójkącie mogę napisać sin α = bok/bok.”
+  correct_reasoning: Definicje sin, cos, tg przez stosunki boków obowiązują wyłącznie dla kąta ostrego
+    w trójkącie PROSTOKĄTNYM. W innych figurach trzeba najpierw poprowadzić wysokość i wyodrębnić trójkąt
+    prostokątny.
+  severity: 5
+- name: Sinus lub cosinus większy od 1
+  incorrect_reasoning: Uczeń dzieli przeciwprostokątną przez przyprostokątną i otrzymuje np. sin α = 13/5
+    = 2,6, po czym szuka takiego kąta w tablicach.
+  correct_reasoning: W ułamku definiującym sinus i cosinus przeciwprostokątna jest zawsze w MIANOWNIKU,
+    bo jest bokiem najdłuższym. Dlatego 0 < sin α < 1 i 0 < cos α < 1; wynik większy od 1 to sygnał odwróconego
+    ułamka.
+  severity: 4
+- name: „sin α + cos α = 1”
+  incorrect_reasoning: Z jedynki trygonometrycznej uczeń zapamiętuje, że sinus i cosinus sumują się do
+    1, i liczy cos α = 1 − sin α.
+  correct_reasoning: 'Tożsamość dotyczy KWADRATÓW: sin²α + cos²α = 1. Zatem cos α = √(1 − sin²α) (dla
+    kąta ostrego bierzemy wartość dodatnią). Sprawdzian: dla α = 30° mamy 0,5 + 0,866 ≈ 1,366 ≠ 1, ale
+    0,25 + 0,75 = 1. ✓'
+  severity: 4
+- name: Zły kierunek przekształcenia równania
+  incorrect_reasoning: Z równania sin 40° = 5/c uczeń zapisuje c = 5 · sin 40°, bo „przy trygonometrii
+    się mnoży”.
+  correct_reasoning: 'Szukana wielkość stoi w mianowniku, więc mnożymy obie strony przez c i dzielimy
+    przez sin 40°: c = 5 / sin 40°. Kontrola: przeciwprostokątna musi wyjść DŁUŻSZA niż 5, a mnożenie
+    przez liczbę mniejszą od 1 dałoby wynik mniejszy.'
+  severity: 4
+- name: Liniowe traktowanie funkcji trygonometrycznych
+  incorrect_reasoning: „Skoro sin 30° = 0,5, to sin 60° = 1” albo „tg 2α = 2·tg α”.
+  correct_reasoning: Funkcje trygonometryczne nie są proporcjonalne do miary kąta. sin 60° = √3/2 ≈ 0,87,
+    a nie 1. Wartości odczytujemy z tablic lub z ekierek, nigdy nie „skalujemy” kąta.
+  severity: 3
+- name: Zaokrąglanie w trakcie obliczeń i liczenie z wielkości już przybliżonych
+  incorrect_reasoning: Uczeń najpierw zaokrągla kąt do pełnych stopni, potem z niego liczy bok, a z tego
+    boku kolejny bok — błędy się kumulują i wynik odbiega od poprawnego.
+  correct_reasoning: Każdą nową wielkość wyznaczaj z DANYCH z treści zadania, a nie z wcześniej obliczonych
+    przybliżeń; zaokrąglaj dopiero końcowy wynik, zgodnie z poleceniem.
+  severity: 3
+- name: Uznanie, że dwa kąty wyznaczają trójkąt
+  incorrect_reasoning: „Dane są kąty 90° i 40°, więc mogę policzyć boki.”
+  correct_reasoning: Same kąty wyznaczają jedynie kształt (klasę trójkątów podobnych), a nie rozmiar.
+    Aby rozwiązać trójkąt, potrzebna jest długość co najmniej jednego boku.
+  severity: 3
+- name: Utożsamianie tangensa z ilorazem zawierającym przeciwprostokątną
+  incorrect_reasoning: Uczeń zapisuje tg α = a/c (bok naprzeciw przez przeciwprostokątną), myląc go z
+    sinusem.
+  correct_reasoning: 'Tangens to iloraz DWÓCH PRZYPROSTOKĄTNYCH: tg α = (naprzeciw)/(przy). Przeciwprostokątna
+    w ogóle w nim nie występuje, dlatego tangens może być większy od 1 (np. tg 60° = √3).'
+  severity: 4
+- name: Pominięcie wysokości obserwatora w zadaniu praktycznym
+  incorrect_reasoning: Przy kącie wzniesienia mierzonym z wysokości oczu uczeń podaje jako wysokość obiektu
+    samą długość obliczoną z trójkąta.
+  correct_reasoning: Trójkąt prostokątny „zaczyna się” na poziomie oczu, więc obliczona wartość to wysokość
+    obiektu POWYŻEJ tego poziomu; do wyniku trzeba dodać wysokość, na której znajduje się obserwator (lub
+    przyrząd).
+  severity: 3

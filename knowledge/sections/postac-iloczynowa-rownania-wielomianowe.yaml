@@ -1,0 +1,313 @@
+section: postac-iloczynowa-rownania-wielomianowe
+name: Postać iloczynowa wielomianu i równania wielomianowe
+scope: Bringing a polynomial to product form; solving polynomial equations once factored.
+requirements:
+- III.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:19:12.554304'
+  approved_at: '2026-08-28T18:28:02.525072'
+  approved_by: reviewer
+concepts:
+- name: Wielomian jednej zmiennej
+  description: Wyrażenie postaci W(x)=a_n x^n + a_{n-1}x^{n-1}+\dots+a_1x+a_0, gdzie n jest liczbą naturalną,
+    a współczynniki a_n,\dots,a_0 są liczbami rzeczywistymi i a_n\neq 0 (wtedy n to stopień wielomianu).
+  explanation: Myśl o wielomianie jak o 'sumie jednomianów'. W tym dziale najczęściej pracujemy z wielomianami
+    stopnia 3 i 4, bo dla nich rozkład na czynniki jest wykonalny szkolnymi metodami.
+  difficulty: 1
+- name: Postać iloczynowa wielomianu
+  description: Zapis wielomianu jako iloczynu czynników niższego stopnia, np. W(x)=(x-2)(x+1)(x^2+3) albo
+    W(x)=2x(x-5)^2.
+  explanation: 'Postać iloczynowa jest ''gotowa do rozwiązywania równań'': z iloczynu równego zeru natychmiast
+    odczytujemy pierwiastki. Suma nic nie mówi o miejscach zerowych, iloczyn mówi wszystko.'
+  difficulty: 2
+- name: Pierwiastek (miejsce zerowe) wielomianu
+  description: Liczba x_0 taka, że W(x_0)=0.
+  explanation: To dokładnie to samo co rozwiązanie równania W(x)=0 i to samo co miejsce przecięcia wykresu
+    z osią OX. Sprawdzenie, czy dana liczba jest pierwiastkiem, polega na podstawieniu jej do wzoru.
+  difficulty: 1
+- name: Równanie wielomianowe
+  description: Równanie postaci W(x)=0, gdzie W jest wielomianem; ogólniej równanie, które po przeniesieniu
+    wszystkiego na jedną stronę i redukcji ma taką postać.
+  explanation: 'Pierwszy ruch przy każdym takim równaniu to: wszystko na lewą stronę, zero po prawej.
+    Dopiero wtedy ma sens szukanie postaci iloczynowej.'
+  difficulty: 1
+- name: Własność iloczynu zerowego
+  description: 'Dla liczb rzeczywistych: a\cdot b=0 wtedy i tylko wtedy, gdy a=0 lub b=0. Analogicznie
+    dla iloczynu większej liczby czynników.'
+  explanation: To jedyny powód, dla którego rozkładamy na czynniki. Kluczowe jest słowo 'lub' (wystarczy,
+    że jeden czynnik znika) oraz to, że po prawej stronie musi stać zero — dla iloczynu równego 6 własność
+    nie działa.
+  difficulty: 2
+- name: Wyłączanie wspólnego czynnika przed nawias
+  description: 'Zamiana sumy na iloczyn przez wyciągnięcie czynnika występującego w każdym składniku:
+    ab+ac=a(b+c).'
+  explanation: Zawsze pierwszy krok rozkładu. Wyciągamy największy wspólny czynnik liczbowy i najniższą
+    potęgę x, np. 6x^4-9x^3=3x^3(2x-3).
+  difficulty: 2
+- name: Metoda grupowania
+  description: Rozkład czteroskładnikowego wyrażenia przez podział na dwie pary, wyłączenie czynnika w
+    każdej parze i wyłączenie powstałego wspólnego nawiasu.
+  explanation: Działa, gdy po zgrupowaniu w obu parach zostaje ten sam nawias. Jeśli zostaje nawias 'z
+    przeciwnymi znakami', wyłącz minus, np. -9x-18=-9(x+2).
+  difficulty: 3
+- name: Wzory skróconego mnożenia jako narzędzie rozkładu
+  description: Tożsamości a^2-b^2=(a-b)(a+b), a^3-b^3=(a-b)(a^2+ab+b^2), a^3+b^3=(a+b)(a^2-ab+b^2) czytane
+    od prawej do lewej.
+  explanation: 'W rozkładzie używamy ich ''wstecz'': widząc różnicę kwadratów lub sześcianów, zamieniamy
+    ją na iloczyn. Uwaga: suma kwadratów a^2+b^2 nie rozkłada się w liczbach rzeczywistych.'
+  difficulty: 2
+- name: Rozkład trójmianu kwadratowego
+  description: Jeśli ax^2+bx+c ma pierwiastki x_1,x_2 (\Delta\ge 0), to ax^2+bx+c=a(x-x_1)(x-x_2). Gdy
+    \Delta<0, trójmian nie rozkłada się na czynniki liniowe.
+  explanation: Dzięki temu każdy czynnik kwadratowy w rozkładzie da się 'dokończyć' lub uznać za nierozkładalny.
+    Czynnik z \Delta<0 nie wnosi żadnych rozwiązań równania.
+  difficulty: 3
+- name: Czynnik nierozkładalny (bez pierwiastków)
+  description: Czynnik kwadratowy o ujemnym wyróżniku, np. x^2+4, x^2+x+1, przyjmujący tylko wartości
+    dodatnie (albo tylko ujemne).
+  explanation: Taki czynnik można 'zignorować' przy szukaniu rozwiązań, ale nie wolno go skreślić z zapisu
+    równania bez uzasadnienia, że jest różny od zera.
+  difficulty: 3
+- name: Krotność pierwiastka
+  description: Wykładnik, z jakim czynnik (x-x_0) występuje w postaci iloczynowej; np. w W(x)=(x-1)^2(x+3)
+    liczba 1 jest pierwiastkiem dwukrotnym, a -3 jednokrotnym.
+  explanation: Krotność nie zwiększa liczby różnych rozwiązań równania — pierwiastek dwukrotny zapisujemy
+    w odpowiedzi raz. Wpływa natomiast na zachowanie wykresu przy osi OX.
+  difficulty: 3
+- name: Liczba pierwiastków a stopień wielomianu
+  description: Wielomian stopnia n ma co najwyżej n różnych pierwiastków rzeczywistych.
+  explanation: 'Dobra kontrola poprawności: równanie stopnia 3 nie może mieć czterech różnych rozwiązań;
+    jeśli tyle wyszło, gdzieś jest błąd rachunkowy.'
+  difficulty: 2
+- name: Równoważność przekształceń równania
+  description: Przekształcenie jest równoważne, gdy nie gubi ani nie dodaje rozwiązań; dzielenie obu stron
+    przez wyrażenie zawierające niewiadomą na ogół nie jest równoważne.
+  explanation: Zamiast dzielić przez x, przenieś wszystko na jedną stronę i wyłącz x przed nawias — wtedy
+    rozwiązanie x=0 zostaje zachowane.
+  difficulty: 3
+formulas:
+- name: Własność iloczynu zerowego
+  latex_raw: a\cdot b\cdot c=0 \iff a=0 \ \lor\ b=0 \ \lor\ c=0
+  conditions: a,b,c — dowolne liczby (wyrażenia) rzeczywiste; po prawej stronie równania musi stać zero
+  description: 'Podstawa całego działu: rozwiązania równania w postaci iloczynowej to suma rozwiązań równań
+    ''czynnik = 0''.'
+- name: Wyłączanie wspólnego czynnika
+  latex_raw: ab+ac=a(b+c),\qquad a x^{k+m}+b x^{k}=x^{k}(a x^{m}+b)
+  conditions: zawsze; k,m — wykładniki naturalne
+- name: Różnica kwadratów
+  latex_raw: a^2-b^2=(a-b)(a+b)
+  conditions: zawsze
+- name: Różnica sześcianów
+  latex_raw: a^3-b^3=(a-b)(a^2+ab+b^2)
+  conditions: zawsze; czynnik a^2+ab+b^2 dla b\neq0 nie ma pierwiastków rzeczywistych względem a
+- name: Suma sześcianów
+  latex_raw: a^3+b^3=(a+b)(a^2-ab+b^2)
+  conditions: zawsze
+- name: Kwadrat sumy i różnicy (czytany wstecz)
+  latex_raw: a^2+2ab+b^2=(a+b)^2,\qquad a^2-2ab+b^2=(a-b)^2
+  conditions: zawsze; przydatne do wykrycia pierwiastka dwukrotnego
+- name: Rozkład trójmianu kwadratowego
+  latex_raw: ax^2+bx+c=a(x-x_1)(x-x_2),\quad x_{1,2}=\frac{-b\pm\sqrt{\Delta}}{2a},\ \Delta=b^2-4ac
+  conditions: a\neq 0 oraz \Delta\ge 0; dla \Delta=0 mamy ax^2+bx+c=a(x-x_1)^2
+- name: Równanie dwumianowe typu x^n=a
+  latex_raw: x^2=a \iff x=\sqrt{a}\ \lor\ x=-\sqrt{a}\ (a\ge0);\qquad x^3=a \iff x=\sqrt[3]{a}
+  conditions: dla x^2=a przy a<0 brak rozwiązań; dla x^3=a rozwiązanie istnieje i jest jedno dla każdego
+    a
+- name: Grupowanie (schemat)
+  latex_raw: ax+ay+bx+by=a(x+y)+b(x+y)=(x+y)(a+b)
+  conditions: gdy po podziale na pary powstaje ten sam nawias
+methods:
+- name: Doprowadzanie wielomianu do postaci iloczynowej
+  when_to_use: Gdy trzeba rozłożyć wielomian na czynniki lub rozwiązać równanie W(x)=0, w którym lewa
+    strona jest sumą.
+  steps:
+  - Uporządkuj wielomian malejąco względem potęg x i zredukuj wyrazy podobne.
+  - Wyłącz przed nawias największy wspólny czynnik (liczbowy i potęgę x), jeśli istnieje.
+  - 'Sprawdź, czy to, co zostało, pasuje do wzoru skróconego mnożenia: różnica kwadratów, różnica/suma
+    sześcianów, kwadrat sumy lub różnicy.'
+  - 'Jeśli zostały cztery składniki — zastosuj grupowanie: podziel na dwie pary, wyłącz czynnik z każdej
+    pary tak, by powstał ten sam nawias, po czym wyłącz ten nawias.'
+  - Każdy powstały czynnik kwadratowy spróbuj rozłożyć dalej (delta i wzór a(x-x_1)(x-x_2)); jeśli \Delta<0,
+    zostaw go jako nierozkładalny.
+  - Sprawdź poprawność, wymnażając czynniki (lub podstawiając jedną wygodną wartość x, np. x=1, do obu
+    postaci).
+- name: Rozwiązywanie równania w gotowej postaci iloczynowej
+  when_to_use: Gdy równanie ma już postać (czynnik_1)(czynnik_2)\dots=0.
+  steps:
+  - Upewnij się, że po prawej stronie stoi 0 (jeśli nie — najpierw przenieś wszystko na lewo i rozłóż
+    na nowo).
+  - Przyrównaj do zera każdy czynnik po kolei, łącząc warunki spójnikiem 'lub'.
+  - Rozwiąż każde z prostych równań (liniowe, kwadratowe, x^n=a).
+  - Odrzuć czynniki bez pierwiastków rzeczywistych (np. x^2+5=0 — brak rozwiązań).
+  - Zbierz wszystkie różne rozwiązania w jedną odpowiedź, każde wypisując tylko raz (krotność nie mnoży
+    odpowiedzi).
+- name: Rozwiązywanie równania wielomianowego 'od zera'
+  when_to_use: Gdy równanie ma niewiadome po obu stronach lub jest zapisane jako suma, np. x^3+3x^2=4x+12.
+  steps:
+  - Przenieś wszystkie wyrazy na lewą stronę, zostawiając 0 po prawej; zredukuj wyrazy podobne.
+  - Doprowadź lewą stronę do postaci iloczynowej (wspólny czynnik → wzory skróconego mnożenia → grupowanie).
+  - Zastosuj własność iloczynu zerowego i rozwiąż powstałe równania cząstkowe.
+  - Zapisz zbiór rozwiązań; ewentualnie sprawdź jedno z nich przez podstawienie do równania wyjściowego.
+  - Skontroluj, czy liczba różnych rozwiązań nie przekracza stopnia wielomianu.
+- name: Sprawdzanie, czy liczba jest pierwiastkiem, i odczyt pierwiastków z postaci iloczynowej
+  when_to_use: Przy weryfikacji rozwiązania, przy zadaniach typu 'wykaż, że 2 jest pierwiastkiem' oraz
+    przy odczycie miejsc zerowych i ich krotności.
+  steps:
+  - 'Aby sprawdzić: podstaw liczbę w miejsce x i policz wartość W(x); pierwiastek daje 0.'
+  - 'Aby odczytać z iloczynu: dla czynnika (x-a) pierwiastkiem jest a (uwaga na znak: z (x+3) wynika x=-3).'
+  - Dla czynnika (bx+c) rozwiąż bx+c=0, czyli x=-c/b.
+  - Wykładnik przy czynniku (x-a)^k odczytaj jako krotność pierwiastka a.
+  - 'Czynniki kwadratowe zbadaj deltą: dopiero \Delta\ge0 daje dodatkowe pierwiastki.'
+- name: Rozkład wielomianu czwartego stopnia bez wyrazów nieparzystych
+  when_to_use: Dla równań typu ax^4+bx^2+c=0 (tzw. dwukwadratowych).
+  steps:
+  - 'Potraktuj x^2 jako całość: rozłóż trójmian at^2+bt+c, gdzie t=x^2, albo rozbij środkowy wyraz i zgrupuj.'
+  - Zapisz wielomian jako iloczyn dwóch czynników postaci (x^2-p)(x^2-q).
+  - Rozwiąż x^2=p oraz x^2=q, pamiętając o dwóch znakach pierwiastka i o braku rozwiązań przy wartości
+    ujemnej.
+  - Zbierz wszystkie rozwiązania (może ich być 0, 1, 2, 3 lub 4).
+examples:
+- statement: Rozwiąż równanie (x-3)(2x+1)(x^2+4)=0.
+  worked_solution: |-
+    Równanie jest już w postaci iloczynowej, a po prawej stronie stoi 0, więc korzystamy z własności iloczynu zerowego:
+    x-3=0 lub 2x+1=0 lub x^2+4=0.
+    1) x-3=0 daje x=3.
+    2) 2x+1=0 daje 2x=-1, czyli x=-\tfrac12.
+    3) x^2+4=0 daje x^2=-4 — kwadrat liczby rzeczywistej nie jest ujemny, więc to równanie nie ma rozwiązań (można też policzyć \Delta=0^2-4\cdot1\cdot4=-16<0).
+    Odpowiedź: x=3 lub x=-\tfrac12.
+  difficulty: 1
+- statement: Rozwiąż równanie x^3=4x.
+  worked_solution: |-
+    Nie wolno dzielić obu stron przez x, bo stracilibyśmy rozwiązanie x=0. Przenosimy wszystko na lewą stronę:
+    x^3-4x=0.
+    Wyłączamy wspólny czynnik x:
+    x(x^2-4)=0.
+    Czynnik x^2-4 to różnica kwadratów: x^2-2^2=(x-2)(x+2). Zatem
+    x(x-2)(x+2)=0.
+    Stąd x=0 lub x-2=0 lub x+2=0, czyli x=0 lub x=2 lub x=-2.
+    Sprawdzenie dla x=-2: lewa strona (-2)^3=-8, prawa 4\cdot(-2)=-8 — zgadza się.
+    Odpowiedź: x\in\{-2,0,2\}.
+  difficulty: 2
+- statement: Doprowadź wielomian W(x)=x^3+2x^2-9x-18 do postaci iloczynowej i rozwiąż równanie W(x)=0.
+  worked_solution: |-
+    Wielomian ma cztery składniki — stosujemy grupowanie:
+    x^3+2x^2-9x-18=(x^3+2x^2)+(-9x-18).
+    Z pierwszej pary wyłączamy x^2: x^2(x+2). Z drugiej pary wyłączamy -9 (uwaga na znak): -9(x+2).
+    Otrzymujemy x^2(x+2)-9(x+2)=(x+2)(x^2-9).
+    Czynnik x^2-9 to różnica kwadratów: (x-3)(x+3). Ostatecznie
+    W(x)=(x+2)(x-3)(x+3).
+    Równanie (x+2)(x-3)(x+3)=0 daje x=-2 lub x=3 lub x=-3.
+    Kontrola: stopień 3, więc co najwyżej 3 pierwiastki — mamy dokładnie 3.
+    Odpowiedź: x\in\{-3,-2,3\}.
+  difficulty: 3
+- statement: Rozwiąż równanie 2x^3+3x^2=8x+12.
+  worked_solution: |-
+    Przenosimy wszystko na lewą stronę:
+    2x^3+3x^2-8x-12=0.
+    Grupujemy:
+    (2x^3+3x^2)+(-8x-12)=x^2(2x+3)-4(2x+3)=(2x+3)(x^2-4).
+    Rozkładamy dalej różnicę kwadratów: x^2-4=(x-2)(x+2). Zatem
+    (2x+3)(x-2)(x+2)=0.
+    Stąd 2x+3=0 lub x-2=0 lub x+2=0, czyli x=-\tfrac32 lub x=2 lub x=-2.
+    Sprawdzenie dla x=2: lewa strona wyjściowa 2\cdot8+3\cdot4=28, prawa 8\cdot2+12=28.
+    Odpowiedź: x\in\{-2,-\tfrac32,2\}.
+  difficulty: 3
+- statement: Rozwiąż równanie x^4-5x^2+4=0 oraz podaj postać iloczynową wielomianu x^3-8 i rozwiąż x^3-8=0.
+  worked_solution: |-
+    Część 1. W wielomianie x^4-5x^2+4 rozbijamy środkowy wyraz: -5x^2=-x^2-4x^2, więc
+    x^4-x^2-4x^2+4=x^2(x^2-1)-4(x^2-1)=(x^2-1)(x^2-4)=(x-1)(x+1)(x-2)(x+2).
+    Równanie (x-1)(x+1)(x-2)(x+2)=0 daje x=1 lub x=-1 lub x=2 lub x=-2 (cztery pierwiastki — tyle, ile wynosi stopień).
+    Część 2. Korzystamy ze wzoru na różnicę sześcianów z a=x, b=2:
+    x^3-8=x^3-2^3=(x-2)(x^2+2x+4).
+    Równanie (x-2)(x^2+2x+4)=0: albo x-2=0, czyli x=2, albo x^2+2x+4=0, gdzie \Delta=4-16=-12<0, więc ten czynnik nie ma pierwiastków rzeczywistych.
+    Odpowiedź: x^4-5x^2+4=0 dla x\in\{-2,-1,1,2\}; x^3-8=0 tylko dla x=2.
+  difficulty: 4
+objectives:
+- statement: Wyjaśnić własność iloczynu zerowego i uzasadnić, dlaczego to ona pozwala rozwiązywać równania
+    w postaci iloczynowej.
+  bloom_level: Rozumienie
+- statement: Odczytać pierwiastki i ich krotności z wielomianu zapisanego w postaci iloczynowej, poprawnie
+    interpretując znaki w czynnikach.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać równanie wielomianowe zapisane w postaci iloczynowej, w tym z czynnikami liniowymi
+    o współczynniku różnym od 1 oraz z czynnikami kwadratowymi bez pierwiastków.
+  bloom_level: Zastosowanie
+- statement: Doprowadzić wielomian do postaci iloczynowej przez wyłączanie wspólnego czynnika, wzory skróconego
+    mnożenia (różnica kwadratów, suma i różnica sześcianów) oraz metodę grupowania.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać równanie wielomianowe podane w postaci sumy lub z niewiadomą po obu stronach, przekształcając
+    je najpierw do postaci W(x)=0.
+  bloom_level: Zastosowanie
+- statement: Rozłożyć i rozwiązać równanie dwukwadratowe ax^4+bx^2+c=0, wracając od zmiennej pomocniczej
+    do x.
+  bloom_level: Analiza
+- statement: Sprawdzić, czy dana liczba jest pierwiastkiem wielomianu, i zweryfikować poprawność otrzymanego
+    rozkładu przez wymnożenie czynników.
+  bloom_level: Analiza
+- statement: Rozpoznać i wskazać niepoprawne przekształcenia równania (dzielenie przez wyrażenie z niewiadomą,
+    skracanie nawiasu, stosowanie iloczynu zerowego przy prawej stronie różnej od zera) oraz podać poprawne
+    postępowanie.
+  bloom_level: Ocenianie
+- statement: Ocenić sensowność zbioru rozwiązań, porównując liczbę różnych pierwiastków ze stopniem wielomianu.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Dzielenie obu stron przez x
+  incorrect_reasoning: Z równania x^3=4x uczeń dzieli obie strony przez x i otrzymuje x^2=4, czyli x=2
+    lub x=-2 — gubi rozwiązanie x=0.
+  correct_reasoning: 'Nie wolno dzielić przez wyrażenie, które może być zerem. Przenosimy wszystko na
+    jedną stronę i wyłączamy x przed nawias: x(x-2)(x+2)=0, skąd x=0, x=2, x=-2.'
+  severity: 5
+- name: Stosowanie 'iloczynu zerowego' do iloczynu różnego od zera
+  incorrect_reasoning: Z (x-1)(x+2)=4 uczeń pisze x-1=4 lub x+2=4.
+  correct_reasoning: 'Własność działa wyłącznie dla iloczynu równego 0. Trzeba wymnożyć i przenieść: x^2+x-2-4=0,
+    czyli x^2+x-6=0, i rozwiązać przez deltę: x=2 lub x=-3.'
+  severity: 5
+- name: Iloczyn zerowy jako koniunkcja
+  incorrect_reasoning: Z (x-2)(x+5)=0 uczeń wnioskuje, że x-2=0 i jednocześnie x+5=0, i stwierdza brak
+    rozwiązań.
+  correct_reasoning: 'Iloczyn jest zerem, gdy przynajmniej jeden czynnik jest zerem — to alternatywa.
+    Rozwiązania: x=2 lub x=-5.'
+  severity: 4
+- name: Błąd znaku przy odczycie pierwiastka z czynnika
+  incorrect_reasoning: Z czynnika (x+3) uczeń odczytuje pierwiastek x=3, a z (x-3) — pierwiastek x=-3.
+  correct_reasoning: 'Przyrównujemy czynnik do zera: x+3=0 daje x=-3, a x-3=0 daje x=3. Zawsze rozwiązujemy
+    równanie, nie ''zmieniamy znaku w pamięci''.'
+  severity: 4
+- name: Zły znak przy wyłączaniu z drugiej pary w grupowaniu
+  incorrect_reasoning: W x^3+2x^2-9x-18 uczeń pisze -9x-18=-9(x-2), przez co nawiasy się nie zgadzają
+    i uznaje, że grupowanie nie działa.
+  correct_reasoning: -9x-18=-9(x+2), bo -9\cdot2=-18. Po poprawnym wyłączeniu otrzymujemy wspólny nawias
+    (x+2) i rozkład (x+2)(x^2-9). Warto od razu sprawdzić wynik przez wymnożenie.
+  severity: 4
+- name: Rozkładanie sumy kwadratów
+  incorrect_reasoning: Uczeń pisze x^2+9=(x+3)(x-3) lub twierdzi, że x^2+4=0 ma rozwiązania x=\pm2.
+  correct_reasoning: Wzór dotyczy różnicy kwadratów. Suma x^2+9 jest nierozkładalna w liczbach rzeczywistych
+    i zawsze dodatnia, więc x^2+4=0 nie ma rozwiązań (\Delta<0).
+  severity: 4
+- name: Skreślanie czynnika kwadratowego bez uzasadnienia
+  incorrect_reasoning: Z (x-1)(x^2+2)=0 uczeń 'skraca' czynnik x^2+2 i zapisuje tylko x=1, nie wyjaśniając
+    dlaczego.
+  correct_reasoning: 'Wynik jest dobry, ale trzeba go uzasadnić: x^2+2>0 dla każdego x (albo \Delta=-8<0),
+    więc ten czynnik nigdy nie jest zerem i nie wnosi rozwiązań.'
+  severity: 2
+- name: Podwajanie rozwiązania przy pierwiastku wielokrotnym
+  incorrect_reasoning: 'Z (x-4)^2(x+1)=0 uczeń zapisuje trzy rozwiązania: x=4, x=4, x=-1, twierdząc, że
+    równanie ma trzy rozwiązania.'
+  correct_reasoning: 'Różnych rozwiązań są dwa: x=4 (pierwiastek dwukrotny) i x=-1. Krotność opisuje rozkład
+    wielomianu, ale zbiór rozwiązań zawiera każdą liczbę raz.'
+  severity: 3
+- name: Zapominanie o drugim znaku przy x^2=a
+  incorrect_reasoning: Z x^2=9 uczeń podaje tylko x=3; podobnie w równaniu dwukwadratowym po podstawieniu
+    t=x^2 kończy na wartościach t.
+  correct_reasoning: 'x^2=9 oznacza x=3 lub x=-3. Po znalezieniu t należy wrócić do x: t=x^2 i rozwiązać
+    x^2=t (brak rozwiązań, gdy t<0; jedno x=0, gdy t=0; dwa, gdy t>0).'
+  severity: 4
+- name: Rozwiązywanie równania bez przeniesienia na jedną stronę
+  incorrect_reasoning: 'W równaniu x^3+3x^2=4x+12 uczeń rozkłada osobno obie strony: x^2(x+3)=4(x+3) i
+    ''skraca'' (x+3), gubiąc x=-3.'
+  correct_reasoning: 'Skracanie nawiasu, który może być zerem, gubi rozwiązanie. Przenosimy: x^2(x+3)-4(x+3)=0,
+    czyli (x+3)(x^2-4)=0, skąd x=-3, x=2, x=-2.'
+  severity: 5

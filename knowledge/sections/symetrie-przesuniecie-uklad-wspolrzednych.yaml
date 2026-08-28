@@ -1,0 +1,367 @@
+section: symetrie-przesuniecie-uklad-wspolrzednych
+name: Symetrie i przesunięcie w układzie współrzędnych
+scope: Images of circles and polygons under axis symmetries, central symmetry about the origin, and translation
+  by a vector.
+requirements:
+- IX.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:16:52.804624'
+  approved_at: '2026-08-28T18:28:20.404608'
+  approved_by: reviewer
+concepts:
+- name: Przekształcenie geometryczne i obraz figury
+  description: Przekształcenie płaszczyzny to przyporządkowanie każdemu punktowi P dokładnie jednego punktu
+    P' (obrazu P). Obrazem figury F nazywamy zbiór obrazów wszystkich jej punktów; oznaczamy go F'.
+  explanation: Myśl o tym jak o 'przepisie' działającym na współrzędnych. Jeśli przepis jest prosty (zmiana
+    znaku, dodanie liczby), to obraz wielokąta wyznaczysz przekształcając tylko wierzchołki, a obraz okręgu
+    — przekształcając tylko środek.
+  difficulty: 1
+- name: Izometria
+  description: 'Przekształcenie zachowujące odległości: dla dowolnych punktów A, B zachodzi |A''B''| =
+    |AB|. Symetrie osiowe, symetria środkowa i przesunięcie o wektor są izometriami.'
+  explanation: Skoro odległości się nie zmieniają, to obraz odcinka jest odcinkiem tej samej długości,
+    obraz okręgu — okręgiem o tym samym promieniu, obraz wielokąta — wielokątem przystającym (ten sam
+    obwód, to samo pole, te same kąty).
+  difficulty: 2
+- name: Symetria osiowa względem prostej
+  description: Symetria osiowa o osi k przyporządkowuje punktowi P taki punkt P', że prosta k jest symetralną
+    odcinka PP' (czyli k jest prostopadła do PP' i przechodzi przez jego środek). Punkty leżące na k są
+    punktami stałymi.
+  explanation: To 'odbicie w lustrze', którym jest prosta k. Punkt i jego obraz leżą po przeciwnych stronach
+    osi, w tej samej odległości od niej.
+  difficulty: 2
+- name: Symetria względem osi Ox
+  description: 'Przekształcenie S_Ox: (x, y) → (x, −y).'
+  explanation: 'Odbicie ''w górę–w dół'': pierwsza współrzędna zostaje, druga zmienia znak. Punkty osi
+    Ox (czyli o y = 0) się nie ruszają.'
+  difficulty: 1
+- name: Symetria względem osi Oy
+  description: 'Przekształcenie S_Oy: (x, y) → (−x, y).'
+  explanation: 'Odbicie ''lewo–prawo'': zmienia się znak pierwszej współrzędnej. Punkty osi Oy (czyli
+    o x = 0) są stałe.'
+  difficulty: 1
+- name: Symetria środkowa o środku S
+  description: Symetria środkowa o środku S przyporządkowuje punktowi P taki punkt P', że S jest środkiem
+    odcinka PP' (dla P = S przyjmujemy P' = S).
+  explanation: To obrót o 180° wokół punktu S. Punkt S jest jedynym punktem stałym.
+  difficulty: 2
+- name: Symetria środkowa względem początku układu
+  description: 'Przekształcenie S_O: (x, y) → (−x, −y), gdzie O = (0, 0).'
+  explanation: Zmieniamy znak obu współrzędnych. Punkt z I ćwiartki trafia do III, z II do IV i odwrotnie.
+  difficulty: 1
+- name: Wektor i jego współrzędne
+  description: 'Wektor u = [a, b] to obiekt zadany parą liczb: a — przesunięcie poziome, b — przesunięcie
+    pionowe. Wektor o początku A = (x_A, y_A) i końcu B = (x_B, y_B) ma współrzędne AB = [x_B − x_A, y_B
+    − y_A].'
+  explanation: Współrzędne wektora liczysz jako 'koniec minus początek'. Długość wektora [a, b] to √(a²
+    + b²).
+  difficulty: 2
+- name: Przesunięcie (translacja) o wektor
+  description: 'Przesunięcie o wektor u = [a, b] to przekształcenie T_u: (x, y) → (x + a, y + b).'
+  explanation: Cała figura 'jedzie' o a w prawo (w lewo, gdy a < 0) i o b w górę (w dół, gdy b < 0), nie
+    zmieniając kształtu ani ustawienia. Jeśli u ≠ [0,0], przesunięcie nie ma punktów stałych.
+  difficulty: 1
+- name: Równanie okręgu
+  description: Okrąg o środku S = (a, b) i promieniu r > 0 ma równanie (x − a)² + (y − b)² = r².
+  explanation: 'Ze wzoru odczytujesz środek zmieniając znaki liczb w nawiasach: (x + 3)² + (y − 2)² =
+    25 to środek (−3, 2) i r = 5. To najszybsza droga do obrazu okręgu: przekształcasz środek, promień
+    zostawiasz.'
+  difficulty: 2
+- name: Figura osiowosymetryczna
+  description: Figura F jest symetryczna względem prostej k, gdy jej obraz w symetrii o osi k jest równy
+    F (obraz pokrywa się z figurą).
+  explanation: 'Sprawdzasz to tak: przekształcasz figurę i patrzysz, czy dostajesz dokładnie ten sam zbiór
+    punktów. Np. okrąg o środku (0, 4) jest symetryczny względem osi Oy, ale nie względem Ox.'
+  difficulty: 3
+- name: Figura środkowosymetryczna
+  description: Figura F jest symetryczna względem punktu S, gdy jej obraz w symetrii środkowej o środku
+    S jest równy F.
+  explanation: 'Przykłady: okrąg o środku O, równoległobok o środku przekątnych w O, odcinek o środku
+    w O. Trójkąt nigdy nie jest środkowosymetryczny.'
+  difficulty: 3
+- name: Składanie przekształceń
+  description: 'Złożenie przekształceń to wykonanie ich jedno po drugim: najpierw jedno, potem drugie
+    na otrzymanym wyniku.'
+  explanation: 'Kluczowy fakt: symetria względem Ox złożona z symetrią względem Oy daje symetrię środkową
+    względem O, bo (x, y) → (x, −y) → (−x, −y). Kolejność tych dwóch nie ma tu znaczenia, ale przy złożeniu
+    symetrii z przesunięciem — ma.'
+  difficulty: 3
+- name: Zachowanie i zmiana orientacji
+  description: Symetria osiowa zmienia orientację figury (wierzchołki obiegane 'w prawo' są w obrazie
+    obiegane 'w lewo'), natomiast symetria środkowa i przesunięcie orientację zachowują.
+  explanation: 'Praktycznie: przesunięcie i symetria środkowa dają figurę ''tak samo ustawioną'' (obróconą
+    o 180°), a symetria osiowa — lustrzane odbicie.'
+  difficulty: 3
+formulas:
+- name: Symetria względem osi Ox
+  latex_raw: S_{Ox}(x,\;y) = (x,\;-y)
+  conditions: dla dowolnego punktu (x, y) płaszczyzny
+  description: 'Punkty stałe: wszystkie punkty o y = 0.'
+- name: Symetria względem osi Oy
+  latex_raw: S_{Oy}(x,\;y) = (-x,\;y)
+  conditions: dla dowolnego punktu (x, y) płaszczyzny
+  description: 'Punkty stałe: wszystkie punkty o x = 0.'
+- name: Symetria środkowa względem O = (0,0)
+  latex_raw: S_{O}(x,\;y) = (-x,\;-y)
+  conditions: dla dowolnego punktu (x, y) płaszczyzny
+  description: 'Jedyny punkt stały: O.'
+- name: Przesunięcie o wektor
+  latex_raw: T_{\vec{u}}(x,\;y) = (x+a,\;y+b)
+  conditions: dla wektora u = [a, b]
+  description: Dla u = [0, 0] jest to tożsamość.
+- name: Współrzędne wektora AB
+  latex_raw: \vec{AB} = [x_B - x_A,\; y_B - y_A]
+  conditions: A = (x_A, y_A), B = (x_B, y_B)
+- name: Długość wektora
+  latex_raw: '|\vec{u}| = \sqrt{a^2+b^2}'
+  conditions: u = [a, b]
+  description: Równa odległości, o jaką przesuwa się każdy punkt.
+- name: Równanie okręgu
+  latex_raw: (x-a)^2+(y-b)^2=r^2
+  conditions: środek S = (a, b), promień r > 0
+- name: Obraz okręgu w symetrii względem Ox
+  latex_raw: (x-a)^2+(y-b)^2=r^2 \;\longrightarrow\; (x-a)^2+(y+b)^2=r^2
+  conditions: środek (a, b) przechodzi na (a, −b), promień bez zmian
+- name: Obraz okręgu w symetrii względem Oy
+  latex_raw: (x-a)^2+(y-b)^2=r^2 \;\longrightarrow\; (x+a)^2+(y-b)^2=r^2
+  conditions: środek (a, b) przechodzi na (−a, b), promień bez zmian
+- name: Obraz okręgu w symetrii środkowej względem O
+  latex_raw: (x-a)^2+(y-b)^2=r^2 \;\longrightarrow\; (x+a)^2+(y+b)^2=r^2
+  conditions: środek (a, b) przechodzi na (−a, −b), promień bez zmian
+- name: Obraz okręgu w przesunięciu o wektor [p, q]
+  latex_raw: (x-a)^2+(y-b)^2=r^2 \;\longrightarrow\; \bigl(x-(a+p)\bigr)^2+\bigl(y-(b+q)\bigr)^2=r^2
+  conditions: środek (a, b) przechodzi na (a + p, b + q), promień bez zmian
+- name: Złożenie symetrii osiowych względem osi układu
+  latex_raw: S_{Oy}\circ S_{Ox} = S_{Ox}\circ S_{Oy} = S_{O}
+  conditions: osie układu współrzędnych, środek symetrii w O
+- name: Środek odcinka
+  latex_raw: S=\left(\frac{x_A+x_B}{2},\;\frac{y_A+y_B}{2}\right)
+  conditions: A, B — końce odcinka
+  description: Wykorzystywane przy sprawdzaniu, czy punkty są symetryczne względem O, oraz przy szukaniu
+    środka symetrii.
+- name: Odległość punktów
+  latex_raw: '|AB|=\sqrt{(x_B-x_A)^2+(y_B-y_A)^2}'
+  conditions: A = (x_A, y_A), B = (x_B, y_B)
+  description: Służy do sprawdzenia, że izometria nie zmieniła długości boku.
+methods:
+- name: Wyznaczanie obrazu punktu w symetrii lub przesunięciu
+  when_to_use: Gdy trzeba podać współrzędne obrazu pojedynczego punktu w S_Ox, S_Oy, S_O lub T_u.
+  steps:
+  - Zapisz współrzędne punktu w postaci (x, y).
+  - Rozpoznaj przekształcenie i przypomnij sobie jego wzór.
+  - 'Zastosuj wzór: S_Ox — zmień znak y; S_Oy — zmień znak x; S_O — zmień znaki obu; T_[a,b] — dodaj a
+    do x i b do y.'
+  - 'Zapisz wynik i sprawdź go szkicem: obraz musi leżeć po drugiej stronie osi (odpowiednio: po drugiej
+    stronie O) w tej samej odległości.'
+- name: Wyznaczanie obrazu wielokąta
+  when_to_use: Gdy dany jest wielokąt (trójkąt, czworokąt) przez współrzędne wierzchołków i szukamy jego
+    obrazu.
+  steps:
+  - 'Wypisz wierzchołki: A, B, C, ... .'
+  - Przekształć każdy wierzchołek osobno według wzoru przekształcenia; obrazy oznacz A', B', C', ... .
+  - Połącz obrazy w tej samej kolejności, w jakiej były połączone oryginały (bok AB przechodzi na bok
+    A'B').
+  - Naszkicuj oba wielokąty w układzie.
+  - 'Kontrola: obwód i pole obrazu są takie same jak oryginału; przy symetrii osiowej figura jest lustrzana.'
+- name: Wyznaczanie obrazu okręgu danego równaniem w postaci kanonicznej
+  when_to_use: Gdy okrąg jest dany równaniem (x − a)² + (y − b)² = r² i pytamy o jego obraz.
+  steps:
+  - Odczytaj środek S = (a, b) i promień r = √(r²) (pamiętaj o zmianie znaków w nawiasach).
+  - Wyznacz obraz środka S' według wzoru przekształcenia.
+  - Zapisz, że promień się nie zmienia (izometria).
+  - 'Zapisz równanie obrazu: (x − x_{S''})² + (y − y_{S''})² = r².'
+- name: Sprowadzanie równania okręgu do postaci kanonicznej
+  when_to_use: Gdy okrąg podany jest w postaci rozwiniętej, np. x² + y² − 6x + 4y − 12 = 0, a potrzebny
+    jest środek i promień.
+  steps:
+  - Pogrupuj wyrazy z x i wyrazy z y, liczbę przenieś na prawą stronę.
+  - 'Uzupełnij każdą grupę do kwadratu sumy/różnicy: x² − 6x = (x − 3)² − 9, y² + 4y = (y + 2)² − 4.'
+  - Przenieś dodane stałe na prawą stronę i uprość.
+  - Odczytaj środek i promień, a następnie wyznacz obraz okręgu standardową metodą.
+- name: Wyznaczanie wektora przesunięcia z pary punkt–obraz
+  when_to_use: Gdy wiadomo, że przesunięcie przeprowadza punkt A na A' i trzeba znaleźć wektor lub obrazy
+    innych punktów.
+  steps:
+  - Oblicz u = AA' = [x_{A'} − x_A, y_{A'} − y_A].
+  - Sprawdź poprawność na drugiej znanej parze punktów, jeśli jest dana.
+  - Zastosuj wektor u do pozostałych punktów lub do środka okręgu.
+  - Jeśli szukasz oryginału zamiast obrazu, odejmij współrzędne wektora (przesuń o wektor przeciwny [−a,
+    −b]).
+- name: Rozpoznawanie przekształcenia przeprowadzającego jedną figurę na drugą
+  when_to_use: Gdy dane są dwie figury (lub dwa okręgi) i pytamy, jakie przekształcenie z listy je łączy.
+  steps:
+  - 'Porównaj rozmiary: jeśli promienie/długości boków się różnią, żadna z rozważanych izometrii nie zadziała.'
+  - 'Porównaj współrzędne odpowiadających sobie punktów: (x, −y) → symetria względem Ox; (−x, y) → względem
+    Oy; (−x, −y) → symetria środkowa względem O.'
+  - Jeśli różnice współrzędnych odpowiadających punktów są stałe, jest to przesunięcie o wektor równy
+    tej różnicy.
+  - Sprawdź hipotezę na wszystkich parach punktów, nie tylko na jednej.
+- name: Badanie symetryczności figury względem osi lub początku układu
+  when_to_use: 'Gdy pytanie brzmi: czy dana figura (okrąg, wielokąt) jest symetryczna względem Ox, Oy
+    lub O.'
+  steps:
+  - Wyznacz obraz figury w danej symetrii.
+  - Porównaj obraz z figurą wyjściową — dla okręgu wystarczy porównać środki (promień i tak jest ten sam),
+    dla wielokąta porównaj zbiory wierzchołków.
+  - Jeśli zbiory są identyczne, figura jest symetryczna; jeśli nie — podaj kontrprzykład (punkt figury,
+    którego obraz do niej nie należy).
+  - 'Dla okręgu skorzystaj z kryterium: okrąg o środku (a, b) jest symetryczny względem Ox ⟺ b = 0, względem
+    Oy ⟺ a = 0, względem O ⟺ a = b = 0.'
+- name: Wykonywanie złożenia dwóch przekształceń
+  when_to_use: Gdy figurę należy najpierw przesunąć, a potem odbić (lub odwrotnie), albo odbić dwukrotnie.
+  steps:
+  - Ustal kolejność wykonywania przekształceń.
+  - Wykonaj pierwsze przekształcenie na wszystkich potrzebnych punktach (wierzchołkach lub środku okręgu)
+    i zapisz wyniki pośrednie.
+  - Na otrzymanych punktach wykonaj drugie przekształcenie.
+  - Zapisz odpowiedź; jeśli to możliwe, nazwij złożenie jednym przekształceniem (np. S_Ox ∘ S_Oy = S_O).
+examples:
+- statement: 'Dany jest punkt A = (−4, 3). Wyznacz jego obrazy: A₁ w symetrii względem osi Ox, A₂ w symetrii
+    względem osi Oy, A₃ w symetrii środkowej względem początku układu oraz A₄ w przesunięciu o wektor
+    u = [5, −1].'
+  worked_solution: |-
+    Symetria względem Ox zmienia znak drugiej współrzędnej: A₁ = (−4, −3).
+    Symetria względem Oy zmienia znak pierwszej współrzędnej: A₂ = (4, 3).
+    Symetria środkowa względem O zmienia znaki obu: A₃ = (4, −3).
+    Przesunięcie o [5, −1]: A₄ = (−4 + 5, 3 + (−1)) = (1, 2).
+    Kontrola: A leży w II ćwiartce, więc A₁ (odbicie w dół) w III, A₂ (odbicie w lewo–prawo) w I, A₃ w IV — zgadza się. Zauważ też, że A₃ jest obrazem A₁ w symetrii względem Oy, co ilustruje równość S_Oy ∘ S_Ox = S_O.
+  difficulty: 1
+- statement: Okrąg o ma równanie (x − 2)² + (y + 5)² = 9. Wyznacz równania jego obrazów w symetrii względem
+    osi Oy oraz w przesunięciu o wektor u = [−3, 5]. Sprawdź, czy obraz w przesunięciu jest styczny do
+    osi Ox.
+  worked_solution: |-
+    Z równania odczytujemy środek S = (2, −5) i promień r = 3 (bo r² = 9).
+    Symetria względem Oy: S' = (−2, −5), promień się nie zmienia, więc obraz ma równanie (x + 2)² + (y + 5)² = 9.
+    Przesunięcie o [−3, 5]: S'' = (2 − 3, −5 + 5) = (−1, 0), promień 3, więc obraz: (x + 1)² + y² = 9.
+    Styczność do osi Ox: odległość środka (−1, 0) od osi Ox równa jest |0| = 0, a to mniej niż r = 3, więc okrąg nie jest styczny do Ox — przecina ją (środek leży na tej osi).
+  difficulty: 2
+- statement: Trójkąt ABC ma wierzchołki A = (1, 1), B = (5, 1), C = (1, 4). Wyznacz obraz A'B'C' tego
+    trójkąta w symetrii środkowej względem początku układu współrzędnych. Oblicz obwód i pole obu trójkątów.
+  worked_solution: |-
+    Obrazy wierzchołków w S_O (zmiana znaków obu współrzędnych):
+    A' = (−1, −1), B' = (−5, −1), C' = (−1, −4).
+    Obrazem trójkąta jest trójkąt A'B'C' o tych wierzchołkach (boki: A'B', B'C', C'A').
+    Dla ABC: |AB| = 5 − 1 = 4 (bok poziomy), |AC| = 4 − 1 = 3 (bok pionowy), kąt przy A jest prosty, więc |BC| = √(4² + 3²) = 5.
+    Obwód ABC = 4 + 3 + 5 = 12, pole ABC = ½ · 4 · 3 = 6.
+    Dla A'B'C': |A'B'| = |−1 − (−5)| = 4, |A'C'| = |−1 − (−4)| = 3, |B'C'| = √(16 + 9) = 5.
+    Obwód = 12, pole = 6 — takie same, bo symetria środkowa jest izometrią. Trójkąt A'B'C' powstał z ABC przez obrót o 180° wokół O, więc jest do niego przystający i tak samo zorientowany.
+  difficulty: 2
+- statement: Przesunięcie przeprowadza punkt P = (−2, 7) na punkt P' = (3, 2). Wyznacz wektor tego przesunięcia
+    i obraz kwadratu KLMN o wierzchołkach K = (0, 0), L = (4, 0), M = (4, 4), N = (0, 4). Następnie otrzymany
+    kwadrat odbij symetrycznie względem osi Ox i podaj współrzędne wierzchołków figury końcowej.
+  worked_solution: |-
+    Wektor: u = PP' = [3 − (−2), 2 − 7] = [5, −5].
+    Przesunięcie o [5, −5]:
+    K' = (0 + 5, 0 − 5) = (5, −5),
+    L' = (4 + 5, 0 − 5) = (9, −5),
+    M' = (9, −1),
+    N' = (5, −1).
+    Otrzymany kwadrat K'L'M'N' ma bok 4 (np. |K'L'| = 9 − 5 = 4), jak być powinno.
+    Teraz symetria względem Ox (zmiana znaku drugiej współrzędnej):
+    K'' = (5, 5), L'' = (9, 5), M'' = (9, 1), N'' = (5, 1).
+    Figura końcowa to kwadrat o boku 4 leżący nad osią Ox. Zauważ, że kolejność jest istotna: gdybyśmy najpierw odbili kwadrat KLMN względem Ox, a potem przesunęli o [5, −5], dostalibyśmy wierzchołki (5, −5), (9, −5), (9, −9), (5, −9) — inną figurę.
+  difficulty: 3
+- statement: Okrąg o dany jest równaniem x² + y² − 6x + 4y − 12 = 0. a) Wyznacz jego środek i promień.
+    b) Wyznacz równanie obrazu okręgu o w symetrii środkowej względem początku układu. c) Wyznacz wszystkie
+    wektory postaci u = [0, q], dla których obraz okręgu o w przesunięciu o u jest styczny do osi Ox.
+  worked_solution: |-
+    a) Grupujemy: (x² − 6x) + (y² + 4y) = 12. Uzupełniamy do kwadratów: x² − 6x = (x − 3)² − 9, y² + 4y = (y + 2)² − 4. Stąd (x − 3)² − 9 + (y + 2)² − 4 = 12, czyli (x − 3)² + (y + 2)² = 25. Środek S = (3, −2), promień r = 5.
+    b) W S_O środek przechodzi na S' = (−3, 2), promień pozostaje 5, więc obraz ma równanie (x + 3)² + (y − 2)² = 25.
+    c) Po przesunięciu o [0, q] środek to S'' = (3, −2 + q), promień nadal 5. Okrąg jest styczny do osi Ox, gdy odległość środka od tej osi równa się promieniowi: |−2 + q| = 5.
+    Stąd −2 + q = 5 lub −2 + q = −5, czyli q = 7 lub q = −3.
+    Szukane wektory: u = [0, 7] (środek (3, 5), okrąg styczny od góry) oraz u = [0, −3] (środek (3, −5), okrąg styczny od dołu).
+  difficulty: 4
+objectives:
+- statement: Podać wzory przekształcające współrzędne punktu w symetrii względem osi Ox, osi Oy, w symetrii
+    środkowej względem początku układu oraz w przesunięciu o dany wektor.
+  bloom_level: Zapamiętywanie
+- statement: Wyjaśnić, dlaczego wymienione przekształcenia są izometriami i jakie wielkości figury (długości,
+    kąty, obwód, pole, orientacja) zachowują lub zmieniają.
+  bloom_level: Rozumienie
+- statement: Wyznaczyć współrzędne obrazu punktu, odcinka i wielokąta w symetrii osiowej względem osi
+    układu, w symetrii środkowej względem O oraz w przesunięciu o wektor, i zaznaczyć obraz w układzie
+    współrzędnych.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć równanie obrazu okręgu danego równaniem w postaci kanonicznej lub rozwiniętej w
+    każdym z rozważanych przekształceń.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć wektor przesunięcia na podstawie pary punkt–obraz oraz wyznaczyć figurę wyjściową,
+    mając daną figurę-obraz.
+  bloom_level: Stosowanie
+- statement: Wykonać złożenie dwóch przekształceń (np. przesunięcie i symetria) z zachowaniem właściwej
+    kolejności oraz rozpoznać, że złożenie symetrii względem obu osi układu jest symetrią środkową względem
+    O.
+  bloom_level: Analizowanie
+- statement: Rozstrzygnąć, jakie przekształcenie z rozważanego zbioru przeprowadza jedną daną figurę na
+    drugą, i uzasadnić odpowiedź, sprawdzając wszystkie odpowiadające sobie punkty.
+  bloom_level: Analizowanie
+- statement: Zbadać, czy dana figura (okrąg, wielokąt) jest symetryczna względem osi układu lub względem
+    początku układu, i uzasadnić odpowiedź lub podać kontrprzykład.
+  bloom_level: Analizowanie
+- statement: Rozwiązać zadanie łączące przekształcenie okręgu z warunkiem geometrycznym (np. styczność
+    obrazu do osi układu, przejście obrazu przez dany punkt).
+  bloom_level: Analizowanie
+misconceptions:
+- name: Zamiana ról współrzędnych w symetrii osiowej
+  incorrect_reasoning: '„Symetria względem osi Ox dotyczy x, więc zmieniam znak x: (x, y) → (−x, y).”'
+  correct_reasoning: 'Oś Ox jest ''lustrem'' poziomym, więc punkt odbija się w pionie: zmienia się znak
+    y, a x zostaje: (x, y) → (x, −y). Analogicznie względem Oy zmienia się znak x. Kontrola: punkty leżące
+    na osi symetrii muszą pozostać nieruchome — dla y = 0 wzór (x, −y) daje ten sam punkt, co potwierdza
+    poprawność.'
+  severity: 4
+- name: Zmiana promienia okręgu przy przekształceniu
+  incorrect_reasoning: „Skoro środek zmienił znaki, to w równaniu obrazu też zmieniam prawą stronę, np.
+    na −25, albo skaluję promień.”
+  correct_reasoning: 'Symetrie i przesunięcie są izometriami: promień (i w ogóle każda odległość) pozostaje
+    bez zmian. W równaniu obrazu prawa strona r² jest identyczna jak w równaniu oryginału; zmieniają się
+    wyłącznie współrzędne środka.'
+  severity: 4
+- name: Błąd znaku przy odczytywaniu środka z równania okręgu
+  incorrect_reasoning: „Równanie (x + 3)² + (y − 2)² = 25 opisuje okrąg o środku (3, −2).”
+  correct_reasoning: W postaci kanonicznej (x − a)² + (y − b)² = r² środkiem jest (a, b), więc (x + 3)²
+    = (x − (−3))² daje a = −3, a (y − 2)² daje b = 2 — środek to (−3, 2). Zawsze przepisuj plusy jako
+    'minus liczba ujemna'.
+  severity: 4
+- name: Traktowanie symetrii środkowej jako symetrii osiowej
+  incorrect_reasoning: „Symetria środkowa względem O to odbicie względem obu osi po kolei, więc daje to
+    samo co jedna symetria osiowa; obraz jest lustrzany.”
+  correct_reasoning: 'Złożenie dwóch symetrii osiowych względem Ox i Oy rzeczywiście daje S_O, ale efekt
+    to obrót o 180°, a nie odbicie: symetria środkowa zachowuje orientację figury, natomiast pojedyncza
+    symetria osiowa ją odwraca. Trójkąt i jego obraz w S_O są ''obrócone'', a nie ''odbite''.'
+  severity: 3
+- name: Nieprzemienność złożenia przesunięcia i symetrii
+  incorrect_reasoning: „Nieważne, czy najpierw przesunę, czy najpierw odbiję — wynik i tak będzie ten
+    sam.”
+  correct_reasoning: 'Kolejność zmienia wynik. Np. dla punktu (1, 2): najpierw T_[3,1] potem S_Ox daje
+    (4, −3); najpierw S_Ox potem T_[3,1] daje (4, −1). Trzeba ściśle trzymać się kolejności podanej w
+    treści zadania i zapisywać wyniki pośrednie.'
+  severity: 3
+- name: Zły kierunek działania wektora przy szukaniu oryginału
+  incorrect_reasoning: „Wiem, że obraz okręgu po przesunięciu o [4, −2] ma środek (1, 3), więc oryginalny
+    środek to (1 + 4, 3 − 2) = (5, 1).”
+  correct_reasoning: 'Aby cofnąć przesunięcie, stosujemy wektor przeciwny [−4, 2]: oryginalny środek to
+    (1 − 4, 3 + 2) = (−3, 5). Sprawdzenie: (−3 + 4, 5 − 2) = (1, 3) — zgadza się.'
+  severity: 3
+- name: Przekształcanie tylko części figury
+  incorrect_reasoning: „Wystarczy przekształcić jeden wierzchołek wielokąta i 'dorysować resztę tak samo'.”
+  correct_reasoning: Obraz wielokąta wyznacza się, przekształcając każdy wierzchołek i łącząc obrazy w
+    tej samej kolejności. Przy symetrii osiowej figura jest odbita, więc 'dorysowanie tak samo' prowadzi
+    do błędnego położenia pozostałych wierzchołków.
+  severity: 3
+- name: Utożsamianie symetryczności figury z posiadaniem jakiejkolwiek symetrii
+  incorrect_reasoning: „Okrąg jest figurą symetryczną, więc okrąg o środku (0, 4) jest symetryczny względem
+    osi Ox.”
+  correct_reasoning: Symetryczność zawsze dotyczy konkretnej osi lub konkretnego środka. Okrąg o środku
+    (0, 4) w symetrii względem Ox przechodzi na okrąg o środku (0, −4) — to inny zbiór punktów, więc symetrii
+    względem Ox nie ma. Jest natomiast symetryczny względem Oy (bo a = 0) i względem swojego środka (0,
+    4).
+  severity: 3
+- name: Mylenie współrzędnych wektora z współrzędnymi punktu końcowego
+  incorrect_reasoning: „Przesunięcie przeprowadza A = (−2, 7) na A' = (3, 2), więc wektor przesunięcia
+    to [3, 2].”
+  correct_reasoning: 'Współrzędne wektora liczymy jako ''koniec minus początek'': u = [3 − (−2), 2 − 7]
+    = [5, −5]. Punkt (3, 2) to końcowe położenie, a nie przesunięcie.'
+  severity: 4

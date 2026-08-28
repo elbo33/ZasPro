@@ -1,0 +1,325 @@
+section: okrag-cieciwy-i-styczne
+name: 'Okrąg: cięciwy i styczne'
+scope: Radii, diameters, chords and tangent segments; the perpendicular from the centre to a chord, and
+  the tangent perpendicular to the radius, both used with the Pythagorean theorem.
+requirements:
+- VIII.1
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:17:23.940102'
+  approved_at: '2026-08-28T18:28:23.392280'
+  approved_by: reviewer
+concepts:
+- name: Okrąg i koło
+  description: Okrąg o środku O i promieniu r>0 to zbiór wszystkich punktów płaszczyzny odległych od O
+    dokładnie o r. Koło to zbiór punktów odległych od O o nie więcej niż r.
+  explanation: 'Okrąg to sama „linia", koło to linia razem z wnętrzem. W zadaniach o cięciwach i stycznych
+    pracujemy prawie zawsze na okręgu, ale rysujemy też promienie – odcinki łączące środek z punktami
+    okręgu. Kluczowa myśl: każdy punkt okręgu jest tak samo daleko od środka, więc każde dwa promienie
+    tworzą trójkąt równoramienny.'
+  difficulty: 1
+- name: Promień i średnica
+  description: Promień to odcinek łączący środek okręgu z punktem okręgu (albo jego długość r). Średnica
+    to cięciwa przechodząca przez środek; jej długość d = 2r.
+  explanation: Zawsze sprawdzaj, czy w treści zadania podano promień, czy średnicę – to najczęstsze źródło
+    błędu o czynnik 2. Średnica jest najdłuższą cięciwą okręgu.
+  difficulty: 1
+- name: Cięciwa
+  description: Cięciwa to odcinek, którego oba końce leżą na okręgu.
+  explanation: Cięciwa wraz z dwoma promieniami poprowadzonymi do jej końców tworzy trójkąt równoramienny
+    o ramionach długości r. To spostrzeżenie zamienia zadanie o okręgu na zadanie o trójkącie.
+  difficulty: 1
+- name: Sieczna, styczna, prosta rozłączna z okręgiem
+  description: 'Prosta może mieć z okręgiem: dwa punkty wspólne (sieczna), dokładnie jeden punkt wspólny
+    (styczna), zero punktów wspólnych (prosta rozłączna).'
+  explanation: 'O tym, który przypadek zachodzi, decyduje odległość d środka od prostej: d<r – sieczna,
+    d=r – styczna, d>r – brak punktów wspólnych. Warto to zapamiętać jako jedną skalę: im dalej prosta
+    od środka, tym „mniej" przecięć.'
+  difficulty: 2
+- name: Punkt styczności
+  description: Jedyny punkt wspólny stycznej i okręgu.
+  explanation: To w tym punkcie rysujemy promień – bo tylko tam powstaje kąt prosty między promieniem
+    a styczną. Promień poprowadzony do innego punktu okręgu nie jest prostopadły do tej stycznej.
+  difficulty: 1
+- name: Odcinek styczny (odcinek stycznej)
+  description: Odcinek PA, gdzie P jest punktem leżącym na zewnątrz okręgu, a A punktem styczności stycznej
+    poprowadzonej z P.
+  explanation: Trójkąt OAP jest prostokątny z kątem prostym przy A, przeciwprostokątną OP i przyprostokątnymi
+    r oraz |PA|. Stąd |PA| = √(|OP|² − r²). To jest „szkielet" wszystkich zadań o stycznych z punktu zewnętrznego.
+  difficulty: 2
+- name: Odległość punktu od prostej
+  description: Długość odcinka prostopadłego poprowadzonego z punktu do prostej; jest to najkrótsza z
+    odległości punktu od punktów prostej.
+  explanation: W zadaniach z cięciwą „odległość środka od cięciwy" zawsze oznacza odcinek prostopadły
+    do cięciwy – i to on jest przyprostokątną w twierdzeniu Pitagorasa.
+  difficulty: 2
+- name: Prostopadła ze środka do cięciwy
+  description: Odcinek poprowadzony ze środka okręgu prostopadle do cięciwy dzieli tę cięciwę na dwie
+    równe części (jest jej symetralną).
+  explanation: 'Dowód w jednym zdaniu: trójkąt utworzony przez cięciwę i dwa promienie jest równoramienny,
+    a wysokość opuszczona na podstawę trójkąta równoramiennego jest zarazem środkową. Dzięki temu w trójkącie
+    prostokątnym pojawia się połowa cięciwy, a nie cała cięciwa.'
+  difficulty: 2
+- name: Styczna prostopadła do promienia
+  description: Prosta jest styczna do okręgu w punkcie A wtedy i tylko wtedy, gdy jest prostopadła do
+    promienia OA w punkcie A.
+  explanation: 'To „przepis na kąt prosty": widząc styczną, natychmiast dorysuj promień do punktu styczności
+    i zaznacz kąt 90°. Odwrotnie: jeśli odległość środka od prostej równa się r, prosta jest styczna.'
+  difficulty: 2
+- name: Dwie styczne z punktu zewnętrznego
+  description: 'Z punktu P leżącego na zewnątrz okręgu można poprowadzić dokładnie dwie styczne; odcinki
+    styczne mają równe długości: |PA| = |PB|, a prosta PO zawiera dwusieczną kąta APB i symetralną odcinka
+    AB.'
+  explanation: 'Powstaje figura zwana deltoidem OAPB, złożona z dwóch przystających trójkątów prostokątnych.
+    Równość |PA|=|PB| wynika z twierdzenia Pitagorasa: obie długości równają się √(|OP|²−r²).'
+  difficulty: 3
+- name: Trójkąt równoramienny utworzony przez cięciwę
+  description: Cięciwa AB i promienie OA, OB tworzą trójkąt równoramienny o ramionach r i podstawie |AB|.
+  explanation: Wysokość tego trójkąta poprowadzona z O na AB to odległość środka od cięciwy. Jeśli znasz
+    dwie z trzech wielkości r, |AB|, d – trzecią policzysz z Pitagorasa.
+  difficulty: 2
+- name: Okręgi styczne
+  description: Dwa okręgi o środkach O₁, O₂ i promieniach r₁, r₂ są styczne zewnętrznie, gdy |O₁O₂| =
+    r₁ + r₂, a styczne wewnętrznie, gdy |O₁O₂| = |r₁ − r₂|.
+  explanation: Punkt styczności leży zawsze na prostej łączącej środki. Ten fakt pozwala zamienić informację
+    „okręgi są styczne" na równanie liczbowe dla odległości środków.
+  difficulty: 2
+- name: Twierdzenie Pitagorasa jako narzędzie w okręgu
+  description: W trójkącie prostokątnym o przyprostokątnych a, b i przeciwprostokątnej c zachodzi a² +
+    b² = c².
+  explanation: 'W tym dziale kąt prosty pojawia się w dwóch miejscach: przy stopie prostopadłej ze środka
+    do cięciwy oraz przy punkcie styczności. Przeciwprostokątną jest zawsze promień (w zadaniu o cięciwie)
+    albo odcinek OP od środka do punktu zewnętrznego (w zadaniu o stycznej).'
+  difficulty: 2
+formulas:
+- name: Średnica a promień
+  latex_raw: d = 2r,\qquad r = \tfrac{1}{2}d
+  conditions: r > 0
+- name: Zależność promień – cięciwa – odległość od środka
+  latex_raw: r^{2} = k^{2} + \left(\frac{|AB|}{2}\right)^{2}
+  conditions: AB – cięciwa okręgu o promieniu r, k – odległość środka od prostej AB, 0 ≤ k < r
+  description: Podstawowy wzór działu; wynika z prostopadłej ze środka do cięciwy i twierdzenia Pitagorasa.
+- name: Długość cięciwy z promienia i odległości
+  latex_raw: '|AB| = 2\sqrt{r^{2} - k^{2}}'
+  conditions: 0 ≤ k < r; k = 0 daje |AB| = 2r, czyli średnicę
+- name: Odległość środka od cięciwy
+  latex_raw: k = \sqrt{r^{2} - \left(\frac{|AB|}{2}\right)^{2}}
+  conditions: 0 < |AB| ≤ 2r
+- name: Długość odcinka stycznego
+  latex_raw: '|PA| = \sqrt{|OP|^{2} - r^{2}}'
+  conditions: P leży na zewnątrz okręgu (|OP| > r), A – punkt styczności
+  description: Kąt prosty jest przy punkcie styczności A, więc |OP| jest przeciwprostokątną.
+- name: Odległość punktu zewnętrznego od środka
+  latex_raw: '|OP| = \sqrt{r^{2} + |PA|^{2}}'
+  conditions: jak wyżej
+- name: Równość odcinków stycznych
+  latex_raw: '|PA| = |PB|'
+  conditions: PA, PB – odcinki styczne poprowadzone z tego samego punktu P do jednego okręgu
+- name: Pole deltoidu z dwóch stycznych
+  latex_raw: P_{OAPB} = 2\cdot\tfrac{1}{2}\,r\,|PA| = r\,|PA|
+  conditions: OAPB – figura ograniczona dwoma promieniami do punktów styczności i dwoma odcinkami stycznymi
+- name: Wzajemne położenie prostej i okręgu
+  latex_raw: k<r \Rightarrow \text{sieczna},\quad k=r \Rightarrow \text{styczna},\quad k>r \Rightarrow
+    \text{brak punktów wspólnych}
+  conditions: k – odległość środka okręgu od prostej
+- name: Okręgi styczne zewnętrznie / wewnętrznie
+  latex_raw: '|O_1O_2| = r_1 + r_2 \quad\text{lub}\quad |O_1O_2| = |r_1 - r_2|'
+  conditions: odpowiednio styczność zewnętrzna i wewnętrzna
+- name: Cięciwa a kąt środkowy
+  latex_raw: '|AB| = 2r\sin\frac{\alpha}{2}'
+  conditions: α – kąt środkowy oparty na cięciwie AB, 0° < α < 180°
+  description: 'Wzór pomocniczy: wynika z połowy trójkąta równoramiennego; przydatny, gdy zamiast odległości
+    od środka dany jest kąt.'
+methods:
+- name: Obliczanie długości cięciwy przy danym promieniu i odległości od środka
+  when_to_use: Gdy znasz r oraz odległość k środka od cięciwy (lub dane pozwalają ją wyznaczyć).
+  steps:
+  - Narysuj okrąg, środek O, cięciwę AB.
+  - Poprowadź z O odcinek prostopadły do AB; jego stopę oznacz S – to środek cięciwy.
+  - 'Zaznacz trójkąt prostokątny OSA: przyprostokątne |OS| = k i |SA| = |AB|/2, przeciwprostokątna |OA|
+    = r.'
+  - Zapisz r² = k² + (|AB|/2)² i wyznacz |AB|/2 = √(r² − k²).
+  - 'Podwój wynik: |AB| = 2√(r² − k²); uprość pierwiastek i dopisz jednostkę.'
+- name: Obliczanie odległości środka od cięciwy (lub promienia)
+  when_to_use: Gdy dana jest długość cięciwy i promień (szukasz k) albo cięciwa i odległość (szukasz r).
+  steps:
+  - Wykonaj rysunek i poprowadź prostopadłą ze środka do cięciwy.
+  - Wpisz do trójkąta prostokątnego połowę cięciwy – nigdy całą cięciwę.
+  - Zastosuj r² = k² + (|AB|/2)².
+  - 'Wyznacz szukaną wielkość: k = √(r² − (|AB|/2)²) albo r = √(k² + (|AB|/2)²).'
+  - 'Sprawdź sensowność: musi być k < r oraz |AB| ≤ 2r.'
+- name: Obliczanie długości odcinka stycznego
+  when_to_use: 'Gdy z punktu P na zewnątrz okręgu poprowadzono styczną i dane są dwie z trzech wielkości:
+    r, |OP|, |PA|.'
+  steps:
+  - Zaznacz punkt styczności A i poprowadź promień OA.
+  - Zaznacz kąt prosty przy A (styczna ⟂ promień).
+  - W trójkącie prostokątnym OAP przeciwprostokątną jest OP.
+  - Zapisz |OP|² = r² + |PA|² i wyznacz szukaną wielkość.
+  - Jeśli w zadaniu występuje druga styczna z P, wykorzystaj |PB| = |PA| i przystawanie trójkątów.
+- name: Praca z dwiema stycznymi z jednego punktu (deltoid)
+  when_to_use: W zadaniach o obwodzie lub polu figury ograniczonej dwiema stycznymi i dwoma promieniami,
+    albo o kątach w takiej figurze.
+  steps:
+  - Narysuj okrąg, punkt P, oba punkty styczności A i B oraz promienie OA, OB.
+  - Zaznacz dwa kąty proste (przy A i przy B) oraz równość |PA| = |PB|.
+  - Zauważ, że trójkąty OAP i OBP są przystające, więc OP dzieli kąt APB i kąt AOB na połowy.
+  - Brakujące długości policz z Pitagorasa w jednym z trójkątów prostokątnych.
+  - 'Pole deltoidu: P = r·|PA|; obwód: 2r + 2|PA| (jeśli figura ograniczona promieniami i stycznymi).'
+  - 'Kąty: w czworokącie OAPB suma kątów wynosi 360°, a kąty przy A i B to 90°, więc ∡AOB + ∡APB = 180°.'
+- name: Dwie cięciwy równoległe – wyznaczanie odległości między nimi
+  when_to_use: Gdy w okręgu dane są długości dwóch cięciw równoległych i pytamy o odległość między nimi.
+  steps:
+  - 'Dla każdej cięciwy policz jej odległość od środka: k₁ = √(r² − (a/2)²), k₂ = √(r² − (b/2)²).'
+  - Rozważ dwa przypadki położenia cięciw względem środka.
+  - 'Cięciwy po tej samej stronie środka: odległość = |k₁ − k₂|.'
+  - 'Cięciwy po przeciwnych stronach środka: odległość = k₁ + k₂.'
+  - Podaj oba wyniki, jeśli treść zadania nie rozstrzyga położenia.
+- name: Rozstrzyganie wzajemnego położenia prostej i okręgu
+  when_to_use: Gdy trzeba stwierdzić, czy prosta jest styczna, sieczna, czy nie ma punktów wspólnych z
+    okręgiem, albo dobrać promień okręgu stycznego do danej prostej.
+  steps:
+  - Wyznacz odległość k środka okręgu od prostej (odcinek prostopadły).
+  - Porównaj k z promieniem r.
+  - k < r – prosta jest sieczną, cięciwa ma długość 2√(r²−k²); k = r – styczna; k > r – brak punktów wspólnych.
+  - Jeżeli szukasz promienia okręgu stycznego do prostej i o środku w danym punkcie, przyjmij r = k.
+- name: 'Zadania mieszane: styczna + cięciwa w jednej figurze'
+  when_to_use: Gdy w figurze występują jednocześnie styczna, cięciwa lub okręgi styczne, a szukamy odcinka.
+  steps:
+  - Wypisz dane i oznacz szukaną literą.
+  - 'Dorysuj wszystkie „automatyczne" odcinki: promienie do punktów styczności, prostopadłą ze środka
+    do cięciwy, odcinek łączący środki okręgów stycznych.'
+  - Zaznacz kąty proste i odcinki równe.
+  - Wskaż trójkąt prostokątny zawierający szukany odcinek i znane wielkości.
+  - Zastosuj twierdzenie Pitagorasa (ewentualnie dwa razy, w dwóch trójkątach), rozwiąż równanie i sprawdź
+    warunki geometryczne (długości dodatnie, k < r).
+examples:
+- statement: W okręgu o promieniu 13 cm poprowadzono cięciwę odległą od środka o 5 cm. Oblicz długość
+    tej cięciwy.
+  worked_solution: |-
+    Oznaczmy cięciwę AB, środek O, a S – stopę prostopadłej z O na AB. Wtedy S jest środkiem cięciwy, więc |AS| = |AB|/2, a trójkąt OSA jest prostokątny (kąt prosty przy S) z przeciwprostokątną OA = r = 13 i przyprostokątną OS = 5.
+    Z twierdzenia Pitagorasa: 5² + |AS|² = 13², czyli 25 + |AS|² = 169, więc |AS|² = 144 i |AS| = 12.
+    Cięciwa: |AB| = 2·12 = 24 cm.
+  difficulty: 1
+- statement: Cięciwa okręgu ma długość 16, a jej odległość od środka wynosi 6. Oblicz promień i średnicę
+    tego okręgu.
+  worked_solution: |-
+    Połowa cięciwy ma długość 16/2 = 8. Powstaje trójkąt prostokątny o przyprostokątnych 6 i 8 oraz przeciwprostokątnej r.
+    r² = 6² + 8² = 36 + 64 = 100, więc r = 10.
+    Średnica: 2r = 20.
+    Sprawdzenie sensowności: k = 6 < 10 = r, a cięciwa 16 < 20 = 2r – zgadza się.
+  difficulty: 2
+- statement: Z punktu P odległego od środka okręgu o 17 cm poprowadzono dwie styczne do okręgu o promieniu
+    8 cm; punkty styczności to A i B. Oblicz długość odcinka stycznego |PA| oraz pole czworokąta OAPB.
+  worked_solution: |-
+    Styczna jest prostopadła do promienia w punkcie styczności, więc trójkąt OAP ma kąt prosty przy A, przeciwprostokątną OP = 17 i przyprostokątną OA = r = 8.
+    Z twierdzenia Pitagorasa: |PA|² = 17² − 8² = 289 − 64 = 225, zatem |PA| = 15 cm. Z równości odcinków stycznych |PB| = 15 cm.
+    Czworokąt OAPB składa się z dwóch przystających trójkątów prostokątnych OAP i OBP, każdy o polu ½·8·15 = 60 cm².
+    Pole OAPB = 2·60 = 120 cm².
+  difficulty: 2
+- statement: W okręgu o promieniu 13 poprowadzono dwie równoległe cięciwy o długościach 24 i 10. Wyznacz
+    wszystkie możliwe odległości między tymi cięciwami.
+  worked_solution: |-
+    Odległość środka od cięciwy długości 24: k₁ = √(13² − 12²) = √(169 − 144) = √25 = 5.
+    Odległość środka od cięciwy długości 10: k₂ = √(13² − 5²) = √(169 − 25) = √144 = 12.
+    Przypadek 1 – cięciwy po przeciwnych stronach środka: odległość = k₁ + k₂ = 5 + 12 = 17.
+    Przypadek 2 – cięciwy po tej samej stronie środka: odległość = |k₂ − k₁| = 12 − 5 = 7.
+    Odpowiedź: 17 albo 7. (Zauważ, że 17 < 2r = 26, więc oba przypadki są geometrycznie możliwe.)
+  difficulty: 3
+- statement: Dwa okręgi o promieniach 9 i 4 są styczne zewnętrznie. Prosta jest styczna do obu okręgów
+    i nie przechodzi między nimi (styczna wspólna zewnętrzna). Oblicz odległość między punktami styczności
+    tej prostej z okręgami.
+  worked_solution: |-
+    Niech O₁, r₁ = 9 i O₂, r₂ = 4 będą środkami i promieniami, a A, B – punktami styczności prostej z większym i mniejszym okręgiem.
+    Okręgi są styczne zewnętrznie, więc |O₁O₂| = 9 + 4 = 13.
+    Promienie O₁A i O₂B są prostopadłe do wspólnej stycznej, więc są do siebie równoległe, a ABO₂O₁ jest trapezem prostokątnym o podstawach 9 i 4 oraz ramieniu prostopadłym AB.
+    Z punktu O₂ poprowadźmy odcinek równoległy do AB, do punktu C na O₁A. Wtedy |O₂C| = |AB|, |AC| = |O₂B| = 4, a więc |O₁C| = 9 − 4 = 5, a trójkąt O₁CO₂ jest prostokątny przy C z przeciwprostokątną O₁O₂ = 13.
+    Z twierdzenia Pitagorasa: |AB|² = |O₂C|² = 13² − 5² = 169 − 25 = 144, czyli |AB| = 12.
+    Odległość punktów styczności wynosi 12.
+  difficulty: 4
+objectives:
+- statement: 'Rozpoznać i poprawnie nazwać elementy okręgu: promień, średnicę, cięciwę, sieczną, styczną
+    i punkt styczności, oraz zaznaczyć je na rysunku.'
+  bloom_level: Zapamiętywanie
+- statement: Wyjaśnić, dlaczego prostopadła poprowadzona ze środka okręgu do cięciwy dzieli ją na połowy
+    oraz dlaczego styczna jest prostopadła do promienia w punkcie styczności.
+  bloom_level: Rozumienie
+- statement: Obliczyć długość cięciwy na podstawie promienia i odległości cięciwy od środka okręgu, stosując
+    twierdzenie Pitagorasa.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć promień lub średnicę okręgu, mając dane długość cięciwy i jej odległość od środka
+    albo dane dotyczące stycznej.
+  bloom_level: Stosowanie
+- statement: Obliczyć długość odcinka stycznego poprowadzonego z punktu leżącego na zewnątrz okręgu oraz
+    odległość tego punktu od środka.
+  bloom_level: Stosowanie
+- statement: Wykorzystać równość odcinków stycznych poprowadzonych z jednego punktu do obliczania obwodów,
+    pól i kątów figur (deltoid OAPB).
+  bloom_level: Stosowanie
+- statement: Rozstrzygnąć wzajemne położenie prostej i okręgu na podstawie porównania odległości środka
+    od prostej z promieniem.
+  bloom_level: Analizowanie
+- statement: Przeanalizować sytuację z dwiema cięciwami równoległymi i uwzględnić oba możliwe położenia
+    względem środka okręgu, podając komplet rozwiązań.
+  bloom_level: Analizowanie
+- statement: Rozwiązać zadanie łączące styczne, cięciwy i okręgi styczne, samodzielnie dobierając pomocnicze
+    odcinki i trójkąt prostokątny do zastosowania twierdzenia Pitagorasa.
+  bloom_level: Analizowanie
+- statement: Ocenić poprawność otrzymanego wyniku, sprawdzając warunki geometryczne (|AB| ≤ 2r, 0 ≤ k
+    < r, |PA| < |OP|).
+  bloom_level: Ocenianie
+misconceptions:
+- name: Wstawianie całej cięciwy zamiast jej połowy
+  incorrect_reasoning: „Mam r = 13 i cięciwę 24, więc odległość od środka to √(13² − 24²)" – uczeń podstawia
+    do Pitagorasa całą długość cięciwy.
+  correct_reasoning: 'Prostopadła ze środka dzieli cięciwę na połowy, więc przyprostokątną trójkąta jest
+    |AB|/2 = 12, a nie 24. Poprawnie: k = √(13² − 12²) = 5. Dodatkowo wyrażenie 13² − 24² jest ujemne,
+    co powinno od razu zaalarmować.'
+  severity: 5
+- name: Mylenie promienia ze średnicą
+  incorrect_reasoning: „Dana jest średnica 20, więc w Pitagorasie przeciwprostokątna to 20."
+  correct_reasoning: 'W trójkącie z cięciwą przeciwprostokątną jest promień, czyli połowa średnicy: r
+    = 10. Zawsze na początku zamień dane na promień (lub jasno zaznacz, co jest czym, na rysunku).'
+  severity: 4
+- name: Zły kąt prosty przy stycznej
+  incorrect_reasoning: „Styczna jest prostopadła do OP" albo „promień poprowadzony do dowolnego punktu
+    okręgu jest prostopadły do stycznej".
+  correct_reasoning: Kąt prosty występuje wyłącznie między styczną a promieniem poprowadzonym do punktu
+    styczności. W trójkącie OAP kąt prosty jest przy A, więc OP jest przeciwprostokątną, a nie przyprostokątną.
+  severity: 5
+- name: Odcinek styczny utożsamiany z odległością od środka
+  incorrect_reasoning: „Punkt P jest odległy od środka o 17, więc styczna z P ma długość 17."
+  correct_reasoning: '|PA| = √(|OP|² − r²) < |OP|. Dla r = 8 i |OP| = 17 mamy |PA| = 15. Odcinek styczny
+    jest zawsze krótszy od odległości punktu od środka.'
+  severity: 4
+- name: Pomijanie drugiego przypadku dla cięciw równoległych
+  incorrect_reasoning: „Cięciwy 24 i 10 w okręgu r = 13 – odległość to 5 + 12 = 17" i koniec.
+  correct_reasoning: Cięciwy mogą leżeć po tej samej stronie środka (odległość 12 − 5 = 7) lub po przeciwnych
+    (12 + 5 = 17). Jeśli treść nie precyzuje położenia, należy podać obie odpowiedzi.
+  severity: 3
+- name: Przekonanie, że każda cięciwa przechodzi „blisko" środka lub że najdłuższa cięciwa to dowolna
+  incorrect_reasoning: „Cięciwa okręgu o promieniu 5 może mieć długość 12."
+  correct_reasoning: Najdłuższą cięciwą jest średnica, więc |AB| ≤ 2r = 10. Wartość 12 jest niemożliwa
+    – wynik zawsze warto skonfrontować z warunkiem |AB| ≤ 2r oraz 0 ≤ k < r.
+  severity: 3
+- name: Zapominanie o równości odcinków stycznych
+  incorrect_reasoning: „Z punktu P poprowadzono dwie styczne, trzeba oddzielnie liczyć |PA| i |PB|, bo
+    to różne odcinki."
+  correct_reasoning: Oba odcinki styczne z tego samego punktu mają tę samą długość √(|OP|² − r²), a trójkąty
+    OAP i OBP są przystające. To skraca rachunki i pozwala liczyć kąty (OP jest dwusieczną kąta APB).
+  severity: 2
+- name: Błędne równanie dla okręgów stycznych
+  incorrect_reasoning: „Okręgi styczne wewnętrznie, więc |O₁O₂| = r₁ + r₂."
+  correct_reasoning: Przy styczności wewnętrznej mniejszy okrąg leży wewnątrz większego i |O₁O₂| = |r₁
+    − r₂|; suma promieni odpowiada styczności zewnętrznej. Rysunek natychmiast rozstrzyga, który przypadek
+    zachodzi.
+  severity: 3
+- name: Uznanie, że prosta o odległości k = r od środka przecina okrąg w dwóch punktach
+  incorrect_reasoning: „k = r, więc prosta dotyka okręgu w dwóch punktach" albo „prosta styczna wchodzi
+    trochę do wnętrza koła".
+  correct_reasoning: Gdy k = r, prosta ma z okręgiem dokładnie jeden punkt wspólny i cała (poza punktem
+    styczności) leży na zewnątrz koła. Dwa punkty wspólne występują tylko dla k < r, a wtedy cięciwa ma
+    długość 2√(r²−k²).
+  severity: 3

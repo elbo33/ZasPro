@@ -1,0 +1,380 @@
+section: przeksztalcenia-wykresow
+name: 'Przekształcenia wykresów: przesunięcia wzdłuż osi'
+scope: From the graph of y = f(x), sketching the graphs obtained by shifting it along the x-axis and along
+  the y-axis; reading off how the shift changes zeros, domain and range.
+requirements:
+- V.12
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:06:20.282043'
+  approved_at: '2026-08-28T18:28:22.373086'
+  approved_by: reviewer
+concepts:
+- name: Wykres funkcji jako zbiór punktów
+  description: Wykresem funkcji y = f(x) nazywamy zbiór wszystkich punktów płaszczyzny postaci (x, f(x)),
+    gdzie x należy do dziedziny funkcji.
+  explanation: 'Kluczowa myśl całego działu: skoro wykres to zbiór punktów, to przekształcenie wykresu
+    polega po prostu na przesunięciu każdego jego punktu według tej samej reguły. Zamiast ''przesuwać
+    wzór'', przesuwamy punkty — a wzór jest tylko zapisem tego, co stało się z punktami.'
+  difficulty: 1
+- name: Przesunięcie (translacja) o wektor
+  description: Przesunięcie o wektor [p, q] to przekształcenie płaszczyzny, w którym każdemu punktowi
+    P = (x, y) przyporządkowujemy punkt P' = (x + p, y + q).
+  explanation: 'Pierwsza współrzędna wektora mówi, o ile w prawo (p > 0) lub w lewo (p < 0) przesuwa się
+    figura, druga — o ile w górę (q > 0) lub w dół (q < 0). Przesunięcie nie zmienia kształtu ani rozmiaru
+    figury: wykres po przesunięciu wygląda identycznie, tylko leży w innym miejscu układu współrzędnych.'
+  difficulty: 1
+- name: 'Przesunięcie wzdłuż osi OY: y = f(x) + q'
+  description: 'Wykres funkcji y = f(x) + q powstaje z wykresu y = f(x) przez przesunięcie o wektor [0,
+    q]: w górę o q, gdy q > 0, i w dół o |q|, gdy q < 0.'
+  explanation: Do każdej wartości funkcji dodajemy tę samą liczbę q, więc każdy punkt wędruje pionowo.
+    Argument x się nie zmienia — dlatego dziedzina zostaje ta sama, a zmienia się zbiór wartości.
+  difficulty: 2
+- name: 'Przesunięcie wzdłuż osi OX: y = f(x − p)'
+  description: 'Wykres funkcji y = f(x − p) powstaje z wykresu y = f(x) przez przesunięcie o wektor [p,
+    0]: w prawo o p, gdy p > 0, i w lewo o |p|, gdy p < 0.'
+  explanation: Tu zmienia się argument, a nie wartość. Nowa funkcja w punkcie x + p przyjmuje tę wartość,
+    którą stara przyjmowała w x, bo f((x + p) − p) = f(x). Stąd 'minus p' we wzorze oznacza przesunięcie
+    w prawo — sprawdzaj to zawsze na jednym punkcie, np. na wierzchołku lub miejscu zerowym.
+  difficulty: 3
+- name: 'Przesunięcie o wektor [p, q]: y = f(x − p) + q'
+  description: Wykres funkcji y = f(x − p) + q powstaje z wykresu y = f(x) przez przesunięcie o wektor
+    [p, q].
+  explanation: 'Można je wykonać dwuetapowo: najpierw poziomo, potem pionowo (kolejność jest dowolna,
+    wynik ten sam). Wzór odczytujemy tak: liczba przy x w nawiasie z przeciwnym znakiem daje p, liczba
+    dopisana na zewnątrz daje q. Np. y = f(x + 2) − 5 to wektor [−2, −5].'
+  difficulty: 3
+- name: Obraz punktu wykresu
+  description: Jeżeli punkt A = (a, b) należy do wykresu y = f(x), to punkt A' = (a + p, b + q) należy
+    do wykresu y = f(x − p) + q.
+  explanation: 'To najwygodniejsze narzędzie do szkicowania: wybieramy kilka punktów charakterystycznych
+    (wierzchołek, miejsca zerowe, punkt przecięcia z osią OY, końce dziedziny, ''załamania''), przesuwamy
+    je i przez nowe punkty rysujemy wykres tego samego kształtu.'
+  difficulty: 2
+- name: Wpływ przesunięcia na dziedzinę
+  description: 'Przesunięcie pionowe nie zmienia dziedziny. Przesunięcie poziome o p przesuwa całą dziedzinę
+    o p: jeśli D jest dziedziną f, to dziedziną funkcji g(x) = f(x − p) jest zbiór {x + p : x ∈ D}.'
+  explanation: Dziedzina to 'cień' wykresu na osi OX. Ruch pionowy nie zmienia cienia, ruch poziomy przesuwa
+    go o tyle samo. Przedział ⟨a, b⟩ przechodzi na ⟨a + p, b + p⟩.
+  difficulty: 3
+- name: Wpływ przesunięcia na zbiór wartości
+  description: 'Przesunięcie poziome nie zmienia zbioru wartości. Przesunięcie pionowe o q przesuwa cały
+    zbiór wartości o q: przedział ⟨c, d⟩ przechodzi na ⟨c + q, d + q⟩.'
+  explanation: Zbiór wartości to 'cień' wykresu na osi OY — analogicznie do dziedziny, tylko role osi
+    są zamienione. Dlatego wartość najmniejsza i największa zmieniają się o q, ale argumenty, dla których
+    są przyjmowane, zmieniają się o p.
+  difficulty: 3
+- name: Wpływ przesunięcia na miejsca zerowe
+  description: Przy przesunięciu poziomym o p każde miejsce zerowe x₀ przechodzi na x₀ + p. Przy przesunięciu
+    pionowym miejsc zerowych na ogół nie da się 'przesunąć' — trzeba je wyznaczyć na nowo, rozwiązując
+    równanie f(x) = −q.
+  explanation: Miejsce zerowe to punkt przecięcia z osią OX. Ruch poziomy przesuwa te punkty razem z wykresem,
+    ruch pionowy natomiast przesuwa wykres względem osi OX — punkty przecięcia mogą wtedy powstać, zniknąć
+    albo przesunąć się o zupełnie inną wartość niż q.
+  difficulty: 4
+- name: Własności zachowywane przez przesunięcie
+  description: 'Przesunięcie zachowuje kształt wykresu: liczbę i rodzaj ekstremów, liczbę miejsc zerowych
+    przy przesunięciu poziomym, charakter monotoniczności oraz długości przedziałów monotoniczności.'
+  explanation: Jeśli f rośnie w ⟨a, b⟩, to g(x) = f(x − p) + q rośnie w ⟨a + p, b + p⟩ — przedział ma
+    tę samą długość, tylko inne końce. Ta sama zasada dotyczy przedziałów, w których funkcja jest dodatnia
+    lub ujemna (przy przesunięciu poziomym).
+  difficulty: 3
+- name: Przesunięcie paraboli i postać kanoniczna
+  description: Wykres funkcji y = a(x − p)² + q to parabola powstała z paraboli y = ax² przez przesunięcie
+    o wektor [p, q]; jej wierzchołkiem jest punkt W = (p, q).
+  explanation: 'Postać kanoniczna funkcji kwadratowej jest bezpośrednim zastosowaniem przesunięć: liczby
+    p i q czyta się wprost jako współrzędne wierzchołka. Jeśli wzór dany jest w postaci ogólnej, doprowadzamy
+    go do kanonicznej (uzupełnianie do kwadratu lub wzory na p i q) i dopiero wtedy odczytujemy wektor
+    przesunięcia.'
+  difficulty: 3
+- name: Przesunięcie hiperboli i jej asymptot
+  description: Wykres funkcji y = a/(x − p) + q powstaje z hiperboli y = a/x przez przesunięcie o wektor
+    [p, q]; jej asymptotami są proste x = p oraz y = q.
+  explanation: 'Asymptoty przesuwają się razem z wykresem: pionowa oś OX-owa (x = 0) przechodzi na x =
+    p, pozioma (y = 0) na y = q. Dziedziną jest ℝ \ {p}, a zbiorem wartości ℝ \ {q}.'
+  difficulty: 4
+- name: Przesunięcie wykresu wartości bezwzględnej
+  description: Wykres y = |x − p| + q to 'litera V' o wierzchołku (p, q), powstała z wykresu y = |x| przez
+    przesunięcie o wektor [p, q].
+  explanation: Punktem charakterystycznym jest wierzchołek (miejsce załamania). Ramiona zachowują nachylenie
+    (współczynniki kierunkowe 1 i −1), więc wystarczy przesunąć wierzchołek i dorysować ramiona.
+  difficulty: 2
+formulas:
+- name: Obraz punktu przy przesunięciu o wektor
+  latex_raw: P=(x,y) \ \longmapsto \ P'=(x+p,\; y+q)
+  conditions: przesunięcie o wektor \vec{u}=[p,q]
+  description: Podstawowa reguła, z której wynikają wszystkie pozostałe.
+- name: Przesunięcie pionowe
+  latex_raw: y=f(x)+q \quad\Longleftrightarrow\quad \text{przesunięcie wykresu } y=f(x) \text{ o wektor
+    } [0,q]
+  conditions: q > 0 — w górę o q; q < 0 — w dół o |q|
+- name: Przesunięcie poziome
+  latex_raw: y=f(x-p) \quad\Longleftrightarrow\quad \text{przesunięcie wykresu } y=f(x) \text{ o wektor
+    } [p,0]
+  conditions: p > 0 — w prawo o p; p < 0 — w lewo o |p|
+- name: Przesunięcie o dowolny wektor
+  latex_raw: g(x)=f(x-p)+q \quad\Longleftrightarrow\quad \text{przesunięcie o wektor } [p,q]
+  conditions: p, q ∈ ℝ; zapis y = f(x+2)-5 oznacza p = -2, q = -5
+- name: Dziedzina po przesunięciu
+  latex_raw: D_g=\{x+p:\ x\in D_f\},\qquad \text{w szczególności } \langle a,b\rangle \mapsto \langle
+    a+p,\ b+p\rangle
+  conditions: g(x) = f(x - p) + q; q nie wpływa na dziedzinę
+- name: Zbiór wartości po przesunięciu
+  latex_raw: ZW_g=\{y+q:\ y\in ZW_f\},\qquad \text{w szczególności } \langle c,d\rangle \mapsto \langle
+    c+q,\ d+q\rangle
+  conditions: g(x) = f(x - p) + q; p nie wpływa na zbiór wartości
+- name: Miejsca zerowe po przesunięciu poziomym
+  latex_raw: f(x_0)=0 \ \Longrightarrow\ g(x_0+p)=0 \quad \text{dla } g(x)=f(x-p)
+  conditions: tylko przesunięcie poziome (q = 0)
+- name: Miejsca zerowe po przesunięciu pionowym
+  latex_raw: g(x)=f(x)+q=0 \iff f(x)=-q
+  conditions: miejsca zerowe wyznaczamy na nowo; ich liczba może się zmienić
+- name: Wartość funkcji przesuniętej w punkcie
+  latex_raw: g(x)=f(x-p)+q \ \Longrightarrow\ g(a)=f(a-p)+q
+  conditions: a - p ∈ D_f
+- name: Postać kanoniczna jako przesunięcie
+  latex_raw: y=a(x-p)^2+q,\qquad W=(p,q)
+  conditions: a ≠ 0; parabola powstaje z y = ax² przez przesunięcie o [p, q]
+- name: Przesunięta hiperbola
+  latex_raw: y=\frac{a}{x-p}+q,\qquad D=\mathbb{R}\setminus\{p\},\quad ZW=\mathbb{R}\setminus\{q\}
+  conditions: 'a ≠ 0; asymptoty: x = p oraz y = q'
+- name: Przedziały monotoniczności po przesunięciu
+  latex_raw: f \text{ rosnąca w } \langle a,b\rangle \ \Longrightarrow\ g(x)=f(x-p)+q \text{ rosnąca w
+    } \langle a+p,\ b+p\rangle
+  conditions: dla dowolnych p, q ∈ ℝ; analogicznie dla malejącej i stałej
+methods:
+- name: Szkicowanie wykresu y = f(x) + q na podstawie wykresu y = f(x)
+  when_to_use: Gdy dany jest wykres (lub wzór) funkcji f i mamy narysować wykres różniący się od niego
+    stałym składnikiem dodanym do wartości.
+  steps:
+  - 'Ustal znak q: q > 0 — przesuwamy w górę o q, q < 0 — w dół o |q|.'
+  - 'Zaznacz na wykresie f punkty charakterystyczne: miejsca zerowe, punkt przecięcia z osią OY, wierzchołek/załamania,
+    końce wykresu.'
+  - Przesuń każdy z tych punktów pionowo o q (pierwsza współrzędna bez zmian, do drugiej dodaj q).
+  - Połącz obrazy punktów krzywą o dokładnie takim samym kształcie jak wykres f.
+  - 'Zapisz wnioski: D bez zmian, ZW przesunięty o q, nowe miejsca zerowe odczytaj z rysunku lub z równania
+    f(x) = −q.'
+- name: Szkicowanie wykresu y = f(x − p) na podstawie wykresu y = f(x)
+  when_to_use: Gdy w miejsce argumentu x pojawia się x − p (lub x + p) i trzeba narysować nowy wykres.
+  steps:
+  - 'Odczytaj p: we wzorze f(x − 4) mamy p = 4 (w prawo), we wzorze f(x + 4) mamy p = −4 (w lewo).'
+  - 'Sprawdź kierunek na jednym punkcie: rozwiąż x − p = x₀ dla punktu charakterystycznego x₀ — otrzymasz
+    x = x₀ + p.'
+  - Przesuń wszystkie punkty charakterystyczne poziomo o p (do pierwszej współrzędnej dodaj p, druga bez
+    zmian).
+  - Narysuj wykres tego samego kształtu przez nowe punkty.
+  - 'Zapisz wnioski: ZW bez zmian, D i miejsca zerowe przesunięte o p.'
+- name: Szkicowanie wykresu y = f(x − p) + q (przesunięcie o wektor)
+  when_to_use: Gdy przesunięcie jest jednocześnie poziome i pionowe.
+  steps:
+  - 'Odczytaj wektor [p, q]: p to liczba odejmowana od x, q to liczba dodana na zewnątrz.'
+  - 'Wykonaj (co najmniej w wyobraźni) przesunięcie w dwóch krokach: najpierw poziomo o p, potem pionowo
+    o q — albo od razu przesuń punkty o wektor [p, q].'
+  - 'Przenieś punkty charakterystyczne: (a, b) → (a + p, b + q); przenieś także ewentualne asymptoty (x
+    = 0 → x = p, y = 0 → y = q).'
+  - Narysuj wykres o niezmienionym kształcie przez nowe punkty.
+  - 'Odczytaj żądane własności: D przesunięta o p, ZW przesunięty o q, miejsca zerowe wyznacz z równania
+    f(x − p) = −q lub z rysunku.'
+- name: Odczytywanie dziedziny, zbioru wartości i miejsc zerowych funkcji przesuniętej
+  when_to_use: Gdy znane są D, ZW i miejsca zerowe funkcji f i pytamy o te same wielkości dla g(x) = f(x
+    − p) + q, bez rysowania dokładnego wykresu.
+  steps:
+  - 'Rozdziel wektor: część pozioma p działa na oś OX, część pionowa q na oś OY.'
+  - 'Dziedzina: do obu końców każdego przedziału dziedziny f dodaj p; liczby wykluczone z dziedziny (np.
+    punkt asymptoty) też zwiększ o p.'
+  - 'Zbiór wartości: do obu końców każdego przedziału zbioru wartości f dodaj q; zachowaj typ nawiasów
+    (domknięty/otwarty).'
+  - 'Miejsca zerowe: jeśli q = 0, do każdego miejsca zerowego dodaj p; jeśli q ≠ 0, rozwiąż równanie f(x
+    − p) = −q albo odczytaj punkty przecięcia z osią OX z naszkicowanego wykresu.'
+  - 'Sprawdź wynik logicznie: czy przesunięty zbiór wartości zawiera 0? Jeśli nie — funkcja nie ma miejsc
+    zerowych.'
+- name: Wyznaczanie wektora przesunięcia z dwóch wzorów
+  when_to_use: Gdy trzeba stwierdzić, o jaki wektor należy przesunąć wykres funkcji f, aby otrzymać wykres
+    funkcji g (np. y = x² i y = x² + 6x + 5).
+  steps:
+  - 'Doprowadź wzór funkcji g do postaci f(x − p) + q: dla funkcji kwadratowej zastosuj postać kanoniczną
+    (uzupełnianie do kwadratu lub wzory p = −b/(2a), q = −Δ/(4a)); dla funkcji wymiernej wydziel część
+    całkowitą.'
+  - Odczytaj p jako liczbę odejmowaną od x oraz q jako składnik wolny dopisany na zewnątrz — uważaj na
+    znaki.
+  - Zapisz wektor \vec{u} = [p, q].
+  - 'Zweryfikuj na jednym punkcie: sprawdź, czy obraz wybranego punktu wykresu f (np. (0, f(0))) leży
+    na wykresie g.'
+- name: Sprawdzanie, czy punkt należy do przesuniętego wykresu
+  when_to_use: 'Gdy pytanie brzmi: czy punkt A = (a, b) leży na wykresie funkcji g(x) = f(x − p) + q.'
+  steps:
+  - Oblicz g(a) = f(a − p) + q, korzystając ze wzoru lub z wykresu funkcji f (odczytaj wartość f w punkcie
+    a − p).
+  - Porównaj otrzymaną wartość z b.
+  - Jeśli g(a) = b, punkt należy do wykresu; w przeciwnym razie nie należy.
+  - 'Alternatywnie: przesuń punkt A o wektor przeciwny [−p, −q] i sprawdź, czy trafia on na wykres f.'
+examples:
+- statement: Dana jest funkcja f(x) = x². Naszkicuj wykresy funkcji g(x) = x² − 3 oraz h(x) = (x + 2)².
+    Dla każdej z nich podaj dziedzinę, zbiór wartości i miejsca zerowe.
+  worked_solution: |-
+    Wykres f to parabola o wierzchołku (0, 0), przechodząca m.in. przez punkty (−2, 4), (−1, 1), (1, 1), (2, 4).
+
+    g(x) = f(x) + (−3): przesunięcie o wektor [0, −3], czyli o 3 jednostki w dół. Wierzchołek (0,0) → (0, −3), punkt (1,1) → (1, −2), punkt (2,4) → (2,1). Dziedzina się nie zmienia: D = ℝ. Zbiór wartości ⟨0, +∞) przesuwa się o −3: ZW = ⟨−3, +∞). Miejsca zerowe wyznaczamy na nowo: x² − 3 = 0, x² = 3, x = −√3 lub x = √3. (Zauważ: nie są to miejsca zerowe f przesunięte o −3!)
+
+    h(x) = f(x − (−2)): przesunięcie o wektor [−2, 0], czyli o 2 jednostki w lewo. Wierzchołek (0,0) → (−2, 0), punkt (1,1) → (−1,1), punkt (2,4) → (0,4). Dziedzina D = ℝ (przesunięcie ℝ o −2 to nadal ℝ). Zbiór wartości bez zmian: ZW = ⟨0, +∞). Miejsce zerowe f to x = 0, więc miejsce zerowe h to x = 0 + (−2) = −2.
+  difficulty: 1
+- statement: 'Funkcja f określona jest w przedziale ⟨−4, 2⟩, jej zbiorem wartości jest przedział ⟨−1,
+    3⟩, a jej miejscami zerowymi są liczby −3 i 1. Podaj dziedzinę, zbiór wartości i miejsca zerowe funkcji:
+    a) g(x) = f(x + 3), b) h(x) = f(x) + 2, c) k(x) = f(x − 1) − 4.'
+  worked_solution: |-
+    a) g(x) = f(x − (−3)) — przesunięcie o wektor [−3, 0], czyli o 3 w lewo.
+    Dziedzina: ⟨−4 − 3, 2 − 3⟩ = ⟨−7, −1⟩.
+    Zbiór wartości bez zmian: ⟨−1, 3⟩.
+    Miejsca zerowe: −3 − 3 = −6 oraz 1 − 3 = −2.
+
+    b) h(x) = f(x) + 2 — przesunięcie o wektor [0, 2], o 2 w górę.
+    Dziedzina bez zmian: ⟨−4, 2⟩.
+    Zbiór wartości: ⟨−1 + 2, 3 + 2⟩ = ⟨1, 5⟩.
+    Miejsca zerowe: skoro najmniejsza wartość h wynosi 1 > 0, wykres leży w całości nad osią OX — funkcja h nie ma miejsc zerowych. (Formalnie: h(x) = 0 ⟺ f(x) = −2, a −2 ∉ ⟨−1, 3⟩.)
+
+    c) k(x) = f(x − 1) − 4 — przesunięcie o wektor [1, −4].
+    Dziedzina: ⟨−4 + 1, 2 + 1⟩ = ⟨−3, 3⟩.
+    Zbiór wartości: ⟨−1 − 4, 3 − 4⟩ = ⟨−5, −1⟩.
+    Miejsca zerowe: zbiór wartości leży w całości poniżej zera (największa wartość to −1), więc k nie ma miejsc zerowych.
+  difficulty: 2
+- statement: Naszkicuj wykres funkcji g(x) = |x − 3| − 2. Wyznacz jej miejsca zerowe, zbiór wartości oraz
+    przedziały monotoniczności.
+  worked_solution: |-
+    Punktem wyjścia jest wykres f(x) = |x| — 'litera V' o wierzchołku (0, 0), ramionach o współczynnikach −1 (dla x < 0) i 1 (dla x > 0). Funkcja f maleje w (−∞, 0⟩ i rośnie w ⟨0, +∞).
+
+    Wzór g(x) = f(x − 3) + (−2) oznacza przesunięcie o wektor [3, −2]: 3 w prawo i 2 w dół.
+    Wierzchołek: (0, 0) → (3, −2). Punkt (1, 1) → (4, −1), punkt (−1, 1) → (2, −1), punkt (2,2) → (5,0), punkt (−2,2) → (1,0). Rysujemy V o wierzchołku (3, −2) przechodzące przez (1, 0) i (5, 0).
+
+    Miejsca zerowe: |x − 3| − 2 = 0 ⟺ |x − 3| = 2 ⟺ x − 3 = 2 lub x − 3 = −2 ⟺ x = 5 lub x = 1 — zgodnie z rysunkiem.
+    Zbiór wartości: ZW funkcji f to ⟨0, +∞), po przesunięciu o q = −2 otrzymujemy ⟨−2, +∞).
+    Monotoniczność: przedziały monotoniczności przesuwają się o p = 3, więc g maleje w (−∞, 3⟩ i rośnie w ⟨3, +∞).
+    Dodatkowo: g(x) < 0 dla x ∈ (1, 5), g(x) > 0 dla x ∈ (−∞, 1) ∪ (5, +∞).
+  difficulty: 3
+- statement: Wykres funkcji f(x) = 2/x przesunięto o wektor [−1, 3]. Zapisz wzór otrzymanej funkcji g,
+    podaj jej dziedzinę, równania asymptot i miejsce zerowe.
+  worked_solution: |-
+    Wektor [p, q] = [−1, 3], więc g(x) = f(x − p) + q = f(x + 1) + 3, czyli
+    g(x) = 2/(x + 1) + 3.
+
+    Dziedzina: dziedziną f jest ℝ \ {0}; przesuwamy o p = −1, więc D_g = ℝ \ {−1}. (Sprawdzenie: mianownik x + 1 ≠ 0 ⟺ x ≠ −1.)
+
+    Asymptoty: asymptota pionowa x = 0 przechodzi na x = 0 + (−1) = −1; asymptota pozioma y = 0 przechodzi na y = 0 + 3 = 3.
+
+    Zbiór wartości: ZW funkcji f to ℝ \ {0}, po przesunięciu o q = 3 mamy ZW_g = ℝ \ {3}.
+
+    Miejsce zerowe: 2/(x + 1) + 3 = 0 ⟺ 2/(x + 1) = −3 ⟺ 2 = −3(x + 1) (dla x ≠ −1) ⟺ 2 = −3x − 3 ⟺ 3x = −5 ⟺ x = −5/3. Wartość ta należy do dziedziny, więc jedynym miejscem zerowym jest x = −5/3.
+
+    Szkic: dwie gałęzie hiperboli w układzie 'przesuniętych osi' x = −1 i y = 3; np. punkt (1, 2) wykresu f przechodzi na (0, 5), a punkt (−1, −2) na (−2, 1).
+  difficulty: 4
+- statement: O jaki wektor należy przesunąć wykres funkcji f(x) = x², aby otrzymać wykres funkcji g(x)
+    = x² + 6x + 5? Podaj współrzędne wierzchołka paraboli g oraz obraz punktu A = (2, 4) leżącego na wykresie
+    f.
+  worked_solution: |-
+    Doprowadzamy wzór g do postaci kanonicznej (uzupełnianie do kwadratu):
+    g(x) = x² + 6x + 5 = (x² + 6x + 9) − 9 + 5 = (x + 3)² − 4.
+    (Można też ze wzorów: p = −b/(2a) = −6/2 = −3, q = g(−3) = 9 − 18 + 5 = −4.)
+
+    Zatem g(x) = f(x − (−3)) + (−4), czyli przesunięcie o wektor \vec{u} = [−3, −4]: 3 jednostki w lewo i 4 w dół.
+
+    Wierzchołek: obrazem wierzchołka (0, 0) paraboli f jest W = (0 − 3, 0 − 4) = (−3, −4) — zgodnie z postacią kanoniczną.
+
+    Obraz punktu A: A' = (2 + (−3), 4 + (−4)) = (−1, 0).
+    Sprawdzenie: g(−1) = 1 − 6 + 5 = 0 ✓ (punkt A' istotnie leży na wykresie g i jest jednym z jego miejsc zerowych; drugie to x = −5).
+  difficulty: 4
+objectives:
+- statement: Wyjaśnić, na czym polega przesunięcie wykresu o wektor [p, q], i wskazać obraz danego punktu
+    wykresu.
+  bloom_level: rozumienie
+- statement: Na podstawie danego wykresu y = f(x) naszkicować wykres funkcji y = f(x) + q, y = f(x − p)
+    oraz y = f(x − p) + q, zachowując kształt oryginału.
+  bloom_level: zastosowanie
+- statement: Poprawnie odczytać ze wzoru kierunek i wartość przesunięcia (znaki p i q) oraz zapisać wektor
+    przesunięcia.
+  bloom_level: zastosowanie
+- statement: Wyznaczyć dziedzinę i zbiór wartości funkcji powstałej przez przesunięcie, korzystając z
+    dziedziny i zbioru wartości funkcji wyjściowej.
+  bloom_level: zastosowanie
+- statement: 'Wyznaczyć miejsca zerowe funkcji przesuniętej: przez przesunięcie miejsc zerowych (ruch
+    poziomy) lub przez rozwiązanie równania f(x) = −q (ruch pionowy).'
+  bloom_level: zastosowanie
+- statement: Rozróżnić skutki przesunięcia poziomego i pionowego dla dziedziny, zbioru wartości, miejsc
+    zerowych i przedziałów monotoniczności.
+  bloom_level: analiza
+- statement: Zapisać wzór funkcji, której wykres powstał z wykresu danej funkcji przez przesunięcie o
+    zadany wektor (dla funkcji kwadratowej, wartości bezwzględnej i proporcjonalności odwrotnej).
+  bloom_level: zastosowanie
+- statement: Wyznaczyć wektor przesunięcia przekształcającego wykres jednej funkcji na wykres drugiej,
+    doprowadzając wzór do postaci f(x − p) + q (np. przez postać kanoniczną).
+  bloom_level: analiza
+- statement: Sprawdzić, czy dany punkt należy do wykresu funkcji przesuniętej, oraz zweryfikować poprawność
+    szkicu na punktach kontrolnych.
+  bloom_level: ocena
+- statement: Wskazać asymptoty i punkty wykluczone z dziedziny wykresu przesuniętego, przenosząc je razem
+    z wykresem.
+  bloom_level: zastosowanie
+misconceptions:
+- name: Mylenie kierunku przesunięcia poziomego
+  incorrect_reasoning: „We wzorze y = f(x − 3) jest minus, więc wykres przesuwamy o 3 jednostki w lewo”.
+  correct_reasoning: 'Znak w nawiasie jest przeciwny do kierunku ruchu: y = f(x − 3) to przesunięcie o
+    wektor [3, 0], czyli w PRAWO. Najprostsza kontrola: dla f(x) = x² wzór y = (x − 3)² daje wierzchołek
+    w punkcie x = 3 (bo tam nawias się zeruje), a więc na prawo od zera.'
+  severity: 5
+- name: Przesuwanie miejsc zerowych o q przy ruchu pionowym
+  incorrect_reasoning: „Funkcja f miała miejsce zerowe x = 2, a g(x) = f(x) − 3, więc g ma miejsce zerowe
+    x = 2 − 3 = −1”.
+  correct_reasoning: 'Przesunięcie pionowe zmienia wartości, a nie argumenty — miejsca zerowe nie przesuwają
+    się poziomo. Trzeba rozwiązać równanie f(x) = 3 (ogólnie f(x) = −q) albo odczytać punkty przecięcia
+    z osią OX z nowego rysunku. Przykład: x² ma miejsce zerowe 0, a x² − 3 ma miejsca zerowe ±√3, a nie
+    −3.'
+  severity: 5
+- name: Zmiana dziedziny przy przesunięciu pionowym
+  incorrect_reasoning: „g(x) = f(x) + 4, f ma dziedzinę ⟨−1, 5⟩, więc g ma dziedzinę ⟨3, 9⟩”.
+  correct_reasoning: 'Przy przesunięciu pionowym każdy punkt zachowuje swoją pierwszą współrzędną, więc
+    dziedzina jest identyczna: D_g = ⟨−1, 5⟩. To zbiór wartości przesuwa się o 4.'
+  severity: 4
+- name: Zmiana zbioru wartości przy przesunięciu poziomym
+  incorrect_reasoning: „g(x) = f(x − 2), zbiorem wartości f jest ⟨0, 6⟩, więc zbiorem wartości g jest
+    ⟨2, 8⟩”.
+  correct_reasoning: Przesunięcie poziome nie zmienia żadnej wartości funkcji — g przyjmuje dokładnie
+    te same wartości, tylko dla argumentów większych o 2. Zatem ZW_g = ⟨0, 6⟩, a zmienia się dziedzina.
+  severity: 4
+- name: Mylenie f(x + p) z f(x) + p
+  incorrect_reasoning: „f(x + 3) i f(x) + 3 to to samo, bo w obu dodaję 3”.
+  correct_reasoning: 'f(x + 3) oznacza przesunięcie poziome o 3 w lewo (zmieniamy argument), a f(x) +
+    3 — przesunięcie pionowe o 3 w górę (zmieniamy wartość). Dla f(x) = x²: (x + 3)² = x² + 6x + 9, a
+    x² + 3 — to zupełnie inne funkcje. Sprawdź na liczbach: f(1+3) = f(4) = 16, natomiast f(1) + 3 = 4.'
+  severity: 5
+- name: Odczytywanie wektora wprost z liczb we wzorze
+  incorrect_reasoning: „g(x) = f(x + 2) − 5, więc wektor przesunięcia to [2, −5]”.
+  correct_reasoning: Wzór wzorcowy to f(x − p) + q. Z x + 2 = x − (−2) odczytujemy p = −2, a z −5 odczytujemy
+    q = −5, więc wektor to [−2, −5]. Pierwszą współrzędną bierzemy z przeciwnym znakiem niż liczba widoczna
+    w nawiasie, drugą — bez zmiany znaku.
+  severity: 4
+- name: Zniekształcanie kształtu wykresu przy przesuwaniu
+  incorrect_reasoning: „Przesuwam wykres, więc mogę go trochę «rozciągnąć», żeby ładnie przechodził przez
+    nowe punkty” — uczeń zmienia szerokość paraboli albo nachylenie ramion V.
+  correct_reasoning: 'Przesunięcie jest izometrią: kształt, rozmiar i nachylenia pozostają identyczne.
+    Każdy punkt wędruje o ten sam wektor, więc nowy wykres jest dokładną kopią starego, tylko w innym
+    miejscu. Jeśli kopia nie pokrywa się z oryginałem po przesunięciu — rysunek jest błędny.'
+  severity: 3
+- name: Zapominanie o przesunięciu asymptot i punktów wykluczonych z dziedziny
+  incorrect_reasoning: „g(x) = 1/(x − 4) + 2 — asymptotami są osie układu, bo to przecież hiperbola”.
+  correct_reasoning: 'Asymptoty przesuwają się razem z wykresem: pionowa z x = 0 na x = 4, pozioma z y
+    = 0 na y = 2. Stąd D = ℝ \ {4} i ZW = ℝ \ {2}. Zawsze przesuwaj także elementy pomocnicze rysunku,
+    nie tylko samą krzywą.'
+  severity: 4
+- name: Zakładanie, że liczba miejsc zerowych nigdy się nie zmienia
+  incorrect_reasoning: „f miała dwa miejsca zerowe, więc f(x) + q też ma dwa”.
+  correct_reasoning: 'Przy przesunięciu pionowym wykres przemieszcza się względem osi OX i liczba przecięć
+    może wzrosnąć, zmaleć lub spaść do zera. Np. y = x² − 1 ma dwa miejsca zerowe, y = x² − 1 + 1 = x²
+    ma jedno, a y = x² − 1 + 5 nie ma żadnego. Wskazówka kontrolna: miejsca zerowe istnieją dokładnie
+    wtedy, gdy 0 należy do nowego zbioru wartości.'
+  severity: 3
+- name: Błędna postać kanoniczna przy szukaniu wektora
+  incorrect_reasoning: „g(x) = x² + 6x + 5, więc parabola powstała z y = x² przez przesunięcie o wektor
+    [6, 5]”.
+  correct_reasoning: 'Wektor odczytujemy dopiero z postaci kanonicznej: x² + 6x + 5 = (x + 3)² − 4, czyli
+    wektor [−3, −4]. Ze współczynników postaci ogólnej nie da się odczytać przesunięcia bezpośrednio.'
+  severity: 4

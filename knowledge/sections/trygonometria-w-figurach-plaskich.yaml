@@ -1,0 +1,458 @@
+section: trygonometria-w-figurach-plaskich
+name: Trygonometria w figurach płaskich
+scope: Using trig functions to find segment lengths and to compute areas of plane figures.
+requirements:
+- VIII.12
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:08:15.219406'
+  approved_at: '2026-08-28T18:28:19.816413'
+  approved_by: reviewer
+concepts:
+- name: Funkcje trygonometryczne kąta ostrego w trójkącie prostokątnym
+  description: 'Dla kąta ostrego α w trójkącie prostokątnym: sin α = (przyprostokątna leżąca naprzeciw
+    α)/(przeciwprostokątna), cos α = (przyprostokątna leżąca przy α)/(przeciwprostokątna), tg α = (przyprostokątna
+    naprzeciw α)/(przyprostokątna przy α).'
+  explanation: 'Myśl o tym jako o ''przelicznikach'' między bokami: znając jeden bok i jeden kąt ostry,
+    każdy pozostały bok dostajesz przez pomnożenie lub podzielenie przez sin, cos albo tg. Kluczowe jest
+    zawsze najpierw zaznaczyć, PRZY KTÓRYM kącie stoimy — ''naprzeciw'' i ''przy'' zmieniają się razem
+    z kątem. Wartości te nie zależą od wielkości trójkąta (trójkąty podobne mają te same stosunki boków),
+    tylko od miary kąta.'
+  difficulty: 1
+- name: Przeciwprostokątna, przyprostokątna przyległa i przeciwległa
+  description: Przeciwprostokątna to bok leżący naprzeciw kąta prostego (najdłuższy). Względem wybranego
+    kąta ostrego α jedna przyprostokątna leży naprzeciw α (przeciwległa), druga tworzy ramię kąta α (przyległa).
+  explanation: 'Zanim wybierzesz funkcję, opisz boki literami ''p'' (przeciwprostokątna), ''o'' (naprzeciw),
+    ''a'' (przy) na rysunku. Wybór funkcji to potem czysta mechanika: masz ''o'' i ''p'' → sinus, ''a''
+    i ''p'' → cosinus, ''o'' i ''a'' → tangens.'
+  difficulty: 1
+- name: Funkcje trygonometryczne kąta rozwartego (0°–180°)
+  description: 'Funkcje sinus i cosinus rozszerza się na kąty od 0° do 180°: dla kąta rozwartego α zachodzi
+    sin α = sin(180° − α) oraz cos α = −cos(180° − α); sinus jest wtedy dodatni, cosinus ujemny.'
+  explanation: 'W figurach płaskich pojawia się to głównie w dwóch miejscach: gdy kąt między bokami trójkąta
+    jest rozwarty (wzór ½ab sin γ nadal działa) i gdy spodek wysokości wypada poza bokiem. Warto pamiętać,
+    że sin 150° = sin 30° = ½, sin 120° = sin 60° = √3/2, cos 120° = −½.'
+  difficulty: 3
+- name: Wartości funkcji trygonometrycznych kątów 30°, 45°, 60°
+  description: sin 30° = ½, cos 30° = √3/2, tg 30° = √3/3; sin 45° = cos 45° = √2/2, tg 45° = 1; sin 60°
+    = √3/2, cos 60° = ½, tg 60° = √3.
+  explanation: Te trzy kąty biorą się z połowy trójkąta równobocznego (30°–60°–90°, boki 1, √3, 2) i z
+    połowy kwadratu (45°–45°–90°, boki 1, 1, √2). Jeśli zapomnisz tabeli, narysuj te dwa trójkąty i odczytaj
+    stosunki. W zadaniach 'na figury' odpowiedzi prawie zawsze zostawiamy w postaci dokładnej, z pierwiastkami.
+  difficulty: 2
+- name: Jedynka trygonometryczna i związek tg = sin/cos
+  description: 'Dla każdego kąta ostrego α: sin²α + cos²α = 1 oraz tg α = sin α / cos α (gdy cos α ≠ 0).'
+  explanation: 'Służy do sytuacji, gdy zadanie podaje jedną wartość funkcji (np. sin α = 3/5) i nie zdradza
+    miary kąta. Wyliczasz pozostałe wartości i dopiero potem wstawiasz je do wzoru na bok lub pole. Pamiętaj:
+    sin²α to (sin α)². Dla kąta ostrego wybieramy zawsze pierwiastek dodatni.'
+  difficulty: 2
+- name: Kąt zawarty między bokami (kąt włączony)
+  description: Kąt utworzony przez dwa wybrane boki figury o wspólnym wierzchołku.
+  explanation: Wzór P = ½ab sin γ działa tylko wtedy, gdy γ jest kątem MIĘDZY bokami a i b. Jeżeli w zadaniu
+    podano kąt przy innym wierzchołku, trzeba najpierw dopełnić do 180° (suma kątów trójkąta) albo zmienić
+    parę boków.
+  difficulty: 2
+- name: Wysokość figury wyrażona przez trygonometrię
+  description: Jeśli z końca odcinka o długości b nachylonego do prostej pod kątem α opuścimy prostopadłą,
+    to wysokość wynosi h = b·sin α, a rzut tego odcinka na prostą ma długość b·cos α.
+  explanation: 'To najważniejsze narzędzie w planimetrii: każda wysokość równoległoboku, trapezu czy trójkąta
+    to po prostu ''ramię razy sinus kąta nachylenia''. Rzut b·cos α pozwala z kolei rozbić podstawę trapezu
+    lub obliczyć odległości poziome.'
+  difficulty: 2
+- name: Rozwiązywanie trójkąta prostokątnego
+  description: 'Wyznaczanie wszystkich boków i kątów trójkąta prostokątnego na podstawie danych: bok +
+    kąt ostry lub dwa boki.'
+  explanation: 'Schemat: drugi kąt ostry to 90° minus dany; brakujące boki przez sin/cos/tg albo twierdzenie
+    Pitagorasa. Twierdzenie Pitagorasa jest często szybsze niż trzecia funkcja i nie wprowadza zaokrągleń.'
+  difficulty: 2
+- name: Metoda pomocniczych trójkątów prostokątnych
+  description: Technika polegająca na dorysowaniu w figurze wysokości, przekątnej, promienia lub odcinka
+    łączącego środki tak, aby powstał trójkąt prostokątny z danym kątem.
+  explanation: Trygonometria kąta ostrego 'żyje' tylko w trójkącie prostokątnym — więc jeśli figura go
+    nie ma, trzeba go wytworzyć. W trapezie równoramiennym i rombie dorysowana wysokość lub przekątna
+    od razu daje trójkąt prostokątny z połową kąta lub połową przekątnej.
+  difficulty: 3
+- name: Pole trójkąta z dwóch boków i kąta między nimi
+  description: P = ½·a·b·sin γ, gdzie a, b to długości dwóch boków, a γ — miara kąta między nimi (0° <
+    γ < 180°).
+  explanation: Wzór powstaje z P = ½·a·h, po podstawieniu h = b·sin γ. Działa również dla kąta rozwartego,
+    bo wtedy wysokość pada poza bokiem, ale jej długość nadal wynosi b·sin γ. Największe pole przy ustalonych
+    a, b jest dla γ = 90°.
+  difficulty: 2
+- name: Pola czworokątów z użyciem funkcji trygonometrycznych
+  description: 'Równoległobok o bokach a, b i kącie α: P = ab·sin α; romb o boku a i kącie α: P = a²·sin
+    α; trapez: P = ½(a+b)·h, gdzie h wyliczamy z ramienia i kąta nachylenia.'
+  explanation: 'Wszystkie te wzory to ten sam pomysł: podstawa razy wysokość, a wysokość liczymy jako
+    ''bok razy sinus''. Ponieważ sin α = sin(180° − α), nie ma znaczenia, czy podstawisz kąt ostry, czy
+    rozwarty równoległoboku — pole wyjdzie takie samo.'
+  difficulty: 2
+- name: Przekątne rombu i równoległoboku a kąty
+  description: W rombie o boku a i kącie ostrym α przekątne mają długości d₁ = 2a·sin(α/2) (krótsza, naprzeciw
+    kąta α) i d₂ = 2a·cos(α/2) (dłuższa); przekątne rombu są prostopadłe i dzielą kąty na połowy.
+  explanation: 'Nie trzeba uczyć się tych wzorów na pamięć — wynikają z trójkąta prostokątnego utworzonego
+    przez połowy przekątnych i bok rombu, w którym kąt wynosi α/2. Kontrola: pole można policzyć dwoma
+    sposobami, a²sin α oraz ½d₁d₂, i wyniki muszą się zgadzać.'
+  difficulty: 3
+- name: Kąt nachylenia przekątnej do boku / podstawy
+  description: Kąt ostry, jaki przekątna prostokąta, trapezu lub innego wielokąta tworzy z wybranym bokiem.
+  explanation: 'Przekątna prostokąta wraz z dwoma bokami tworzy trójkąt prostokątny, więc tg tego kąta
+    = (bok przeciwległy)/(bok przyległy), a przekątna = bok/cos kąta. Uwaga: przekątna tworzy z dwoma
+    sąsiednimi bokami dwa różne kąty, dopełniające się do 90°.'
+  difficulty: 2
+- name: Kąt wzniesienia i kąt depresji
+  description: Kąt wzniesienia to kąt między poziomem a półprostą poprowadzoną ku górze do obserwowanego
+    obiektu; kąt depresji — analogicznie, gdy patrzymy w dół.
+  explanation: W zadaniach praktycznych (drabina, maszt, cień, stok) rysunek zawsze sprowadza się do trójkąta
+    prostokątnego, w którym poziom jest jedną przyprostokątną, a wysokość drugą. Wysokość = odległość
+    pozioma · tg kąta wzniesienia.
+  difficulty: 2
+- name: Cięciwa okręgu a kąt środkowy
+  description: Cięciwa okręgu o promieniu R oparta na kącie środkowym o mierze α ma długość |AB| = 2R·sin(α/2).
+  explanation: Trójkąt AOB jest równoramienny (ramiona = R); wysokość z O dzieli go na dwa trójkąty prostokątne
+    z kątem α/2 przy O i połową cięciwy naprzeciw. Odległość środka od cięciwy wynosi R·cos(α/2). Pole
+    trójkąta AOB to ½R²·sin α.
+  difficulty: 3
+- name: Wielokąt foremny wpisany w okrąg
+  description: W n-kącie foremnym wpisanym w okrąg o promieniu R kąt środkowy oparty na boku ma miarę
+    360°/n, więc bok a = 2R·sin(180°/n), a apotema (promień okręgu wpisanego) r = R·cos(180°/n).
+  explanation: 'Wielokąt foremny rozcinamy na n przystających trójkątów równoramiennych o wierzchołku
+    w środku; każdy z nich dzielimy wysokością na dwa trójkąty prostokątne. Pole całości: P = n·½·R²·sin(360°/n)
+    albo P = ½·obwód·apotema.'
+  difficulty: 4
+- name: Wynik dokładny a przybliżony
+  description: Odpowiedź dokładna zawiera pierwiastki i ułamki (np. 3√3), przybliżona — liczbę dziesiętną
+    otrzymaną z tablic lub kalkulatora (np. 5,196).
+  explanation: Gdy kąty to 30°, 45°, 60° (lub 120°, 135°, 150°), zawsze można i należy podać wynik dokładny.
+    Zaokrąglenia stosuj dopiero na samym końcu i tylko dla kątów 'nietypowych' odczytanych z tablic —
+    zaokrąglanie w środku rachunku psuje wynik.
+  difficulty: 1
+formulas:
+- name: Definicje funkcji trygonometrycznych kąta ostrego
+  latex_raw: \sin\alpha=\frac{a}{c},\qquad \cos\alpha=\frac{b}{c},\qquad \operatorname{tg}\alpha=\frac{a}{b}
+  conditions: Trójkąt prostokątny o przeciwprostokątnej c; a — przyprostokątna naprzeciw kąta α, b — przy
+    kącie α; 0° < α < 90°.
+  description: 'Stąd natychmiast: a = c·sin α, b = c·cos α, a = b·tg α.'
+- name: Boki trójkąta prostokątnego przez kąt
+  latex_raw: a=c\sin\alpha=c\cos\beta,\qquad b=c\cos\alpha=c\sin\beta,\qquad a=b\operatorname{tg}\alpha
+  conditions: α + β = 90° — kąty ostre tego samego trójkąta prostokątnego.
+  description: Najczęściej używana postać przy 'rozwiązywaniu trójkąta'.
+- name: Jedynka trygonometryczna
+  latex_raw: \sin^2\alpha+\cos^2\alpha=1
+  conditions: Dla dowolnego kąta α (w szczególności 0° ≤ α ≤ 180°).
+  description: Dla kąta ostrego pierwiastki wybieramy dodatnie.
+- name: Tangens jako iloraz
+  latex_raw: \operatorname{tg}\alpha=\frac{\sin\alpha}{\cos\alpha}
+  conditions: cos α ≠ 0, czyli α ≠ 90°.
+- name: Wartości dla kątów 30°, 45°, 60°
+  latex_raw: \begin{array}{c|ccc} & 30^\circ & 45^\circ & 60^\circ\\\hline \sin & \tfrac12 & \tfrac{\sqrt2}{2}
+    & \tfrac{\sqrt3}{2}\\ \cos & \tfrac{\sqrt3}{2} & \tfrac{\sqrt2}{2} & \tfrac12\\ \operatorname{tg}
+    & \tfrac{\sqrt3}{3} & 1 & \sqrt3 \end{array}
+  conditions: Wartości dokładne — do stosowania bez kalkulatora.
+- name: Kąty dopełniające się do 90°
+  latex_raw: \sin(90^\circ-\alpha)=\cos\alpha,\qquad \cos(90^\circ-\alpha)=\sin\alpha
+  conditions: 0° ≤ α ≤ 90°.
+  description: Odpowiada zamianie ról obu kątów ostrych trójkąta prostokątnego.
+- name: Kąt rozwarty
+  latex_raw: \sin(180^\circ-\alpha)=\sin\alpha,\qquad \cos(180^\circ-\alpha)=-\cos\alpha
+  conditions: 0° ≤ α ≤ 180°.
+  description: Dzięki pierwszej równości wzory na pola działają tak samo dla kątów ostrych i rozwartych.
+- name: Pole trójkąta z dwóch boków i kąta między nimi
+  latex_raw: P=\tfrac12\,ab\sin\gamma
+  conditions: a, b — długości boków, γ — kąt MIĘDZY nimi, 0° < γ < 180°.
+- name: Wysokość i rzut odcinka
+  latex_raw: h=b\sin\alpha,\qquad p=b\cos\alpha
+  conditions: b — długość odcinka nachylonego pod kątem α do prostej, h — jego odległość od prostej, p
+    — długość rzutu prostokątnego.
+- name: Pole równoległoboku
+  latex_raw: P=ab\sin\alpha
+  conditions: a, b — długości sąsiednich boków, α — kąt między nimi (dowolny z dwóch, bo sin α = sin(180°
+    − α)).
+- name: Pole rombu
+  latex_raw: P=a^2\sin\alpha=\tfrac12 d_1d_2
+  conditions: a — bok rombu, α — jego kąt, d₁, d₂ — przekątne.
+- name: Przekątne rombu
+  latex_raw: d_1=2a\sin\frac{\alpha}{2},\qquad d_2=2a\cos\frac{\alpha}{2}
+  conditions: a — bok rombu, α — kąt ostry rombu; d₁ leży naprzeciw kąta α (krótsza przekątna).
+- name: Pole trapezu z ramieniem i kątem
+  latex_raw: P=\tfrac12(a+b)\,h,\qquad h=c\sin\alpha
+  conditions: a, b — podstawy, c — ramię nachylone do dłuższej podstawy pod kątem α.
+- name: Trapez równoramienny — rozkład dłuższej podstawy
+  latex_raw: a=b+2c\cos\alpha
+  conditions: a — dłuższa podstawa, b — krótsza, c — ramię, α — kąt przy dłuższej podstawie.
+- name: Przekątna prostokąta
+  latex_raw: d=\frac{a}{\cos\alpha}=\frac{b}{\sin\alpha},\qquad \operatorname{tg}\alpha=\frac{b}{a}
+  conditions: a, b — boki prostokąta, α — kąt między przekątną a bokiem a.
+- name: Cięciwa okręgu i pole trójkąta środkowego
+  latex_raw: '|AB|=2R\sin\frac{\alpha}{2},\qquad d(O,AB)=R\cos\frac{\alpha}{2},\qquad P_{AOB}=\tfrac12R^2\sin\alpha'
+  conditions: R — promień, α — kąt środkowy oparty na cięciwie AB, 0° < α < 180° (dla P dowolny 0°<α<180°).
+- name: Wielokąt foremny wpisany w okrąg
+  latex_raw: a=2R\sin\frac{180^\circ}{n},\qquad r=R\cos\frac{180^\circ}{n},\qquad P=\tfrac{n}{2}R^2\sin\frac{360^\circ}{n}
+  conditions: n ≥ 3, R — promień okręgu opisanego, r — apotema (promień okręgu wpisanego), a — bok.
+- name: Wysokość trójkąta równobocznego (przypadek szczególny)
+  latex_raw: h=a\sin 60^\circ=\frac{a\sqrt3}{2},\qquad P=\frac{a^2\sqrt3}{4}
+  conditions: a — bok trójkąta równobocznego.
+  description: Wynika z P = ½a²·sin 60°.
+methods:
+- name: Rozwiązywanie trójkąta prostokątnego
+  when_to_use: Gdy w trójkącie prostokątnym dany jest jeden bok i jeden kąt ostry (albo dwa boki) i trzeba
+    wyznaczyć pozostałe elementy lub pole.
+  steps:
+  - Narysuj trójkąt i zaznacz kąt prosty oraz dany kąt ostry α.
+  - 'Opisz boki względem α: przeciwprostokątna, bok naprzeciw α, bok przy α.'
+  - Drugi kąt ostry oblicz jako 90° − α.
+  - 'Dla każdego szukanego boku wybierz funkcję łączącą go z bokiem DANYM: ''naprzeciw i przeciwprostokątna''
+    → sin, ''przy i przeciwprostokątna'' → cos, ''naprzeciw i przy'' → tg.'
+  - Ułóż równanie (np. sin α = x/c) i wyznacz niewiadomą; trzeci bok możesz kontrolnie policzyć z twierdzenia
+    Pitagorasa.
+  - Podaj wynik w postaci dokładnej; jeśli w mianowniku został pierwiastek — usuń niewymierność.
+  - Pole policz jako połowę iloczynu przyprostokątnych.
+- name: Wprowadzanie odcinka pomocniczego (rozbijanie figury)
+  when_to_use: Gdy figura (trapez, romb, równoległobok, trójkąt ostro-/rozwartokątny, wielokąt foremny)
+    nie zawiera trójkąta prostokątnego z danym kątem.
+  steps:
+  - Zaznacz wszystkie dane na rysunku i wypisz szukane.
+  - 'Dorysuj odcinek, który wytworzy kąt prosty: wysokość figury, przekątną, promień okręgu opisanego
+    lub apotemę.'
+  - Sprawdź, jakie kąty pojawiły się w nowym trójkącie — wykorzystaj, że wysokość w figurze symetrycznej
+    dzieli bok lub kąt na połowy, a kąty przy tym samym ramieniu trapezu sumują się do 180°.
+  - Oblicz w trójkącie prostokątnym potrzebne odcinki (bok·sin, bok·cos, bok·tg).
+  - Wróć do figury wyjściowej i złóż z otrzymanych odcinków szukaną długość lub pole (dodaj/odejmij fragmenty).
+  - 'Sprawdź sensowność: przeciwprostokątna największa, wysokość mniejsza od ramienia, pole dodatnie.'
+- name: Obliczanie pola z dwóch boków i kąta między nimi
+  when_to_use: Gdy dane są dwa boki wychodzące z jednego wierzchołka i kąt między nimi (także rozwarty)
+    — trójkąt, równoległobok, romb, część wielokąta.
+  steps:
+  - Sprawdź, czy dany kąt naprawdę leży MIĘDZY danymi bokami; jeśli nie, wykorzystaj sumę kątów trójkąta
+    lub kąty przyległe, żeby go wyznaczyć.
+  - Jeśli kąt jest rozwarty, zamień sin α na sin(180° − α).
+  - Podstaw do P = ½ab sin γ (dla równoległoboku P = ab sin γ, dla rombu P = a² sin γ).
+  - Uprość wynik do postaci dokładnej.
+  - 'W razie potrzeby z pola wyznacz wysokość: h = 2P/podstawa.'
+- name: Wyznaczanie pozostałych funkcji z jednej danej wartości
+  when_to_use: Gdy zadanie podaje np. sin α = 3/5 lub tg α = 2 i nie da się odczytać miary kąta, a potrzebna
+    jest inna funkcja tego kąta.
+  steps:
+  - Zapisz, co jest dane i co jest potrzebne (np. dane sin α, potrzebne cos α).
+  - 'Sposób I: skorzystaj z jedynki trygonometrycznej cos²α = 1 − sin²α i weź pierwiastek dodatni (kąt
+    ostry).'
+  - 'Sposób II: narysuj pomocniczy trójkąt prostokątny z bokami zgodnymi z daną wartością (np. 3 i 5)
+    i uzupełnij trzeci bok twierdzeniem Pitagorasa.'
+  - Tangens policz jako sin α / cos α.
+  - Otrzymane wartości wstaw do wzoru na szukany odcinek lub pole.
+- name: Rozwiązywanie zadań praktycznych (kąt wzniesienia, nachylenie)
+  when_to_use: Zadania o maszcie, drabinie, cieniu, stoku, locie samolotu, w których podano kąt nachylenia
+    lub wzniesienia i pewną odległość.
+  steps:
+  - 'Zrób schematyczny rysunek: poziom, pion, linia widzenia — powstaje trójkąt prostokątny.'
+  - Nazwij szukaną wielkość literą i zaznacz ją na rysunku.
+  - Jeśli występują dwa punkty obserwacji, wprowadź jedną niewiadomą na odległość i wyraź tę samą wysokość
+    dwoma sposobami.
+  - Ułóż równanie z tangensem (wysokość i odległość pozioma) lub sinusem (odległość skośna).
+  - Rozwiąż równanie, usuń niewymierność, zinterpretuj wynik i dopisz jednostki.
+  - Jeśli zadanie wymaga przybliżenia, zaokrąglij dopiero na końcu.
+- name: Praca z wielokątem foremnym i okręgiem
+  when_to_use: Gdy w zadaniu występuje n-kąt foremny wpisany w okrąg, cięciwa, apotema lub kąt środkowy.
+  steps:
+  - Zaznacz środek O i połącz go z wierzchołkami — powstaje n przystających trójkątów równoramiennych
+    o kącie 360°/n przy O.
+  - Poprowadź wysokość jednego z nich z wierzchołka O — dzieli ona kąt na połowy (180°/n) i bok na połowy.
+  - 'Z trójkąta prostokątnego odczytaj: ½a = R·sin(180°/n), r = R·cos(180°/n).'
+  - 'Pole licz jako sumę n trójkątów: P = n·½·R²·sin(360°/n) lub P = ½·obwód·r.'
+  - Dla cięciwy opartej na kącie α stosuj bezpośrednio |AB| = 2R sin(α/2).
+examples:
+- statement: W trójkącie prostokątnym przeciwprostokątna ma długość 10, a jeden z kątów ostrych ma miarę
+    30°. Oblicz długości obu przyprostokątnych, obwód i pole tego trójkąta.
+  worked_solution: |-
+    Oznaczmy: c = 10 (przeciwprostokątna), α = 30°, a — przyprostokątna naprzeciw kąta 30°, b — przyprostokątna przy kącie 30°.
+
+    1) Bok naprzeciw i przeciwprostokątna → sinus:
+    sin 30° = a/10, czyli ½ = a/10, więc a = 5.
+
+    2) Bok przy kącie i przeciwprostokątna → cosinus:
+    cos 30° = b/10, czyli √3/2 = b/10, więc b = 5√3.
+
+    Kontrola twierdzeniem Pitagorasa: 5² + (5√3)² = 25 + 75 = 100 = 10². ✓
+
+    3) Obwód: L = 10 + 5 + 5√3 = 15 + 5√3.
+
+    4) Pole (przyprostokątne są podstawą i wysokością):
+    P = ½·5·5√3 = 25√3/2 = 12,5√3.
+
+    Odpowiedź: przyprostokątne 5 i 5√3, obwód 15 + 5√3, pole 25√3/2.
+  difficulty: 1
+- statement: Romb ma bok długości 6 i kąt ostry 60°. Oblicz jego wysokość, pole oraz długości obu przekątnych.
+  worked_solution: |-
+    1) Wysokość. Z wierzchołka rombu prowadzimy wysokość do przeciwległego boku. Powstaje trójkąt prostokątny, w którym bok rombu (6) jest przeciwprostokątną, a wysokość leży naprzeciw kąta 60°:
+    h = 6·sin 60° = 6·(√3/2) = 3√3.
+
+    2) Pole: P = a·h = 6·3√3 = 18√3.
+    Alternatywnie ze wzoru P = a²·sin α = 36·(√3/2) = 18√3. ✓
+
+    3) Przekątne. Przekątne rombu są prostopadłe i dzielą kąty na połowy, więc w trójkącie prostokątnym utworzonym przez połowy przekątnych i bok rombu mamy kąt 30° (połowa z 60°) oraz przeciwprostokątną 6:
+    ½d₁ = 6·sin 30° = 3  ⇒  d₁ = 6 (krótsza, naprzeciw kąta 60°),
+    ½d₂ = 6·cos 30° = 3√3  ⇒  d₂ = 6√3 (dłuższa).
+
+    Kontrola: ½·d₁·d₂ = ½·6·6√3 = 18√3 — zgadza się z polem. ✓
+
+    Odpowiedź: h = 3√3, P = 18√3, przekątne 6 i 6√3.
+  difficulty: 2
+- statement: W trapezie równoramiennym podstawy mają długości 10 i 4, a kąt przy dłuższej podstawie ma
+    miarę 60°. Oblicz długość ramienia, wysokość i pole trapezu.
+  worked_solution: |-
+    Rysunek: trapez ABCD, AB = 10 (dłuższa podstawa), CD = 4, kąty przy A i B równe 60°. Prowadzimy wysokości z C i D na AB; odcinają one środkowy prostokąt o długości 4 oraz dwa przystające trójkąty prostokątne.
+
+    1) Rzut ramienia na dłuższą podstawę:
+    p = (10 − 4)/2 = 3.
+
+    2) Ramię c: w trójkącie prostokątnym p leży PRZY kącie 60°, a c jest przeciwprostokątną:
+    cos 60° = 3/c  ⇒  ½ = 3/c  ⇒  c = 6.
+
+    3) Wysokość: h = c·sin 60° = 6·(√3/2) = 3√3.
+    (Kontrola Pitagorasem: 3² + (3√3)² = 9 + 27 = 36 = 6². ✓)
+
+    4) Pole: P = ½(a + b)·h = ½·(10 + 4)·3√3 = 7·3√3 = 21√3.
+
+    Odpowiedź: ramię 6, wysokość 3√3, pole 21√3 (≈ 36,4).
+  difficulty: 3
+- statement: W trójkącie ABC dane są |AB| = 8, |AC| = 5 oraz kąt BAC o mierze 150°. Oblicz pole tego trójkąta
+    oraz długość wysokości opuszczonej na bok AB.
+  worked_solution: |-
+    1) Kąt 150° leży między danymi bokami, więc stosujemy P = ½ab sin γ:
+    sin 150° = sin(180° − 150°) = sin 30° = ½.
+    P = ½·8·5·sin 150° = 20·½ = 10.
+
+    2) Wysokość h opuszczona na bok AB (podstawa a = 8):
+    P = ½·8·h  ⇒  10 = 4h  ⇒  h = 2,5.
+
+    Sprawdzenie geometryczne: ponieważ kąt przy A jest rozwarty, spodek wysokości z C wypada poza odcinkiem AB, na przedłużeniu za punkt A. W powstałym trójkącie prostokątnym kąt przy A wynosi 180° − 150° = 30°, a przeciwprostokątną jest AC = 5, więc h = 5·sin 30° = 2,5. ✓
+
+    Odpowiedź: P = 10, h = 2,5.
+  difficulty: 3
+- statement: Z punktu A na poziomym terenie maszt widać pod kątem wzniesienia 30°. Po przejściu 20 m w
+    stronę masztu, do punktu B, kąt wzniesienia wierzchołka masztu wynosi 60°. Oblicz wysokość masztu
+    (podstawa masztu, A i B leżą na jednej prostej).
+  worked_solution: |-
+    Oznaczmy: h — wysokość masztu, S — jego podstawa, x = |BS| (odległość punktu B od masztu). Wtedy |AS| = x + 20. Mamy dwa trójkąty prostokątne o wspólnej przyprostokątnej h.
+
+    1) Z trójkąta przy punkcie B:
+    tg 60° = h/x  ⇒  h = x·√3.
+
+    2) Z trójkąta przy punkcie A:
+    tg 30° = h/(x + 20)  ⇒  h = (x + 20)·(√3/3).
+
+    3) Porównujemy oba wyrażenia na h:
+    x√3 = (x + 20)·√3/3  | ·3, potem :√3
+    3x = x + 20
+    2x = 20
+    x = 10.
+
+    4) Wysokość: h = 10√3 ≈ 10·1,73 = 17,3 m.
+
+    Sprawdzenie: dla x = 10 mamy tg 60° = 10√3/10 = √3 ✓ oraz tg 30° = 10√3/30 = √3/3 ✓.
+
+    Odpowiedź: maszt ma wysokość 10√3 m, czyli około 17,3 m.
+  difficulty: 4
+objectives:
+- statement: Podać definicje sinusa, cosinusa i tangensa kąta ostrego w trójkącie prostokątnym oraz wartości
+    tych funkcji dla kątów 30°, 45° i 60°.
+  bloom_level: Zapamiętywanie
+- statement: Wskazać w danym trójkącie prostokątnym przeciwprostokątną oraz przyprostokątne przyległą
+    i przeciwległą względem wybranego kąta ostrego i uzasadnić wybór odpowiedniej funkcji trygonometrycznej.
+  bloom_level: Rozumienie
+- statement: 'Rozwiązać trójkąt prostokątny: obliczyć brakujące boki i kąty, gdy dany jest bok i kąt ostry
+    lub dwa boki.'
+  bloom_level: Stosowanie
+- statement: Wyznaczyć długości odcinków w czworokątach (wysokość, ramię, przekątna, rzut boku) oraz w
+    wielokątach foremnych, wprowadzając odpowiedni odcinek pomocniczy tworzący trójkąt prostokątny.
+  bloom_level: Stosowanie
+- statement: Obliczyć pole trójkąta, równoległoboku, rombu i trapezu, korzystając z funkcji trygonometrycznych,
+    w tym ze wzoru P = ½ab·sin γ, także dla kąta rozwartego.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć pozostałe wartości funkcji trygonometrycznych kąta ostrego na podstawie jednej
+    danej wartości (jedynka trygonometryczna lub trójkąt pomocniczy) i użyć ich do obliczenia długości
+    odcinka bądź pola.
+  bloom_level: Stosowanie
+- statement: Zamodelować sytuację praktyczną (kąt wzniesienia, nachylenie stoku, długość cienia, drabina)
+    rysunkiem z trójkątem prostokątnym i obliczyć szukaną odległość lub wysokość, w tym w zadaniach z
+    dwoma punktami obserwacji.
+  bloom_level: Analizowanie
+- statement: Rozłożyć złożoną figurę płaską na trójkąty i inne części, obliczyć ich pola z użyciem trygonometrii
+    i złożyć wynik końcowy.
+  bloom_level: Analizowanie
+- statement: Ocenić poprawność otrzymanego wyniku, sprawdzając go alternatywną metodą (twierdzenie Pitagorasa,
+    drugi wzór na pole) oraz badając sensowność geometryczną (relacje długości boków, położenie spodka
+    wysokości).
+  bloom_level: Ocenianie
+misconceptions:
+- name: Stosowanie sin/cos/tg w trójkącie bez kąta prostego
+  incorrect_reasoning: Uczeń pisze 'sin α = a/c' w dowolnym trójkącie, np. w trójkącie ostrokątnym z bokami
+    a, c i kątem α, bez sprawdzenia, czy któryś kąt jest prosty.
+  correct_reasoning: Definicje sin, cos, tg jako stosunki boków obowiązują WYŁĄCZNIE w trójkącie prostokątnym.
+    Jeśli trójkąt nie jest prostokątny, trzeba najpierw poprowadzić wysokość i pracować w powstałym trójkącie
+    prostokątnym (albo — dla pola — użyć wzoru ½ab sin γ, który nie wymaga kąta prostego).
+  severity: 5
+- name: Mylenie boku przyległego z przeciwległym
+  incorrect_reasoning: Uczeń zawsze pisze sinus jako 'bok pionowy przez najdłuższy', niezależnie od tego,
+    przy którym kącie stoi; w efekcie w trapezie liczy rzut ramienia jako c·sin α zamiast c·cos α.
+  correct_reasoning: 'Wybór funkcji zależy od położenia boku WZGLĘDEM konkretnego kąta. Trzeba za każdym
+    razem zaznaczyć kąt i opisać boki: naprzeciw / przy / przeciwprostokątna. Wysokość leży naprzeciw
+    kąta nachylenia (h = c·sin α), a rzut na podstawę leży przy nim (p = c·cos α).'
+  severity: 4
+- name: Użycie we wzorze ½ab sin γ kąta, który nie leży między bokami a i b
+  incorrect_reasoning: 'Dane: |AB| = 8, |AC| = 5, kąt ABC = 40°. Uczeń liczy P = ½·8·5·sin 40°, choć kąt
+    przy B nie jest kątem między AB i AC.'
+  correct_reasoning: 'Wzór wymaga kąta zawartego między dwoma użytymi bokami. Trzeba albo wyznaczyć kąt
+    przy wierzchołku A (np. z sumy kątów trójkąta), albo dobrać taką parę boków, dla której dany kąt jest
+    kątem między nimi (tu: boki BA i BC).'
+  severity: 4
+- name: Przekonanie, że dla kąta rozwartego wzór na pole nie działa albo daje wynik ujemny
+  incorrect_reasoning: Uczeń widzi kąt 150°, uznaje, że 'sin 150° = −sin 30°' lub że wzoru ½ab sin γ nie
+    wolno stosować, i porzuca zadanie albo dostaje pole ujemne.
+  correct_reasoning: Dla 0° < γ < 180° sinus jest dodatni i sin(180° − α) = sin α, więc sin 150° = sin
+    30° = ½. Wzór P = ½ab sin γ obowiązuje także dla kątów rozwartych; ujemny jest dopiero cosinus kąta
+    rozwartego.
+  severity: 3
+- name: Sumowanie funkcji trygonometrycznych zamiast korzystania z jedynki trygonometrycznej
+  incorrect_reasoning: Ze wzoru sin²α + cos²α = 1 uczeń wyprowadza sin α + cos α = 1 i przy danym sin
+    α = 0,6 pisze cos α = 0,4.
+  correct_reasoning: 'Podnoszenie do kwadratu jest istotne: cos²α = 1 − 0,36 = 0,64, więc cos α = 0,8
+    (pierwiastek dodatni dla kąta ostrego). Można to sprawdzić trójkątem o bokach 3, 4, 5.'
+  severity: 4
+- name: Niedzielenie kąta lub boku na połowy w figurze symetrycznej
+  incorrect_reasoning: W trójkącie równoramiennym o kącie przy wierzchołku 40° uczeń wstawia do trójkąta
+    prostokątnego powstałego po poprowadzeniu wysokości kąt 40° zamiast 20°; analogicznie w rombie używa
+    pełnego kąta zamiast α/2.
+  correct_reasoning: 'Wysokość poprowadzona z wierzchołka trójkąta równoramiennego (a także przekątna
+    rombu) jest osią symetrii: dzieli kąt przy wierzchołku i podstawę na połowy. W trójkącie prostokątnym
+    pracujemy więc z kątem α/2 i połową podstawy (połową przekątnej).'
+  severity: 4
+- name: Mylenie mnożenia z dzieleniem przy wyznaczaniu boku
+  incorrect_reasoning: Z równania cos 60° = 3/c uczeń zapisuje c = 3·cos 60° = 1,5 zamiast c = 3/cos 60°
+    = 6.
+  correct_reasoning: 'Trzeba konsekwentnie rozwiązać równanie: jeśli niewiadoma stoi w mianowniku, mnożymy
+    obie strony przez nią i dzielimy przez wartość funkcji. Kontrola sensowności: przeciwprostokątna musi
+    być dłuższa niż każda przyprostokątna, więc c = 1,5 przy przyprostokątnej 3 jest niemożliwe.'
+  severity: 4
+- name: Traktowanie tangensa jako miary kąta lub mylenie tg z sin
+  incorrect_reasoning: Z tg α = 3/4 uczeń wnioskuje, że sin α = 3/4 albo że α = 3/4 stopnia; w prostokącie
+    liczy przekątną jako a·tg α.
+  correct_reasoning: tg α to stosunek przyprostokątnych, a nie kąt i nie stosunek do przeciwprostokątnej.
+    Przy tg α = 3/4 dorysowujemy trójkąt o przyprostokątnych 3 i 4, skąd przeciwprostokątna 5 i sin α
+    = 3/5, cos α = 4/5. Przekątną prostokąta liczymy jako a/cos α lub z Pitagorasa.
+  severity: 4
+- name: Zaokrąglanie w trakcie obliczeń i gubienie postaci dokładnej
+  incorrect_reasoning: Uczeń zamienia sin 60° na 0,87, mnoży, potem znów zaokrągla i podaje pole 36,54
+    zamiast 21√3, przez co traci dokładność i utrudnia sprawdzenie wyniku.
+  correct_reasoning: Dla kątów 30°, 45°, 60° (i ich dopełnień do 180°) stosujemy wartości dokładne z pierwiastkami
+    i upraszczamy wyrażenie do końca; przybliżenie podajemy dopiero na końcu i tylko wtedy, gdy zadanie
+    tego wymaga.
+  severity: 2
+- name: Założenie, że dorysowana wysokość zawsze pada wewnątrz figury
+  incorrect_reasoning: W trójkącie rozwartokątnym uczeń rysuje wysokość wewnątrz i twierdzi, że dzieli
+    ona podstawę na dwa odcinki dodające się do jej długości.
+  correct_reasoning: Przy kącie rozwartym spodek wysokości leży na przedłużeniu boku, poza odcinkiem.
+    Długość wysokości nadal wynosi b·sin γ, ale rzuty trzeba wtedy odejmować, a nie dodawać. Warto zawsze
+    wykonać staranny rysunek w skali przybliżonej.
+  severity: 3

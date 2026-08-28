@@ -1,0 +1,316 @@
+section: wyrazenia-wymierne
+name: 'Wyrażenia wymierne: dziedzina, mnożenie i dzielenie'
+scope: Domain of a rational expression; multiplying, dividing and simplifying rational expressions.
+requirements:
+- II.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:21:29.090461'
+  approved_at: '2026-08-28T18:28:02.653823'
+  approved_by: reviewer
+concepts:
+- name: Wyrażenie wymierne (ułamek algebraiczny)
+  description: Wyrażenie postaci P(x)/Q(x), gdzie P i Q są wielomianami zmiennej x, a wielomian Q nie
+    jest wielomianem zerowym.
+  explanation: 'Myśl o tym jak o ułamku, w którym zamiast liczb stoją wielomiany. Wszystkie reguły rachunku
+    na ułamkach zwykłych (skracanie, mnożenie, dzielenie) przenoszą się tu bez zmian — dochodzi tylko
+    jeden nowy obowiązek: pilnowanie, by mianownik nie był zerem.'
+  difficulty: 1
+- name: Dziedzina wyrażenia wymiernego
+  description: Zbiór wszystkich wartości zmiennej, dla których wyrażenie ma sens liczbowy, czyli dla których
+    żaden mianownik występujący w wyrażeniu nie jest równy zeru.
+  explanation: Dziedzinę wyznaczamy ZAWSZE dla wyrażenia w postaci wyjściowej, przed jakimkolwiek skracaniem.
+    Zapisujemy ją jako zbiór, np. D = R \ {-2, 3}, albo jako warunki x ≠ -2 i x ≠ 3.
+  difficulty: 2
+- name: Założenia (warunki dziedziny)
+  description: Układ nierówności postaci „mianownik ≠ 0" (oraz „dzielnik ≠ 0" przy dzieleniu), które zapisujemy
+    przed przekształceniem wyrażenia.
+  explanation: Założenia to nie ozdobnik — one określają, dla jakich x nasza końcowa, uproszczona formuła
+    jest równoważna wyjściowej. Bez nich przekształcenie jest formalnie błędne.
+  difficulty: 2
+- name: Wartość wyrażenia wymiernego
+  description: Liczba otrzymana po podstawieniu za zmienną konkretnej wartości należącej do dziedziny.
+  explanation: Podstawianie jest znacznie łatwiejsze po uproszczeniu wyrażenia; trzeba jednak najpierw
+    sprawdzić, czy podstawiana liczba należy do dziedziny wyrażenia wyjściowego.
+  difficulty: 2
+- name: Rozkład wielomianu na czynniki
+  description: Zapisanie wielomianu w postaci iloczynu wielomianów niższych stopni (przez wyłączanie wspólnego
+    czynnika, wzory skróconego mnożenia, grupowanie lub rozkład trójmianu z użyciem pierwiastków).
+  explanation: 'To główne narzędzie tego działu: dopóki licznik i mianownik są sumami, nic nie wolno skracać.
+    Rozkład zamienia sumy na iloczyny i dopiero wtedy widać wspólne czynniki.'
+  difficulty: 3
+- name: Skracanie ułamka algebraicznego
+  description: Podzielenie licznika i mianownika przez ten sam, różny od zera czynnik wielomianowy.
+  explanation: Skracać wolno tylko CZYNNIKI iloczynu, nigdy składników sumy. Skracany czynnik jest niezerowy
+    właśnie dzięki przyjętym założeniom.
+  difficulty: 3
+- name: Wyrażenia równe w dziedzinie
+  description: Dwa wyrażenia nazywamy równymi (tożsamościowo) na zbiorze D, gdy dla każdego x ∈ D przyjmują
+    tę samą wartość.
+  explanation: Po skróceniu np. (x−3)(x+1)/(x−3) = x+1 równość zachodzi tylko dla x ≠ 3 — uproszczone
+    wyrażenie ma „szerszą" dziedzinę niż wyjściowe, dlatego dziedzinę bierzemy z postaci przed skracaniem.
+  difficulty: 3
+- name: Odwrotność wyrażenia wymiernego
+  description: Odwrotnością wyrażenia P/Q (przy P ≠ 0, Q ≠ 0) jest wyrażenie Q/P.
+  explanation: 'Kluczowe przy dzieleniu: dzielenie zastępujemy mnożeniem przez odwrotność dzielnika. Aby
+    odwrotność istniała, licznik dzielnika musi być różny od zera — stąd dodatkowe założenie.'
+  difficulty: 2
+- name: Dzielnik musi być różny od zera
+  description: 'W wyrażeniu A : B zakładamy nie tylko, że mianowniki A i B są niezerowe, ale też że całe
+    B ≠ 0, czyli licznik dzielnika B jest różny od zera.'
+  explanation: To najczęściej pomijany warunek. Przy dzieleniu przez (x−1)/(x+2) trzeba zapisać x ≠ 1
+    (oprócz x ≠ −2), bo przez zero dzielić nie wolno.
+  difficulty: 3
+- name: Ułamek piętrowy
+  description: Wyrażenie postaci (A/B)/(C/D), czyli ułamek, którego licznik lub mianownik sam jest ułamkiem.
+  explanation: 'To po prostu inny zapis dzielenia: (A/B)/(C/D) = (A/B) : (C/D) = (A·D)/(B·C), przy założeniach
+    B ≠ 0, C ≠ 0, D ≠ 0.'
+  difficulty: 3
+- name: Zmiana znaku czynnika
+  description: Tożsamość a − b = −(b − a), pozwalająca „odwrócić" nawias kosztem znaku minus.
+  explanation: 'Bardzo przydatna, gdy w liczniku jest (3 − x), a w mianowniku (x − 3): po zamianie widać
+    wspólny czynnik i ułamek skraca się do −1.'
+  difficulty: 3
+formulas:
+- name: Warunek dziedziny
+  latex_raw: \frac{P(x)}{Q(x)} \text{ ma sens} \iff Q(x) \neq 0
+  conditions: P, Q — wielomiany
+  description: Warunek nakładamy na KAŻDY mianownik występujący w wyrażeniu, w postaci przed skracaniem.
+- name: Skracanie ułamka algebraicznego
+  latex_raw: \frac{a \cdot c}{b \cdot c} = \frac{a}{b}
+  conditions: b \neq 0, \ c \neq 0
+  description: Skracamy wyłącznie wspólne czynniki iloczynu.
+- name: Mnożenie wyrażeń wymiernych
+  latex_raw: \frac{a}{b} \cdot \frac{c}{d} = \frac{a \cdot c}{b \cdot d}
+  conditions: b \neq 0, \ d \neq 0
+- name: Dzielenie wyrażeń wymiernych
+  latex_raw: '\frac{a}{b} : \frac{c}{d} = \frac{a}{b} \cdot \frac{d}{c} = \frac{a \cdot d}{b \cdot c}'
+  conditions: b \neq 0, \ c \neq 0, \ d \neq 0
+  description: Warunek c ≠ 0 pochodzi stąd, że dzielnik c/d musi być różny od zera.
+- name: Ułamek piętrowy
+  latex_raw: \dfrac{\frac{a}{b}}{\frac{c}{d}} = \frac{a\cdot d}{b \cdot c}
+  conditions: b \neq 0, \ c \neq 0, \ d \neq 0
+- name: Potęga (kwadrat) wyrażenia wymiernego
+  latex_raw: \left(\frac{a}{b}\right)^{n} = \frac{a^{n}}{b^{n}}
+  conditions: b \neq 0, \ n \in \mathbb{N}
+- name: Zmiana znaku
+  latex_raw: \frac{a-b}{b-a} = -1
+  conditions: a \neq b
+- name: Znak ułamka
+  latex_raw: \frac{-a}{b} = \frac{a}{-b} = -\frac{a}{b}
+  conditions: b \neq 0
+- name: Różnica kwadratów
+  latex_raw: a^{2}-b^{2} = (a-b)(a+b)
+  conditions: zawsze
+- name: Kwadrat sumy i różnicy
+  latex_raw: a^{2}\pm 2ab + b^{2} = (a\pm b)^{2}
+  conditions: zawsze
+- name: Rozkład trójmianu kwadratowego
+  latex_raw: ax^{2}+bx+c = a(x-x_{1})(x-x_{2})
+  conditions: a \neq 0, \ \Delta = b^2-4ac \geq 0, \ x_{1,2} = \frac{-b \pm \sqrt{\Delta}}{2a}
+- name: Wyłączanie wspólnego czynnika
+  latex_raw: ax^{2}+bx = x(ax+b)
+  conditions: zawsze
+  description: Najprostszy i najczęściej pomijany sposób rozkładu mianownika.
+methods:
+- name: Wyznaczanie dziedziny wyrażenia wymiernego
+  when_to_use: Zawsze na początku pracy z wyrażeniem wymiernym — przed skracaniem, mnożeniem, dzieleniem
+    i przed podstawianiem liczb.
+  steps:
+  - Wypisz wszystkie mianowniki występujące w wyrażeniu w jego postaci wyjściowej (także mianowniki „pięter"
+    ułamka piętrowego).
+  - 'Jeżeli występuje dzielenie, dopisz warunek: licznik dzielnika ≠ 0 (cały dzielnik ≠ 0).'
+  - Każdy z tych wielomianów rozłóż na czynniki.
+  - Przyrównaj każdy czynnik do zera i rozwiąż powstałe równania — otrzymasz liczby wykluczone.
+  - Zapisz dziedzinę jako D = R \ {liczby wykluczone} albo jako listę warunków x ≠ ...
+- name: Skracanie ułamka algebraicznego
+  when_to_use: Gdy trzeba uprościć pojedynczy ułamek algebraiczny lub gdy po wymnożeniu chcemy doprowadzić
+    wynik do najprostszej postaci.
+  steps:
+  - Wyznacz i zapisz dziedzinę.
+  - Rozłóż licznik na czynniki (wyłączanie przed nawias, wzory skróconego mnożenia, grupowanie, rozkład
+    trójmianu przez deltę).
+  - Rozłóż mianownik na czynniki tą samą techniką.
+  - Znajdź czynniki wspólne; w razie potrzeby użyj a − b = −(b − a), by je uwidocznić.
+  - Skreśl wspólne czynniki (są niezerowe na mocy założeń) i zapisz wynik wraz z dziedziną.
+- name: Mnożenie wyrażeń wymiernych
+  when_to_use: Gdy trzeba wykonać działanie postaci (A/B)·(C/D) i podać wynik w najprostszej postaci.
+  steps:
+  - 'Wyznacz dziedzinę: B ≠ 0 i D ≠ 0 (po rozłożeniu na czynniki).'
+  - Rozłóż na czynniki wszystkie liczniki i mianowniki.
+  - 'Zapisz jeden ułamek: iloczyn liczników przez iloczyn mianowników — ale NIE wymnażaj nawiasów.'
+  - Skróć wszystkie czynniki występujące jednocześnie w liczniku i w mianowniku.
+  - Zapisz wynik (w postaci iloczynowej lub po wymnożeniu, zależnie od polecenia) i przypomnij dziedzinę.
+- name: Dzielenie wyrażeń wymiernych
+  when_to_use: 'Gdy działanie ma postać (A/B) : (C/D) lub jest zapisane jako ułamek piętrowy.'
+  steps:
+  - Rozłóż na czynniki A, B, C, D.
+  - 'Wyznacz dziedzinę z trzech grup warunków: B ≠ 0, D ≠ 0 oraz C ≠ 0 (dzielnik nie może być zerem).'
+  - 'Zamień dzielenie na mnożenie przez odwrotność dzielnika: (A/B)·(D/C).'
+  - Wykonaj mnożenie i skróć wspólne czynniki.
+  - Zapisz uproszczony wynik razem z dziedziną.
+- name: Obliczanie wartości wyrażenia wymiernego dla danej liczby
+  when_to_use: 'Gdy polecenie brzmi: uprość wyrażenie i oblicz jego wartość dla x = a.'
+  steps:
+  - Wyznacz dziedzinę wyrażenia wyjściowego.
+  - Sprawdź, czy podana liczba a należy do dziedziny; jeśli nie — wyrażenie nie ma wartości.
+  - Uprość wyrażenie (skracanie / mnożenie / dzielenie).
+  - Podstaw a do uproszczonej postaci i wykonaj obliczenia.
+- name: Doprowadzanie do najprostszej postaci ułamka piętrowego
+  when_to_use: Gdy licznik lub mianownik dużego ułamka sam jest ułamkiem algebraicznym.
+  steps:
+  - 'Zapisz ułamek piętrowy jako dzielenie: (górny) : (dolny).'
+  - 'Wypisz założenia: mianownik górnego ≠ 0, mianownik dolnego ≠ 0, licznik dolnego ≠ 0.'
+  - Zamień na mnożenie przez odwrotność dolnego ułamka.
+  - Rozłóż na czynniki, skróć, zapisz wynik z dziedziną.
+examples:
+- statement: Wyznacz dziedzinę wyrażenia \frac{x^{2}-9}{x^{2}-4x}.
+  worked_solution: |-
+    Mianownik to x² − 4x. Rozkładamy na czynniki: x² − 4x = x(x − 4).
+    Warunek dziedziny: x(x − 4) ≠ 0, czyli x ≠ 0 i x − 4 ≠ 0, a więc x ≠ 0 i x ≠ 4.
+    Odpowiedź: D = R \ {0, 4}.
+    Uwaga: licznik x² − 9 nie nakłada żadnych warunków — na dziedzinę wpływa wyłącznie mianownik.
+  difficulty: 1
+- statement: Skróć ułamek \frac{x^{2}-9}{x^{2}+6x+9} i podaj jego dziedzinę.
+  worked_solution: |-
+    1) Dziedzina: x² + 6x + 9 = (x + 3)², więc (x + 3)² ≠ 0, czyli x ≠ −3. D = R \ {−3}.
+    2) Rozkład licznika: x² − 9 = (x − 3)(x + 3) (różnica kwadratów).
+    3) Rozkład mianownika: (x + 3)².
+    4) Skracamy wspólny czynnik (x + 3), który na mocy założenia jest różny od zera:
+    ((x − 3)(x + 3)) / ((x + 3)(x + 3)) = (x − 3)/(x + 3).
+    Odpowiedź: wyrażenie równa się (x − 3)/(x + 3) dla x ≠ −3.
+  difficulty: 2
+- statement: 'Wykonaj mnożenie i uprość: \frac{x^{2}-4}{3x+9} \cdot \frac{x^{2}-9}{x^{2}+2x}.'
+  worked_solution: |-
+    1) Rozkłady: x² − 4 = (x − 2)(x + 2); 3x + 9 = 3(x + 3); x² − 9 = (x − 3)(x + 3); x² + 2x = x(x + 2).
+    2) Dziedzina: 3(x + 3) ≠ 0 ⟹ x ≠ −3; x(x + 2) ≠ 0 ⟹ x ≠ 0 i x ≠ −2. Zatem D = R \ {−3, −2, 0}.
+    3) Mnożymy licznik przez licznik i mianownik przez mianownik, nie wymnażając nawiasów:
+    [(x − 2)(x + 2)(x − 3)(x + 3)] / [3(x + 3)·x(x + 2)].
+    4) Skracamy (x + 2) oraz (x + 3):
+    = (x − 2)(x − 3) / (3x).
+    Odpowiedź: (x − 2)(x − 3)/(3x) dla x ∈ R \ {−3, −2, 0}.
+  difficulty: 3
+- statement: 'Wykonaj dzielenie i uprość: \frac{x^{2}-1}{x^{2}+4x+4} : \frac{x-1}{x+2}.'
+  worked_solution: |-
+    1) Rozkłady: x² − 1 = (x − 1)(x + 1); x² + 4x + 4 = (x + 2)².
+    2) Założenia:
+     • mianownik dzielnej: (x + 2)² ≠ 0 ⟹ x ≠ −2,
+     • mianownik dzielnika: x + 2 ≠ 0 ⟹ x ≠ −2,
+     • dzielnik różny od zera: x − 1 ≠ 0 ⟹ x ≠ 1.
+     Zatem D = R \ {−2, 1}.
+    3) Zamiana dzielenia na mnożenie przez odwrotność:
+    [(x − 1)(x + 1)/(x + 2)²] · [(x + 2)/(x − 1)].
+    4) Skracamy (x − 1) oraz jedno (x + 2):
+    = (x + 1)/(x + 2).
+    Odpowiedź: (x + 1)/(x + 2) dla x ∈ R \ {−2, 1}.
+  difficulty: 3
+- statement: 'Uprość wyrażenie W(x) = \frac{x^{3}-4x}{x^{2}-x-6} : \frac{x^{2}+2x}{2x-6}, podaj jego dziedzinę
+    i oblicz W(5).'
+  worked_solution: |-
+    1) Rozkłady na czynniki:
+     • x³ − 4x = x(x² − 4) = x(x − 2)(x + 2),
+     • x² − x − 6: Δ = 1 + 24 = 25, √Δ = 5, x₁ = (1 − 5)/2 = −2, x₂ = (1 + 5)/2 = 3, więc x² − x − 6 = (x + 2)(x − 3),
+     • x² + 2x = x(x + 2),
+     • 2x − 6 = 2(x − 3).
+    2) Założenia:
+     • (x + 2)(x − 3) ≠ 0 ⟹ x ≠ −2 i x ≠ 3,
+     • 2(x − 3) ≠ 0 ⟹ x ≠ 3,
+     • dzielnik ≠ 0, czyli x(x + 2) ≠ 0 ⟹ x ≠ 0 i x ≠ −2.
+     Dziedzina: D = R \ {−2, 0, 3}.
+    3) Zamiana na mnożenie przez odwrotność:
+    W(x) = [x(x − 2)(x + 2)] / [(x + 2)(x − 3)] · [2(x − 3)] / [x(x + 2)].
+    4) Skracamy: x, (x − 3) oraz jedno (x + 2) z każdej strony:
+    W(x) = 2(x − 2)/(x + 2).
+    5) Wartość dla x = 5: liczba 5 należy do dziedziny, więc
+    W(5) = 2(5 − 2)/(5 + 2) = 6/7.
+    Odpowiedź: W(x) = 2(x − 2)/(x + 2) dla x ∈ R \ {−2, 0, 3}, W(5) = 6/7.
+  difficulty: 4
+objectives:
+- statement: Rozpoznać wyrażenie wymierne i wskazać jego licznik oraz mianownik.
+  bloom_level: Zapamiętywanie
+- statement: Wyznaczyć dziedzinę wyrażenia wymiernego, w tym takiego, którego mianownik wymaga rozkładu
+    na czynniki, i zapisać ją w postaci D = R \ {...}.
+  bloom_level: Stosowanie
+- statement: Rozłożyć licznik i mianownik na czynniki, korzystając z wyłączania wspólnego czynnika, wzorów
+    skróconego mnożenia oraz rozkładu trójmianu kwadratowego.
+  bloom_level: Stosowanie
+- statement: Skrócić ułamek algebraiczny do najprostszej postaci, poprawnie uzasadniając skracanie przyjętymi
+    założeniami.
+  bloom_level: Stosowanie
+- statement: Wykonać mnożenie dwóch (lub więcej) wyrażeń wymiernych i podać wynik w najprostszej postaci
+    wraz z dziedziną.
+  bloom_level: Stosowanie
+- statement: Wykonać dzielenie wyrażeń wymiernych, zamieniając je na mnożenie przez odwrotność dzielnika
+    i uwzględniając wszystkie założenia, w tym warunek „dzielnik ≠ 0".
+  bloom_level: Stosowanie
+- statement: Uprościć ułamek piętrowy, interpretując go jako dzielenie wyrażeń wymiernych.
+  bloom_level: Stosowanie
+- statement: Obliczyć wartość wyrażenia wymiernego dla danej liczby po uprzednim sprawdzeniu, że należy
+    ona do dziedziny.
+  bloom_level: Stosowanie
+- statement: Wyjaśnić, dlaczego wolno skracać tylko czynniki, a nie składniki, i wskazać błąd w cudzym
+    przekształceniu wyrażenia wymiernego.
+  bloom_level: Analiza
+- statement: Uzasadnić, dlaczego dziedzinę wyznacza się dla wyrażenia przed skróceniem, i porównać dziedziny
+    wyrażenia wyjściowego oraz uproszczonego.
+  bloom_level: Analiza
+- statement: Ocenić, czy dane wyrażenie zostało doprowadzone do najprostszej postaci, i uzupełnić brakujące
+    kroki lub założenia.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Skracanie składników sumy
+  incorrect_reasoning: W ułamku (x + 3)/(x + 5) uczeń „skreśla" x i pisze 3/5; albo w (x² + 4)/x² skreśla
+    x² otrzymując 4.
+  correct_reasoning: Skracać wolno tylko wspólne CZYNNIKI iloczynu, a nie składniki sumy. (x + 3)/(x +
+    5) jest już w najprostszej postaci. Dopiero po rozłożeniu licznika i mianownika na iloczyny można
+    cokolwiek skracać.
+  severity: 5
+- name: Pominięcie warunku „dzielnik ≠ 0"
+  incorrect_reasoning: 'Przy dzieleniu (x² − 1)/(x + 2) : (x − 1)/(x + 3) uczeń zapisuje tylko x ≠ −2
+    i x ≠ −3, bo „tylko one są w mianownikach".'
+  correct_reasoning: Dzielnik (x − 1)/(x + 3) nie może być równy zeru, więc dodatkowo x − 1 ≠ 0, czyli
+    x ≠ 1. Po odwróceniu ułamka (x − 1) trafia do mianownika — warunek jest więc naturalny.
+  severity: 4
+- name: Wyznaczanie dziedziny po skróceniu
+  incorrect_reasoning: Uczeń najpierw skraca (x − 3)(x + 1)/(x − 3) do x + 1 i stwierdza, że dziedziną
+    jest cały zbiór R.
+  correct_reasoning: 'Dziedzinę ustalamy dla wyrażenia w postaci wyjściowej: x − 3 ≠ 0, więc D = R \ {3}.
+    Skrócone wyrażenie jest równe wyjściowemu tylko w tej dziedzinie.'
+  severity: 4
+- name: Odwracanie niewłaściwego ułamka przy dzieleniu
+  incorrect_reasoning: 'Przy A/B : C/D uczeń odwraca pierwszy ułamek i liczy (B/A)·(C/D).'
+  correct_reasoning: 'Dzielenie zamieniamy na mnożenie przez odwrotność DZIELNIKA (drugiego ułamka): A/B
+    : C/D = A/B · D/C. Warto sprawdzić regułę na liczbach: 1/2 : 1/4 = 1/2 · 4 = 2.'
+  severity: 4
+- name: Mnożenie „na krzyż" zamiast mnożenia ułamków
+  incorrect_reasoning: Uczeń przenosi schemat z równań i mnoży licznik pierwszego przez mianownik drugiego.
+  correct_reasoning: 'Mnożenie ułamków to licznik razy licznik i mianownik razy mianownik: (a/b)·(c/d)
+    = ac/(bd). Mnożenie „na krzyż" dotyczy proporcji, a nie działań na wyrażeniach.'
+  severity: 3
+- name: Wymnażanie nawiasów przed skracaniem
+  incorrect_reasoning: Po zapisaniu jednego ułamka uczeń wymnaża wszystkie nawiasy w liczniku i mianowniku,
+    otrzymując wielomiany wysokich stopni, i nie potrafi już nic skrócić.
+  correct_reasoning: Postać iloczynowa jest celem, a nie przeszkodą — czynniki zostawiamy w nawiasach,
+    skracamy je, i dopiero na końcu (jeśli polecenie tego wymaga) wykonujemy mnożenie.
+  severity: 3
+- name: Nieumiejętność rozpoznania czynników przeciwnych
+  incorrect_reasoning: W ułamku (3 − x)/(x − 3) uczeń twierdzi, że nic się nie skraca, bo nawiasy są różne.
+  correct_reasoning: Wystarczy zapisać 3 − x = −(x − 3). Wtedy ułamek równa się −(x − 3)/(x − 3) = −1
+    (dla x ≠ 3).
+  severity: 3
+- name: Skracanie tylko jednego z kilku identycznych czynników mianownika
+  incorrect_reasoning: W ułamku (x + 2)/(x + 2)² uczeń skraca „całe" (x + 2)² i otrzymuje 1.
+  correct_reasoning: (x + 2)² = (x + 2)(x + 2); skracamy jeden czynnik z licznikiem i zostaje 1/(x + 2).
+  severity: 3
+- name: Zapominanie o rozkładzie mianownika przy szukaniu dziedziny
+  incorrect_reasoning: Dla mianownika x² − 5x uczeń pisze tylko x ≠ 5 (albo x ≠ 0), pomijając drugie rozwiązanie.
+  correct_reasoning: 'x² − 5x = x(x − 5) = 0 daje dwa rozwiązania: x = 0 oraz x = 5, więc oba trzeba wykluczyć.'
+  severity: 4
+- name: Podstawianie liczby spoza dziedziny
+  incorrect_reasoning: Uczeń upraszcza wyrażenie do x + 1 i spokojnie liczy jego wartość dla x = 3, mimo
+    że wyjściowy mianownik zawierał czynnik (x − 3).
+  correct_reasoning: Wartość obliczamy tylko dla liczb należących do dziedziny wyrażenia wyjściowego;
+    dla x = 3 wyrażenie nie jest określone.
+  severity: 4

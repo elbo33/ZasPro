@@ -1,0 +1,432 @@
+section: katy-w-brylach
+name: Kąty w graniastosłupach, ostrosłupach, walcach i stożkach
+scope: Angles between edges, between edges and diagonals, and between faces in prisms and pyramids; angle
+  of a cone's aperture and related angles in cylinders and cones, and computing them.
+requirements:
+- X.3
+- X.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:24:21.427760'
+  approved_at: '2026-08-28T18:28:20.774740'
+  approved_by: reviewer
+concepts:
+- name: Kąt między prostymi (odcinkami) w przestrzeni
+  description: Kątem między dwiema przecinającymi się prostymi nazywamy kąt ostry (lub prosty) wyznaczony
+    przez te proste. Dla prostych skośnych kątem między nimi nazywamy kąt między prostymi do nich równoległymi,
+    przecinającymi się w jednym punkcie.
+  explanation: Zawsze bierzemy kąt nie większy niż 90°. Jeśli odcinki nie mają wspólnego punktu (np. krawędź
+    podstawy i przekątna przeciwległej ściany), przesuwamy jeden z nich równolegle tak, aby powstał trójkąt,
+    w którym da się ten kąt policzyć. W bryłach najczęściej wystarczy zauważyć, że przeciwległe krawędzie
+    podstawy są równoległe.
+  difficulty: 2
+- name: Rzut prostokątny punktu i odcinka na płaszczyznę
+  description: Rzutem prostokątnym punktu P na płaszczyznę π jest punkt P' będący punktem przecięcia π
+    z prostą przechodzącą przez P i prostopadłą do π. Rzutem odcinka jest zbiór rzutów jego punktów.
+  explanation: To narzędzie, którym „kładziemy” odcinek na podstawę bryły. W graniastosłupie prostym rzutem
+    wierzchołka górnej podstawy jest wierzchołek dolnej pod nim; w ostrosłupie prawidłowym rzutem wierzchołka
+    jest środek podstawy; w stożku rzutem wierzchołka jest środek koła podstawy.
+  difficulty: 2
+- name: Kąt między prostą a płaszczyzną
+  description: Kątem między prostą k (nieprostopadłą do płaszczyzny π i do niej nienależącą) a płaszczyzną
+    π nazywamy kąt ostry między prostą k a jej rzutem prostokątnym na π. Jeśli k ⟂ π, kąt ten ma miarę
+    90°; jeśli k ∥ π lub k ⊂ π, ma miarę 0°.
+  explanation: 'Praktyczna recepta: znajdź rzut odcinka na podstawę, a następnie trójkąt prostokątny,
+    którego przeciwprostokątną jest odcinek, jedną przyprostokątną — jego rzut, a drugą — wysokość (odcinek
+    prostopadły do płaszczyzny). Szukany kąt leży przy podstawie tego trójkąta, między odcinkiem a jego
+    rzutem.'
+  difficulty: 3
+- name: Kąt dwuścienny i jego kąt liniowy (kąt między ścianami)
+  description: 'Kąt dwuścienny to figura utworzona przez dwie półpłaszczyzny o wspólnej krawędzi. Jego
+    miarą jest miara kąta liniowego: kąta, którego wierzchołek leży na krawędzi, a ramiona zawarte są
+    w obu półpłaszczyznach i są prostopadłe do krawędzi.'
+  explanation: Kluczowe słowo to „prostopadłe do krawędzi”. Kąt między dwiema ścianami bryły mierzymy
+    więc dopiero po wybraniu punktu na ich wspólnej krawędzi i poprowadzeniu z niego w każdej ścianie
+    odcinka prostopadłego do tej krawędzi. W ostrosłupie prawidłowym takim odcinkiem w ścianie bocznej
+    jest apotema (wysokość ściany bocznej), a w podstawie — odcinek łączący środek podstawy ze środkiem
+    krawędzi.
+  difficulty: 3
+- name: Twierdzenie o trzech prostych prostopadłych
+  description: Jeżeli prosta k leży w płaszczyźnie π, a prosta l jest rzutem prostokątnym prostej m na
+    π, to k ⟂ m wtedy i tylko wtedy, gdy k ⟂ l.
+  explanation: To uzasadnienie, dlaczego apotema ostrosłupa prawidłowego jest prostopadła do krawędzi
+    podstawy oraz dlaczego trójkąt „wysokość–apotema podstawy–apotema ściany” jest prostokątny. Na poziomie
+    podstawowym używamy go głównie do poprawnego wskazania kąta dwuściennego.
+  difficulty: 4
+- name: Graniastosłup prosty i prawidłowy
+  description: Graniastosłup prosty to graniastosłup, którego krawędzie boczne są prostopadłe do podstaw;
+    graniastosłup prawidłowy to graniastosłup prosty o podstawie będącej wielokątem foremnym.
+  explanation: W graniastosłupie prostym krawędź boczna jest jednocześnie wysokością bryły, a rzutem górnej
+    podstawy na dolną jest ta dolna podstawa. Dzięki temu rzutem przekątnej graniastosłupa na podstawę
+    jest przekątna podstawy.
+  difficulty: 1
+- name: Przekątna graniastosłupa, przekątna ściany, przekątna podstawy
+  description: Przekątna graniastosłupa to odcinek łączący dwa wierzchołki nienależące do tej samej ściany;
+    przekątna ściany to przekątna odpowiedniego wielokąta będącego ścianą; przekątna podstawy to przekątna
+    wielokąta podstawy.
+  explanation: Trzy różne odcinki, więc trzy różne kąty nachylenia. Najczęstszy błąd to mylenie ich ze
+    sobą. Warto za każdym razem nazwać końce odcinka literami wierzchołków.
+  difficulty: 2
+- name: Ostrosłup prawidłowy
+  description: Ostrosłup prawidłowy to ostrosłup, którego podstawą jest wielokąt foremny, a spodek wysokości
+    pokrywa się ze środkiem tego wielokąta (środkiem okręgu wpisanego i opisanego).
+  explanation: Wszystkie krawędzie boczne są równe, wszystkie ściany boczne są przystającymi trójkątami
+    równoramiennymi. Stąd wszystkie krawędzie boczne są nachylone do podstawy pod tym samym kątem i wszystkie
+    ściany boczne pod tym samym kątem.
+  difficulty: 2
+- name: Apotema ostrosłupa prawidłowego
+  description: Apotema (wysokość ściany bocznej) to odcinek poprowadzony z wierzchołka ostrosłupa prostopadle
+    do krawędzi podstawy, zawarty w ścianie bocznej.
+  explanation: Spodek apotemy to środek krawędzi podstawy. Apotema, wysokość ostrosłupa i promień okręgu
+    wpisanego w podstawę tworzą trójkąt prostokątny — to w nim liczymy kąt nachylenia ściany bocznej do
+    podstawy.
+  difficulty: 3
+- name: Kąt nachylenia krawędzi bocznej do podstawy
+  description: Kąt między krawędzią boczną ostrosłupa a płaszczyzną podstawy, czyli kąt między tą krawędzią
+    a jej rzutem — odcinkiem łączącym spodek wysokości z wierzchołkiem podstawy (o długości R — promienia
+    okręgu opisanego na podstawie).
+  explanation: 'Trójkąt prostokątny: wysokość H (naprzeciw kąta), rzut R (przy kącie), krawędź boczna
+    b (przeciwprostokątna). Zatem tg α = H/R, cos α = R/b, sin α = H/b.'
+  difficulty: 3
+- name: Kąt nachylenia ściany bocznej do podstawy
+  description: Kąt dwuścienny między płaszczyzną ściany bocznej a płaszczyzną podstawy, mierzony jako
+    kąt między apotemą ostrosłupa a jej rzutem — odcinkiem o długości r (promień okręgu wpisanego w podstawę).
+  explanation: 'Trójkąt prostokątny: wysokość H, promień r, apotema h_b. Zatem tg β = H/r, cos β = r/h_b.
+    Ponieważ r < R, zawsze β > α — ściana boczna jest nachylona bardziej stromo niż krawędź boczna.'
+  difficulty: 3
+- name: Kąt płaski przy wierzchołku ostrosłupa
+  description: Kąt między dwiema sąsiednimi krawędziami bocznymi, czyli kąt przy wierzchołku trójkąta
+    będącego ścianą boczną.
+  explanation: 'To zwykły kąt w trójkącie równoramiennym o ramionach b i podstawie a: sin(γ/2) = (a/2)/b.
+    Nie mylić go z kątem dwuściennym między sąsiednimi ścianami bocznymi.'
+  difficulty: 3
+- name: Walec obrotowy, tworząca, przekrój osiowy
+  description: Walec obrotowy powstaje przez obrót prostokąta wokół boku. Tworząca to odcinek łączący
+    odpowiadające sobie punkty okręgów obu podstaw; jest prostopadła do podstaw i równa wysokości H. Przekrój
+    osiowy to prostokąt o wymiarach 2r × H, otrzymany przez przecięcie walca płaszczyzną zawierającą oś.
+  explanation: W walcu kąt między tworzącą a podstawą zawsze wynosi 90°, więc „ciekawe” kąty dotyczą przekątnej
+    przekroju osiowego (lub przekątnej przekroju prostopadłego do podstaw) i podstawy albo osi.
+  difficulty: 2
+- name: 'Stożek: tworząca, wysokość, przekrój osiowy'
+  description: Stożek obrotowy powstaje przez obrót trójkąta prostokątnego wokół przyprostokątnej. Tworząca
+    l to odcinek łączący wierzchołek z punktem okręgu podstawy, h to wysokość, r — promień podstawy. Przekrój
+    osiowy to trójkąt równoramienny o ramionach l i podstawie 2r.
+  explanation: Wszystkie tworzące są równe i wszystkie są nachylone do podstawy pod tym samym kątem. Zależność
+    l² = r² + h² to po prostu twierdzenie Pitagorasa w połówce przekroju osiowego.
+  difficulty: 2
+- name: Kąt nachylenia tworzącej stożka do podstawy
+  description: Kąt ostry α między tworzącą a jej rzutem na płaszczyznę podstawy, czyli promieniem poprowadzonym
+    do spodka tworzącej; jest to kąt przy podstawie trójkąta osiowego.
+  explanation: W trójkącie prostokątnym o przyprostokątnych r i h oraz przeciwprostokątnej l mamy tg α
+    = h/r, cos α = r/l, sin α = h/l.
+  difficulty: 2
+- name: Kąt rozwarcia stożka
+  description: Kąt przy wierzchołku w przekroju osiowym stożka, czyli kąt między dwiema tworzącymi leżącymi
+    w jednej płaszczyźnie z osią (tworzącymi „przeciwległymi”). Oznaczmy go 2β; wtedy β to kąt między
+    tworzącą a osią stożka.
+  explanation: Wysokość stożka dzieli trójkąt osiowy na dwa przystające trójkąty prostokątne, więc sin
+    β = r/l, tg β = r/h. Ponadto β + α = 90°, gdzie α jest kątem nachylenia tworzącej do podstawy, czyli
+    kąt rozwarcia 2β = 180° − 2α.
+  difficulty: 3
+- name: Trójkąt prostokątny jako „narzędzie robocze” w stereometrii
+  description: Każde obliczenie miary kąta w bryle sprowadzamy do znalezienia płaskiego trójkąta prostokątnego,
+    w którym szukany kąt jest jednym z kątów ostrych.
+  explanation: 'Schemat pracy: rysunek bryły → zaznaczenie kąta → wyodrębnienie i osobne narysowanie trójkąta
+    → wpisanie danych → funkcja trygonometryczna lub twierdzenie Pitagorasa. Osobny rysunek „płaski” eliminuje
+    większość błędów.'
+  difficulty: 2
+formulas:
+- name: Funkcje trygonometryczne kąta ostrego
+  latex_raw: \sin\alpha=\frac{a}{c},\qquad \cos\alpha=\frac{b}{c},\qquad \operatorname{tg}\alpha=\frac{a}{b}
+  conditions: trójkąt prostokątny o przeciwprostokątnej c, przyprostokątnej a leżącej naprzeciw kąta α
+    i przyprostokątnej b przyległej do α
+  description: Podstawowe narzędzie do wyznaczania miar kątów w bryłach.
+- name: Twierdzenie Pitagorasa
+  latex_raw: a^2+b^2=c^2
+  conditions: c — przeciwprostokątna trójkąta prostokątnego
+  description: Używane do wyznaczenia brakującego boku przed zastosowaniem funkcji trygonometrycznej.
+- name: Wartości szczególne
+  latex_raw: \operatorname{tg}30^\circ=\frac{\sqrt3}{3},\quad \operatorname{tg}45^\circ=1,\quad \operatorname{tg}60^\circ=\sqrt3,\quad
+    \sin30^\circ=\tfrac12,\quad \cos30^\circ=\tfrac{\sqrt3}{2}
+  conditions: zawsze
+  description: Jeśli wynik obliczeń daje jedną z tych wartości, podajemy kąt dokładnie; w przeciwnym razie
+    odczytujemy przybliżenie z tablic.
+- name: Przekątna prostopadłościanu
+  latex_raw: d=\sqrt{a^2+b^2+c^2}
+  conditions: prostopadłościan o krawędziach a, b, c
+  description: Rzutem tej przekątnej na podstawę jest przekątna podstawy o długości √(a²+b²).
+- name: 'Sześcian: przekątne i kąt nachylenia'
+  latex_raw: d_{\text{ściany}}=a\sqrt2,\qquad d=a\sqrt3,\qquad \operatorname{tg}\alpha=\frac{a}{a\sqrt2}=\frac{\sqrt2}{2}
+  conditions: sześcian o krawędzi a; α — kąt między przekątną sześcianu a płaszczyzną podstawy
+  description: α ≈ 35°16′; kąt między przekątną sześcianu a krawędzią boczną ≈ 54°44′.
+- name: Nachylenie przekątnej graniastosłupa prostego do podstawy
+  latex_raw: \operatorname{tg}\alpha=\frac{H}{d_p}
+  conditions: graniastosłup prosty o wysokości H i przekątnej podstawy d_p; przekątna graniastosłupa i
+    przekątna podstawy wychodzą z tego samego wierzchołka
+  description: Rzutem przekątnej bryły na podstawę jest przekątna podstawy.
+- name: Ostrosłup prawidłowy czworokątny — kąty nachylenia
+  latex_raw: \operatorname{tg}\alpha=\frac{H}{\frac{a\sqrt2}{2}}=\frac{H\sqrt2}{a},\qquad \operatorname{tg}\beta=\frac{H}{\frac{a}{2}}=\frac{2H}{a}
+  conditions: a — krawędź podstawy, H — wysokość; α — kąt nachylenia krawędzi bocznej, β — kąt nachylenia
+    ściany bocznej do podstawy
+  description: Stąd tg β = √2·tg α, więc zawsze β > α.
+- name: Ostrosłup prawidłowy trójkątny — promienie i kąty
+  latex_raw: r=\frac{a\sqrt3}{6},\quad R=\frac{a\sqrt3}{3}=2r,\qquad \operatorname{tg}\alpha=\frac{H}{R},\quad
+    \operatorname{tg}\beta=\frac{H}{r}
+  conditions: a — krawędź podstawy (trójkąt równoboczny), H — wysokość ostrosłupa
+  description: Stąd tg β = 2·tg α.
+- name: Kąt płaski przy wierzchołku ostrosłupa
+  latex_raw: \sin\frac{\gamma}{2}=\frac{a/2}{b}
+  conditions: ściana boczna jest trójkątem równoramiennym o podstawie a i ramionach b (krawędziach bocznych)
+  description: Kąt między krawędzią boczną a krawędzią podstawy wynosi wtedy (180°−γ)/2, a cos tego kąta
+    = (a/2)/b.
+- name: Stożek — zależność podstawowa
+  latex_raw: l^2=r^2+h^2
+  conditions: stożek obrotowy o promieniu r, wysokości h i tworzącej l
+  description: Wynika z Pitagorasa dla połowy przekroju osiowego.
+- name: Kąt nachylenia tworzącej stożka do podstawy
+  latex_raw: \cos\alpha=\frac{r}{l},\qquad \sin\alpha=\frac{h}{l},\qquad \operatorname{tg}\alpha=\frac{h}{r}
+  conditions: α — kąt między tworzącą a płaszczyzną podstawy (kąt przy podstawie trójkąta osiowego)
+  description: Ten sam kąt tworzy z podstawą każda tworząca.
+- name: Kąt rozwarcia stożka
+  latex_raw: \sin\beta=\frac{r}{l},\qquad \operatorname{tg}\beta=\frac{r}{h},\qquad 2\beta=180^\circ-2\alpha
+  conditions: 2β — kąt rozwarcia (kąt przy wierzchołku przekroju osiowego), β — kąt między tworzącą a
+    osią, α — kąt nachylenia tworzącej do podstawy
+  description: β i α są kątami dopełniającymi się do 90°.
+- name: Walec — przekrój osiowy
+  latex_raw: d=\sqrt{(2r)^2+H^2},\qquad \operatorname{tg}\varphi=\frac{H}{2r}
+  conditions: walec o promieniu r i wysokości H; φ — kąt między przekątną przekroju osiowego a płaszczyzną
+    podstawy
+  description: Przekrój osiowy jest prostokątem 2r × H; przekrój osiowy jest kwadratem wtedy i tylko wtedy,
+    gdy H = 2r (wówczas φ = 45°).
+- name: Kąt tworzącej walca z podstawą
+  latex_raw: \sphericalangle(\text{tworząca},\ \text{podstawa})=90^\circ
+  conditions: walec obrotowy (prosty)
+  description: Tworząca jest prostopadła do obu podstaw — to odróżnia walec od stożka.
+methods:
+- name: Ogólny schemat obliczania kąta w bryle
+  when_to_use: Za każdym razem, gdy trzeba wyznaczyć miarę kąta w graniastosłupie, ostrosłupie, walcu
+    lub stożku.
+  steps:
+  - Wykonaj czytelny rysunek bryły i oznacz wierzchołki literami.
+  - Nazwij dokładnie obiekty, między którymi mierzysz kąt (dwa odcinki, odcinek i płaszczyzna, dwie ściany).
+  - Zaznacz kąt na rysunku zgodnie z definicją (dla prostej i płaszczyzny — kąt z rzutem; dla ścian —
+    kąt liniowy).
+  - Wyodrębnij trójkąt prostokątny zawierający ten kąt i narysuj go osobno, płasko.
+  - Wpisz do trójkąta znane długości (wysokość bryły, promienie r i R, połowy krawędzi, przekątne).
+  - Brakujące długości oblicz z twierdzenia Pitagorasa.
+  - Zastosuj odpowiednią funkcję trygonometryczną i odczytaj miarę kąta (dokładnie lub z tablic).
+  - 'Sprawdź sensowność: kąt ostry, a przy porównaniach np. β > α w ostrosłupie prawidłowym.'
+- name: Wyznaczanie kąta między prostą (odcinkiem) a płaszczyzną
+  when_to_use: Gdy pytanie brzmi „pod jakim kątem odcinek jest nachylony do podstawy” — np. przekątna
+    graniastosłupa, krawędź boczna ostrosłupa, tworząca stożka, przekątna przekroju walca.
+  steps:
+  - Znajdź rzut prostokątny końca odcinka leżącego poza płaszczyzną (w graniastosłupie prostym — wierzchołek
+    pod nim; w ostrosłupie prawidłowym i stożku — środek podstawy).
+  - 'Połącz rzut z drugim końcem odcinka: otrzymujesz rzut całego odcinka.'
+  - Kąt między odcinkiem a jego rzutem jest szukanym kątem.
+  - W trójkącie prostokątnym (odcinek – rzut – wysokość) zapisz tg = wysokość/rzut lub cos = rzut/odcinek.
+  - Oblicz kąt.
+- name: Wyznaczanie kąta dwuściennego między ścianą boczną a podstawą
+  when_to_use: Gdy pytanie dotyczy kąta między ścianami (np. „ściana boczna jest nachylona do podstawy
+    pod kątem…”, „kąt dwuścienny przy krawędzi podstawy”).
+  steps:
+  - Wskaż wspólną krawędź obu ścian (w ostrosłupie prawidłowym — krawędź podstawy).
+  - 'Wybierz na niej punkt szczególny: środek krawędzi podstawy.'
+  - Poprowadź z tego punktu apotemę ściany bocznej (do wierzchołka) — jest prostopadła do krawędzi.
+  - Poprowadź z tego samego punktu odcinek do środka podstawy (długości r) — również prostopadły do krawędzi.
+  - Kąt między tymi odcinkami to szukany kąt dwuścienny; leży on w trójkącie prostokątnym o przyprostokątnych
+    r i H.
+  - Zapisz tg β = H/r lub cos β = r/h_b i oblicz β.
+- name: Wyznaczanie kąta między odcinkami skośnymi w graniastosłupie
+  when_to_use: Gdy odcinki (np. krawędź podstawy i przekątna sąsiedniej ściany bocznej) nie mają punktu
+    wspólnego.
+  steps:
+  - Znajdź odcinek równoległy do jednego z nich, przechodzący przez punkt drugiego (w graniastosłupie
+    korzystaj z równoległości przeciwległych krawędzi podstawy i krawędzi bocznych).
+  - Zastąp jeden odcinek jego równoległym odpowiednikiem — powstaje kąt płaski w konkretnym trójkącie.
+  - Sprawdź, czy trójkąt jest prostokątny; jeśli nie, dobierz inny odcinek równoległy albo skorzystaj
+    z własności trójkąta równobocznego/równoramiennego.
+  - Oblicz kąt i pamiętaj, że przyjmujemy kąt ostry lub prosty.
+- name: Analiza stożka przez przekrój osiowy
+  when_to_use: Przy każdym zadaniu o kącie rozwarcia stożka, kącie tworzącej z podstawą lub z osią.
+  steps:
+  - 'Narysuj przekrój osiowy: trójkąt równoramienny o podstawie 2r i ramionach l, z wysokością h.'
+  - 'Zaznacz: kąt rozwarcia 2β przy wierzchołku, kąt α przy podstawie (nachylenie tworzącej).'
+  - Skorzystaj z podziału wysokością na dwa trójkąty prostokątne o przyprostokątnych r i h.
+  - 'Wybierz zależność: sin β = r/l, tg β = r/h, cos α = r/l, tg α = h/r.'
+  - Jeśli dany jest jeden z kątów, użyj związku α + β = 90° (czyli 2β = 180° − 2α), aby przejść do drugiego.
+  - Oblicz szukane wielkości.
+- name: Analiza walca przez przekrój osiowy
+  when_to_use: Gdy w walcu mowa o kącie przekątnej przekroju osiowego (lub przekroju prostopadłego do
+    podstaw) z podstawą, z tworzącą albo z osią.
+  steps:
+  - Narysuj przekrój osiowy jako prostokąt o bokach 2r (podstawa) i H (wysokość).
+  - Zaznacz przekątną i kąt φ, jaki tworzy ona z bokiem leżącym w płaszczyźnie podstawy.
+  - Zapisz tg φ = H/(2r); kąt przekątnej z tworzącą wynosi 90° − φ.
+  - Wyznacz brakujące dane (H lub r) z równania, ewentualnie użyj Pitagorasa dla długości przekątnej.
+  - Pamiętaj, że sama tworząca tworzy z podstawą kąt 90°.
+examples:
+- statement: 'Dany jest sześcian ABCDA′B′C′D′ o krawędzi a. Oblicz: (a) kąt między przekątną podstawy
+    AC a krawędzią AB, (b) kąt nachylenia przekątnej sześcianu AC′ do płaszczyzny podstawy, (c) kąt między
+    przekątną AC′ a krawędzią boczną CC′.'
+  worked_solution: |-
+    (a) Podstawa ABCD jest kwadratem, a jego przekątna AC jest dwusieczną kąta prostego DAB, więc kąt między AC a AB ma miarę 45°.
+    (b) Ponieważ CC′ ⟂ płaszczyzna ABCD, rzutem punktu C′ na podstawę jest C, a rzutem odcinka AC′ jest AC. Szukany kąt α to kąt C′AC w trójkącie prostokątnym ACC′ o przyprostokątnych AC = a√2 i CC′ = a.
+    tg α = CC′/AC = a/(a√2) = √2/2 ≈ 0,7071, zatem α ≈ 35°16′.
+    (c) W tym samym trójkącie ACC′ kąt przy wierzchołku C′ jest kątem między AC′ a CC′: tg(∠AC′C) = AC/CC′ = a√2/a = √2 ≈ 1,4142, więc ∠AC′C ≈ 54°44′.
+    Kontrola: 35°16′ + 54°44′ = 90° — zgodnie z sumą kątów ostrych trójkąta prostokątnego.
+  difficulty: 2
+- statement: W graniastosłupie prawidłowym czworokątnym krawędź podstawy ma długość 4, a przekątna graniastosłupa
+    tworzy z płaszczyzną podstawy kąt 60°. Oblicz wysokość graniastosłupa oraz kąt między przekątną ściany
+    bocznej a krawędzią podstawy wychodzącą z tego samego wierzchołka.
+  worked_solution: |-
+    Podstawą jest kwadrat o boku a = 4, więc przekątna podstawy d_p = 4√2.
+    Rzutem przekątnej graniastosłupa na podstawę jest przekątna podstawy, zatem w trójkącie prostokątnym o przyprostokątnych d_p i H:
+    tg 60° = H/(4√2) ⟹ H = 4√2·√3 = 4√6.
+    Ściana boczna jest prostokątem o wymiarach a = 4 (krawędź podstawy) i H = 4√6 (krawędź boczna). Przekątna tej ściany wychodzi z wierzchołka podstawy; kąt φ między nią a krawędzią podstawy spełnia:
+    tg φ = H/a = 4√6/4 = √6 ≈ 2,4495, więc φ ≈ 67°48′.
+    Uwaga: kąt nachylenia przekątnej ściany bocznej do płaszczyzny podstawy jest równy właśnie φ ≈ 67°48′ (bo rzutem tej przekątnej na podstawę jest krawędź podstawy), a więc jest inny niż 60° — kąt nachylenia przekątnej bryły.
+  difficulty: 3
+- statement: W ostrosłupie prawidłowym czworokątnym krawędź podstawy ma długość 6, a ściana boczna jest
+    nachylona do płaszczyzny podstawy pod kątem 45°. Oblicz wysokość ostrosłupa, kąt nachylenia krawędzi
+    bocznej do podstawy oraz kąt płaski przy wierzchołku ostrosłupa.
+  worked_solution: |-
+    Oznaczmy a = 6, S — wierzchołek, O — środek podstawy, M — środek krawędzi podstawy.
+    Promień okręgu wpisanego w podstawę: r = OM = a/2 = 3.
+    Kąt nachylenia ściany bocznej to kąt SMO: tg 45° = H/r ⟹ H = r·tg45° = 3.
+    Apotema: h_b = SM = √(H² + r²) = √(9+9) = 3√2.
+    Krawędź boczna: jej rzutem jest odcinek OA o długości R = a√2/2 = 3√2. Kąt α nachylenia krawędzi bocznej:
+    tg α = H/R = 3/(3√2) = √2/2 ≈ 0,7071 ⟹ α ≈ 35°16′.
+    (Zgodnie z zależnością tg β = √2·tg α: tg45° = 1 = √2·(√2/2). ✓ Widać też, że β = 45° > α ≈ 35°16′.)
+    Krawędź boczna: b = √(H² + R²) = √(9 + 18) = 3√3.
+    Kąt płaski przy wierzchołku γ (w ścianie bocznej, trójkąt równoramienny o podstawie 6 i ramionach 3√3):
+    sin(γ/2) = (a/2)/b = 3/(3√3) = √3/3 ≈ 0,5774 ⟹ γ/2 ≈ 35°16′, czyli γ ≈ 70°32′.
+  difficulty: 4
+- statement: 'W ostrosłupie prawidłowym trójkątnym wszystkie krawędzie mają długość 6 (czworościan foremny).
+    Oblicz: (a) kąt nachylenia krawędzi bocznej do podstawy, (b) kąt nachylenia ściany bocznej do podstawy,
+    (c) kąt między krawędzią boczną a krawędzią podstawy.'
+  worked_solution: |-
+    Podstawa to trójkąt równoboczny o boku a = 6, więc:
+    R = a√3/3 = 2√3, r = a√3/6 = √3.
+    Wysokość ostrosłupa: H = √(b² − R²) = √(36 − 12) = √24 = 2√6.
+    (a) Kąt α między krawędzią boczną a podstawą: cos α = R/b = 2√3/6 = √3/3 ≈ 0,5774 ⟹ α ≈ 54°44′.
+    (b) Apotema ściany bocznej (wysokość trójkąta równobocznego o boku 6): h_b = 6√3/2 = 3√3. Kąt β między ścianą boczną a podstawą mierzymy w trójkącie prostokątnym o przyprostokątnej r i przeciwprostokątnej h_b:
+    cos β = r/h_b = √3/(3√3) = 1/3 ≈ 0,3333 ⟹ β ≈ 70°32′.
+    Sprawdzenie zależności tg β = 2·tg α: tg α = H/R = 2√6/(2√3) = √2, tg β = H/r = 2√6/√3 = 2√2 = 2·√2. ✓
+    (c) Ściana boczna jest trójkątem równobocznym, więc kąt między krawędzią boczną a krawędzią podstawy wynosi dokładnie 60°.
+  difficulty: 4
+- statement: (a) Stożek ma promień podstawy r = 4 i kąt rozwarcia 120°. Oblicz jego wysokość, długość
+    tworzącej i kąt nachylenia tworzącej do podstawy. (b) W walcu o promieniu 6 przekątna przekroju osiowego
+    tworzy z płaszczyzną podstawy kąt 30°. Oblicz wysokość walca i kąt między tą przekątną a tworzącą
+    walca.
+  worked_solution: |-
+    (a) Przekrój osiowy to trójkąt równoramienny o podstawie 2r = 8 i kącie przy wierzchołku 2β = 120°, więc β = 60° (kąt między tworzącą a osią).
+    Z trójkąta prostokątnego o przyprostokątnych r = 4 i h:
+    tg 60° = r/h ⟹ h = r/tg60° = 4/√3 = (4√3)/3;
+    sin 60° = r/l ⟹ l = r/sin60° = 4/(√3/2) = 8/√3 = (8√3)/3.
+    Kąt nachylenia tworzącej do podstawy: α = 90° − β = 30°. Sprawdzenie: tg α = h/r = (4√3/3)/4 = √3/3 = tg30°. ✓
+    (b) Przekrój osiowy walca to prostokąt o bokach 2r = 12 i H. Przekątna tworzy z bokiem leżącym w podstawie kąt 30°:
+    tg 30° = H/12 ⟹ H = 12·(√3/3) = 4√3.
+    Tworząca walca jest prostopadła do podstawy, a w prostokącie boki są prostopadłe, więc kąt między przekątną a tworzącą to 90° − 30° = 60°.
+    Uwaga: kąt między samą tworzącą walca a podstawą to zawsze 90°, więc pytanie o „nachylenie tworzącej” ma sens dopiero w stożku.
+  difficulty: 3
+objectives:
+- statement: Wskazać na rysunku bryły i opisać słownie kąt między dwoma odcinkami, kąt między odcinkiem
+    a płaszczyzną oraz kąt dwuścienny między ścianami.
+  bloom_level: Zrozumienie
+- statement: Wyznaczyć rzut prostokątny wierzchołka i odcinka na płaszczyznę podstawy w graniastosłupie
+    prostym, ostrosłupie prawidłowym, walcu i stożku.
+  bloom_level: Zastosowanie
+- statement: Obliczyć miarę kąta nachylenia przekątnej graniastosłupa, przekątnej ściany bocznej i krawędzi
+    do płaszczyzny podstawy, korzystając z funkcji trygonometrycznych kąta ostrego.
+  bloom_level: Zastosowanie
+- statement: Obliczyć w ostrosłupie prawidłowym kąt nachylenia krawędzi bocznej do podstawy, kąt nachylenia
+    ściany bocznej do podstawy oraz kąt płaski przy wierzchołku.
+  bloom_level: Zastosowanie
+- statement: Rozpoznać i obliczyć kąt rozwarcia stożka, kąt między tworzącą a podstawą oraz kąt między
+    tworzącą a osią, wykorzystując przekrój osiowy i zależność α + β = 90°.
+  bloom_level: Zastosowanie
+- statement: Obliczyć kąty w walcu związane z przekrojem osiowym oraz uzasadnić, dlaczego tworząca walca
+    tworzy z podstawą kąt prosty.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć nieznane wymiary bryły (wysokość, promień, długość krawędzi lub tworzącej) na podstawie
+    danej miary kąta.
+  bloom_level: Zastosowanie
+- statement: Przeanalizować zależności między różnymi kątami w tej samej bryle (np. wykazać, że w ostrosłupie
+    prawidłowym ściana boczna jest nachylona bardziej stromo niż krawędź boczna).
+  bloom_level: Analiza
+- statement: Ocenić poprawność cudzego rozwiązania, wykrywając zamianę r i R, błędny kąt liniowy lub pomylenie
+    kąta rozwarcia z kątem nachylenia tworzącej.
+  bloom_level: Ocena
+misconceptions:
+- name: Mylenie kąta nachylenia krawędzi bocznej z kątem nachylenia ściany bocznej
+  incorrect_reasoning: „Ściana boczna ostrosłupa prawidłowego czworokątnego jest nachylona pod kątem β,
+    więc tg β = H/(a√2/2), bo krawędź boczna rzutuje się na połowę przekątnej podstawy.”
+  correct_reasoning: 'Kąt nachylenia ściany bocznej mierzymy między apotemą a jej rzutem o długości r
+    = a/2 (promień okręgu wpisanego): tg β = H/(a/2). Odcinek a√2/2 = R jest rzutem krawędzi bocznej i
+    służy do kąta α: tg α = H/R. Ponieważ r < R, zawsze β > α.'
+  severity: 5
+- name: Zły kąt liniowy kąta dwuściennego
+  incorrect_reasoning: „Kąt między ścianą boczną a podstawą to kąt między krawędzią boczną a krawędzią
+    podstawy” albo „to kąt między krawędzią boczną a jej rzutem”.
+  correct_reasoning: 'Kąt dwuścienny mierzymy ramionami prostopadłymi do wspólnej krawędzi. Dla ściany
+    bocznej i podstawy wybieramy środek krawędzi podstawy i prowadzimy: apotemę (w ścianie) oraz odcinek
+    do środka podstawy (w podstawie). Dopiero te odcinki są prostopadłe do krawędzi.'
+  severity: 5
+- name: Kąt rozwarcia stożka utożsamiany z kątem tworzącej i osi lub tworzącej i podstawy
+  incorrect_reasoning: „Kąt rozwarcia to kąt między tworzącą a wysokością, więc sin(kąt rozwarcia) = r/l”,
+    albo „kąt rozwarcia = kąt nachylenia tworzącej do podstawy”.
+  correct_reasoning: 'Kąt rozwarcia to CAŁY kąt przy wierzchołku przekroju osiowego, czyli 2β, gdzie sin
+    β = r/l, β — kąt tworzącej z osią. Kąt nachylenia tworzącej do podstawy α spełnia α = 90° − β, więc
+    kąt rozwarcia = 180° − 2α. Zawsze warto sprawdzić: jeśli α = 30°, to kąt rozwarcia to 120°, a nie
+    30° ani 60°.'
+  severity: 5
+- name: Przekonanie, że „kąt rozwarcia” musi być rozwarty
+  incorrect_reasoning: „Skoro nazywa się kąt rozwarcia, to jego miara jest większa od 90°, więc odpowiedź
+    60° jest błędna.”
+  correct_reasoning: Nazwa pochodzi od „rozwarcia” stożka, a nie od kąta rozwartego. Kąt rozwarcia może
+    być dowolnym kątem z przedziału (0°, 180°); np. dla stożka, którego przekrój osiowy jest trójkątem
+    równobocznym, wynosi 60°.
+  severity: 3
+- name: Zapominanie o rzucie przy kącie z płaszczyzną
+  incorrect_reasoning: „Kąt nachylenia przekątnej prostopadłościanu do podstawy liczę jako tg α = H/a,
+    gdzie a to krawędź podstawy.”
+  correct_reasoning: Rzutem przekątnej bryły na podstawę jest przekątna podstawy, a nie krawędź. Zatem
+    tg α = H/√(a²+b²). Krawędź podstawy jest rzutem przekątnej ściany bocznej, co daje inny (większy)
+    kąt.
+  severity: 4
+- name: Mylenie promieni r i R w ostrosłupie prawidłowym trójkątnym
+  incorrect_reasoning: „W trójkącie równobocznym o boku a wszystkie odcinki od środka są równe a√3/3,
+    więc do obu kątów nachylenia używam tej samej wartości.”
+  correct_reasoning: W trójkącie równobocznym środek dzieli wysokość w stosunku 2:1, więc R = a√3/3 (do
+    wierzchołka), a r = a√3/6 (do środka boku) i R = 2r. Do krawędzi bocznej używamy R, do ściany bocznej
+    — r.
+  severity: 4
+- name: Stosowanie trygonometrii w trójkącie, który nie jest prostokątny
+  incorrect_reasoning: „W trójkącie ASC (przekrój ostrosłupa przez dwie krawędzie boczne) zapisuję tg
+    α = SO/AC.”
+  correct_reasoning: Wzory sin/cos/tg kąta ostrego obowiązują wyłącznie w trójkącie prostokątnym. Trzeba
+    najpierw wyodrębnić trójkąt prostokątny — np. ASO, gdzie O jest spodkiem wysokości — i dopiero w nim
+    użyć funkcji trygonometrycznej.
+  severity: 4
+- name: Uznawanie kąta między odcinkami skośnymi za nieistniejący lub liczenie kąta rozwartego
+  incorrect_reasoning: „Te odcinki się nie przecinają, więc kąta nie da się wyznaczyć”, albo „wyszło mi
+    120°, więc to jest szukany kąt między prostymi”.
+  correct_reasoning: Kąt między prostymi skośnymi definiujemy przez przesunięcie równoległe jednej z nich;
+    ponadto kąt między prostymi to zawsze kąt ostry lub prosty — jeśli w rachunkach wyjdzie 120°, odpowiedzią
+    jest 60°.
+  severity: 3
+- name: Szukanie kąta nachylenia tworzącej walca
+  incorrect_reasoning: „W walcu tworząca jest nachylona do podstawy pod pewnym kątem zależnym od r i H,
+    np. tg φ = H/r.”
+  correct_reasoning: W walcu obrotowym tworząca jest prostopadła do obu podstaw, więc ten kąt wynosi 90°.
+    Zależność tg φ = H/(2r) dotyczy przekątnej przekroju osiowego, a nie tworzącej.
+  severity: 4
+- name: Podawanie wyniku jako wartości funkcji zamiast miary kąta
+  incorrect_reasoning: „tg α = √2/2, więc α = √2/2.”
+  correct_reasoning: 'Otrzymana liczba to wartość funkcji trygonometrycznej. Miarę kąta trzeba odczytać:
+    albo rozpoznać wartość szczególną (np. tg α = √3 ⟹ α = 60°), albo skorzystać z tablic (tg α = √2/2
+    ≈ 0,7071 ⟹ α ≈ 35°16′).'
+  severity: 3

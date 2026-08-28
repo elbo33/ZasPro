@@ -1,0 +1,314 @@
+section: prawdopodobienstwo-klasyczne
+name: Prawdopodobieństwo w modelu klasycznym
+scope: Equally likely outcomes; favourable versus all outcomes; complementary events.
+requirements:
+- XII.1
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:33:09.423004'
+  approved_at: '2026-08-28T18:28:21.581229'
+  approved_by: reviewer
+concepts:
+- name: Doświadczenie losowe
+  description: Czynność (np. rzut kostką, losowanie kuli z urny, wybór liczby ze zbioru), której wyniku
+    nie da się przewidzieć, ale znamy zbiór wszystkich możliwych wyników.
+  explanation: 'Zanim policzysz jakiekolwiek prawdopodobieństwo, musisz precyzyjnie opisać, na czym polega
+    doświadczenie: co losujemy, ile razy, czy ze zwracaniem, czy kolejność ma znaczenie. Od tego opisu
+    zależy cały model.'
+  difficulty: 1
+- name: Zdarzenie elementarne i zbiór Ω
+  description: Zdarzenie elementarne to pojedynczy możliwy wynik doświadczenia. Zbiór wszystkich zdarzeń
+    elementarnych oznaczamy Ω (omega), a jego liczebność |Ω|.
+  explanation: Ω to 'lista wszystkich możliwości'. Dla rzutu kostką Ω={1,2,3,4,5,6}, |Ω|=6. Dla rzutu
+    dwiema kostkami wygodnie przyjąć pary uporządkowane (a,b), więc |Ω|=36. Wybór opisu Ω jest twoją decyzją,
+    ale musi być konsekwentny w całym zadaniu.
+  difficulty: 2
+- name: Zdarzenie losowe
+  description: Dowolny podzbiór A zbioru Ω. Mówimy, że zdarzenie A zaszło, gdy wynik doświadczenia należy
+    do A.
+  explanation: Zdanie z treści zadania ('wypadła suma 8', 'wylosowano dwie kule tego samego koloru') tłumaczysz
+    na zbiór wyników z Ω. Liczba tych wyników to |A| — liczba zdarzeń elementarnych sprzyjających.
+  difficulty: 2
+- name: Zdarzenia elementarne sprzyjające
+  description: Te elementy Ω, które należą do rozpatrywanego zdarzenia A, czyli wyniki 'korzystne' dla
+    A.
+  explanation: 'Kluczowa umiejętność sekcji: umieć wypisać lub zliczyć sprzyjające wyniki tym samym sposobem
+    opisu, jakim opisano Ω (np. jeśli Ω to pary uporządkowane, to sprzyjające też muszą być parami uporządkowanymi).'
+  difficulty: 2
+- name: Model klasyczny (zdarzenia jednakowo prawdopodobne)
+  description: Model probabilistyczny, w którym Ω jest zbiorem skończonym, niepustym, a każde zdarzenie
+    elementarne ma to samo prawdopodobieństwo 1/|Ω|.
+  explanation: 'Model klasyczny wolno stosować, gdy doświadczenie jest ''symetryczne'': kostka i moneta
+    są symetryczne, kule w urnie losowane ''na chybił trafił'', każda liczba ze zbioru równie prawdopodobna.
+    Jeśli wyniki nie są równie prawdopodobne (np. ''suma oczek'' na dwóch kostkach), trzeba zmienić opis
+    Ω na taki, w którym są.'
+  difficulty: 3
+- name: Prawdopodobieństwo klasyczne
+  description: 'Dla zdarzenia A ⊂ Ω w modelu klasycznym: P(A) = |A| / |Ω| — iloraz liczby zdarzeń sprzyjających
+    przez liczbę wszystkich zdarzeń elementarnych.'
+  explanation: To ułamek 'ile z ilu'. Zawsze wynik należy do przedziału [0,1]; wynik większy od 1 lub
+    ujemny to sygnał błędu w zliczaniu.
+  difficulty: 2
+- name: Zdarzenie pewne i zdarzenie niemożliwe
+  description: Zdarzenie pewne to A = Ω (P = 1), zdarzenie niemożliwe to A = ∅ (P = 0).
+  explanation: 'Przydatne jako kontrola sensowności: jeśli w zadaniu wyszło P = 1, sprawdź, czy rzeczywiście
+    każdy wynik sprzyja; jeśli P = 0, czy naprawdę żaden.'
+  difficulty: 1
+- name: Zdarzenie przeciwne A′
+  description: Zdarzenie A′ (dopełnienie A w Ω) zachodzi dokładnie wtedy, gdy nie zachodzi A; A′ = Ω \
+    A, więc |A′| = |Ω| − |A|.
+  explanation: Zdarzenie przeciwne do 'co najmniej jeden' to 'ani jeden'; do 'przynajmniej dwie' to 'co
+    najwyżej jedna'. Poprawne sformułowanie zdarzenia przeciwnego to połowa sukcesu w wielu zadaniach.
+  difficulty: 3
+- name: Suma i iloczyn zdarzeń
+  description: A ∪ B zachodzi, gdy zachodzi A lub B (lub oba); A ∩ B zachodzi, gdy zachodzą jednocześnie
+    A i B.
+  explanation: W modelu klasycznym to po prostu suma i część wspólna zbiorów wyników — liczysz elementy,
+    uważając, by wyników wspólnych nie policzyć dwa razy.
+  difficulty: 2
+- name: Zdarzenia wykluczające się (rozłączne)
+  description: Zdarzenia A i B, dla których A ∩ B = ∅ — nie mogą zajść jednocześnie.
+  explanation: 'Tylko dla takich zdarzeń wolno dodać prawdopodobieństwa: P(A∪B) = P(A) + P(B). Np. ''suma
+    oczek = 7'' i ''suma oczek = 8'' wykluczają się, ale ''suma parzysta'' i ''na pierwszej kostce 2''
+    — nie.'
+  difficulty: 3
+- name: Losowanie ze zwracaniem i bez zwracania
+  description: 'Ze zwracaniem: wylosowany element wraca do puli i może być wybrany ponownie. Bez zwracania:
+    nie wraca, więc w kolejnym losowaniu elementów jest o jeden mniej.'
+  explanation: 'To najczęstsze źródło różnicy w |Ω|: przy dwóch losowaniach z n elementów ze zwracaniem
+    mamy n² wyników uporządkowanych, bez zwracania n(n−1).'
+  difficulty: 3
+- name: Reguła mnożenia w zliczaniu
+  description: Jeżeli wynik doświadczenia powstaje w k etapach i etap i-ty można wykonać na n_i sposobów
+    niezależnie od poprzednich, to wszystkich wyników jest n₁·n₂·…·n_k.
+  explanation: 'To narzędzie do wyznaczania |Ω| i |A| bez wypisywania wszystkiego: np. liczba trzycyfrowych
+    kodów z cyfr 0–9 to 10·10·10.'
+  difficulty: 3
+- name: Losowanie dwóch elementów bez uwzględniania kolejności
+  description: Liczba par (dwuelementowych podzbiorów) wybranych z n różnych elementów wynosi n(n−1)/2.
+  explanation: 'Wzór powstaje z n(n−1) par uporządkowanych podzielonych przez 2, bo każdą parę {a,b} liczymy
+    dwukrotnie: (a,b) i (b,a). Można liczyć z kolejnością albo bez — byle tak samo w liczniku i mianowniku.'
+  difficulty: 3
+- name: Tabela wyników i drzewo
+  description: 'Graficzne sposoby przedstawiania Ω: tabela 6×6 dla dwóch kostek, drzewo z rozgałęzieniami
+    dla kolejnych etapów doświadczenia.'
+  explanation: Tabela i drzewo pomagają nie zgubić żadnego wyniku i wygodnie zaznaczyć sprzyjające. W
+    modelu klasycznym wystarczy policzyć zaznaczone gałęzie/kratki.
+  difficulty: 2
+formulas:
+- name: Prawdopodobieństwo w modelu klasycznym
+  latex_raw: P(A)=\frac{|A|}{|\Omega|}
+  conditions: Ω skończony i niepusty, wszystkie zdarzenia elementarne jednakowo prawdopodobne, A ⊂ Ω.
+  description: '|A| — liczba zdarzeń sprzyjających, |Ω| — liczba wszystkich zdarzeń elementarnych.'
+- name: Prawdopodobieństwo zdarzenia elementarnego
+  latex_raw: P(\{\omega\})=\frac{1}{|\Omega|}
+  conditions: model klasyczny
+- name: Zakres wartości prawdopodobieństwa
+  latex_raw: 0\le P(A)\le 1
+  conditions: dla każdego zdarzenia A
+  description: Kontrola poprawności obliczeń.
+- name: Zdarzenie pewne i niemożliwe
+  latex_raw: P(\Omega)=1,\qquad P(\varnothing)=0
+  conditions: zawsze
+- name: Prawdopodobieństwo zdarzenia przeciwnego
+  latex_raw: P(A')=1-P(A)
+  conditions: A′ = Ω \ A
+  description: 'Równoważnie |A′| = |Ω| − |A|. Stosuj, gdy A′ jest łatwiejsze do zliczenia (typowo: ''co
+    najmniej jeden'').'
+- name: Suma zdarzeń wykluczających się
+  latex_raw: P(A\cup B)=P(A)+P(B)
+  conditions: A ∩ B = ∅
+- name: Suma dowolnych zdarzeń (włączeń i wyłączeń)
+  latex_raw: P(A\cup B)=P(A)+P(B)-P(A\cap B)
+  conditions: dowolne A, B ⊂ Ω
+- name: Monotoniczność
+  latex_raw: A\subset B\ \Rightarrow\ P(A)\le P(B)
+  conditions: A, B ⊂ Ω
+- name: Liczba wyników losowania ze zwracaniem (z kolejnością)
+  latex_raw: '|\Omega|=n^{k}'
+  conditions: k losowań ze zbioru n elementów, ze zwracaniem, wyniki uporządkowane
+- name: Liczba wyników losowania bez zwracania (z kolejnością)
+  latex_raw: '|\Omega|=n(n-1)(n-2)\cdots(n-k+1)'
+  conditions: k losowań ze zbioru n elementów, bez zwracania, wyniki uporządkowane, k ≤ n
+- name: Liczba par bez uwzględniania kolejności
+  latex_raw: '|\Omega|=\binom{n}{2}=\frac{n(n-1)}{2}'
+  conditions: wybór 2 elementów z n różnych, kolejność nieistotna
+methods:
+- name: Schemat obliczania prawdopodobieństwa w modelu klasycznym
+  when_to_use: Za każdym razem, gdy doświadczenie jest skończone i symetryczne (kostki, monety, urny,
+    losowanie liczb, wybór osób).
+  steps:
+  - 'Opisz doświadczenie: co i ile razy losujemy, ze zwracaniem czy bez, czy kolejność jest istotna.'
+  - Ustal zbiór Ω tak, aby wszystkie jego elementy były jednakowo prawdopodobne (np. pary uporządkowane,
+    a nie sumy oczek).
+  - Oblicz |Ω| — wypisując wyniki, z tabeli, z drzewa albo z reguły mnożenia.
+  - Zapisz zdarzenie A jako zbiór wyników i oblicz |A| tym samym sposobem opisu co Ω.
+  - Podstaw P(A) = |A|/|Ω| i skróć ułamek.
+  - 'Sprawdź sensowność: czy 0 ≤ P(A) ≤ 1 i czy wynik jest zgodny z intuicją (zdarzenie ''rzadkie'' ma
+    małe P).'
+- name: Metoda zdarzenia przeciwnego
+  when_to_use: Gdy w zdarzeniu pojawiają się słowa 'co najmniej', 'przynajmniej', 'nie wszystkie', 'choć
+    raz' i bezpośrednie zliczanie jest długie.
+  steps:
+  - 'Sformułuj precyzyjnie zdarzenie przeciwne A′ (negacja: ''co najmniej jeden'' → ''ani jeden''; ''co
+    najmniej dwa'' → ''co najwyżej jeden'').'
+  - Oblicz |A′| i P(A′) = |A′|/|Ω| metodą klasyczną.
+  - Zastosuj P(A) = 1 − P(A′).
+  - 'Sprawdź: czy A i A′ rzeczywiście wyczerpują całe Ω i nie mają wspólnych wyników.'
+- name: Tabela wyników dla dwóch rzutów (dwie kostki, dwie monety, dwa losowania)
+  when_to_use: Gdy doświadczenie składa się z dwóch etapów o niewielkiej liczbie wyników i trzeba zliczyć
+    wyniki spełniające warunek na sumę, różnicę, iloczyn lub kolory.
+  steps:
+  - 'Narysuj tabelę: wiersze = wyniki pierwszego etapu, kolumny = wyniki drugiego etapu.'
+  - Wpisz do kratek badaną wielkość (np. sumę oczek) lub zaznacz kratki spełniające warunek.
+  - '|Ω| = liczba wszystkich kratek (przy dwóch kostkach 36); przy losowaniu bez zwracania wykreśl przekątną
+    — zostaje n(n−1) kratek.'
+  - Policz zaznaczone kratki — to |A|.
+  - Oblicz P(A) = |A|/|Ω|.
+- name: Zliczanie regułą mnożenia (bez wypisywania Ω)
+  when_to_use: 'Gdy liczba wyników jest zbyt duża, by je wypisać: kody, numery, wielokrotne rzuty, losowania
+    kolejnych osób.'
+  steps:
+  - Podziel tworzenie pojedynczego wyniku na etapy.
+  - 'Dla |Ω|: policz liczbę możliwości w każdym etapie i pomnóż.'
+  - 'Dla |A|: przejdź etapami, uwzględniając ograniczenia wynikające z warunku (zwykle zaczynaj od etapu
+    najbardziej ograniczonego).'
+  - Podstaw do P(A) = |A|/|Ω| i skróć.
+- name: Losowanie dwóch obiektów z urny — wybór modelu z kolejnością lub bez
+  when_to_use: 'Zadania typu: ''losujemy jednocześnie dwie kule / wybieramy dwuosobową delegację''.'
+  steps:
+  - 'Zdecyduj: model bez kolejności (|Ω| = n(n−1)/2) albo z kolejnością (|Ω| = n(n−1)); oba dają ten sam
+    wynik końcowy.'
+  - 'Policz |A| w tym samym modelu: bez kolejności — liczba par, z kolejnością — pamiętaj o obu ustawieniach
+    (np. biała-czarna i czarna-biała).'
+  - 'Przy ''jedna z każdego rodzaju'' użyj reguły mnożenia: (liczba kul I rodzaju)·(liczba kul II rodzaju),
+    a w modelu z kolejnością pomnóż jeszcze przez 2.'
+  - Oblicz P(A) = |A|/|Ω| i skróć ułamek.
+examples:
+- statement: 'Rzucamy jeden raz symetryczną sześcienną kostką do gry. Oblicz prawdopodobieństwo zdarzenia
+    A: ''wypadła liczba oczek parzysta'' oraz zdarzenia B: ''wypadła liczba oczek większa od 4''. Oblicz
+    też P(B′).'
+  worked_solution: |-
+    Ω = {1,2,3,4,5,6}, kostka symetryczna, więc model klasyczny: |Ω| = 6.
+    A = {2,4,6}, |A| = 3, zatem P(A) = 3/6 = 1/2.
+    B = {5,6}, |B| = 2, zatem P(B) = 2/6 = 1/3.
+    Zdarzenie przeciwne B′ to 'wypadła liczba oczek nie większa od 4', czyli B′ = {1,2,3,4}, |B′| = 4. Stąd P(B′) = 4/6 = 2/3, co zgadza się ze wzorem P(B′) = 1 − P(B) = 1 − 1/3 = 2/3.
+  difficulty: 1
+- statement: Rzucamy dwukrotnie symetryczną kostką. Oblicz prawdopodobieństwo, że suma wyrzuconych oczek
+    jest równa 8, oraz prawdopodobieństwo, że suma jest większa od 9.
+  worked_solution: |-
+    Wynik zapisujemy jako parę uporządkowaną (a,b), gdzie a — wynik pierwszego rzutu, b — drugiego. Wtedy wszystkie wyniki są jednakowo prawdopodobne i |Ω| = 6·6 = 36. (Uwaga: gdybyśmy przyjęli Ω = {2,3,...,12} — możliwe sumy — model NIE byłby klasyczny, bo suma 7 jest bardziej prawdopodobna niż 2.)
+    Zdarzenie A: a+b = 8. Sprzyjające pary: (2,6), (3,5), (4,4), (5,3), (6,2) — czyli |A| = 5. Zatem P(A) = 5/36.
+    Zdarzenie B: a+b > 9, czyli suma 10, 11 lub 12.
+    Suma 10: (4,6), (5,5), (6,4) — 3 pary. Suma 11: (5,6), (6,5) — 2 pary. Suma 12: (6,6) — 1 para.
+    |B| = 3+2+1 = 6, więc P(B) = 6/36 = 1/6.
+  difficulty: 2
+- statement: W urnie jest 5 kul białych i 3 czarne. Losujemy jednocześnie dwie kule. Oblicz prawdopodobieństwo,
+    że wylosowane kule są różnych kolorów, oraz że obie są białe.
+  worked_solution: |-
+    Losowanie jednoczesne — kolejność nieistotna, więc Ω to zbiór dwuelementowych podzbiorów zbioru 8 kul: |Ω| = (8·7)/2 = 28.
+    Zdarzenie A: kule różnych kolorów. Wybieramy jedną białą (5 sposobów) i jedną czarną (3 sposoby): |A| = 5·3 = 15. Zatem P(A) = 15/28.
+    Zdarzenie B: obie białe. |B| = (5·4)/2 = 10, więc P(B) = 10/28 = 5/14.
+    Kontrola modelem z kolejnością: |Ω| = 8·7 = 56, |A| = 5·3 + 3·5 = 30, P(A) = 30/56 = 15/28 — ten sam wynik, bo model policzono konsekwentnie w liczniku i mianowniku.
+  difficulty: 3
+- statement: 'Rzucamy trzy razy symetryczną monetą. Oblicz prawdopodobieństwo zdarzenia: ''wypadł co najmniej
+    jeden orzeł''.'
+  worked_solution: |-
+    Wynik to trójka (x₁,x₂,x₃), gdzie każde xᵢ ∈ {O, R}. Z reguły mnożenia |Ω| = 2·2·2 = 8.
+    Zdarzenie A: co najmniej jeden orzeł. Bezpośrednie zliczanie wymaga rozpatrzenia 1, 2 i 3 orłów — łatwiej użyć zdarzenia przeciwnego.
+    A′: nie wypadł ani jeden orzeł, czyli wypadły same reszki: A′ = {(R,R,R)}, |A′| = 1, P(A′) = 1/8.
+    Zatem P(A) = 1 − 1/8 = 7/8.
+    Sprawdzenie bezpośrednie: wyniki z dokładnie jednym orłem: 3, z dwoma: 3, z trzema: 1 — razem 7, więc P(A) = 7/8. ✓
+  difficulty: 3
+- statement: Ze zbioru liczb {10, 11, 12, …, 99} losujemy jedną liczbę. Oblicz prawdopodobieństwo, że
+    wylosowana liczba jest podzielna przez 4 lub przez 6.
+  worked_solution: |-
+    Ω = {10,11,…,99}, |Ω| = 99 − 10 + 1 = 90; każda liczba jest równie prawdopodobna.
+    A — podzielne przez 4: 12, 16, …, 96. To ciąg arytmetyczny o różnicy 4: liczba wyrazów = (96 − 12)/4 + 1 = 22. Czyli |A| = 22.
+    B — podzielne przez 6: 12, 18, …, 96: (96 − 12)/6 + 1 = 15, czyli |B| = 15.
+    A ∩ B — podzielne jednocześnie przez 4 i 6, czyli przez NWW(4,6) = 12: 12, 24, …, 96: (96 − 12)/12 + 1 = 8, czyli |A ∩ B| = 8.
+    Z zasady włączeń i wyłączeń: |A ∪ B| = 22 + 15 − 8 = 29.
+    P(A ∪ B) = 29/90 ≈ 0,322.
+    Uwaga: dodanie 22/90 + 15/90 = 37/90 byłoby błędem, bo zdarzenia nie wykluczają się — 8 liczb policzono by dwa razy.
+  difficulty: 4
+objectives:
+- statement: Wyjaśnić, czym są doświadczenie losowe, zdarzenie elementarne, zbiór Ω i zdarzenie losowe,
+    oraz podać warunki stosowalności modelu klasycznego.
+  bloom_level: Rozumienie
+- statement: Wyznaczyć zbiór Ω dla prostego doświadczenia (rzut kostką/monetą, losowanie kuli, wybór liczby)
+    i obliczyć |Ω| przez wypisanie, tabelę, drzewo lub regułę mnożenia.
+  bloom_level: Zastosowanie
+- statement: Zapisać zdarzenie opisane słownie jako zbiór zdarzeń elementarnych i zliczyć zdarzenia sprzyjające
+    zgodnie z przyjętym modelem.
+  bloom_level: Zastosowanie
+- statement: Obliczyć prawdopodobieństwo zdarzenia ze wzoru P(A) = |A|/|Ω| i przedstawić wynik jako ułamek
+    nieskracalny lub ułamek dziesiętny/procent.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć zdarzenie przeciwne do danego (w szczególności do zdarzeń typu 'co najmniej') i
+    wykorzystać wzór P(A′) = 1 − P(A) do skrócenia obliczeń.
+  bloom_level: Zastosowanie
+- statement: Rozstrzygnąć, czy dwa zdarzenia się wykluczają, i obliczyć prawdopodobieństwo sumy zdarzeń,
+    stosując w razie potrzeby zasadę włączeń i wyłączeń.
+  bloom_level: Analiza
+- statement: Rozróżnić losowanie ze zwracaniem i bez zwracania oraz modele z uwzględnieniem i bez uwzględnienia
+    kolejności, i dobrać model spójny dla licznika i mianownika.
+  bloom_level: Analiza
+- statement: Ocenić poprawność otrzymanego wyniku (warunek 0 ≤ P ≤ 1, zgodność z intuicją, kontrola alternatywnym
+    modelem) i wskazać źródło błędu w cudzym rozwiązaniu.
+  bloom_level: Ocena
+misconceptions:
+- name: Przyjmowanie Ω, w którym wyniki nie są jednakowo prawdopodobne
+  incorrect_reasoning: 'Przy dwóch kostkach: ''możliwe sumy to 2,3,…,12, czyli 11 wyników, więc P(suma
+    = 7) = 1/11''.'
+  correct_reasoning: Sumy nie są jednakowo prawdopodobne (suma 7 powstaje na 6 sposobów, suma 2 tylko
+    na 1), więc model klasyczny na zbiorze sum nie obowiązuje. Trzeba wziąć Ω = pary uporządkowane, |Ω|
+    = 36, i P(suma = 7) = 6/36 = 1/6.
+  severity: 5
+- name: Niespójne liczenie |A| i |Ω| (raz z kolejnością, raz bez)
+  incorrect_reasoning: 'Losujemy 2 kule z 5 białych i 3 czarnych: ''|Ω| = 8·7 = 56 (z kolejnością), a
+    różnych kolorów jest 5·3 = 15, więc P = 15/56''.'
+  correct_reasoning: 'Jeśli Ω liczymy z kolejnością, to sprzyjających jest 5·3 + 3·5 = 30 (biała-czarna
+    i czarna-biała), więc P = 30/56 = 15/28. Alternatywnie oba bez kolejności: 15/28. Model musi być ten
+    sam w liczniku i mianowniku.'
+  severity: 5
+- name: Mylenie losowania ze zwracaniem i bez zwracania
+  incorrect_reasoning: '''Losujemy kolejno dwie kule bez zwracania z 8 kul, więc |Ω| = 8·8 = 64''.'
+  correct_reasoning: Bez zwracania po pierwszym losowaniu zostaje 7 kul, więc |Ω| = 8·7 = 56. Przy losowaniu
+    ze zwracaniem byłoby 8² = 64. Zawsze sprawdzaj w treści, czy element wraca do puli.
+  severity: 4
+- name: Błędna negacja zdarzenia 'co najmniej'
+  incorrect_reasoning: '''Zdarzeniem przeciwnym do <co najmniej jeden orzeł> jest <co najwyżej jeden orzeł>''
+    albo ''<dokładnie jeden orzeł>''.'
+  correct_reasoning: 'Przeciwieństwem ''co najmniej jeden orzeł'' jest ''ani jednego orła'' (same reszki).
+    Ogólnie: negacją ''co najmniej k'' jest ''co najwyżej k−1''. A i A′ muszą być rozłączne i razem dawać
+    całe Ω.'
+  severity: 4
+- name: Dodawanie prawdopodobieństw zdarzeń, które się nie wykluczają
+  incorrect_reasoning: '''P(podzielna przez 4 lub przez 6) = P(przez 4) + P(przez 6)''.'
+  correct_reasoning: Wzór P(A∪B) = P(A) + P(B) obowiązuje tylko dla zdarzeń rozłącznych. Tutaj liczby
+    podzielne przez 12 należą do obu zbiorów, więc P(A∪B) = P(A) + P(B) − P(A∩B).
+  severity: 4
+- name: Podawanie stosunku sprzyjających do niesprzyjających (szans zamiast prawdopodobieństwa)
+  incorrect_reasoning: '''Na 6 wyników 2 są korzystne, 4 nie, więc P = 2/4 = 1/2''.'
+  correct_reasoning: 'Prawdopodobieństwo to |A|/|Ω|, czyli sprzyjające do WSZYSTKICH: P = 2/6 = 1/3. Stosunek
+    2:4 to szanse (odds), a nie prawdopodobieństwo.'
+  severity: 3
+- name: Wynik większy od 1 lub ujemny bez reakcji
+  incorrect_reasoning: Uczeń otrzymuje P(A) = 40/36 i zapisuje to jako odpowiedź.
+  correct_reasoning: Zawsze 0 ≤ P(A) ≤ 1. Wynik spoza tego przedziału oznacza błąd — najczęściej policzenie
+    tego samego wyniku dwa razy albo pomylenie |A| z |Ω|. Trzeba wrócić do zliczania.
+  severity: 3
+- name: Zapominanie o warunku symetrii ('każdy wynik ma 50%')
+  incorrect_reasoning: '''Albo trafię szóstkę, albo nie, więc prawdopodobieństwo wynosi 1/2''.'
+  correct_reasoning: 'Model klasyczny wymaga, by wszystkie zdarzenia elementarne były jednakowo prawdopodobne.
+    ''Szóstka'' i ''nie szóstka'' to zdarzenia o różnych liczebnościach: 1 i 5 wyników z 6, więc P = 1/6
+    i 5/6.'
+  severity: 4
+- name: Gubienie wyników przy wypisywaniu Ω
+  incorrect_reasoning: Przy trzech rzutach monetą uczeń wypisuje 6 wyników zamiast 8, bo nie prowadzi
+    zapisu systematycznie.
+  correct_reasoning: 'Stosuj drzewo, tabelę lub regułę mnożenia: 2·2·2 = 8 wyników, wypisywanych w ustalonym
+    porządku (OOO, OOR, ORO, ORR, ROO, ROR, RRO, RRR). Systematyczność chroni przed pominięciem wyników.'
+  severity: 3

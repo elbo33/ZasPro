@@ -1,0 +1,329 @@
+section: bryly-podobne
+name: Bryły podobne
+scope: 'Similar solids: the ratio of surface areas is the square, and the ratio of volumes the cube, of
+  the linear scale factor; problems that use this.'
+requirements:
+- X.6
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:37:57.563769'
+  approved_at: '2026-08-28T18:28:25.331858'
+  approved_by: reviewer
+concepts:
+- name: Bryły podobne
+  description: 'Dwie bryły są podobne, gdy mają ten sam kształt, a różnią się tylko wielkością: jedną
+    można otrzymać z drugiej przez jednokładne powiększenie lub pomniejszenie (ewentualnie połączone z
+    obrotem i przesunięciem). Wszystkie odpowiadające sobie odcinki mają wtedy ten sam stosunek długości,
+    a odpowiadające sobie kąty są równe.'
+  explanation: 'Myśl o tym jak o fotografii: model i oryginał mają identyczne proporcje, tylko ''powiększone''.
+    Jeśli jeden wymiar mnożymy przez k, to WSZYSTKIE wymiary liniowe (krawędzie, wysokości, promienie,
+    przekątne, tworzące, obwody podstaw) mnożymy przez to samo k.'
+  difficulty: 1
+- name: Skala podobieństwa k
+  description: 'Liczba dodatnia k równa stosunkowi długości dowolnej pary odpowiadających sobie odcinków
+    bryły większej (obrazu) i bryły mniejszej (oryginału): k = a''/a.'
+  explanation: k>1 oznacza powiększenie, 0<k<1 pomniejszenie, k=1 to bryły przystające. Zawsze warto od
+    razu ustalić, którą bryłę traktujemy jako 'pierwszą', bo skala odwrotnego podobieństwa to 1/k.
+  difficulty: 1
+- name: Wielkości liniowe bryły
+  description: 'Wielkości mierzone w jednostkach długości: krawędź, wysokość, promień, średnica, tworząca,
+    przekątna, obwód podstawy, długość okręgu.'
+  explanation: To one skalują się 'zwyczajnie', czyli mnożą przez k. Jeśli w zadaniu podano obwód podstawy
+    albo przekątną ściany, to też jest wielkość liniowa i można z niej wyznaczyć skalę.
+  difficulty: 1
+- name: Pole powierzchni a skala
+  description: 'Pole powierzchni całkowitej (i bocznej, i każdej pojedynczej ściany) bryły podobnej w
+    skali k jest k² razy większe: P'' = k²·P.'
+  explanation: Pole jest 'dwuwymiarowe' — powstaje z iloczynu dwóch długości, więc każdy z czynników mnoży
+    się przez k, co daje k². Ta sama zależność co dla figur płaskich podobnych.
+  difficulty: 2
+- name: Objętość a skala
+  description: 'Objętość bryły podobnej w skali k jest k³ razy większa: V'' = k³·V. To jest treść wymagania:
+    zależność między objętościami brył podobnych.'
+  explanation: Objętość jest 'trójwymiarowa' — powstaje z iloczynu trzech długości. Stąd sześcian skali.
+    Dlatego dwukrotne powiększenie wymiarów daje ośmiokrotnie większą objętość, a nie dwukrotnie.
+  difficulty: 2
+- name: Wyznaczanie skali z pól lub objętości
+  description: 'Ze stosunku pól: k = √(P''/P). Ze stosunku objętości: k = ∛(V''/V).'
+  explanation: 'To ''ruch w tył'': mając stosunek wielkości pochodnej, wracamy do skali liniowej pierwiastkiem
+    odpowiedniego stopnia. Bardzo częsty pierwszy krok zadania: dane są objętości, szuka się pól (lub
+    odwrotnie), a łącznikiem jest k.'
+  difficulty: 3
+- name: Bryły zawsze podobne
+  description: 'Pewne rodziny brył są podobne ''automatycznie'': dowolne dwie kule, dowolne dwa sześciany,
+    dowolne dwa czworościany foremne (i ogólnie dwa wielościany foremne tego samego rodzaju).'
+  explanation: W tych bryłach kształt wyznacza jedna liczba (promień, krawędź), więc proporcje są wymuszone.
+    Wystarczy więc znać stosunek promieni czy krawędzi, żeby mieć skalę.
+  difficulty: 2
+- name: Bryły podobne warunkowo
+  description: Dwa walce (lub dwa stożki, dwa graniastosłupy prawidłowe, dwa ostrosłupy prawidłowe) są
+    podobne tylko wtedy, gdy ich odpowiadające sobie wymiary są proporcjonalne, np. dla walców r₁/r₂ =
+    h₁/h₂, dla stożków r₁/r₂ = h₁/h₂ (równoważnie równe stosunki r do tworzącej).
+  explanation: 'Sam fakt, że obie bryły to walce, niczego nie gwarantuje: walec ''niski i szeroki'' nie
+    jest podobny do ''wysokiego i wąskiego''. Zawsze sprawdzamy proporcje, zanim użyjemy k² i k³.'
+  difficulty: 3
+- name: Przekrój równoległy do podstawy stożka lub ostrosłupa
+  description: Płaszczyzna równoległa do podstawy odcina od wierzchołka bryłę podobną do całej bryły.
+    Jeśli odcięta wysokość stanowi część k wysokości całkowitej, to skala podobieństwa wynosi k.
+  explanation: To najczęstsze źródło brył podobnych w zadaniach. Mały stożek/ostrosłup ma objętość k³V,
+    a pozostała część (stożek ścięty, ostrosłup ścięty) ma objętość (1 − k³)·V.
+  difficulty: 3
+- name: Masa brył podobnych z tego samego materiału
+  description: Jeśli dwie podobne bryły są wykonane z tego samego materiału (mają tę samą gęstość), to
+    stosunek ich mas równa się stosunkowi objętości, czyli k³.
+  explanation: m = gęstość · V, a gęstość się nie zmienia, więc masa skaluje się dokładnie tak jak objętość.
+    Stąd modele w skali 1:10 ważą 1000 razy mniej od oryginału.
+  difficulty: 3
+- name: Skala procentowa zmiany wymiarów
+  description: Zwiększenie każdego wymiaru liniowego o p% oznacza skalę k = 1 + p/100; wtedy pole rośnie
+    k² razy, a objętość k³ razy.
+  explanation: 'Uwaga: wzrost objętości w procentach to (k³ − 1)·100%, a nie 3p%. Np. p = 10% daje k =
+    1,1 i wzrost objętości o 33,1%.'
+  difficulty: 3
+- name: Skala na mapie / w modelu
+  description: Zapis skali 1:n oznacza, że model ma wymiary n razy mniejsze od oryginału, czyli k = 1/n
+    dla przejścia oryginał → model.
+  explanation: Wtedy pola powierzchni modelu są n² razy mniejsze, a objętości n³ razy mniejsze od oryginału.
+    Przy przejściu model → oryginał mnożymy przez n, n², n³.
+  difficulty: 2
+formulas:
+- name: Skala podobieństwa
+  latex_raw: k=\frac{a'}{a}=\frac{h'}{h}=\frac{r'}{r}
+  conditions: a, a' (h, h', r, r') to dowolne pary odpowiadających sobie odcinków brył podobnych; k>0
+  description: Wszystkie stosunki odpowiadających sobie wielkości liniowych są równe tej samej liczbie
+    k.
+- name: Stosunek pól powierzchni
+  latex_raw: \frac{P'}{P}=k^{2}\qquad\text{czyli}\qquad P'=k^{2}P
+  conditions: bryły podobne w skali k; P, P' to pola powierzchni całkowitych (lub obu bocznych, lub obu
+    podstaw)
+  description: Zachodzi też dla pól odpowiadających sobie ścian i przekrojów.
+- name: Stosunek objętości
+  latex_raw: \frac{V'}{V}=k^{3}\qquad\text{czyli}\qquad V'=k^{3}V
+  conditions: bryły podobne w skali k
+  description: Podstawowa zależność wymagana na maturze podstawowej.
+- name: Skala z pól
+  latex_raw: k=\sqrt{\frac{P'}{P}}
+  conditions: P, P' > 0, bryły podobne
+- name: Skala z objętości
+  latex_raw: k=\sqrt[3]{\frac{V'}{V}}
+  conditions: V, V' > 0, bryły podobne
+- name: Związek pól i objętości bez skali
+  latex_raw: \frac{V'}{V}=\left(\frac{P'}{P}\right)^{\frac{3}{2}}\qquad\text{oraz}\qquad \frac{P'}{P}=\left(\frac{V'}{V}\right)^{\frac{2}{3}}
+  conditions: bryły podobne, P,P',V,V'>0
+  description: Wygodne, gdy skala nie jest ładną liczbą; zwykle jednak prościej najpierw policzyć k.
+- name: Stosunek mas
+  latex_raw: \frac{m'}{m}=k^{3}
+  conditions: bryły podobne wykonane z tego samego jednorodnego materiału
+- name: Objętość bryły ściętej (stożek/ostrosłup)
+  latex_raw: V_{\text{ściętej}}=(1-k^{3})\,V_{\text{całej}}
+  conditions: przekrój płaszczyzną równoległą do podstawy, k = (wysokość odciętej bryłki)/(wysokość całej
+    bryły)
+- name: Procentowa zmiana objętości
+  latex_raw: \Delta V\%=(k^{3}-1)\cdot 100\%,\qquad \Delta P\%=(k^{2}-1)\cdot 100\%
+  conditions: każdy wymiar liniowy zmieniono w skali k = 1 + p/100
+- name: Warunek podobieństwa walców/stożków
+  latex_raw: \frac{r_{1}}{r_{2}}=\frac{h_{1}}{h_{2}}
+  conditions: dwa walce lub dwa stożki; równoważnie równe stosunki r:h w obu bryłach
+methods:
+- name: Obliczanie objętości (lub pola) bryły podobnej, gdy znana jest skala
+  when_to_use: Gdy w zadaniu wprost podano skalę podobieństwa albo stosunek odpowiadających sobie odcinków
+    i pytają o objętość lub pole drugiej bryły.
+  steps:
+  - Ustal, która bryła jest 'wyjściowa', a która 'obrazem', i zapisz skalę k = (odcinek obrazu)/(odcinek
+    wyjściowy).
+  - Sprawdź, czy k>1 (powiększenie) czy k<1 (pomniejszenie) — to kontrola sensowności wyniku.
+  - Do objętości zastosuj V' = k³·V, do pola P' = k²·P.
+  - Wykonaj obliczenia, pilnując jednostek (cm³, dm³, m³).
+  - 'Sprawdź: przy powiększeniu wynik musi być większy, przy pomniejszeniu mniejszy.'
+- name: Wyznaczanie skali z danych o polach lub objętościach
+  when_to_use: Gdy dane są dwie objętości (lub dwa pola) brył podobnych, a pytanie dotyczy wielkości liniowej
+    albo drugiej z wielkości pochodnych.
+  steps:
+  - 'Zapisz stosunek danych wielkości jako ułamek: V''/V lub P''/P.'
+  - 'Wyznacz skalę: k = ∛(V''/V) albo k = √(P''/P).'
+  - Uprość pierwiastek (często dane są tak dobrane, by V'/V było sześcianem, np. 8, 27, 64, 125, 8/27).
+  - 'Użyj k do policzenia szukanej wielkości: odcinek ×k, pole ×k², objętość ×k³.'
+  - Zinterpretuj wynik w kontekście zadania.
+- name: Sprawdzanie, czy bryły są podobne
+  when_to_use: Gdy zadanie podaje wymiary dwóch brył tego samego typu (walce, stożki, graniastosłupy,
+    ostrosłupy) i trzeba rozstrzygnąć, czy wolno użyć k², k³.
+  steps:
+  - Wypisz odpowiadające sobie wymiary liniowe obu brył (np. r i h, krawędź podstawy i wysokość).
+  - Oblicz stosunki odpowiadających sobie wymiarów.
+  - Jeśli wszystkie stosunki są równe — bryły są podobne, a wspólna wartość to skala k.
+  - Jeśli choć jeden stosunek się różni — bryły nie są podobne i wzorów k², k³ użyć nie wolno; objętości
+    liczymy wtedy osobno ze wzorów na objętość.
+  - 'Pamiętaj o wyjątkach: dwie kule i dwa sześciany są zawsze podobne.'
+- name: Zadania z przekrojem równoległym do podstawy (stożek/ostrosłup ścięty)
+  when_to_use: Gdy stożek lub ostrosłup przecięto płaszczyzną równoległą do podstawy i pyta się o objętość
+    odciętej części lub bryły ściętej, albo o stosunek tych objętości.
+  steps:
+  - 'Narysuj przekrój osiowy z zaznaczonymi wysokościami: całkowitą H i wysokością małej bryły h.'
+  - Zauważ, że mała bryła jest podobna do całej, i wyznacz skalę k = h/H (albo k = r_małe/R).
+  - 'Objętość małej bryły: V_mała = k³·V_cała.'
+  - 'Objętość bryły ściętej: V_ścięta = V_cała − V_mała = (1 − k³)·V_cała.'
+  - 'Jeśli pytają o stosunek, zapisz go jako k³ : (1 − k³) i uprość.'
+- name: Zadania procentowe i modelowe (masa, koszt materiału, ilość farby)
+  when_to_use: Gdy wymiary zmieniono o dany procent, gdy mowa o modelu w skali 1:n, albo gdy pyta się
+    o masę, ilość materiału na wypełnienie (objętość) lub na pomalowanie (pole).
+  steps:
+  - 'Zapisz skalę: dla zmiany o p% jest k = 1 + p/100 (lub 1 − p/100), dla skali 1:n jest k = 1/n albo
+    k = n, zależnie od kierunku.'
+  - Rozstrzygnij, czy pytanie dotyczy wielkości liniowej, pola (malowanie, oklejanie, powierzchnia) czy
+    objętości (masa, wypełnienie, ilość cieczy).
+  - Zastosuj odpowiednio k, k² lub k³.
+  - Przy pytaniu 'o ile procent' policz (k³ − 1)·100% lub (k² − 1)·100%, a nie samo k³·100%.
+  - Zaokrąglij zgodnie z treścią i dopisz jednostkę.
+examples:
+- statement: Dwa graniastosłupy są podobne w skali k = 3. Objętość mniejszego wynosi 5 cm³, a jego pole
+    powierzchni całkowitej 18 cm². Oblicz objętość i pole powierzchni całkowitej większego graniastosłupa.
+  worked_solution: |-
+    Skala podobieństwa k = 3 (przejście od mniejszego do większego).
+    Objętość: V' = k³·V = 3³·5 = 27·5 = 135 cm³.
+    Pole: P' = k²·P = 3²·18 = 9·18 = 162 cm².
+    Kontrola sensowności: k>1, więc obie wielkości wzrosły — zgadza się.
+    Odpowiedź: V' = 135 cm³, P' = 162 cm².
+  difficulty: 1
+- statement: 'Stosunek pól powierzchni całkowitych dwóch podobnych ostrosłupów wynosi 9 : 25. Objętość
+    mniejszego ostrosłupa to 54 cm³. Oblicz objętość większego.'
+  worked_solution: |-
+    Z zależności P'/P = k² mamy k² = 25/9, więc k = √(25/9) = 5/3 (bierzemy wartość dodatnią).
+    Objętości: V'/V = k³ = (5/3)³ = 125/27.
+    Zatem V' = 54 · 125/27 = 2 · 125 = 250 cm³.
+    Odpowiedź: objętość większego ostrosłupa wynosi 250 cm³.
+    (Sprawdzenie inną drogą: V'/V = (P'/P)^{3/2} = (25/9)^{3/2} = 125/27 — ten sam wynik.)
+  difficulty: 2
+- statement: Stożek o wysokości 12 cm i objętości 81 cm³ przecięto płaszczyzną równoległą do podstawy,
+    w odległości 4 cm od wierzchołka. Oblicz objętość powstałego stożka ściętego oraz stosunek objętości
+    małego stożka do stożka ściętego.
+  worked_solution: |-
+    Mały stożek odcięty przy wierzchołku jest podobny do całego stożka. Skala: k = 4/12 = 1/3.
+    Objętość małego stożka: V_mały = k³·V = (1/3)³·81 = 81/27 = 3 cm³.
+    Objętość stożka ściętego: V_ścięty = 81 − 3 = 78 cm³ (równoważnie (1 − 1/27)·81 = (26/27)·81 = 78).
+    Stosunek: V_mały : V_ścięty = 3 : 78 = 1 : 26.
+    Odpowiedź: 78 cm³ oraz stosunek 1 : 26.
+  difficulty: 3
+- statement: Każdą krawędź prostopadłościanu zwiększono o 20%. O ile procent wzrosło pole powierzchni
+    całkowitej, a o ile objętość tej bryły?
+  worked_solution: |-
+    Zwiększenie każdego wymiaru o 20% to podobieństwo w skali k = 1 + 0,20 = 1,2 (wszystkie wymiary mnożone przez tę samą liczbę, więc nowa bryła jest podobna do starej).
+    Pole: P' = k²·P = 1,44·P, zatem wzrost o (1,44 − 1)·100% = 44%.
+    Objętość: V' = k³·V = 1,728·V, zatem wzrost o (1,728 − 1)·100% = 72,8%.
+    Odpowiedź: pole wzrosło o 44%, objętość o 72,8%.
+    Uwaga: to nie jest 3·20% = 60% — procenty nie sumują się liniowo przy skalowaniu objętości.
+  difficulty: 3
+- statement: 'Wykonano model pomnika w skali 1 : 20. Model odlano z tego samego materiału co pomnik; model
+    waży 4 kg, a na pomalowanie modelu zużyto 50 ml farby (warstwa farby ma tę samą grubość w obu przypadkach).
+    Oblicz masę pomnika oraz ilość farby potrzebną do jego pomalowania.'
+  worked_solution: |-
+    Przejście model → pomnik to podobieństwo w skali k = 20.
+    Masa zależy od objętości (ten sam materiał, ta sama gęstość), więc m_pomnika = k³ · m_modelu = 20³ · 4 kg = 8000 · 4 = 32 000 kg = 32 tony.
+    Ilość farby przy stałej grubości warstwy jest proporcjonalna do pola powierzchni, więc rośnie k² razy: F = 20² · 50 ml = 400 · 50 = 20 000 ml = 20 litrów.
+    Odpowiedź: pomnik waży 32 tony, potrzeba 20 litrów farby.
+    Kluczowa obserwacja: masa 'idzie' z objętością (k³), a farba z polem (k²) — te dwa pytania mają różne wykładniki.
+  difficulty: 4
+- statement: 'Dwa podobne walce mają pola powierzchni całkowitych w stosunku 4 : 9, a suma ich objętości
+    wynosi 350 cm³. Oblicz objętość każdego z nich.'
+  worked_solution: |-
+    Z P₁/P₂ = 4/9 wynika k² = 4/9, czyli k = 2/3 (skala przejścia od walca mniejszego do większego to 3/2).
+    Stosunek objętości: V₁/V₂ = k³ = (2/3)³ = 8/27.
+    Oznaczmy V₁ = 8x, V₂ = 27x (x>0).
+    Suma: 8x + 27x = 350, czyli 35x = 350, więc x = 10.
+    Stąd V₁ = 80 cm³, V₂ = 270 cm³.
+    Sprawdzenie: 80 + 270 = 350 ✓ oraz 80/270 = 8/27 ✓.
+    Odpowiedź: 80 cm³ i 270 cm³.
+  difficulty: 4
+objectives:
+- statement: Wyjaśnić, kiedy dwie bryły są podobne, i wskazać skalę podobieństwa jako wspólny stosunek
+    odpowiadających sobie odcinków.
+  bloom_level: Rozumienie
+- statement: Rozstrzygnąć, czy dwie dane bryły (walce, stożki, graniastosłupy, ostrosłupy) są podobne,
+    porównując stosunki odpowiadających sobie wymiarów, oraz uzasadnić, że dowolne dwie kule i dwa sześciany
+    są podobne.
+  bloom_level: Analiza
+- statement: Zastosować zależność V' = k³V do obliczenia objętości bryły podobnej, gdy dana jest skala
+    podobieństwa lub stosunek odpowiadających sobie odcinków.
+  bloom_level: Zastosowanie
+- statement: Zastosować zależność P' = k²P do obliczenia pola powierzchni bryły podobnej i odróżnić sytuacje
+    wymagające k² od wymagających k³.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć skalę podobieństwa z danego stosunku pól (k = √(P'/P)) lub objętości (k = ∛(V'/V))
+    i użyć jej do obliczenia pozostałych wielkości.
+  bloom_level: Zastosowanie
+- statement: 'Rozwiązać zadanie o przekroju stożka lub ostrosłupa płaszczyzną równoległą do podstawy:
+    obliczyć objętość odciętej bryły i bryły ściętej oraz ich stosunek.'
+  bloom_level: Zastosowanie
+- statement: Obliczyć procentową zmianę pola powierzchni i objętości bryły przy procentowej zmianie wszystkich
+    jej wymiarów liniowych.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać zadania praktyczne dotyczące modeli, mas brył z tego samego materiału oraz zużycia
+    materiału powierzchniowego, dobierając właściwy wykładnik skali.
+  bloom_level: Analiza
+- statement: Ocenić poprawność cudzego rozumowania dotyczącego skalowania brył (np. 'objętość rośnie tyle
+    razy, ile wymiary') i wskazać źródło błędu.
+  bloom_level: Ocenianie
+- statement: Rozwiązać zadanie łączące zależności k², k³ z dodatkowym warunkiem (suma lub różnica objętości,
+    dana masa) prowadzącym do prostego równania.
+  bloom_level: Tworzenie
+misconceptions:
+- name: Objętość skalowana pierwszą potęgą skali
+  incorrect_reasoning: '''Bryła jest 2 razy większa, więc jej objętość jest 2 razy większa'' — uczeń mnoży
+    objętość przez k zamiast przez k³.'
+  correct_reasoning: Skala k dotyczy wyłącznie wielkości liniowych. Objętość powstaje z iloczynu trzech
+    wymiarów, więc mnoży się przez k·k·k = k³. Powiększenie wymiarów 2 razy daje objętość 8 razy większą.
+  severity: 5
+- name: 'Mylenie wykładników: k² do objętości, k³ do pola'
+  incorrect_reasoning: Uczeń mechanicznie wstawia 'kwadrat lub sześcian', nie pytając, czy szukana wielkość
+    jest polem czy objętością (np. liczy pole jako k³·P).
+  correct_reasoning: 'Wykładnik = wymiar wielkości: długość → k¹, pole (cm²) → k², objętość (cm³) → k³.
+    Podpowiedzią jest jednostka: potęga w jednostce to potęga przy k.'
+  severity: 4
+- name: Branie stosunku pól lub objętości wprost za skalę
+  incorrect_reasoning: '''Objętości mają się jak 8 : 27, więc skala wynosi 8/27'' i dalej mnożenie pól
+    przez (8/27)².'
+  correct_reasoning: 'Skalę trzeba odzyskać pierwiastkiem: k = ∛(8/27) = 2/3. Dopiero potem pola mają
+    się jak k² = 4/9.'
+  severity: 5
+- name: Zakładanie, że dowolne dwie bryły tego samego rodzaju są podobne
+  incorrect_reasoning: '''Obie bryły to walce, więc są podobne'' — i użycie k³ mimo że r₁/r₂ ≠ h₁/h₂.'
+  correct_reasoning: Walce, stożki, graniastosłupy i ostrosłupy są podobne tylko przy proporcjonalnych
+    wymiarach. Zawsze sprawdzamy stosunki r:h (lub a:H). Automatycznie podobne są jedynie kule, sześciany
+    i wielościany foremne tego samego rodzaju.
+  severity: 4
+- name: Procenty przy skalowaniu dodawane liniowo
+  incorrect_reasoning: '''Każdą krawędź zwiększono o 10%, więc objętość wzrosła o 30%.'''
+  correct_reasoning: k = 1,1, więc V' = 1,1³·V = 1,331·V, czyli wzrost o 33,1%. Analogicznie pole rośnie
+    o 21%, nie o 20%.
+  severity: 4
+- name: Mylenie 'ile razy większe' z 'o ile procent większe'
+  incorrect_reasoning: Po obliczeniu k³ = 1,728 uczeń odpowiada, że objętość wzrosła o 172,8%.
+  correct_reasoning: k³ = 1,728 znaczy 'jest 1,728 razy większa', czyli wzrosła o (1,728 − 1)·100% = 72,8%.
+    Zawsze odejmujemy 1 przed przeliczeniem na przyrost procentowy.
+  severity: 3
+- name: Zły kierunek skali
+  incorrect_reasoning: Uczeń mnoży objętość dużej bryły przez k³ > 1, chociaż szukał objętości bryły mniejszej
+    (albo odwrotnie), otrzymując wynik niezgodny z sytuacją.
+  correct_reasoning: 'Skala jest kierunkowa: przy przejściu duża → mała mnożymy przez (1/k)³, czyli dzielimy
+    przez k³. Po obliczeniu warto sprawdzić, czy wynik dla mniejszej bryły faktycznie jest mniejszy.'
+  severity: 3
+- name: Traktowanie stożka ściętego jako bryły podobnej do stożka wyjściowego
+  incorrect_reasoning: '''Odcięto połowę wysokości, więc stożek ścięty jest podobny do całego w skali
+    1/2 i ma objętość 1/8 całości.'''
+  correct_reasoning: 'Podobna do całego stożka jest tylko mała bryła przy wierzchołku (V = k³V). Stożek
+    ścięty nie jest podobny do stożka; jego objętość liczymy jako różnicę: (1 − k³)·V, czyli przy k =
+    1/2 aż 7/8 objętości.'
+  severity: 4
+- name: Ignorowanie jednostek przy skali
+  incorrect_reasoning: Porównywanie wymiarów podanych w różnych jednostkach (np. 40 cm i 2 m) i przyjęcie
+    k = 40/2 = 20.
+  correct_reasoning: 'Przed obliczeniem skali sprowadzamy wielkości do tych samych jednostek: 40 cm i
+    200 cm dają k = 40/200 = 1/5. Skala jest liczbą bezwymiarową.'
+  severity: 3
+- name: Zakładanie, że masa skaluje się jak pole
+  incorrect_reasoning: '''Model jest 10 razy mniejszy, więc waży 100 razy mniej.'''
+  correct_reasoning: 'Masa jednorodnej bryły jest proporcjonalna do objętości, więc skaluje się jak k³
+    — model waży 1000 razy mniej. Jak k² skalują się wielkości powierzchniowe: ilość farby, blachy, papieru
+    do oklejenia.'
+  severity: 4

@@ -1,0 +1,351 @@
+section: rownania-nierownosci-liniowe
+name: Równania liniowe sprzeczne i tożsamościowe; nierówności liniowe
+scope: Recognising a contradictory and an identity linear equation; solving linear inequalities in one
+  unknown and writing the solution set.
+requirements:
+- III.2
+- III.3
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:26:50.034629'
+  approved_at: '2026-08-28T18:28:03.266929'
+  approved_by: reviewer
+concepts:
+- name: Równanie liniowe z jedną niewiadomą
+  description: Równanie, które po uporządkowaniu (redukcji wyrazów podobnych) daje się zapisać w postaci
+    ax + b = 0, gdzie a i b są liczbami rzeczywistymi, a x jest niewiadomą.
+  explanation: 'Kluczowa jest postać PO uporządkowaniu: równanie 3(x−1) = 5x + 2 też jest liniowe, bo
+    po przekształceniu daje −2x − 5 = 0. Cała klasyfikacja opiera się na tym, jakie liczby stoją ostatecznie
+    przy x (współczynnik a) i jaka liczba zostaje po drugiej stronie (wyraz wolny b).'
+  difficulty: 1
+- name: Zbiór rozwiązań równania (nierówności)
+  description: Zbiór wszystkich liczb rzeczywistych, które po podstawieniu w miejsce niewiadomej dają
+    zdanie prawdziwe.
+  explanation: 'Rozwiązać równanie lub nierówność to znaczy podać ten zbiór — a nie tylko "przekształcić".
+    Dla równania liniowego zbiór ten ma jedną z trzech postaci: jednoelementowy {x₀}, pusty ∅, albo cały
+    zbiór R. Dla nierówności liniowej: przedział nieograniczony, ∅ albo R.'
+  difficulty: 2
+- name: Równania (nierówności) równoważne
+  description: Dwa równania (nierówności) są równoważne, gdy mają dokładnie ten sam zbiór rozwiązań.
+  explanation: 'Przekształcenia, które zachowują równoważność: dodanie/odjęcie tej samej liczby lub wyrażenia
+    do obu stron, pomnożenie/podzielenie obu stron przez tę samą liczbę różną od zera (w nierównościach
+    — z zamianą zwrotu, gdy liczba jest ujemna). Dzielenie przez wyrażenie zawierające x nie jest bezpieczne,
+    bo może ono być zerem.'
+  difficulty: 2
+- name: Równanie oznaczone
+  description: Równanie liniowe ax + b = 0, w którym a ≠ 0; ma dokładnie jedno rozwiązanie x = −b/a.
+  explanation: To "zwykły" przypadek. Niewiadoma nie znika przy porządkowaniu — zostaje przy niej niezerowa
+    liczba, przez którą można podzielić.
+  difficulty: 1
+- name: Równanie sprzeczne
+  description: 'Równanie, które nie ma żadnego rozwiązania; dla równania liniowego ax + b = 0 zachodzi
+    to, gdy a = 0 i b ≠ 0. Zbiór rozwiązań jest pusty: ∅.'
+  explanation: 'Przy porządkowaniu niewiadoma redukuje się z obu stron i zostaje fałszywa równość liczbowa,
+    np. 0 = 5 albo −3 = 7. Interpretacja: żadna liczba nie spełnia warunku, bo warunek w ogóle nie zależy
+    od x i jest fałszywy.'
+  difficulty: 2
+- name: Równanie tożsamościowe
+  description: Równanie spełnione przez każdą liczbę rzeczywistą; dla ax + b = 0 zachodzi to, gdy a =
+    0 i b = 0. Zbiór rozwiązań to R.
+  explanation: Przy porządkowaniu x znika i zostaje prawdziwa równość liczbowa, np. 0 = 0 lub 4 = 4. Oznacza
+    to, że obie strony wyjściowego równania to po prostu to samo wyrażenie zapisane inaczej (tożsamość
+    algebraiczna).
+  difficulty: 2
+- name: Nierówność liniowa z jedną niewiadomą
+  description: 'Nierówność dająca się zapisać w jednej z postaci: ax + b > 0, ax + b < 0, ax + b ≥ 0,
+    ax + b ≤ 0, gdzie a, b ∈ R.'
+  explanation: 'Rozwiązuje się ją tak samo jak równanie — porządkując i izolując x — z jedną dodatkową
+    zasadą: mnożenie lub dzielenie obu stron przez liczbę ujemną odwraca znak nierówności.'
+  difficulty: 2
+- name: Nierówności ostre i nieostre
+  description: Nierówność ostra używa znaku < lub >, nierówność nieostra znaku ≤ lub ≥ (dopuszcza równość).
+  explanation: Decyduje o tym, czy krańcowa liczba należy do zbioru rozwiązań, a więc czy w zapisie przedziałowym
+    stawiamy nawias okrągły, czy kwadratowy, i czy na osi kółko jest puste, czy zamalowane.
+  difficulty: 1
+- name: Nierówność sprzeczna i tożsamościowa
+  description: Nierówność sprzeczna nie ma rozwiązań (zbiór rozwiązań ∅), np. 0·x > 3; nierówność tożsamościowa
+    jest spełniona przez każdą liczbę rzeczywistą (zbiór rozwiązań R), np. 0·x ≤ 4.
+  explanation: 'Rozpoznajemy je tak jak przy równaniach: x redukuje się i zostaje sama nierówność liczbowa.
+    Jeśli jest prawdziwa (np. −2 < 5) — rozwiązaniem jest R; jeśli fałszywa (np. 7 ≤ 1) — zbiór pusty.
+    Uwaga na przypadek graniczny: 0·x ≥ 0 jest tożsamościowa, a 0·x > 0 sprzeczna.'
+  difficulty: 3
+- name: Przedział liczbowy nieograniczony
+  description: 'Zbiór postaci (−∞, c) = {x ∈ R : x < c}, (−∞, c⟩ = {x : x ≤ c}, (c, +∞) = {x : x > c},
+    ⟨c, +∞) = {x : x ≥ c}.'
+  explanation: To standardowa forma odpowiedzi przy nierówności liniowej. Przy symbolach −∞ i +∞ zawsze
+    stoi nawias okrągły, bo nieskończoność nie jest liczbą i nie może należeć do zbioru.
+  difficulty: 2
+- name: Interpretacja graficzna na osi liczbowej
+  description: 'Zbiór rozwiązań nierówności liniowej przedstawia się jako półprosta na osi liczbowej z
+    zaznaczonym krańcem: kółko puste dla nierówności ostrej, zamalowane dla nieostrej.'
+  explanation: 'Rysunek jest szybkim sprawdzianem sensu odpowiedzi: jeśli po podzieleniu przez liczbę
+    ujemną zapomnisz odwrócić znak, półprosta "pójdzie" w złą stronę i test podstawienia jednej liczby
+    to od razu wykryje.'
+  difficulty: 1
+- name: Nierówność podwójna
+  description: Zapis postaci c < ax + b < d (lub z nierównościami nieostrymi) oznaczający koniunkcję dwóch
+    nierówności; jej rozwiązaniem jest przedział ograniczony.
+  explanation: Można ją rozwiązywać "jednym ciągiem", wykonując te same operacje na wszystkich trzech
+    członach; mnożąc przez liczbę ujemną odwracamy oba znaki naraz.
+  difficulty: 3
+- name: Równanie/nierówność z parametrem
+  description: Równanie liniowe, w którym współczynnik przy x lub wyraz wolny zależy od dodatkowej litery
+    (parametru), np. (m − 3)x = m² − 9.
+  explanation: 'Na poziomie podstawowym wystarczy dyskusja przypadków: gdy współczynnik przy x jest różny
+    od zera — jedno rozwiązanie; gdy jest zerem — sprawdzamy wyraz wolny i orzekamy, czy równanie jest
+    sprzeczne, czy tożsamościowe.'
+  difficulty: 4
+formulas:
+- name: Postać ogólna równania liniowego
+  latex_raw: ax + b = 0,\qquad a,b\in\mathbb{R}
+  conditions: po uporządkowaniu i redukcji wyrazów podobnych
+  description: a to współczynnik przy niewiadomej, b to wyraz wolny.
+- name: Rozwiązanie równania oznaczonego
+  latex_raw: x = -\frac{b}{a}
+  conditions: a \neq 0
+  description: Dokładnie jedno rozwiązanie; zbiór rozwiązań {−b/a}.
+- name: Kryterium sprzeczności równania liniowego
+  latex_raw: a = 0 \ \wedge\ b \neq 0 \ \Longrightarrow\ \text{równanie sprzeczne},\quad \text{zb. rozw.}
+    = \varnothing
+  conditions: dla równania ax + b = 0
+  description: 'W praktyce: po redukcji zostaje fałszywa równość liczbowa.'
+- name: Kryterium tożsamości równania liniowego
+  latex_raw: a = 0 \ \wedge\ b = 0 \ \Longrightarrow\ \text{równanie tożsamościowe},\quad \text{zb. rozw.}
+    = \mathbb{R}
+  conditions: dla równania ax + b = 0
+  description: Po redukcji zostaje prawdziwa równość liczbowa, np. 0 = 0.
+- name: Własności nierówności — dodawanie
+  latex_raw: a < b \iff a + c < b + c
+  conditions: dla dowolnych a, b, c ∈ R
+  description: Przenoszenie wyrazów na drugą stronę nie zmienia zwrotu nierówności.
+- name: Własności nierówności — mnożenie przez liczbę dodatnią
+  latex_raw: a < b \ \wedge\ c > 0 \iff ac < bc
+  conditions: c > 0
+  description: Zwrot nierówności zostaje bez zmian.
+- name: Własności nierówności — mnożenie przez liczbę ujemną
+  latex_raw: a < b \ \wedge\ c < 0 \iff ac > bc
+  conditions: c < 0
+  description: 'Najważniejsza zasada tego działu: znak nierówności odwraca się.'
+- name: Rozwiązanie nierówności ax + b > 0
+  latex_raw: a>0:\ x > -\frac{b}{a};\qquad a<0:\ x < -\frac{b}{a}
+  conditions: a \neq 0
+  description: Analogicznie dla <, ≤, ≥ (przy ≤, ≥ kraniec należy do zbioru).
+- name: Nierówność ze współczynnikiem zerowym
+  latex_raw: 0\cdot x + b > 0 \iff b > 0
+  conditions: a = 0
+  description: Jeśli warunek na b jest prawdziwy — rozwiązaniem jest R, jeśli fałszywy — ∅.
+- name: Zapis przedziałowy zbiorów rozwiązań
+  latex_raw: '\{x: x< c\}=(-\infty,c),\quad \{x: x\le c\}=(-\infty,c\rangle,\quad \{x: x> c\}=(c,+\infty),\quad
+    \{x: x\ge c\}=\langle c,+\infty)'
+  conditions: c ∈ R
+  description: Przy ±∞ zawsze nawias okrągły.
+methods:
+- name: Klasyfikacja równania liniowego (oznaczone / sprzeczne / tożsamościowe)
+  when_to_use: Gdy trzeba rozstrzygnąć, ile rozwiązań ma dane równanie, zwłaszcza gdy niewiadoma występuje
+    po obu stronach.
+  steps:
+  - Usuń nawiasy (mnożenie, rozdzielność) i sprowadź ułamki do wspólnego mianownika, mnożąc obie strony
+    przez liczbę dodatnią.
+  - Przenieś wszystkie wyrazy z niewiadomą na lewą stronę, a liczby na prawą (lub odwrotnie), zmieniając
+    znaki przenoszonych wyrazów.
+  - Zredukuj wyrazy podobne i doprowadź do postaci ax = c (równoważnie ax + b = 0).
+  - 'Jeśli a ≠ 0 — równanie oznaczone: x = c/a; podaj rozwiązanie.'
+  - 'Jeśli a = 0 i c ≠ 0 — otrzymujesz fałszywą równość: równanie sprzeczne, zbiór rozwiązań ∅.'
+  - 'Jeśli a = 0 i c = 0 — otrzymujesz równość prawdziwą (0 = 0): równanie tożsamościowe, zbiór rozwiązań
+    R.'
+  - Napisz odpowiedź słowem ('równanie jest sprzeczne / tożsamościowe') i symbolem zbioru.
+- name: Rozwiązywanie nierówności liniowej
+  when_to_use: Dla każdej nierówności, która po uporządkowaniu ma postać ax + b > 0 (lub <, ≤, ≥).
+  steps:
+  - Usuń nawiasy i (jeśli są ułamki) pomnóż obie strony przez wspólny mianownik — dodatni, więc znak nierówności
+    zostaje.
+  - Zgrupuj wyrazy z x po jednej stronie, liczby po drugiej, zmieniając znaki przenoszonych składników.
+  - Zredukuj do postaci ax > c (lub z innym znakiem).
+  - Jeśli a > 0 — podziel obie strony przez a, znak nierówności bez zmian.
+  - Jeśli a < 0 — podziel przez a i ODWRÓĆ znak nierówności (albo wcześniej pomnóż stronami przez −1 z
+    odwróceniem znaku).
+  - 'Jeśli a = 0 — sprawdź, czy pozostała nierówność liczbowa jest prawdziwa: prawdziwa → R, fałszywa
+    → ∅.'
+  - Zapisz zbiór rozwiązań w postaci przedziału i/lub zaznacz go na osi liczbowej (kółko puste dla <,
+    >; zamalowane dla ≤, ≥).
+  - 'Sprawdź sensowność: podstaw jedną liczbę z otrzymanego przedziału do wyjściowej nierówności.'
+- name: Rozwiązywanie nierówności z ułamkami
+  when_to_use: Gdy w nierówności występują ułamki zwykłe lub dziesiętne o stałych mianownikach.
+  steps:
+  - Wyznacz najmniejszą wspólną wielokrotność mianowników (liczbę dodatnią).
+  - Pomnóż każdy składnik po obu stronach przez tę liczbę — pamiętaj o nawiasach wokół liczników wielowyrazowych.
+  - Ułamki dziesiętne można wcześniej zamienić na zwykłe lub pomnożyć przez 10, 100 itd.
+  - Dalej postępuj jak przy zwykłej nierówności liniowej.
+  - Zapisz odpowiedź jako przedział.
+- name: Rozwiązywanie nierówności podwójnej
+  when_to_use: Gdy wyrażenie liniowe jest ograniczone z dwóch stron, np. −1 ≤ 2x + 3 < 7.
+  steps:
+  - Wykonuj tę samą operację na wszystkich trzech członach jednocześnie (dodawanie/odejmowanie liczby).
+  - Podziel wszystkie trzy człony przez współczynnik przy x; jeśli jest ujemny, odwróć oba znaki nierówności
+    (i ewentualnie zapisz przedział od mniejszej liczby do większej).
+  - Odczytaj przedział ograniczony, dobierając nawiasy zgodnie z ostrością znaków.
+  - 'Alternatywnie: rozwiąż osobno obie nierówności i weź część wspólną przedziałów.'
+- name: Wyznaczanie rozwiązań całkowitych/naturalnych nierówności
+  when_to_use: 'Gdy pytanie brzmi: ile jest liczb całkowitych spełniających nierówność, albo jaka jest
+    największa/najmniejsza taka liczba.'
+  steps:
+  - Rozwiąż nierówność i zapisz zbiór rozwiązań jako przedział.
+  - Zaznacz przedział na osi liczbowej.
+  - Sprawdź, czy kraniec przedziału jest liczbą całkowitą i czy do przedziału należy (nawias kwadratowy)
+    — to najczęstsze źródło błędu.
+  - Wypisz szukane liczby całkowite mieszczące się w przedziale i policz je lub wskaż największą/najmniejszą.
+  - Zweryfikuj wynik podstawieniem do wyjściowej nierówności.
+- name: Dyskusja równania liniowego z parametrem
+  when_to_use: Gdy trzeba wyznaczyć wartości parametru, dla których równanie jest sprzeczne, tożsamościowe
+    lub ma dokładnie jedno rozwiązanie.
+  steps:
+  - Uporządkuj równanie do postaci A(m)·x = B(m), grupując wszystkie wyrazy z x po lewej stronie.
+  - Rozwiąż równanie A(m) = 0 — to wartości parametru wymagające osobnego rozpatrzenia.
+  - 'Dla A(m) ≠ 0: równanie ma dokładnie jedno rozwiązanie x = B(m)/A(m).'
+  - 'Dla każdej wartości m z kroku 2 podstaw ją do B(m): jeśli B(m) ≠ 0 — równanie sprzeczne, jeśli B(m)
+    = 0 — tożsamościowe.'
+  - Zbierz odpowiedź w postaci pełnej dyskusji przypadków.
+examples:
+- statement: Rozwiąż równanie 4(x − 3) + 2 = 4x − 10 i zinterpretuj wynik.
+  worked_solution: |-
+    Usuwamy nawias po lewej stronie: 4x − 12 + 2 = 4x − 10, czyli 4x − 10 = 4x − 10.
+    Przenosimy wyrazy z niewiadomą na lewo, liczby na prawo: 4x − 4x = −10 + 10, czyli 0·x = 0.
+    Współczynnik przy x jest równy 0 i wyraz wolny też jest równy 0 — otrzymaliśmy równość prawdziwą 0 = 0, która nie zależy od x.
+    Odpowiedź: równanie jest tożsamościowe, spełnia je każda liczba rzeczywista; zbiór rozwiązań to R.
+    Sprawdzenie: dla x = 0 mamy L = 4(−3) + 2 = −10, P = −10 ✓; dla x = 5: L = 4·2 + 2 = 10, P = 20 − 10 = 10 ✓.
+  difficulty: 1
+- statement: Zbadaj, czy równanie 3(2x + 1) − 5 = 6x + 4 ma rozwiązania.
+  worked_solution: |-
+    Lewa strona: 6x + 3 − 5 = 6x − 2. Równanie: 6x − 2 = 6x + 4.
+    Przenosimy: 6x − 6x = 4 + 2, czyli 0·x = 6.
+    Współczynnik przy x jest zerem, a wyraz po prawej stronie jest różny od zera — otrzymaliśmy fałszywą równość 0 = 6.
+    Odpowiedź: równanie jest sprzeczne, nie ma rozwiązań; zbiór rozwiązań to ∅.
+    Uwaga interpretacyjna: wyrażenia 6x − 2 i 6x + 4 różnią się o stałą 6, więc nigdy nie są równe — dla żadnej liczby x.
+  difficulty: 2
+- statement: Rozwiąż nierówność 7 − 3x ≥ 19 i zapisz zbiór rozwiązań w postaci przedziału oraz zaznacz
+    go na osi liczbowej.
+  worked_solution: |-
+    Przenosimy 7 na prawą stronę: −3x ≥ 19 − 7, czyli −3x ≥ 12.
+    Dzielimy obie strony przez −3 — liczbę ujemną — więc ODWRACAMY znak nierówności: x ≤ 12 : (−3) = −4.
+    Zatem x ≤ −4.
+    Zbiór rozwiązań: (−∞, −4⟩. Na osi liczbowej: półprosta w lewo od punktu −4 z kółkiem zamalowanym w −4 (nierówność nieostra).
+    Sprawdzenie: x = −5 daje 7 − 3·(−5) = 22 ≥ 19 ✓; x = 0 daje 7 ≥ 19 — fałsz, więc 0 słusznie nie należy do zbioru rozwiązań.
+  difficulty: 2
+- statement: Rozwiąż nierówność (x − 1)/2 − (2x + 3)/3 < 1 i podaj największą liczbę całkowitą, która
+    jej nie spełnia... a następnie największą liczbę całkowitą spełniającą nierówność (2 − x)/4 ≥ 1.
+  worked_solution: |-
+    Część I. Wspólny mianownik 2 i 3 to 6. Mnożymy obie strony przez 6 (liczba dodatnia — znak bez zmian):
+    6·(x − 1)/2 − 6·(2x + 3)/3 < 6·1
+    3(x − 1) − 2(2x + 3) < 6
+    3x − 3 − 4x − 6 < 6
+    −x − 9 < 6
+    −x < 15
+    Dzielimy przez −1 (liczba ujemna) i odwracamy znak: x > −15.
+    Zbiór rozwiązań: (−15, +∞).
+    Część II. (2 − x)/4 ≥ 1 | ·4 (dodatnie): 2 − x ≥ 4, stąd −x ≥ 2, dzielimy przez −1 z odwróceniem znaku: x ≤ −2.
+    Zbiór rozwiązań: (−∞, −2⟩. Największa liczba całkowita spełniająca tę nierówność to −2 (kraniec należy do przedziału, bo nierówność jest nieostra).
+    Sprawdzenie: dla x = −2 mamy (2 + 2)/4 = 1 ≥ 1 ✓; dla x = −1: (2 + 1)/4 = 0,75 < 1 ✗.
+  difficulty: 3
+- statement: 'Dla jakich wartości parametru m równanie (m − 2)x = m² − 4 jest: a) oznaczone, b) sprzeczne,
+    c) tożsamościowe?'
+  worked_solution: |-
+    Równanie ma już postać A·x = B, gdzie A = m − 2, B = m² − 4 = (m − 2)(m + 2).
+    a) A ≠ 0 ⟺ m ≠ 2. Wtedy x = (m − 2)(m + 2)/(m − 2) = m + 2 — dokładnie jedno rozwiązanie, równanie jest oznaczone.
+    b) i c) Pozostaje przypadek A = 0, czyli m = 2. Podstawiamy: B = 2² − 4 = 0, więc równanie przyjmuje postać 0·x = 0 — jest tożsamościowe, spełnia je każda liczba rzeczywista.
+    Odpowiedź: dla m ≠ 2 równanie jest oznaczone (x = m + 2); dla m = 2 jest tożsamościowe; nie istnieje takie m, dla którego równanie byłoby sprzeczne.
+    Komentarz: gdyby prawa strona brzmiała m² − 9, to dla m = 2 mielibyśmy 0·x = −5 i równanie byłoby sprzeczne — to pokazuje, że o wszystkim decyduje wartość wyrazu wolnego w przypadku zerowego współczynnika przy x.
+  difficulty: 4
+objectives:
+- statement: Definiować równanie liniowe w postaci ax + b = 0 oraz rozpoznawać, kiedy jest ono oznaczone,
+    sprzeczne i tożsamościowe.
+  bloom_level: Rozumienie
+- statement: Doprowadzać równanie liniowe do postaci ax = c przez usuwanie nawiasów, mnożenie przez wspólny
+    mianownik i redukcję wyrazów podobnych.
+  bloom_level: Zastosowanie
+- statement: Interpretować wynik postaci 0·x = 0 oraz 0·x = c (c ≠ 0) i formułować poprawną odpowiedź
+    (zbiór rozwiązań R lub ∅).
+  bloom_level: Analiza
+- statement: Stosować własności nierówności (dodawanie stronami, mnożenie przez liczbę dodatnią i ujemną)
+    jako przekształcenia równoważne.
+  bloom_level: Zastosowanie
+- statement: Rozwiązywać nierówności liniowe z jedną niewiadomą, w tym z nawiasami i ułamkami, i zapisywać
+    zbiór rozwiązań w postaci przedziału.
+  bloom_level: Zastosowanie
+- statement: Przedstawiać zbiór rozwiązań nierówności na osi liczbowej z poprawnym oznaczeniem krańca
+    oraz przechodzić między zapisem nierównościowym, przedziałowym i graficznym.
+  bloom_level: Zastosowanie
+- statement: Rozpoznawać nierówności sprzeczne i tożsamościowe oraz uzasadniać, dlaczego ich zbiorem rozwiązań
+    jest ∅ albo R.
+  bloom_level: Analiza
+- statement: Wyznaczać rozwiązania całkowite (największe, najmniejsze, ich liczbę) nierówności liniowej,
+    uwzględniając ostrość znaku.
+  bloom_level: Analiza
+- statement: Rozwiązywać nierówności podwójne i zapisywać wynik jako przedział ograniczony.
+  bloom_level: Zastosowanie
+- statement: Przeprowadzać prostą dyskusję równania liniowego z parametrem, wskazując wartości parametru
+    dające równanie sprzeczne lub tożsamościowe.
+  bloom_level: Analiza
+- statement: Weryfikować poprawność otrzymanego zbioru rozwiązań przez podstawienie liczby próbnej i oceniać
+    sensowność odpowiedzi.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Brak odwrócenia znaku przy dzieleniu przez liczbę ujemną
+  incorrect_reasoning: −2x > 6, więc x > −3.
+  correct_reasoning: 'Mnożenie lub dzielenie obu stron nierówności przez liczbę ujemną odwraca zwrot nierówności:
+    −2x > 6 ⟹ x < −3. Szybki test: x = −4 daje −2·(−4) = 8 > 6 ✓, a x = 0 daje 0 > 6 ✗ — więc rozwiązaniem
+    są liczby mniejsze od −3.'
+  severity: 5
+- name: Utożsamianie 0·x = 0 z x = 0
+  incorrect_reasoning: Po redukcji wyszło 0·x = 0, więc x = 0 — jedno rozwiązanie.
+  correct_reasoning: Równość 0·x = 0 jest prawdziwa dla KAŻDEJ liczby x, bo zero pomnożone przez cokolwiek
+    daje zero. Równanie jest tożsamościowe, a zbiorem rozwiązań jest R, nie {0}.
+  severity: 4
+- name: Traktowanie równania sprzecznego jako mającego rozwiązanie x = 0
+  incorrect_reasoning: 'Wyszło 0·x = 5, więc x = 5 : 0 = 0 (albo: x = 5).'
+  correct_reasoning: Przez zero nie wolno dzielić. Skoro 0·x = 0 dla każdego x, to równość 0·x = 5 jest
+    fałszywa dla każdego x — równanie jest sprzeczne, zbiór rozwiązań to ∅.
+  severity: 5
+- name: Mylenie równania sprzecznego z tożsamościowym
+  incorrect_reasoning: Skoro niewiadoma się skróciła, to każda liczba pasuje — równanie jest tożsamościowe.
+  correct_reasoning: 'Zniknięcie x to dopiero połowa informacji. Trzeba spojrzeć na pozostałą równość
+    liczbową: jeśli jest prawdziwa (0 = 0) — tożsamościowe (R); jeśli fałszywa (0 = 5) — sprzeczne (∅).'
+  severity: 4
+- name: Zapisywanie odpowiedzi ∅ jako 'x = ∅' lub 'x = 0'
+  incorrect_reasoning: 'Odpowiedź: x = ∅ / równanie ma rozwiązanie puste x = 0.'
+  correct_reasoning: 'Poprawny zapis to: ''równanie jest sprzeczne, zbiór rozwiązań: ∅'' lub ''równanie
+    nie ma rozwiązań''. Symbol ∅ oznacza zbiór, a nie wartość niewiadomej.'
+  severity: 2
+- name: Nawias kwadratowy przy nieskończoności
+  incorrect_reasoning: x ≥ 3, więc zbiór rozwiązań to ⟨3, +∞⟩.
+  correct_reasoning: 'Nieskończoność nie jest liczbą i nie należy do zbioru, dlatego zawsze piszemy nawias
+    okrągły: ⟨3, +∞). Nawias kwadratowy stawiamy tylko przy skończonym krańcu, gdy nierówność jest nieostra.'
+  severity: 3
+- name: Zły nawias przy krańcu skończonym
+  incorrect_reasoning: x < 5 zapisuję jako (−∞, 5⟩, bo 5 jest granicą.
+  correct_reasoning: 'Nierówność ostra (<, >) wyklucza kraniec: (−∞, 5). Nawias kwadratowy odpowiada wyłącznie
+    znakom ≤ i ≥. Ma to konsekwencje przy szukaniu największej liczby całkowitej w zbiorze.'
+  severity: 3
+- name: Mnożenie przez wspólny mianownik bez nawiasów
+  incorrect_reasoning: (2x + 3)/3 po pomnożeniu przez 6 daje 2·2x + 3 = 4x + 3.
+  correct_reasoning: 'Licznik wielowyrazowy trzeba wziąć w nawias: 6·(2x + 3)/3 = 2(2x + 3) = 4x + 6.
+    Pominięcie nawiasu (zwłaszcza przy minusie przed ułamkiem) zmienia znaki i psuje całe zadanie.'
+  severity: 4
+- name: Dzielenie obu stron przez wyrażenie z niewiadomą
+  incorrect_reasoning: Z x·(x + 1) > 3x skracam obie strony przez x i otrzymuję x + 1 > 3.
+  correct_reasoning: Wyrażenie z niewiadomą może być zerem lub liczbą ujemną, więc takie dzielenie nie
+    jest przekształceniem równoważnym (a przy nierówności dodatkowo może wymagać odwrócenia znaku). Wolno
+    tylko przenosić wyrazy i dzielić przez konkretną liczbę różną od zera.
+  severity: 4
+- name: Zamiana ról stron nierówności bez zamiany znaku
+  incorrect_reasoning: Z 12 < 3x wynika 12 < x po podzieleniu, albo x < 4 po 'przepisaniu na drugą stronę'.
+  correct_reasoning: 'Dzielimy obie strony przez 3: 4 < x, czyli x > 4. Zapisując nierówność ''od drugiej
+    strony'', trzeba odwrócić także znak: 4 < x to to samo co x > 4.'
+  severity: 3
+- name: Podawanie tylko liczb całkowitych jako rozwiązania nierówności
+  incorrect_reasoning: x > 2, więc rozwiązania to 3, 4, 5, ...
+  correct_reasoning: 'Jeśli nie zaznaczono inaczej, niewiadoma przebiega zbiór liczb rzeczywistych: rozwiązaniem
+    jest cały przedział (2, +∞), zawierający także np. 2,5 czy √5. Liczby całkowite wypisujemy tylko wtedy,
+    gdy zadanie wprost o nie pyta.'
+  severity: 3

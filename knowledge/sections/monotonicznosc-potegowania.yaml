@@ -1,0 +1,296 @@
+section: monotonicznosc-potegowania
+name: Monotoniczność potęgowania
+scope: 'How a^x orders values of x: the direction is kept for base > 1 and reversed for base in (0, 1);
+  comparing and estimating powers.'
+requirements:
+- I.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:02:35.134085'
+  approved_at: '2026-08-28T18:28:01.472646'
+  approved_by: reviewer
+concepts:
+- name: Potęga o podstawie dodatniej
+  description: Dla a > 0 i dowolnego wykładnika rzeczywistego x określona jest liczba a^x, przy czym zawsze
+    a^x > 0.
+  explanation: 'Podstawę zawsze zakładamy dodatnią (i zwykle a ≠ 1), bo tylko wtedy potęgowanie jest określone
+    dla wszystkich wykładników rzeczywistych i zachowuje się ''porządnie''. Kluczowy wniosek: potęga liczby
+    dodatniej NIGDY nie jest ujemna ani zerowa — nawet gdy wykładnik jest ujemny lub ułamkowy.'
+  difficulty: 1
+- name: Monotoniczność potęgowania względem wykładnika
+  description: Przy ustalonej podstawie a > 0, a ≠ 1, porównanie potęg a^{x_1} i a^{x_2} zależy tylko
+    od porównania wykładników x_1 i x_2 oraz od tego, czy a > 1, czy 0 < a < 1.
+  explanation: 'To jest sedno tematu: podstawa decyduje o ''kierunku''. Dla a > 1 potęgowanie zachowuje
+    porządek (większy wykładnik → większa potęga), dla 0 < a < 1 odwraca go (większy wykładnik → mniejsza
+    potęga). Warto to zapamiętać obrazowo: przy a > 1 mnożymy przez coś większego od 1, więc rośniemy;
+    przy 0 < a < 1 mnożymy przez ułamek, więc maleje.'
+  difficulty: 2
+- name: Podstawa większa od 1 — funkcja rosnąca
+  description: Jeśli a > 1, to dla dowolnych liczb rzeczywistych x_1 < x_2 zachodzi a^{x_1} < a^{x_2}.
+  explanation: 'Przykład wzorcowy: 2^{-3} < 2^{0} < 2^{1/2} < 2^{5}. Kolejność liczb w wykładniku przenosi
+    się bez zmian na kolejność potęg.'
+  difficulty: 1
+- name: Podstawa z przedziału (0, 1) — funkcja malejąca
+  description: Jeśli 0 < a < 1, to dla dowolnych liczb rzeczywistych x_1 < x_2 zachodzi a^{x_1} > a^{x_2}.
+  explanation: 'Przykład wzorcowy: (1/2)^{-3} = 8 > (1/2)^0 = 1 > (1/2)^{3} = 1/8. Im większy wykładnik,
+    tym mniejsza potęga. Przy przechodzeniu od nierówności wykładników do nierówności potęg (i odwrotnie)
+    trzeba ODWRÓCIĆ znak.'
+  difficulty: 2
+- name: Przypadek a = 1
+  description: Dla a = 1 mamy 1^x = 1 dla każdego x, więc potęgowanie nie jest ani rosnące, ani malejące.
+  explanation: Dlatego z równości 1^{x_1} = 1^{x_2} nic nie wynika o wykładnikach. Podstawę 1 zawsze wyklucza
+    się przy stosowaniu monotoniczności.
+  difficulty: 2
+- name: Porównywanie potęgi z jedynką
+  description: 'Dla a > 1: a^x > 1 wtedy i tylko wtedy, gdy x > 0. Dla 0 < a < 1: a^x > 1 wtedy i tylko
+    wtedy, gdy x < 0.'
+  explanation: To szczególny przypadek monotoniczności z punktem odniesienia a^0 = 1. Bardzo szybki test
+    'czy liczba jest większa, czy mniejsza od 1' — np. 0.7^{-5} > 1, bo podstawa jest z (0,1), a wykładnik
+    ujemny.
+  difficulty: 2
+- name: Sprowadzanie do wspólnej podstawy
+  description: Technika zapisania porównywanych potęg w postaci a^{p} i a^{q} z tą samą podstawą a, po
+    czym stosuje się monotoniczność.
+  explanation: Działa, gdy podstawy są potęgami tej samej liczby (np. 4, 8, 32 to potęgi 2; 1/3, 9, 27
+    to potęgi 3). Używa się wzoru (a^m)^n = a^{mn}. To najczęstsza droga do porównania 'brzydkich' potęg.
+  difficulty: 3
+- name: Sprowadzanie do wspólnego wykładnika
+  description: Technika zapisania porównywanych liczb jako b_1^{k} i b_2^{k} z tym samym wykładnikiem
+    k, po czym porównuje się podstawy.
+  explanation: Przydatna, gdy podstaw nie da się uwspólnić, ale wykładniki mają wspólny dzielnik, np.
+    2^{100} = (2^5)^{20} = 32^{20} oraz 3^{60} = (3^3)^{20} = 27^{20}.
+  difficulty: 3
+- name: Monotoniczność względem podstawy
+  description: 'Przy ustalonym wykładniku: jeśli 0 < a < b oraz x > 0, to a^x < b^x; jeśli 0 < a < b oraz
+    x < 0, to a^x > b^x.'
+  explanation: To 'druga' monotoniczność — porównujemy nie wykładniki, lecz podstawy. Np. 2^{3} < 3^{3},
+    ale 2^{-3} > 3^{-3}. Dla wykładnika ujemnego kierunek się odwraca, bo a^{-x} = 1/a^{x}, a odwrotność
+    odwraca porządek liczb dodatnich.
+  difficulty: 3
+- name: Szacowanie potęgi
+  description: Wskazanie takich liczb (zwykle kolejnych całkowitych potęg tej samej podstawy), między
+    którymi leży dana potęga.
+  explanation: 'Korzystamy z monotoniczności: skoro 3 < 3.4 < 4 i podstawa 2 > 1, to 2^3 < 2^{3.4} < 2^4,
+    czyli 8 < 2^{3.4} < 16. Tak samo szacujemy potęgi o wykładnikach niewymiernych, np. 2^{√2}, bo 1 <
+    √2 < 2.'
+  difficulty: 3
+- name: Prosta nierówność wykładnicza
+  description: 'Nierówność postaci a^{f(x)} > a^{g(x)} (lub z ≤, <, ≥), którą rozwiązuje się, zdejmując
+    potęgowanie: dla a > 1 zachowujemy znak, dla 0 < a < 1 odwracamy znak.'
+  explanation: Najpierw obie strony sprowadzamy do tej samej podstawy, potem porównujemy wykładniki. Jedyne
+    miejsce, gdzie łatwo o błąd, to zapomnienie o odwróceniu znaku przy podstawie z (0,1).
+  difficulty: 3
+- name: Różnowartościowość potęgowania
+  description: 'Dla a > 0, a ≠ 1: a^{x_1} = a^{x_2} wtedy i tylko wtedy, gdy x_1 = x_2.'
+  explanation: Wynika wprost z monotoniczności (funkcja ściśle monotoniczna nie przyjmuje dwa razy tej
+    samej wartości). Dzięki temu równania wykładnicze rozwiązuje się przez porównanie wykładników.
+  difficulty: 2
+formulas:
+- name: Monotoniczność dla podstawy a > 1
+  latex_raw: a>1 \;\Longrightarrow\; \big(x_1<x_2 \iff a^{x_1}<a^{x_2}\big)
+  conditions: a > 1, x_1, x_2 ∈ ℝ
+  description: Kierunek nierówności zachowany w obie strony.
+- name: Monotoniczność dla podstawy 0 < a < 1
+  latex_raw: 0<a<1 \;\Longrightarrow\; \big(x_1<x_2 \iff a^{x_1}>a^{x_2}\big)
+  conditions: 0 < a < 1, x_1, x_2 ∈ ℝ
+  description: Kierunek nierówności odwrócony w obie strony.
+- name: Dodatniość potęgi
+  latex_raw: a^x>0
+  conditions: a > 0, x ∈ ℝ
+- name: Porównanie z jedynką
+  latex_raw: a>1:\; a^x>1 \iff x>0; \qquad 0<a<1:\; a^x>1 \iff x<0
+  conditions: a > 0, a ≠ 1
+  description: Punktem odniesienia jest a^0 = 1.
+- name: Różnowartościowość
+  latex_raw: a^{x_1}=a^{x_2} \iff x_1=x_2
+  conditions: a > 0, a ≠ 1
+- name: Monotoniczność względem podstawy (wykładnik dodatni)
+  latex_raw: 0<a<b,\; x>0 \;\Longrightarrow\; a^x<b^x
+  conditions: a, b > 0, x > 0
+- name: Monotoniczność względem podstawy (wykładnik ujemny)
+  latex_raw: 0<a<b,\; x<0 \;\Longrightarrow\; a^x>b^x
+  conditions: a, b > 0, x < 0
+  description: Bo a^x = 1/a^{|x|}, a branie odwrotności odwraca porządek liczb dodatnich.
+- name: Zamiana podstawy na odwrotną
+  latex_raw: \left(\tfrac{1}{a}\right)^{x}=a^{-x}
+  conditions: a > 0
+  description: Pozwala zamienić podstawę z (0,1) na podstawę większą od 1 (kosztem zmiany znaku wykładnika).
+- name: Wzory potęgowe używane do uwspólniania
+  latex_raw: (a^m)^n=a^{mn},\quad a^m\cdot a^n=a^{m+n},\quad \frac{a^m}{a^n}=a^{m-n},\quad a^m b^m=(ab)^m
+  conditions: a, b > 0, m, n ∈ ℝ
+- name: Potęga o wykładniku wymiernym
+  latex_raw: a^{\frac{m}{n}}=\sqrt[n]{a^{m}}
+  conditions: a > 0, m ∈ ℤ, n ∈ ℕ, n ≥ 2
+  description: Dzięki temu pierwiastki też porównujemy metodą monotoniczności potęgowania.
+methods:
+- name: Porównywanie dwóch potęg o tej samej podstawie
+  when_to_use: Gdy obie liczby mają już postać a^{p} i a^{q} z tą samą podstawą a > 0, a ≠ 1.
+  steps:
+  - Sprawdź, czy podstawa jest większa od 1, czy leży w przedziale (0, 1).
+  - Porównaj wykładniki p i q (uwaga na ułamki, liczby ujemne i niewymierne).
+  - Jeśli a > 1, przepisz nierówność wykładników bez zmiany znaku.
+  - Jeśli 0 < a < 1, przepisz nierówność wykładników z odwróconym znakiem.
+  - Zapisz wniosek o porównywanych potęgach.
+- name: Sprowadzanie do wspólnej podstawy
+  when_to_use: Gdy porównywane (lub przyrównywane) potęgi mają różne podstawy, ale wszystkie są potęgami
+    jednej liczby, np. 1/9, 3, 27, 81.
+  steps:
+  - 'Znajdź najmniejszą wspólną ''bazę'' a (zwykle liczbę pierwszą: 2, 3, 5).'
+  - Zapisz każdą podstawę jako a^k (np. 8 = 2^3, 1/4 = 2^{-2}).
+  - Zastosuj wzór (a^k)^x = a^{kx} i uprość wykładniki.
+  - Teraz obie liczby mają wspólną podstawę — zastosuj metodę porównywania potęg o tej samej podstawie.
+- name: Sprowadzanie do wspólnego wykładnika
+  when_to_use: Gdy podstaw nie da się uwspólnić (np. 2 i 3), ale wykładniki mają wspólny dzielnik.
+  steps:
+  - Wyznacz NWD wykładników, np. dla 2^{100} i 3^{60} jest to 20.
+  - Zapisz obie liczby w postaci (podstawa^{k})^{NWD}.
+  - Oblicz nowe podstawy (np. 2^5 = 32, 3^3 = 27).
+  - 'Porównaj podstawy i zastosuj monotoniczność względem podstawy: przy dodatnim wykładniku większa podstawa
+    daje większą potęgę.'
+- name: Szacowanie potęgi między kolejnymi potęgami całkowitymi
+  when_to_use: Gdy wykładnik jest ułamkiem dziesiętnym lub liczbą niewymierną i trzeba określić, w jakim
+    przedziale leży potęga.
+  steps:
+  - Sprowadź liczbę do postaci a^x z podstawą a > 1 (jeśli podstawa jest z (0,1), użyj (1/a)^x = a^{-x}).
+  - Znajdź kolejne liczby całkowite n i n+1 takie, że n < x < n+1 (dla wykładnika niewymiernego oszacuj
+    go, np. 1 < √2 < 2).
+  - Z monotoniczności zapisz a^n < a^x < a^{n+1}.
+  - Oblicz a^n i a^{n+1} i sformułuj oszacowanie.
+- name: Porządkowanie zbioru liczb zapisanych jako potęgi
+  when_to_use: Gdy trzeba uszeregować kilka liczb rosnąco lub malejąco.
+  steps:
+  - Sprowadź wszystkie liczby do wspólnej podstawy (najlepiej większej od 1), używając wzorów potęgowych
+    i zamiany (1/a)^x = a^{-x}.
+  - Uprość wykładniki do jednej postaci (ułamki zwykłe lub dziesiętne — jednorodnie).
+  - Uporządkuj wykładniki na osi liczbowej.
+  - 'Przenieś porządek na potęgi: bez zmiany, jeśli wspólna podstawa > 1; z odwróceniem, jeśli wspólna
+    podstawa ∈ (0,1).'
+  - Wypisz liczby w wymaganej kolejności, wracając do postaci wyjściowej.
+- name: Rozwiązywanie prostej nierówności wykładniczej
+  when_to_use: Gdy nierówność da się zapisać w postaci a^{f(x)} ⋛ a^{g(x)}.
+  steps:
+  - Sprowadź obie strony do tej samej podstawy a > 0, a ≠ 1.
+  - Ustal, czy a > 1, czy 0 < a < 1.
+  - 'Opuść potęgowanie: dla a > 1 zostaw znak nierówności, dla 0 < a < 1 odwróć go.'
+  - Rozwiąż powstałą nierówność (najczęściej liniową).
+  - Zapisz zbiór rozwiązań w postaci przedziału i sprawdź wynik na przykładowej liczbie.
+examples:
+- statement: 'Porównaj liczby w każdej parze: (a) 3^{-0,5} i 3^{-0,2}; (b) (0,5)^{2,1} i (0,5)^{2,5};
+    (c) (2/3)^{-4} i 1.'
+  worked_solution: |-
+    (a) Podstawa a = 3 > 1, więc potęgowanie zachowuje porządek. Porównujemy wykładniki: −0,5 < −0,2, zatem 3^{-0,5} < 3^{-0,2}.
+    (b) Podstawa a = 0,5 ∈ (0,1), więc potęgowanie odwraca porządek. Wykładniki: 2,1 < 2,5, zatem (0,5)^{2,1} > (0,5)^{2,5}.
+    (c) Podstawa 2/3 ∈ (0,1), wykładnik −4 < 0, a dla podstawy z przedziału (0,1) ujemny wykładnik daje liczbę większą od 1. Zatem (2/3)^{-4} > 1. Sprawdzenie rachunkiem: (2/3)^{-4} = (3/2)^4 = 81/16 > 1.
+  difficulty: 1
+- statement: 'Która z liczb jest większa: 8^{20} czy 4^{31}?'
+  worked_solution: |-
+    Obie podstawy są potęgami dwójki, więc sprowadzamy do wspólnej podstawy 2:
+    8^{20} = (2^3)^{20} = 2^{60},
+    4^{31} = (2^2)^{31} = 2^{62}.
+    Podstawa 2 > 1, więc potęgowanie zachowuje porządek. Ponieważ 60 < 62, mamy 2^{60} < 2^{62}, czyli 8^{20} < 4^{31}.
+    Odpowiedź: większa jest liczba 4^{31}.
+  difficulty: 2
+- statement: 'Uporządkuj rosnąco liczby: a = (1/3)^{-1/2}, b = 3^{0,4}, c = 9^{0,2}, d = (1/9)^{0,3}.'
+  worked_solution: |-
+    Sprowadzamy wszystko do podstawy 3.
+    a = (1/3)^{-1/2} = (3^{-1})^{-1/2} = 3^{1/2} = 3^{0,5}.
+    b = 3^{0,4}.
+    c = 9^{0,2} = (3^2)^{0,2} = 3^{0,4}.
+    d = (1/9)^{0,3} = (3^{-2})^{0,3} = 3^{-0,6}.
+    Wspólna podstawa 3 > 1, więc porządek wykładników przenosi się bez zmian. Wykładniki: −0,6 < 0,4 = 0,4 < 0,5.
+    Zatem d < b = c < a, czyli rosnąco: (1/9)^{0,3}, 3^{0,4} = 9^{0,2}, (1/3)^{-1/2}.
+  difficulty: 3
+- statement: 'Która z liczb jest większa: 2^{100} czy 3^{60}? Odpowiedź uzasadnij.'
+  worked_solution: |-
+    Podstaw 2 i 3 nie da się sprowadzić do wspólnej podstawy, więc uwspólniamy wykładniki. NWD(100, 60) = 20:
+    2^{100} = (2^{5})^{20} = 32^{20},
+    3^{60} = (3^{3})^{20} = 27^{20}.
+    Teraz mamy ten sam, dodatni wykładnik 20. Z monotoniczności względem podstawy: skoro 0 < 27 < 32 i wykładnik jest dodatni, to 27^{20} < 32^{20}.
+    Zatem 3^{60} < 2^{100} — większa jest liczba 2^{100}.
+  difficulty: 4
+- statement: (a) Oszacuj liczbę (1/2)^{-3,4}, wskazując kolejne potęgi dwójki, między którymi leży. (b)
+    Rozwiąż nierówność (2/3)^{x} > (2/3)^{3x-4}.
+  worked_solution: |-
+    (a) Najpierw zamieniamy podstawę na większą od 1: (1/2)^{-3,4} = 2^{3,4}. Ponieważ 3 < 3,4 < 4, a podstawa 2 > 1 (potęgowanie rosnące), otrzymujemy 2^{3} < 2^{3,4} < 2^{4}, czyli 8 < (1/2)^{-3,4} < 16.
+    (b) Podstawa 2/3 ∈ (0,1), więc opuszczając potęgowanie ODWRACAMY znak nierówności:
+    x < 3x − 4
+    0 < 2x − 4
+    4 < 2x
+    x > 2.
+    Zbiór rozwiązań: x ∈ (2, +∞).
+    Sprawdzenie: dla x = 3 lewa strona to (2/3)^3 = 8/27, prawa to (2/3)^{5} = 32/243. Ponieważ 8/27 = 72/243 > 32/243, nierówność jest spełniona — wynik poprawny.
+  difficulty: 4
+objectives:
+- statement: Sformułować własność monotoniczności potęgowania osobno dla podstawy a > 1 i dla podstawy
+    a ∈ (0, 1) oraz wskazać, dlaczego wyklucza się a = 1.
+  bloom_level: Rozumienie
+- statement: Porównać dwie potęgi o tej samej podstawie, poprawnie dobierając kierunek nierówności do
+    przedziału, w którym leży podstawa.
+  bloom_level: Zastosowanie
+- statement: Rozstrzygnąć, czy dana potęga jest większa, czy mniejsza od 1, na podstawie podstawy i znaku
+    wykładnika.
+  bloom_level: Zastosowanie
+- statement: Sprowadzić potęgi o różnych podstawach do wspólnej podstawy (lub wspólnego wykładnika) i
+    na tej podstawie je porównać.
+  bloom_level: Zastosowanie
+- statement: Uporządkować rosnąco lub malejąco kilka liczb zapisanych w postaci potęg i pierwiastków,
+    uzasadniając kolejność monotonicznością potęgowania.
+  bloom_level: Analiza
+- statement: Oszacować potęgę o wykładniku ułamkowym lub niewymiernym, wskazując kolejne potęgi całkowite,
+    między którymi leży.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać prostą nierówność wykładniczą postaci a^{f(x)} ⋛ a^{g(x)} i zapisać zbiór rozwiązań
+    jako przedział.
+  bloom_level: Zastosowanie
+- statement: Ocenić poprawność cudzego rozumowania porównującego potęgi i wskazać błąd (np. brak odwrócenia
+    znaku, porównanie różnych podstaw bez uwspólnienia).
+  bloom_level: Ocenianie
+misconceptions:
+- name: Brak odwrócenia znaku przy podstawie z przedziału (0,1)
+  incorrect_reasoning: 'Uczeń pisze: (0,5)^{2,1} < (0,5)^{2,5}, bo 2,1 < 2,5. Albo z nierówności (1/3)^x
+    > (1/3)^{5} wnioskuje x > 5.'
+  correct_reasoning: 'Dla 0 < a < 1 potęgowanie jest malejące, więc większy wykładnik daje MNIEJSZĄ potęgę:
+    (0,5)^{2,1} > (0,5)^{2,5}, a z (1/3)^x > (1/3)^5 wynika x < 5. Zawsze najpierw sprawdź, po której
+    stronie jedynki leży podstawa.'
+  severity: 5
+- name: Ujemny wykładnik daje liczbę ujemną
+  incorrect_reasoning: Uczeń twierdzi, że 2^{-3} < 0 albo że 3^{-0,5} jest liczbą ujemną, bo 'minus w
+    wykładniku'.
+  correct_reasoning: 'Dla a > 0 zawsze a^x > 0. Ujemny wykładnik oznacza odwrotność: 2^{-3} = 1/8 > 0.
+    Znak wykładnika decyduje jedynie o tym, czy potęga jest mniejsza, czy większa od 1 (a to zależy jeszcze
+    od podstawy).'
+  severity: 4
+- name: Porównywanie potęg o różnych podstawach 'na oko'
+  incorrect_reasoning: Uczeń stwierdza, że 3^{60} > 2^{100}, bo podstawa 3 jest większa od 2, albo że
+    4^{31} < 8^{20}, bo 8 > 4.
+  correct_reasoning: 'Monotoniczność względem wykładnika działa tylko przy tej samej podstawie, a monotoniczność
+    względem podstawy — tylko przy tym samym wykładniku. Trzeba najpierw uwspólnić podstawę albo wykładnik:
+    8^{20} = 2^{60} < 2^{62} = 4^{31} oraz 3^{60} = 27^{20} < 32^{20} = 2^{100}.'
+  severity: 4
+- name: Mylenie monotoniczności względem podstawy przy ujemnym wykładniku
+  incorrect_reasoning: Uczeń pisze 2^{-3} < 3^{-3}, bo 2 < 3.
+  correct_reasoning: 'Dla wykładnika ujemnego porządek podstaw się odwraca: 2^{-3} = 1/8, 3^{-3} = 1/27,
+    więc 2^{-3} > 3^{-3}. Reguła ''większa podstawa → większa potęga'' obowiązuje tylko dla wykładnika
+    dodatniego.'
+  severity: 3
+- name: Stosowanie monotoniczności dla podstawy 1 lub ujemnej
+  incorrect_reasoning: Uczeń z równości 1^{x} = 1^{7} wyciąga wniosek x = 7, albo porównuje potęgi o podstawie
+    ujemnej, np. (−2)^{3} i (−2)^{4}, stosując 'monotoniczność'.
+  correct_reasoning: Twierdzenia o monotoniczności wymagają a > 0 i a ≠ 1. Dla a = 1 wszystkie potęgi
+    są równe 1, a dla podstawy ujemnej potęgi zmieniają znak naprzemiennie i nie tworzą ciągu monotonicznego
+    — reguły w ogóle nie stosujemy.
+  severity: 3
+- name: Błędne porównywanie wykładników ujemnych lub ułamkowych
+  incorrect_reasoning: Uczeń uznaje, że −0,5 > −0,2 (bo 5 > 2) i stąd 3^{-0,5} > 3^{-0,2}; albo że 1/3
+    > 1/2.
+  correct_reasoning: Kierunek potęgowania jest tu poprawny, ale porównanie wykładników — nie. Na osi liczbowej
+    −0,5 < −0,2 oraz 1/3 < 1/2, więc 3^{-0,5} < 3^{-0,2}. Warto ułamki sprowadzić do wspólnego mianownika
+    lub zamienić na dziesiętne.
+  severity: 3
+- name: Zamiana (1/a)^x na a^x bez zmiany znaku wykładnika
+  incorrect_reasoning: Uczeń zapisuje (1/2)^{-3,4} = 2^{-3,4} i szacuje wynik jako liczbę bliską zeru.
+  correct_reasoning: Zachodzi (1/a)^x = a^{-x}, więc (1/2)^{-3,4} = 2^{3,4}, czyli liczba z przedziału
+    (8, 16). Odwrócenie podstawy zmienia znak wykładnika.
+  severity: 4

@@ -1,0 +1,443 @@
+section: wlasnosci-czworokatow
+name: Kąty i przekątne w czworokątach
+scope: Angles, sides and diagonals in rectangles, parallelograms, rhombi and trapezia, and the relationships
+  among them.
+requirements:
+- VIII.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:24:03.590279'
+  approved_at: '2026-08-28T18:28:23.907327'
+  approved_by: reviewer
+concepts:
+- name: Czworokąt i suma jego kątów wewnętrznych
+  description: Czworokąt to wielokąt o czterech bokach i czterech wierzchołkach. Suma miar jego kątów
+    wewnętrznych wynosi 360°.
+  explanation: 'Dowolna przekątna dzieli czworokąt wypukły na dwa trójkąty, a w każdym trójkącie suma
+    kątów to 180°, stąd 2·180° = 360°. To najczęściej używane ''równanie startowe'' w zadaniach o kątach:
+    jeśli znasz trzy kąty czworokąta, czwarty wyliczasz odejmowaniem od 360°.'
+  difficulty: 1
+- name: Przekątna czworokąta
+  description: Odcinek łączący dwa niesąsiednie wierzchołki czworokąta. Każdy czworokąt ma dokładnie dwie
+    przekątne.
+  explanation: 'Przekątna to najważniejsze ''narzędzie pomocnicze'': dzieli czworokąt na trójkąty, w których
+    działają twierdzenie Pitagorasa, suma kątów trójkąta, własności trójkąta równoramiennego i funkcje
+    trygonometryczne kąta ostrego. Prawie każde zadanie o czworokącie sprowadza się do zadania o trójkącie.'
+  difficulty: 1
+- name: Kąty przy prostych równoległych (naprzemianległe i przyległe wewnętrznie)
+  description: Gdy dwie proste równoległe przecina trzecia prosta (sieczna), kąty naprzemianległe wewnętrzne
+    są równe, a kąty jednostronne wewnętrzne sumują się do 180°.
+  explanation: 'To jest źródło niemal wszystkich własności kątowych równoległoboku i trapezu: równoległość
+    boków plus sieczna (bok lub przekątna) natychmiast daje równość albo dopełnianie kątów do 180°. Gdy
+    w zadaniu widzisz przekątną trapezu, od razu szukaj pary kątów naprzemianległych.'
+  difficulty: 2
+- name: Trapez
+  description: Czworokąt, który ma co najmniej jedną parę boków równoległych. Boki równoległe nazywamy
+    podstawami, pozostałe dwa — ramionami.
+  explanation: 'W szkolnej konwencji rysujemy trapez z podstawami poziomymi: dłuższa na dole. Kluczowa
+    własność: kąty leżące przy tym samym ramieniu sumują się do 180° (są jednostronne wewnętrzne przy
+    prostych równoległych).'
+  difficulty: 1
+- name: Trapez równoramienny
+  description: Trapez, w którym ramiona mają równe długości i nie są równoległe.
+  explanation: 'Jest osiowo symetryczny względem prostej prostopadłej do podstaw i przechodzącej przez
+    ich środki. Stąd: kąty przy każdej podstawie są równe, a przekątne mają równe długości. Uwaga: równoległobok
+    ma równe ramiona, ale nie jest trapezem równoramiennym — dlatego w definicji zastrzegamy, że ramiona
+    nie są równoległe.'
+  difficulty: 2
+- name: Trapez prostokątny
+  description: Trapez, w którym jedno ramię jest prostopadłe do obu podstaw; ma zatem dwa kąty proste.
+  explanation: To ramię jest jednocześnie wysokością trapezu. Dorysowanie drugiej wysokości odcina prostokąt
+    i trójkąt prostokątny — cała praca odbywa się w tym trójkącie.
+  difficulty: 2
+- name: Wysokość trapezu i rzuty ramion na podstawę
+  description: Wysokość trapezu to odległość między prostymi zawierającymi podstawy. Spuszczając wysokości
+    z końców krótszej podstawy na dłuższą, dzielimy dłuższą podstawę na trzy odcinki.
+  explanation: W trapezie równoramiennym o podstawach a > b środkowy odcinek ma długość b, a dwa skrajne
+    po (a − b)/2. To pozwala policzyć wysokość, ramię lub kąt ostry z twierdzenia Pitagorasa albo z funkcji
+    trygonometrycznych.
+  difficulty: 3
+- name: Linia środkowa trapezu
+  description: Odcinek łączący środki ramion trapezu. Jest równoległy do podstaw, a jego długość jest
+    równa średniej arytmetycznej długości podstaw.
+  explanation: Wygodne narzędzie, gdy znasz jedną podstawę i linię środkową — drugą podstawę wyliczasz
+    z równania m = (a + b)/2.
+  difficulty: 2
+- name: Równoległobok
+  description: Czworokąt, w którym obie pary boków przeciwległych są równoległe.
+  explanation: 'Z równoległości natychmiast wynikają wszystkie pozostałe własności: boki przeciwległe
+    równe, kąty przeciwległe równe, kąty sąsiednie (przy jednym boku) sumują się do 180°, a przekątne
+    dzielą się na połowy. Równoległobok jest szczególnym przypadkiem trapezu (ma parę boków równoległych).'
+  difficulty: 2
+- name: Przekątne równoległoboku
+  description: W równoległoboku przekątne przecinają się w punkcie, który jest środkiem każdej z nich
+    (dzielą się na połowy). Każda przekątna dzieli równoległobok na dwa trójkąty przystające.
+  explanation: 'Punkt przecięcia przekątnych jest środkiem symetrii równoległoboku. Uwaga: przekątne równoległoboku
+    na ogół NIE są równe i NIE są prostopadłe — to zachodzi dopiero w prostokącie (równość) i w rombie
+    (prostopadłość).'
+  difficulty: 2
+- name: Prostokąt
+  description: Równoległobok, którego wszystkie kąty są proste (wystarczy, że jeden kąt jest prosty).
+  explanation: 'Do własności równoległoboku dochodzi: przekątne są równe i wciąż dzielą się na połowy.
+    Punkt ich przecięcia jest jednakowo oddalony od wszystkich wierzchołków — to środek okręgu opisanego
+    na prostokącie o promieniu d/2.'
+  difficulty: 1
+- name: Przekątne prostokąta i powstające trójkąty równoramienne
+  description: Przekątne prostokąta są równe i przecinają się w połowie, dzieląc prostokąt na cztery trójkąty
+    równoramienne.
+  explanation: Skoro wszystkie cztery odcinki od środka do wierzchołków mają długość d/2, każdy z czterech
+    trójkątów jest równoramienny. Dzięki temu z kąta między przekątnymi wyliczasz kąt między przekątną
+    a bokiem i odwrotnie. Kąt między przekątnymi 'nad' bokiem dłuższym jest większy (rozwarty), a 'nad'
+    bokiem krótszym mniejszy.
+  difficulty: 3
+- name: Romb
+  description: Równoległobok, którego wszystkie boki mają równą długość.
+  explanation: 'Do własności równoległoboku dochodzi: przekątne są prostopadłe i każda z nich jest dwusieczną
+    kątów, z których wychodzi. Przekątne dzielą romb na cztery przystające trójkąty prostokątne o przyprostokątnych
+    e/2 i f/2 oraz przeciwprostokątnej a.'
+  difficulty: 2
+- name: Przekątne rombu jako dwusieczne
+  description: W rombie przekątna dzieli kąt wewnętrzny na dwa kąty równe (o mierze połowy tego kąta)
+    i tworzy z bokami trójkąt równoramienny.
+  explanation: To wynika z tego, że trójkąt utworzony przez dwa boki rombu i przekątną jest równoramienny
+    (dwa boki rombu są równe). Dlatego znając jeden kąt rombu, znasz od razu wszystkie kąty w czterech
+    trójkątach powstałych po narysowaniu obu przekątnych.
+  difficulty: 3
+- name: Kwadrat
+  description: 'Czworokąt, który jest jednocześnie prostokątem i rombem: ma wszystkie boki równe i wszystkie
+    kąty proste.'
+  explanation: 'Dziedziczy wszystkie własności: przekątne są równe, prostopadłe, dzielą się na połowy
+    i są dwusiecznymi kątów prostych (tworzą z bokami kąty 45°). Długość przekątnej: d = a√2.'
+  difficulty: 1
+- name: Hierarchia czworokątów
+  description: Kwadrat jest rombem i prostokątem; romb i prostokąt są równoległobokami; równoległobok
+    jest trapezem (w definicji z 'co najmniej jedną parą boków równoległych').
+  explanation: 'Warto myśleć o tym jak o drzewie własności: schodząc w dół dokładamy warunki, a wraz z
+    nimi nowe własności przekątnych. Odwrotne implikacje nie zachodzą — np. nie każdy równoległobok jest
+    rombem.'
+  difficulty: 2
+- name: Kąt między przekątną a bokiem
+  description: Kąt ostry, jaki przekątna czworokąta tworzy z wychodzącym z tego samego wierzchołka bokiem.
+  explanation: W prostokącie o bokach a i b spełnia on tg α = b/a; w rombie jest równy połowie kąta wewnętrznego
+    rombu; w kwadracie zawsze 45°. To najczęstsza 'dana' w zadaniach trygonometrycznych o czworokątach.
+  difficulty: 3
+- name: Warunek istnienia czworokąta o danych kątach
+  description: Cztery kąty dodatnie mogą być kątami czworokąta wtedy i tylko wtedy, gdy ich suma wynosi
+    360° (dla czworokąta wypukłego dodatkowo każdy jest mniejszy od 180°).
+  explanation: Przydaje się przy zadaniach, w których kąty opisane są wyrażeniami z niewiadomą — układamy
+    równanie z sumą 360° albo, w trapezie, z sumą 180° dla kątów przy ramieniu.
+  difficulty: 2
+formulas:
+- name: Suma kątów czworokąta
+  latex_raw: \alpha + \beta + \gamma + \delta = 360^\circ
+  conditions: dowolny czworokąt (wypukły; dla niewypukłego kąty wewnętrzne też sumują się do 360°)
+- name: Kąty równoległoboku
+  latex_raw: \alpha = \gamma,\quad \beta = \delta,\quad \alpha + \beta = 180^\circ
+  conditions: równoległobok ABCD, kąty kolejno przy A, B, C, D (α i β to kąty sąsiednie, przy tym samym
+    boku)
+- name: Kąty przy ramieniu trapezu
+  latex_raw: \alpha + \delta = 180^\circ,\quad \beta + \gamma = 180^\circ
+  conditions: trapez ABCD, AB ∥ CD; α, β — kąty przy podstawie AB, γ, δ — przy podstawie CD; sumują się
+    kąty leżące przy tym samym ramieniu (AD oraz BC)
+- name: Kąty trapezu równoramiennego
+  latex_raw: \alpha = \beta,\quad \gamma = \delta = 180^\circ - \alpha
+  conditions: trapez równoramienny ABCD, AB ∥ CD, AD = BC
+- name: Równość przekątnych trapezu równoramiennego
+  latex_raw: '|AC| = |BD|'
+  conditions: trapez równoramienny; zachodzi także w prostokącie i kwadracie
+- name: Linia środkowa trapezu
+  latex_raw: m = \frac{a+b}{2}
+  conditions: a, b — długości podstaw trapezu; m — odcinek łączący środki ramion, równoległy do podstaw
+- name: Rzut ramienia trapezu równoramiennego na dłuższą podstawę
+  latex_raw: x = \frac{a-b}{2}
+  conditions: trapez równoramienny o podstawach a > b; x — odcinek odcięty na podstawie a przez wysokość
+    poprowadzoną z końca podstawy b
+- name: Wysokość i ramię trapezu równoramiennego
+  latex_raw: h^2 + \left(\frac{a-b}{2}\right)^2 = c^2
+  conditions: trapez równoramienny o podstawach a > b i ramieniu c; twierdzenie Pitagorasa w trójkącie
+    odciętym wysokością
+- name: Przekątna prostokąta
+  latex_raw: d = \sqrt{a^2+b^2}
+  conditions: prostokąt o bokach a i b
+- name: Kąt przekątnej prostokąta z bokiem
+  latex_raw: \operatorname{tg}\alpha = \frac{b}{a},\qquad \sin\alpha = \frac{b}{d},\qquad \cos\alpha =
+    \frac{a}{d}
+  conditions: prostokąt o bokach a, b i przekątnej d; α — kąt między przekątną a bokiem długości a
+- name: Przekątna kwadratu
+  latex_raw: d = a\sqrt{2}
+  conditions: kwadrat o boku a; przekątne tworzą z bokami kąty 45°
+- name: Związek boku i przekątnych rombu
+  latex_raw: \left(\frac{e}{2}\right)^2 + \left(\frac{f}{2}\right)^2 = a^2
+  conditions: romb o boku a i przekątnych e, f (przekątne są prostopadłe i dzielą się na połowy)
+- name: Kąt rombu a jego przekątne
+  latex_raw: \operatorname{tg}\frac{\alpha}{2} = \frac{f/2}{e/2} = \frac{f}{e}
+  conditions: romb o kącie α zawartym między bokami, przy czym przekątna e wychodzi z wierzchołka kąta
+    α (jest jego dwusieczną), f — przekątna do niej prostopadła
+- name: Przekątne rombu wyrażone przez bok i kąt
+  latex_raw: e = 2a\cos\frac{\alpha}{2},\qquad f = 2a\sin\frac{\alpha}{2}
+  conditions: romb o boku a i kącie α; e — przekątna wychodząca z wierzchołka kąta α
+- name: Pole rombu (i kwadratu) z przekątnych
+  latex_raw: P = \frac{1}{2}ef
+  conditions: 'czworokąt o przekątnych prostopadłych: romb, kwadrat, deltoid'
+  description: wzór wygodny, gdy dane są długości przekątnych
+- name: Reguła równoległoboku
+  latex_raw: d_1^{\,2} + d_2^{\,2} = 2(a^2+b^2)
+  conditions: równoległobok o bokach a, b i przekątnych d₁, d₂
+  description: rozszerzenie; pozwala sprawdzić, że w prostokącie (d₁ = d₂) otrzymujemy twierdzenie Pitagorasa
+- name: Promień okręgu opisanego na prostokącie
+  latex_raw: R = \frac{d}{2} = \frac{\sqrt{a^2+b^2}}{2}
+  conditions: prostokąt o bokach a, b; środkiem okręgu jest punkt przecięcia przekątnych
+methods:
+- name: Wyznaczanie wszystkich kątów równoległoboku (rombu) z jednego danego
+  when_to_use: Gdy w równoległoboku lub rombie znany jest jeden kąt wewnętrzny (albo kąt między bokiem
+    a przekątną) i trzeba podać pozostałe.
+  steps:
+  - Zapisz dany kąt przy odpowiednim wierzchołku, np. α przy A.
+  - 'Kąt przeciwległy jest równy danemu: γ = α.'
+  - 'Kąt sąsiedni policz z zależności β = 180° − α; kąt do niego przeciwległy: δ = β.'
+  - 'Sprawdź kontrolnie: α + β + γ + δ = 360°.'
+  - Jeśli w zadaniu występuje przekątna, dorysuj ją i zauważ powstały trójkąt; w rombie przekątna dzieli
+    kąt na połowy, w równoległoboku ogólnym — nie, ale daje parę kątów naprzemianległych z bokiem równoległym.
+- name: Rachunek kątów w trapezie
+  when_to_use: Gdy dane są niektóre kąty trapezu (lub kąty opisane wyrażeniami z niewiadomą) i trzeba
+    wyznaczyć pozostałe.
+  steps:
+  - Zaznacz, które boki są równoległe (podstawy) i które kąty leżą przy tym samym ramieniu.
+  - 'Dla każdego ramienia zapisz równanie: suma dwóch kątów przy tym ramieniu = 180°.'
+  - Jeśli trapez jest równoramienny, dopisz równości kątów przy każdej podstawie; jeśli prostokątny —
+    wstaw dwa kąty proste.
+  - Rozwiąż powstałe równania (lub układ równań).
+  - Sprawdź, czy suma wszystkich czterech kątów daje 360° i czy wszystkie są dodatnie i mniejsze od 180°.
+- name: Praca z przekątnymi prostokąta (metoda trójkątów równoramiennych)
+  when_to_use: Gdy dany jest kąt między przekątnymi prostokąta albo kąt między przekątną a bokiem i szukamy
+    pozostałych kątów.
+  steps:
+  - Narysuj obie przekątne i oznacz punkt przecięcia S.
+  - 'Zapisz: |AS| = |BS| = |CS| = |DS| = d/2 — powstają cztery trójkąty równoramienne.'
+  - 'Wybierz trójkąt zawierający dany kąt; jeśli dany jest kąt przy S, policz kąty przy podstawie: (180°
+    − kąt przy S)/2; jeśli dany jest kąt przy boku, policz kąt przy S: 180° − 2·(kąt przy boku).'
+  - Kąty przy S po przeciwnych stronach są wierzchołkowe (równe), a sąsiednie — przyległe (sumują się
+    do 180°); to daje kąty w pozostałych trójkątach.
+  - Pamiętaj, że kąt przekątnej z bokiem dłuższym jest mniejszy niż z bokiem krótszym — użyj tego do kontroli
+    odpowiedzi.
+- name: Obliczanie długości przekątnych z twierdzenia Pitagorasa
+  when_to_use: Gdy dane są długości boków prostokąta, kwadratu lub rombu (albo jedna przekątna rombu)
+    i trzeba wyznaczyć przekątną.
+  steps:
+  - 'Prostokąt: przekątna z bokami tworzy trójkąt prostokątny, więc d = √(a² + b²); kwadrat: d = a√2.'
+  - 'Romb: narysuj obie przekątne — powstają cztery trójkąty prostokątne o przyprostokątnych e/2 i f/2
+    oraz przeciwprostokątnej a.'
+  - Zapisz (e/2)² + (f/2)² = a² i wstaw dane.
+  - Wyznacz szukaną połówkę przekątnej, a następnie pomnóż przez 2.
+  - 'Sprawdź sensowność: każda przekątna rombu jest krótsza od 2a, a dłuższa przekątna leży naprzeciw
+    kąta rozwartego.'
+- name: Rozwiązywanie trapezu przez dorysowanie wysokości
+  when_to_use: Gdy w trapezie (równoramiennym lub prostokątnym) dane są podstawy, ramię, wysokość lub
+    kąt ostry i trzeba wyznaczyć pozostałe wielkości bądź długość przekątnej.
+  steps:
+  - Poprowadź wysokości z końców krótszej podstawy na dłuższą; oznacz odcięte odcinki.
+  - W trapezie równoramiennym oba skrajne odcinki mają długość (a − b)/2, środkowy — b; w prostokątnym
+    cały nadmiar a − b leży po jednej stronie.
+  - W powstałym trójkącie prostokątnym zastosuj twierdzenie Pitagorasa lub funkcje trygonometryczne kąta
+    ostrego, aby znaleźć h, ramię lub kąt.
+  - Aby policzyć przekątną, potraktuj ją jako przeciwprostokątną trójkąta o przyprostokątnych h oraz odpowiedniej
+    części dłuższej podstawy (np. b + (a − b)/2).
+  - Zapisz odpowiedź i sprawdź, czy przekątna jest dłuższa od każdej z przyprostokątnych, a kąt ostry
+    mniejszy od 90°.
+- name: Angle chasing z wykorzystaniem kątów naprzemianległych przy przekątnej
+  when_to_use: Gdy w trapezie lub równoległoboku poprowadzono przekątną i mowa jest o kątach, jakie tworzy
+    ona z bokami (np. przekątna jest dwusieczną kąta).
+  steps:
+  - Zidentyfikuj parę boków równoległych i traktuj przekątną jako sieczną.
+  - Zaznacz kąty naprzemianległe wewnętrzne jako równe (np. ∡CAB = ∡ACD, gdy AB ∥ CD).
+  - Wypisz sumy kątów w powstałych trójkątach (180° każda) i wyznacz brakujące kąty.
+  - Jeśli w trójkącie dwa kąty okażą się równe, wywnioskuj, że jest on równoramienny, i zapisz równość
+    odpowiednich boków.
+  - Zbierz wyniki i sprawdź je sumą kątów czworokąta oraz warunkiem 180° przy ramieniu.
+- name: Rozpoznawanie rodzaju czworokąta na podstawie własności przekątnych
+  when_to_use: Gdy trzeba ocenić prawdziwość zdania typu 'czworokąt o takich przekątnych jest rombem/prostokątem'
+    albo dobrać brakujący warunek.
+  steps:
+  - Sprawdź, czy przekątne dzielą się na połowy — jeśli tak, czworokąt jest równoległobokiem.
+  - Dołóż informację o równości przekątnych — równoległobok o równych przekątnych to prostokąt.
+  - Dołóż informację o prostopadłości przekątnych — równoległobok o przekątnych prostopadłych to romb.
+  - Oba warunki naraz (równe i prostopadłe, dzielące się na połowy) dają kwadrat.
+  - Jeśli przekątne są równe, ale nie dzielą się na połowy, rozważ trapez równoramienny; podaj kontrprzykład,
+    gdy teza ma być fałszywa.
+examples:
+- statement: W równoległoboku ABCD kąt przy wierzchołku A ma miarę 62°. Wyznacz miary pozostałych kątów
+    wewnętrznych oraz miarę kąta, jaki tworzy przekątna AC z bokiem AB, wiedząc dodatkowo, że ∡ACB = 41°.
+  worked_solution: |-
+    Kąty przeciwległe równoległoboku są równe, więc ∡C = ∡A = 62°.
+    Kąty przy tym samym boku sumują się do 180°, więc ∡B = 180° − 62° = 118°, a ∡D = ∡B = 118°.
+    Kontrola: 62° + 118° + 62° + 118° = 360°. ✓
+    Teraz trójkąt ABC: suma kątów wynosi 180°, znamy ∡ABC = ∡B = 118° oraz ∡ACB = 41°.
+    ∡CAB = 180° − 118° − 41° = 21°.
+    Zatem przekątna AC tworzy z bokiem AB kąt 21°. (Zauważ, że 21° ≠ 31° = 62°/2, czyli przekątna NIE dzieli kąta A na połowy — to zwykły równoległobok, nie romb.)
+    Odpowiedź: ∡B = ∡D = 118°, ∡C = 62°, kąt między AC i AB to 21°.
+  difficulty: 1
+- statement: 'Przekątne prostokąta ABCD przecinają się w punkcie S. Kąt ASB, w którym bok AB jest ''podstawą'',
+    ma miarę 130°. Oblicz miarę kąta między przekątną AC a bokiem AB oraz miarę kąta BSC. Który bok prostokąta
+    jest dłuższy: AB czy BC?'
+  worked_solution: |-
+    W prostokącie przekątne są równe i dzielą się na połowy, więc |AS| = |BS| = |CS| = |DS| = d/2.
+    Trójkąt ASB jest zatem równoramienny (AS = BS), a kąt między ramionami wynosi 130°.
+    Kąty przy podstawie AB: (180° − 130°)/2 = 50°/2 = 25°.
+    Czyli ∡SAB = ∡SBA = 25° — przekątna AC tworzy z bokiem AB kąt 25°.
+    Kąty ASB i BSC są przyległe, więc ∡BSC = 180° − 130° = 50°.
+    Trójkąt BSC też jest równoramienny (BS = CS), więc ∡SBC = ∡SCB = (180° − 50°)/2 = 65°.
+    Sprawdzenie: ∡ABC = ∡SBA + ∡SBC = 25° + 65° = 90°. ✓
+    Przekątna tworzy mniejszy kąt z bokiem dłuższym, a 25° < 65°, więc dłuższy jest bok AB.
+    Odpowiedź: 25°, ∡BSC = 50°, dłuższy jest bok AB.
+  difficulty: 2
+- statement: Romb ABCD ma bok długości 6 i kąt ostry przy wierzchołku A równy 60°. Oblicz miary wszystkich
+    kątów, na jakie przekątne dzielą kąty rombu, oraz długości obu przekątnych.
+  worked_solution: |-
+    Kąty rombu: ∡A = ∡C = 60°, ∡B = ∡D = 180° − 60° = 120°.
+    Przekątne rombu są dwusiecznymi kątów, więc:
+    – przekątna AC dzieli kąty 60° na dwa kąty po 30°,
+    – przekątna BD dzieli kąty 120° na dwa kąty po 60°.
+    Długości. Trójkąt ABD: AB = AD = 6 oraz ∡A = 60°, więc jest to trójkąt równoboczny (kąty 60°, 60°, 60°). Stąd krótsza przekątna BD = 6.
+    Drugą przekątną liczymy z zależności (e/2)² + (f/2)² = a², gdzie f = BD = 6, a = 6:
+    (e/2)² = 36 − 9 = 27, więc e/2 = 3√3, czyli AC = 6√3 ≈ 10,39.
+    Można też wprost: e = 2a·cos(α/2) = 2·6·cos30° = 12·(√3/2) = 6√3. ✓
+    Odpowiedź: przekątne dzielą kąty na 30° i 30° oraz na 60° i 60°; BD = 6, AC = 6√3.
+  difficulty: 3
+- statement: W trapezie równoramiennym ABCD (AB ∥ CD) mamy AB = 10, CD = 4 oraz ramię AD = BC = 5. Oblicz
+    wysokość trapezu, miary jego kątów wewnętrznych (z dokładnością do 1°) oraz długość przekątnej AC.
+  worked_solution: |-
+    Umieszczamy trapez tak, że AB jest dłuższą podstawą. Spuszczamy wysokości z D i C na AB; odcinają one na AB odcinki o długościach (10 − 4)/2 = 3, 4 i 3.
+    Wysokość: z twierdzenia Pitagorasa w trójkącie o przeciwprostokątnej 5 i przyprostokątnej 3: h² = 5² − 3² = 25 − 9 = 16, więc h = 4.
+    Kąt ostry α przy podstawie AB: cos α = 3/5 = 0,6, stąd α ≈ 53°. (Można też: tg α = 4/3 ≈ 1,333.)
+    Kąty przy krótszej podstawie: 180° − 53° = 127°.
+    Zatem ∡A = ∡B ≈ 53°, ∡C = ∡D ≈ 127°. Kontrola: 2·53° + 2·127° = 360°. ✓
+    Przekątna AC: rzut punktu C na AB pada w odległości 3 + 4 = 7 od A. Trójkąt o przyprostokątnych 7 i h = 4 daje AC = √(49 + 16) = √65 ≈ 8,06.
+    Ponieważ trapez jest równoramienny, BD = AC = √65.
+    Odpowiedź: h = 4, kąty ≈ 53°, 53°, 127°, 127°, przekątne równe √65.
+  difficulty: 3
+- statement: W trapezie ABCD (AB ∥ CD, AB — dłuższa podstawa) przekątna AC dzieli kąt przy wierzchołku
+    A na połowy. Wiadomo, że ∡DAB = 68° i ∡ABC = 84°. Oblicz miary kątów trójkąta ACD i trójkąta ABC oraz
+    uzasadnij, że |AD| = |DC|.
+  worked_solution: |-
+    Krok 1. Kąty przy ramieniu AD sumują się do 180°: ∡ADC = 180° − ∡DAB = 180° − 68° = 112°.
+    Podobnie przy ramieniu BC: ∡BCD = 180° − 84° = 96°.
+    Kontrola: 68° + 84° + 96° + 112° = 360°. ✓
+    Krok 2. Przekątna AC jest dwusieczną kąta A, więc ∡DAC = ∡CAB = 68°/2 = 34°.
+    Krok 3. AB ∥ CD, a AC jest sieczną, więc kąty ∡CAB i ∡ACD są naprzemianległe wewnętrzne: ∡ACD = ∡CAB = 34°.
+    Krok 4. Trójkąt ACD: ∡DAC = 34°, ∡ACD = 34°, ∡ADC = 112°. Suma: 34 + 34 + 112 = 180°. ✓
+    Skoro dwa kąty trójkąta ACD są równe, trójkąt jest równoramienny, a boki leżące naprzeciw tych kątów są równe: naprzeciw ∡ACD = 34° leży AD, naprzeciw ∡DAC = 34° leży DC, więc |AD| = |DC|.
+    Krok 5. Trójkąt ABC: ∡CAB = 34°, ∡ABC = 84°, więc ∡ACB = 180° − 34° − 84° = 62°.
+    Sprawdzenie: ∡BCD = ∡ACD + ∡ACB = 34° + 62° = 96°. ✓
+    Odpowiedź: trójkąt ACD ma kąty 34°, 34°, 112° i jest równoramienny (AD = DC); trójkąt ABC ma kąty 34°, 84°, 62°.
+  difficulty: 4
+objectives:
+- statement: Podać definicje trapezu, trapezu równoramiennego i prostokątnego, równoległoboku, prostokąta,
+    rombu i kwadratu oraz uporządkować te figury w hierarchię.
+  bloom_level: zapamiętywanie
+- statement: Wymienić własności kątów i przekątnych każdego z tych czworokątów (równość, prostopadłość,
+    podział na połowy, dwusieczne) i wskazać, która własność charakteryzuje którą figurę.
+  bloom_level: rozumienie
+- statement: Obliczyć miary wszystkich kątów wewnętrznych równoległoboku, rombu lub trapezu na podstawie
+    jednego lub dwóch danych kątów, korzystając z sumy 360° i z zależności 180° dla kątów przy ramieniu.
+  bloom_level: stosowanie
+- statement: Wyznaczyć długość przekątnej prostokąta, kwadratu lub rombu (oraz bok rombu z jego przekątnych)
+    przy użyciu twierdzenia Pitagorasa i związku (e/2)² + (f/2)² = a².
+  bloom_level: stosowanie
+- statement: Wykorzystać trójkąty równoramienne powstałe po narysowaniu przekątnych prostokąta lub rombu
+    do obliczenia kąta między przekątnymi oraz kąta między przekątną a bokiem.
+  bloom_level: stosowanie
+- statement: Zastosować funkcje trygonometryczne kąta ostrego do powiązania boków, wysokości, przekątnych
+    i kątów w prostokącie, rombie i trapezie.
+  bloom_level: stosowanie
+- statement: Rozwiązać trapez (obliczyć wysokość, ramię, podstawę, kąt lub przekątną) przez celowe dorysowanie
+    wysokości i skorzystanie z zależności (a − b)/2 w trapezie równoramiennym.
+  bloom_level: analiza
+- statement: Przeprowadzić kilkuetapowe rozumowanie kątowe (angle chasing) w czworokącie z poprowadzoną
+    przekątną, korzystając z kątów naprzemianległych i z sumy kątów trójkąta.
+  bloom_level: analiza
+- statement: Uzasadnić, że dany czworokąt jest równoległobokiem, rombem, prostokątem lub trapezem równoramiennym,
+    powołując się na własności jego kątów i przekątnych.
+  bloom_level: analiza
+- statement: Ocenić prawdziwość zdań o czworokątach (np. o równości lub prostopadłości przekątnych) i
+    uzasadnić odpowiedź argumentem albo kontrprzykładem.
+  bloom_level: ocenianie
+- statement: Skontrolować poprawność otrzymanych wyników, sprawdzając sumę kątów, warunki 180° przy ramieniu
+    oraz zgodność wyników z relacją „większemu bokowi odpowiada większy kąt”.
+  bloom_level: ocenianie
+misconceptions:
+- name: „Przekątne każdego równoległoboku są równe”
+  incorrect_reasoning: Skoro przekątne dzielą się na połowy i figura wygląda symetrycznie, uczeń przyjmuje
+    |AC| = |BD| i np. liczy pole albo kąty tak jak w prostokącie.
+  correct_reasoning: W równoległoboku przekątne jedynie dzielą się na połowy. Równość przekątnych charakteryzuje
+    prostokąt (i kwadrat) oraz trapez równoramienny. W 'skośnym' równoległoboku przekątna leżąca naprzeciw
+    kąta rozwartego jest dłuższa — widać to z twierdzenia cosinusów lub z reguły równoległoboku d₁² +
+    d₂² = 2(a² + b²).
+  severity: 4
+- name: „Przekątne równoległoboku są prostopadłe”
+  incorrect_reasoning: Uczeń przenosi własność rombu na dowolny równoległobok i stosuje wzór P = ½·e·f
+    albo zakłada kąty proste w punkcie przecięcia.
+  correct_reasoning: Prostopadłość przekątnych występuje w rombie, kwadracie i deltoidzie. Wzór P = ½·e·f
+    wolno stosować tylko wtedy, gdy przekątne są prostopadłe. W ogólnym równoległoboku kąt między przekątnymi
+    jest dowolny.
+  severity: 4
+- name: „Przekątna prostokąta dzieli jego kąt na dwa kąty po 45°”
+  incorrect_reasoning: 'Skoro kąt prostokąta ma 90°, a przekątna ''przechodzi przez środek'', to dzieli
+    go na połowy: 45° i 45°.'
+  correct_reasoning: Przekątna dzieli kąt prosty na dwa kąty o miarach α i 90° − α, gdzie tg α = b/a.
+    Równe połówki (45°) występują wyłącznie w kwadracie, bo tylko wtedy a = b. Przekątna prostokąta jest
+    dwusieczną kąta tylko w kwadracie.
+  severity: 4
+- name: „W każdym trapezie kąty przy podstawie są równe”
+  incorrect_reasoning: Uczeń rysuje trapez symetrycznie i automatycznie przyjmuje ∡A = ∡B, choć w treści
+    nie ma informacji o równych ramionach.
+  correct_reasoning: 'Równość kątów przy każdej podstawie zachodzi tylko w trapezie równoramiennym. W
+    dowolnym trapezie pewna jest jedynie zależność: kąty przy tym samym ramieniu sumują się do 180°.'
+  severity: 4
+- name: Mylenie kątów „przy ramieniu” z kątami „przy podstawie”
+  incorrect_reasoning: Uczeń zapisuje, że kąty przy tej samej podstawie sumują się do 180° (np. ∡A + ∡B
+    = 180°) i otrzymuje błędne wyniki.
+  correct_reasoning: 'Do 180° sumują się kąty leżące przy tym samym ramieniu, czyli po jednej stronie
+    trapezu: ∡A + ∡D = 180° oraz ∡B + ∡C = 180° (dla AB ∥ CD). Warto na rysunku pokolorować parami kąty
+    przy każdym ramieniu.'
+  severity: 3
+- name: „Trapez równoramienny to trapez o równych ramionach — bez żadnych zastrzeżeń”
+  incorrect_reasoning: Uczeń stwierdza, że równoległobok, mając równe boki przeciwległe (ramiona), jest
+    trapezem równoramiennym, i przypisuje mu równe przekątne.
+  correct_reasoning: W definicji trapezu równoramiennego wymaga się, aby równe ramiona NIE były równoległe.
+    Równoległobok, który nie jest prostokątem, ma równe ramiona, ale różne przekątne i niekończące się
+    kąty przy podstawie równe — nie jest trapezem równoramiennym.
+  severity: 3
+- name: „Przekątna rombu jest dwusieczną, więc przekątna każdego równoległoboku też”
+  incorrect_reasoning: Uczeń dzieli kąt równoległoboku przez 2, aby dostać kąt między przekątną a bokiem.
+  correct_reasoning: Przekątna dzieli kąt na połowy tylko wtedy, gdy trójkąt utworzony przez dwa boki
+    i przekątną jest równoramienny, czyli gdy sąsiednie boki są równe — a to warunek rombu (kwadratu).
+    W ogólnym równoległoboku kąt między przekątną a bokiem liczymy z sumy kątów trójkąta lub trygonometrycznie.
+  severity: 4
+- name: Podstawianie całych przekątnych zamiast ich połówek
+  incorrect_reasoning: W rombie o przekątnych e i f uczeń pisze e² + f² = a² (zamiast (e/2)² + (f/2)²
+    = a²) i otrzymuje zbyt duży bok.
+  correct_reasoning: 'Przekątne rombu dzielą się na połowy, więc przyprostokątnymi trójkąta prostokątnego
+    są e/2 i f/2, a przeciwprostokątną — bok a. Poprawnie: (e/2)² + (f/2)² = a², czyli e² + f² = 4a².'
+  severity: 4
+- name: „Suma kątów czworokąta wynosi 180°”
+  incorrect_reasoning: Uczeń przenosi wzór z trójkąta i przy układaniu równania z kątami zapisuje sumę
+    180°.
+  correct_reasoning: 'Przekątna dzieli czworokąt na dwa trójkąty, więc suma kątów wynosi 2 · 180° = 360°.
+    Wzór ogólny dla n-kąta: (n − 2) · 180°.'
+  severity: 5
+- name: „Kąt między przekątnymi zawsze policzę jako kąt prosty w trapezie równoramiennym”
+  incorrect_reasoning: Symetria trapezu równoramiennego sugeruje uczniowi, że przekątne przecinają się
+    pod kątem prostym i dzielą na połowy.
+  correct_reasoning: W trapezie równoramiennym przekątne są równe, ale nie muszą być prostopadłe ani nie
+    dzielą się na połowy — punkt przecięcia dzieli je w stosunku długości podstaw. Prostopadłość jest
+    dodatkowym, szczególnym warunkiem, który trzeba mieć podany.
+  severity: 3
+- name: Błędne wnioskowanie z hierarchii czworokątów
+  incorrect_reasoning: „Każdy równoległobok jest rombem”, „każdy romb jest kwadratem” — uczeń odwraca
+    implikacje przy ocenie prawdziwości zdań.
+  correct_reasoning: 'Implikacje idą tylko w jedną stronę: kwadrat ⟹ romb ⟹ równoległobok ⟹ trapez oraz
+    kwadrat ⟹ prostokąt ⟹ równoległobok. Odwrotne zdania obala się kontrprzykładem (np. romb o kącie 60°
+    nie jest kwadratem).'
+  severity: 3

@@ -1,0 +1,328 @@
+section: ciag-wzor-ogolny
+name: Ciąg i jego wyrazy; wzór ogólny
+scope: Sequence as a function on the positive integers; computing terms from a general formula; the index-term
+  correspondence.
+requirements:
+- VI.1
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:03:15.431446'
+  approved_at: '2026-08-28T18:28:05.622349'
+  approved_by: reviewer
+concepts:
+- name: Ciąg (nieskończony)
+  description: Ciąg nieskończony to funkcja określona na zbiorze liczb naturalnych dodatnich N+ = {1,
+    2, 3, ...}. Wartość tej funkcji dla argumentu n oznaczamy a_n i nazywamy n-tym wyrazem ciągu; sam
+    ciąg zapisujemy (a_n).
+  explanation: 'Myśl o ciągu jak o maszynce: wrzucasz numer miejsca w kolejce (n = 1, 2, 3, ...), a wypada
+    liczba stojąca na tym miejscu. Jedyna różnica w stosunku do zwykłej funkcji to dziedzina: zamiast
+    przedziału liczb rzeczywistych mamy „ponumerowane" argumenty 1, 2, 3, ....'
+  difficulty: 2
+- name: Wyraz ciągu i jego indeks
+  description: Symbol a_n oznacza wyraz ciągu (a_n) stojący na miejscu n; liczbę n nazywamy indeksem (numerem)
+    wyrazu.
+  explanation: 'Indeks n to adres (które to miejsce), a a_n to zawartość (jaka liczba tam stoi). Zapis
+    a_5 = 12 czytamy: „piąty wyraz ciągu jest równy 12", a nie „a razy 5". Indeks jest zawsze liczbą naturalną
+    dodatnią, wartość wyrazu może być dowolną liczbą rzeczywistą (także ujemną lub ułamkiem).'
+  difficulty: 2
+- name: Odpowiedniość indeks–wyraz
+  description: Każdemu indeksowi n odpowiada dokładnie jeden wyraz a_n, ale ta sama wartość może pojawić
+    się przy różnych indeksach.
+  explanation: 'To po prostu warunek bycia funkcją: z n do a_n strzałka jest jedna. W drugą stronę już
+    nie musi być jednoznacznie — np. w ciągu a_n = (n-3)^2 mamy a_2 = a_4 = 1. Dlatego pytanie „którym
+    wyrazem ciągu jest liczba 1?" może mieć kilka odpowiedzi albo żadnej.'
+  difficulty: 3
+- name: Wzór ogólny ciągu
+  description: Wzór ogólny (wzór na n-ty wyraz) to przepis a_n = f(n) pozwalający obliczyć dowolny wyraz
+    ciągu bezpośrednio, przez podstawienie numeru n.
+  explanation: Wzór ogólny to „instrukcja obsługi" ciągu. Litera n we wzorze jest miejscem, w które wstawiamy
+    konkretną liczbę naturalną. Znając wzór ogólny, nie musimy znać wcześniejszych wyrazów, żeby obliczyć
+    np. setny wyraz.
+  difficulty: 2
+- name: Ciąg skończony
+  description: Ciąg skończony o n wyrazach to funkcja określona na zbiorze {1, 2, 3, ..., k} dla pewnej
+    liczby naturalnej k ≥ 1.
+  explanation: Różni się od nieskończonego tylko tym, że kolejka ma koniec. Zapis (a_n) dla n = 1, 2,
+    ..., 10 znaczy, że pytanie o a_11 nie ma sensu — taki wyraz nie istnieje.
+  difficulty: 2
+- name: Początkowe wyrazy ciągu
+  description: Wyrazy a_1, a_2, a_3, ... otrzymane przez kolejne podstawianie n = 1, 2, 3, ... do wzoru
+    ogólnego.
+  explanation: 'Wypisanie kilku pierwszych wyrazów to najlepszy sposób, by „zobaczyć" ciąg: czy rośnie,
+    czy maleje, czy zmienia znaki, czy jest stały. Uwaga: pierwszym wyrazem jest a_1, chyba że w zadaniu
+    wyraźnie zaznaczono, że ciąg zaczyna się od n = 0.'
+  difficulty: 1
+- name: Wyrazy o indeksach wyrażonych symbolicznie (a_{n+1}, a_{2n}, a_{n-1})
+  description: Aby otrzymać a_{n+1}, a_{2n} czy a_{n-1}, wstawiamy do wzoru ogólnego w miejsce KAŻDEGO
+    n odpowiednio wyrażenie n+1, 2n, n-1.
+  explanation: 'Wzór ogólny działa dla dowolnego dopuszczalnego argumentu, także dla argumentu będącego
+    wyrażeniem. Traktuj n jak puste okienko: a_□ = 3□ - 2, więc a_{n+1} = 3(n+1) - 2 = 3n + 1. Nawiasy
+    są tu obowiązkowe.'
+  difficulty: 3
+- name: Ciąg o wyrazach naprzemiennych ((-1)^n)
+  description: Czynnik (-1)^n przyjmuje wartość -1 dla n nieparzystych i 1 dla n parzystych; czynnik (-1)^{n+1}
+    działa odwrotnie.
+  explanation: 'To standardowy sposób na „przełącznik znaku". Sprawdzaj go zawsze na n = 1 i n = 2: jeśli
+    chcesz, by pierwszy wyraz był dodatni, użyj (-1)^{n+1}.'
+  difficulty: 3
+- name: Wykres ciągu
+  description: Wykresem ciągu (a_n) jest zbiór punktów o współrzędnych (n, a_n) dla n ∈ N+ — zbiór punktów
+    odosobnionych (nie linia ciągła).
+  explanation: Ponieważ dziedziną są tylko liczby 1, 2, 3, ..., wykres to „kropki" na płaszczyźnie, jedna
+    nad każdą liczbą naturalną. Punktów nie łączymy odcinkami ani krzywą — między nimi ciąg nie ma żadnych
+    wartości.
+  difficulty: 3
+- name: Dziedzinowe ograniczenia we wzorze ogólnym
+  description: 'Wzór ogólny musi mieć sens dla każdego n ∈ N+ (lub dla każdego n z rozważanego zakresu):
+    mianownik nie może się zerować, a wyrażenie pod pierwiastkiem parzystego stopnia musi być nieujemne.'
+  explanation: Np. a_n = 1/(n-3) nie określa ciągu na całym N+, bo dla n = 3 mianownik jest zerem. Warto
+    sprawdzić to odruchowo przed liczeniem wyrazów.
+  difficulty: 3
+- name: Czy dana liczba jest wyrazem ciągu?
+  description: Liczba c jest wyrazem ciągu (a_n) wtedy i tylko wtedy, gdy równanie a_n = c ma rozwiązanie
+    n będące liczbą naturalną dodatnią.
+  explanation: 'Sam fakt, że równanie ma rozwiązanie, nie wystarcza — musi ono być „legalnym numerem".
+    Rozwiązania typu n = 4,5 albo n = -2 oznaczają odpowiedź: nie, ta liczba nie jest wyrazem ciągu.'
+  difficulty: 3
+- name: Ciąg stały
+  description: 'Ciąg, którego wszystkie wyrazy są równe: a_n = c dla każdego n.'
+  explanation: Wzór ogólny nie musi „widocznie" zawierać n — np. a_n = (n+1) - n = 1 to ciąg stały. Dobrze
+    pokazuje, że o ciągu decydują wartości, a nie wygląd wzoru.
+  difficulty: 2
+formulas:
+- name: Definicja wyrazu przez wzór ogólny
+  latex_raw: a_n=f(n),\qquad n\in\mathbb{N}_+
+  conditions: f musi być określone dla każdej liczby naturalnej dodatniej n (lub dla n z zakresu ciągu
+    skończonego)
+  description: Obliczenie konkretnego wyrazu polega na podstawieniu liczby w miejsce n.
+- name: Kolejne wyrazy
+  latex_raw: a_1=f(1),\quad a_2=f(2),\quad a_3=f(3),\ \dots
+  conditions: ciąg zaczyna się od n = 1 (standard w Maturze)
+  description: Jeśli w zadaniu podano n ≥ 0, pierwszym wyrazem jest a_0.
+- name: Wyraz następny
+  latex_raw: a_{n+1}=f(n+1)
+  conditions: n ∈ N+
+  description: Wstawiamy (n+1) w miejsce każdego n; a_{n+1} ≠ a_n + 1.
+- name: Wyraz o indeksie podwojonym
+  latex_raw: a_{2n}=f(2n)
+  conditions: n ∈ N+
+  description: Na ogół a_{2n} ≠ 2a_n.
+- name: Przełącznik znaku
+  latex_raw: (-1)^n=\begin{cases}-1,& n \text{ nieparzyste}\\ \ \ 1,& n \text{ parzyste}\end{cases}\qquad
+    (-1)^{n+1}=-(-1)^n
+  conditions: n ∈ N+
+  description: Sprawdzaj na n = 1 i n = 2.
+- name: Warunek bycia wyrazem ciągu
+  latex_raw: c \text{ jest wyrazem ciągu } (a_n) \iff \exists\, n\in\mathbb{N}_+:\ f(n)=c
+  conditions: —
+  description: Po rozwiązaniu równania trzeba sprawdzić, czy n jest liczbą naturalną dodatnią.
+- name: Różnica kolejnych wyrazów
+  latex_raw: a_{n+1}-a_n=f(n+1)-f(n)
+  conditions: n ∈ N+
+  description: Wygodne narzędzie do porównywania sąsiednich wyrazów obliczonych ze wzoru ogólnego.
+- name: Wykres ciągu
+  latex_raw: \{(n,a_n):n\in\mathbb{N}_+\}
+  conditions: —
+  description: Punkty odosobnione, których nie łączymy linią.
+methods:
+- name: Obliczanie wyrazu o danym indeksie
+  when_to_use: Gdy dany jest wzór ogólny a_n = f(n) i pytanie o konkretny wyraz, np. a_1, a_5, a_{20}.
+  steps:
+  - Zapisz wzór ogólny i zaznacz, że n zastępujemy liczbą.
+  - Wstaw daną liczbę w miejsce KAŻDEGO wystąpienia n, otaczając ją nawiasem (szczególnie przy potęgach
+    i minusach).
+  - 'Wykonaj działania w kolejności: nawiasy, potęgi, mnożenie/dzielenie, dodawanie/odejmowanie.'
+  - Uprość wynik do postaci liczby całkowitej lub ułamka nieskracalnego.
+  - Sprawdź sensowność (np. czy znak wyniku zgadza się z budową wzoru).
+- name: Wypisywanie kilku początkowych wyrazów
+  when_to_use: Gdy trzeba poznać „charakter" ciągu albo podać a_1, a_2, a_3, a_4.
+  steps:
+  - Ustal, od jakiego n zaczyna się ciąg (domyślnie n = 1).
+  - Podstawiaj kolejno n = 1, 2, 3, 4, ... i licz wartości.
+  - 'Zapisz wyniki w kolejności, oddzielając przecinkami, np. (a_n): 1, 4, 9, 16, ....'
+  - Zauważ ewentualną prawidłowość (rosnące, malejące, naprzemienne znaki, stałe).
+- name: Wyznaczanie wyrazu o indeksie symbolicznym (a_{n+1}, a_{2n}, a_{n-1})
+  when_to_use: Przy porównywaniu sąsiednich wyrazów, sprawdzaniu tożsamości typu a_{n+1} - a_n = const,
+    dowodzeniu prostych własności.
+  steps:
+  - Przepisz wzór ogólny zastępując n symbolem pustego okienka.
+  - Wstaw w okienko całe wyrażenie (n+1), (2n) lub (n-1) — zawsze w nawiasie.
+  - Rozwiń nawiasy i uprość (redukcja wyrazów podobnych, skrócenie ułamka).
+  - Jeśli trzeba, wykonaj żądane działanie, np. odejmij a_n od a_{n+1} i uprość.
+- name: Sprawdzanie, czy dana liczba jest wyrazem ciągu
+  when_to_use: 'Pytania typu: „czy liczba 37 jest wyrazem ciągu?", „którym wyrazem ciągu jest liczba 0?".'
+  steps:
+  - Ułóż równanie f(n) = c.
+  - Rozwiąż je względem n (przekształcenia liniowe, mnożenie na krzyż przy ułamku, rozwiązanie równania
+    kwadratowego).
+  - Sprawdź, czy otrzymane n jest liczbą naturalną dodatnią; odrzuć rozwiązania ujemne, zerowe i niecałkowite.
+  - 'Sformułuj odpowiedź: podaj numer wyrazu albo napisz, że liczba c nie jest wyrazem ciągu.'
+  - (Opcjonalnie) zweryfikuj, podstawiając znalezione n do wzoru.
+- name: Wyznaczanie parametru we wzorze ogólnym
+  when_to_use: Gdy wzór zawiera niewiadomy parametr (np. a_n = n^2 + kn) i podana jest wartość któregoś
+    wyrazu.
+  steps:
+  - Podstaw do wzoru znany indeks n, otrzymując równanie z parametrem.
+  - Przyrównaj do podanej wartości wyrazu.
+  - Rozwiąż równanie względem parametru.
+  - Wpisz znaleziony parametr do wzoru ogólnego i sprawdź warunek zadania.
+  - Odpowiedz na właściwe pytanie (często dopiero teraz liczymy inny wyraz).
+- name: Odgadywanie prostego wzoru ogólnego z początkowych wyrazów
+  when_to_use: Gdy dane są pierwsze wyrazy o czytelnej prawidłowości i trzeba zaproponować wzór.
+  steps:
+  - 'Ponumeruj wyrazy: pod każdym zapisz jego indeks n.'
+  - 'Poszukaj związku: różnice stałe (wzór liniowy an + b), kwadraty/sześciany, ułamki n/(n+1), naprzemienne
+    znaki ((-1)^n lub (-1)^{n+1}).'
+  - Zapisz hipotezę wzoru ogólnego.
+  - Sprawdź ją, podstawiając n = 1, 2, 3 i porównując z danymi wyrazami; w razie niezgodności popraw (najczęściej
+    przesunięcie indeksu o 1).
+- name: Rysowanie wykresu ciągu
+  when_to_use: Gdy zadanie prosi o przedstawienie ciągu graficznie lub o odczyt wyrazu z rysunku.
+  steps:
+  - Oblicz kilka początkowych wyrazów.
+  - Na osi poziomej zaznacz wartości n = 1, 2, 3, ..., na pionowej wartości wyrazów.
+  - Zaznacz punkty (n, a_n) jako kropki.
+  - Nie łącz punktów linią — podpisz ewentualnie wartości.
+examples:
+- statement: Ciąg (a_n) jest określony wzorem a_n = 2n^2 - 5 dla n ≥ 1. Oblicz a_1, a_3 i a_{10}.
+  worked_solution: |-
+    Podstawiamy kolejno liczby w miejsce n.
+    a_1 = 2·1^2 - 5 = 2·1 - 5 = 2 - 5 = -3.
+    a_3 = 2·3^2 - 5 = 2·9 - 5 = 18 - 5 = 13.
+    a_{10} = 2·10^2 - 5 = 2·100 - 5 = 200 - 5 = 195.
+    Odpowiedź: a_1 = -3, a_3 = 13, a_{10} = 195.
+    Uwaga: potęgowanie wykonujemy przed mnożeniem, więc 2·3^2 = 2·9 = 18, a nie (2·3)^2 = 36.
+  difficulty: 1
+- statement: Dany jest ciąg a_n = (-1)^n · (3n - 1)/(n + 1). Wypisz cztery początkowe wyrazy tego ciągu.
+  worked_solution: |-
+    n = 1: (-1)^1 = -1, (3·1 - 1)/(1 + 1) = 2/2 = 1, więc a_1 = -1·1 = -1.
+    n = 2: (-1)^2 = 1, (3·2 - 1)/(2 + 1) = 5/3, więc a_2 = 5/3.
+    n = 3: (-1)^3 = -1, (3·3 - 1)/(3 + 1) = 8/4 = 2, więc a_3 = -2.
+    n = 4: (-1)^4 = 1, (3·4 - 1)/(4 + 1) = 11/5, więc a_4 = 11/5.
+    Odpowiedź: -1, 5/3, -2, 11/5.
+    Widać, że wyrazy o indeksach nieparzystych są ujemne, a o parzystych dodatnie — tak działa czynnik (-1)^n.
+  difficulty: 2
+- statement: Ciąg (a_n) określony jest wzorem a_n = n^2 - 6n + 8. Sprawdź, czy liczba 3 jest wyrazem tego
+    ciągu, i czy wyrazem tego ciągu jest liczba 1.
+  worked_solution: |-
+    Część 1. Rozwiązujemy równanie n^2 - 6n + 8 = 3, czyli n^2 - 6n + 5 = 0.
+    Δ = 36 - 20 = 16, √Δ = 4, n = (6 - 4)/2 = 1 lub n = (6 + 4)/2 = 5.
+    Oba rozwiązania są liczbami naturalnymi dodatnimi, więc liczba 3 jest wyrazem ciągu — i to dwukrotnie: a_1 = 3 oraz a_5 = 3.
+    Sprawdzenie: a_1 = 1 - 6 + 8 = 3, a_5 = 25 - 30 + 8 = 3. ✓
+    Część 2. Równanie n^2 - 6n + 8 = 1, czyli n^2 - 6n + 7 = 0.
+    Δ = 36 - 28 = 8, √Δ = 2√2, n = (6 ± 2√2)/2 = 3 ± √2.
+    Liczby 3 + √2 ≈ 4,41 i 3 - √2 ≈ 1,59 nie są liczbami naturalnymi, więc liczba 1 NIE jest wyrazem tego ciągu.
+    Wniosek: ten sam wyraz może odpowiadać dwóm różnym indeksom, a rozwiązywalność równania w liczbach rzeczywistych nie wystarcza — indeks musi być naturalny.
+  difficulty: 3
+- statement: Ciąg (a_n) dany jest wzorem a_n = (2n - 1)/(n + 3). Wyznacz a_{n+1} oraz oblicz i uprość
+    różnicę a_{n+1} - a_n.
+  worked_solution: |-
+    Wyraz następny otrzymujemy, wstawiając (n+1) w miejsce każdego n:
+    a_{n+1} = (2(n+1) - 1)/((n+1) + 3) = (2n + 2 - 1)/(n + 4) = (2n + 1)/(n + 4).
+    Różnica:
+    a_{n+1} - a_n = (2n + 1)/(n + 4) - (2n - 1)/(n + 3).
+    Sprowadzamy do wspólnego mianownika (n + 4)(n + 3):
+    licznik = (2n + 1)(n + 3) - (2n - 1)(n + 4) = (2n^2 + 6n + n + 3) - (2n^2 + 8n - n - 4) = (2n^2 + 7n + 3) - (2n^2 + 7n - 4) = 7.
+    Zatem a_{n+1} - a_n = 7/((n + 3)(n + 4)).
+    Dla każdego n ∈ N+ mianownik jest dodatni, więc różnica jest dodatnia — każdy następny wyraz jest większy od poprzedniego.
+    Kontrola liczbowa: a_1 = 1/4, a_2 = 3/5; różnica 3/5 - 1/4 = 7/20 = 7/(4·5). ✓
+  difficulty: 4
+- statement: Wzór ogólny ciągu ma postać a_n = n^2 + kn - 12, gdzie k jest pewną liczbą rzeczywistą. Wiadomo,
+    że a_4 = 8. Wyznacz k, a następnie sprawdź, czy liczba -12 jest wyrazem tego ciągu.
+  worked_solution: |-
+    Krok 1. Podstawiamy n = 4: a_4 = 16 + 4k - 12 = 4 + 4k.
+    Z warunku 4 + 4k = 8, więc 4k = 4, czyli k = 1.
+    Wzór ogólny: a_n = n^2 + n - 12.
+    Krok 2. Rozwiązujemy n^2 + n - 12 = -12, czyli n^2 + n = 0, n(n + 1) = 0.
+    Stąd n = 0 lub n = -1. Żadna z tych liczb nie należy do N+ (ciąg zaczyna się od n = 1), więc liczba -12 nie jest wyrazem tego ciągu.
+    Dla porządku: a_1 = 1 + 1 - 12 = -10, a_2 = 4 + 2 - 12 = -6 — istotnie żaden wyraz nie jest równy -12.
+    To klasyczna pułapka: rozwiązanie n = 0 formalnie istnieje, ale zerowego wyrazu ciąg nie ma.
+  difficulty: 4
+objectives:
+- statement: Podać definicję ciągu jako funkcji określonej na zbiorze liczb naturalnych dodatnich i wyjaśnić
+    znaczenie symboli a_n oraz n.
+  bloom_level: Rozumienie
+- statement: Obliczyć wyraz ciągu o zadanym indeksie na podstawie wzoru ogólnego, także gdy wzór zawiera
+    potęgi, ułamki, wartość bezwzględną lub czynnik (-1)^n.
+  bloom_level: Zastosowanie
+- statement: Wypisać kilka początkowych wyrazów ciągu danego wzorem ogólnym i opisać zaobserwowaną prawidłowość
+    (wzrost, spadek, naprzemienność znaków, stałość).
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć wyrazy o indeksach wyrażonych symbolicznie (a_{n+1}, a_{n-1}, a_{2n}) oraz uprościć
+    wyrażenia typu a_{n+1} - a_n.
+  bloom_level: Zastosowanie
+- statement: Rozstrzygnąć, czy dana liczba jest wyrazem ciągu, i wyznaczyć jej indeks, rozwiązując równanie
+    a_n = c z warunkiem n ∈ N+.
+  bloom_level: Analiza
+- statement: Wyznaczyć nieznany parametr występujący we wzorze ogólnym na podstawie informacji o wartości
+    jednego z wyrazów.
+  bloom_level: Zastosowanie
+- statement: Zaproponować wzór ogólny prostego ciągu na podstawie kilku jego początkowych wyrazów i zweryfikować
+    hipotezę przez podstawienie.
+  bloom_level: Tworzenie
+- statement: Przedstawić ciąg graficznie jako zbiór punktów odosobnionych (n, a_n) i odczytać wyraz z
+    takiego wykresu.
+  bloom_level: Zastosowanie
+- statement: Rozpoznać i skorygować typowe błędy w obliczaniu wyrazów ciągu (m.in. a_{n+1} = a_n + 1,
+    a_{2n} = 2a_n, pominięcie warunku naturalności indeksu).
+  bloom_level: Ocena
+misconceptions:
+- name: Ciąg zaczyna się od n = 0
+  incorrect_reasoning: Uczeń podstawia n = 0 i podaje a_0 jako pierwszy wyraz ciągu, bo „liczby naturalne
+    zaczynają się od zera".
+  correct_reasoning: Ciąg jest z definicji funkcją określoną na zbiorze liczb naturalnych DODATNICH, więc
+    pierwszym wyrazem jest a_1. Wartość a_0 rozważamy tylko wtedy, gdy zadanie wprost podaje zakres n
+    ≥ 0.
+  severity: 4
+- name: a_{n+1} = a_n + 1
+  incorrect_reasoning: Uczeń oblicza a_n, a potem dodaje 1, twierdząc, że tak powstaje następny wyraz.
+  correct_reasoning: 'a_{n+1} to wartość funkcji dla argumentu n+1, czyli f(n+1): trzeba wstawić (n+1)
+    w miejsce każdego n we wzorze. Np. dla a_n = n^2 mamy a_{n+1} = (n+1)^2 = n^2 + 2n + 1, a nie n^2
+    + 1.'
+  severity: 5
+- name: a_{2n} = 2·a_n
+  incorrect_reasoning: Uczeń mnoży wyraz przez 2, uznając, że podwojenie indeksu podwaja wartość.
+  correct_reasoning: 'Indeks jest argumentem, nie czynnikiem. a_{2n} = f(2n): np. dla a_n = n^2 + 1 mamy
+    a_{2n} = 4n^2 + 1, podczas gdy 2a_n = 2n^2 + 2.'
+  severity: 4
+- name: Czytanie a_n jako iloczynu a·n
+  incorrect_reasoning: Uczeń traktuje a_5 jak „a razy 5" i próbuje wyznaczać nieistniejące a.
+  correct_reasoning: a_n to jeden symbol — nazwa n-tego wyrazu, indeks pisany u dołu. Nie ma tu żadnego
+    mnożenia.
+  severity: 3
+- name: Zapominanie o warunku n ∈ N+ przy sprawdzaniu, czy liczba jest wyrazem ciągu
+  incorrect_reasoning: Uczeń rozwiązuje równanie a_n = c, dostaje np. n = 3,5 lub n = -2 i odpowiada,
+    że liczba c jest wyrazem ciągu.
+  correct_reasoning: Wyraz istnieje tylko dla naturalnego dodatniego numeru miejsca. Rozwiązania niecałkowite,
+    ujemne i zerowe należy odrzucić i odpowiedzieć, że c nie jest wyrazem ciągu.
+  severity: 5
+- name: Wykres ciągu jako linia ciągła
+  incorrect_reasoning: Uczeń rysuje parabolę lub prostą, bo wzór a_n = n^2 - 2n „wygląda jak funkcja kwadratowa".
+  correct_reasoning: Dziedziną są tylko liczby 1, 2, 3, ..., więc wykresem jest zbiór punktów odosobnionych
+    (n, a_n). Krzywa może służyć najwyżej jako pomocnicza linia, ale nie jest wykresem ciągu.
+  severity: 3
+- name: Brak nawiasów przy podstawianiu
+  incorrect_reasoning: Dla a_n = (3n - 1)^2 uczeń liczy a_2 = 3·2 - 1^2 = 5 albo dla a_n = -n^2 przy n
+    = 3 pisze a_3 = 9.
+  correct_reasoning: 'Podstawiamy liczbę w nawiasie i zachowujemy kolejność działań: a_2 = (3·2 - 1)^2
+    = 5^2 = 25; a_3 = -(3^2) = -9.'
+  severity: 4
+- name: Mylenie znaków przy (-1)^n
+  incorrect_reasoning: Uczeń przyjmuje, że (-1)^n daje plus dla n = 1, bo „pierwszy wyraz powinien być
+    dodatni".
+  correct_reasoning: (-1)^1 = -1, więc wyrazy o indeksach nieparzystych są ujemne. Jeśli pierwszy wyraz
+    ma być dodatni, wzór musi zawierać (-1)^{n+1}. Zawsze sprawdzamy na n = 1 i n = 2.
+  severity: 3
+- name: Utożsamianie wartości wyrazu z jego numerem
+  incorrect_reasoning: Na pytanie „którym wyrazem ciągu jest liczba 20?" uczeń odpowiada „a_{20}" albo
+    podaje wartość zamiast indeksu.
+  correct_reasoning: Trzeba rozwiązać równanie a_n = 20 i podać znalezione n. Numer wyrazu i jego wartość
+    to dwie różne liczby.
+  severity: 4
+- name: Ignorowanie dziedziny wzoru
+  incorrect_reasoning: Uczeń bez namysłu liczy wyrazy ciągu a_n = 1/(n - 4), w tym a_4.
+  correct_reasoning: Wzór musi mieć sens dla każdego n ∈ N+. Tutaj dla n = 4 mianownik jest zerem, więc
+    taki wzór nie określa ciągu na całym N+ (chyba że zakres n został ograniczony).
+  severity: 3

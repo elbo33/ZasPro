@@ -1,0 +1,313 @@
+section: pola-obwody-figur-podobnych
+name: Pola i obwody figur podobnych
+scope: Ratio of perimeters and ratio of areas of similar figures, and problems that use them.
+requirements:
+- VIII.9
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:00:36.394559'
+  approved_at: '2026-08-28T18:28:19.409210'
+  approved_by: reviewer
+concepts:
+- name: Figury podobne
+  description: 'Dwie figury są podobne, gdy jedna jest powiększeniem lub pomniejszeniem drugiej: mają
+    jednakowe kształty, tzn. odpowiadające sobie kąty są równe, a odpowiadające sobie odcinki są proporcjonalne.'
+  explanation: 'Myśl o tym jak o powiększaniu zdjęcia: kształt zostaje ten sam, zmienia się tylko ''rozmiar''.
+    Wszystkie długości mnożą się przez tę samą liczbę.'
+  difficulty: 1
+- name: Skala podobieństwa k
+  description: 'Liczba dodatnia k taka, że każdy odcinek figury F'' jest k razy dłuższy od odpowiadającego
+    mu odcinka figury F: a'' = k·a.'
+  explanation: 'k to jedyna liczba, którą trzeba znaleźć w większości zadań. Wyznacza się ją, dzieląc
+    długość odcinka figury ''nowej'' przez długość odpowiadającego odcinka figury ''starej''. Zawsze pilnuj
+    kolejności dzielenia: k > 1 oznacza powiększenie, 0 < k < 1 — pomniejszenie.'
+  difficulty: 2
+- name: Odcinki odpowiadające sobie
+  description: 'Odcinki leżące w tych samych miejscach obu figur: bok naprzeciw równych kątów, odpowiednie
+    wysokości, środkowe, przekątne, promienie okręgów wpisanych i opisanych.'
+  explanation: Skala k dotyczy wszystkich elementów liniowych, nie tylko boków. Jeśli trójkąty są podobne
+    w skali 3, to i ich wysokości, i obwody, i promienie okręgów opisanych są 3 razy większe.
+  difficulty: 2
+- name: Cechy podobieństwa trójkątów
+  description: 'Trójkąty są podobne, gdy: (kk) mają dwa kąty odpowiednio równe, albo (bbb) ich boki są
+    proporcjonalne, albo (bkb) dwa boki są proporcjonalne, a kąty między nimi równe.'
+  explanation: W zadaniach o polach najczęściej używa się cechy (kk) — wystarczy wskazać dwie pary równych
+    kątów (np. kąty odpowiadające przy prostych równoległych i kąt wspólny).
+  difficulty: 2
+- name: Obwód figury
+  description: Suma długości wszystkich boków (lub długość brzegu figury, np. okręgu).
+  explanation: Obwód jest wielkością liniową — składa się z długości, więc zmienia się dokładnie tak jak
+    pojedynczy bok.
+  difficulty: 1
+- name: Pole figury
+  description: Miara powierzchni figury wyrażana w jednostkach kwadratowych (cm², m², km²).
+  explanation: Pole jest 'iloczynem dwóch długości' (np. a·b, ½a·h), więc przy skalowaniu mnoży się przez
+    k dwa razy — stąd k².
+  difficulty: 1
+- name: Zależność obwodów figur podobnych
+  description: Jeżeli figury są podobne w skali k, to stosunek ich obwodów też jest równy k.
+  explanation: Każdy bok mnoży się przez k, więc i suma boków mnoży się przez k. Skalę można więc odczytać
+    zarówno ze stosunku boków, jak i ze stosunku obwodów.
+  difficulty: 2
+- name: Zależność pól figur podobnych
+  description: Jeżeli figury są podobne w skali k, to stosunek ich pól jest równy k².
+  explanation: 'To najważniejszy fakt tej sekcji: podwojenie wymiarów daje 4 razy większe pole, potrojenie
+    — 9 razy większe. Odwrotnie: znając stosunek pól, skalę otrzymujemy przez pierwiastkowanie.'
+  difficulty: 3
+- name: Figury przystające jako przypadek szczególny
+  description: Figury przystające to figury podobne w skali k = 1; mają równe obwody i równe pola.
+  explanation: 'Dobra kontrola sensowności: gdy z rachunków wychodzi k = 1, figury muszą być identyczne
+    co do rozmiaru.'
+  difficulty: 1
+- name: Skala odwrotna
+  description: Jeśli figura F' jest podobna do F w skali k, to F jest podobna do F' w skali 1/k.
+  explanation: 'Zawsze zapisz, którą figurę traktujesz jako ''pierwszą''. Zamiana ról odwraca skalę: 3
+    zmienia się w 1/3, a stosunek pól 9 w 1/9.'
+  difficulty: 2
+- name: Skala mapy (planu)
+  description: 'Zapis 1 : s oznacza, że 1 jednostka długości na mapie odpowiada s takim samym jednostkom
+    w terenie.'
+  explanation: Mapa i teren to figury podobne w skali s. Dlatego długości mnożymy przez s, ale pola przez
+    s² — i to jest źródłem większości błędów w zadaniach o mapach.
+  difficulty: 3
+- name: Trójkąt odcięty prostą równoległą do boku
+  description: Prosta równoległa do boku trójkąta, przecinająca dwa pozostałe boki, odcina trójkąt podobny
+    do wyjściowego.
+  explanation: 'Standardowa konfiguracja: kąt przy wspólnym wierzchołku jest wspólny, a dwa dalsze kąty
+    równe jako odpowiadające. Pole odciętego trapezu liczy się jako różnica pól dwóch podobnych trójkątów.'
+  difficulty: 3
+- name: Procentowa zmiana pola przy skalowaniu
+  description: Powiększenie wszystkich wymiarów o p% oznacza skalę k = 1 + p/100, a pole rośnie k² razy,
+    czyli o (k² − 1)·100%.
+  explanation: Wzrost wymiarów o 20% nie daje wzrostu pola o 20%, lecz o 44%, bo 1,2² = 1,44.
+  difficulty: 3
+formulas:
+- name: Definicja skali podobieństwa
+  latex_raw: k=\frac{a'}{a}=\frac{b'}{b}=\frac{c'}{c}>0
+  conditions: a, b, c i a', b', c' to długości odpowiadających sobie odcinków figur podobnych F i F'.
+  description: Ta sama wartość k dla wszystkich par odpowiadających odcinków, także wysokości i przekątnych.
+- name: Stosunek obwodów figur podobnych
+  latex_raw: \frac{\mathrm{Obw}(F')}{\mathrm{Obw}(F)}=k
+  conditions: F' podobna do F w skali k.
+  description: Równoważnie Obw(F') = k·Obw(F).
+- name: Stosunek pól figur podobnych
+  latex_raw: \frac{P(F')}{P(F)}=k^{2}
+  conditions: F' podobna do F w skali k.
+  description: Równoważnie P(F') = k²·P(F).
+- name: Skala wyznaczona z pól
+  latex_raw: k=\sqrt{\frac{P(F')}{P(F)}}
+  conditions: F' podobna do F, oba pola dodatnie.
+  description: Bierzemy pierwiastek arytmetyczny, bo k > 0.
+- name: Związek pól z obwodami
+  latex_raw: \frac{P(F')}{P(F)}=\left(\frac{\mathrm{Obw}(F')}{\mathrm{Obw}(F)}\right)^{2}
+  conditions: F i F' podobne.
+  description: Wygodne, gdy w zadaniu podane są obwody, a nie pojedyncze boki.
+- name: Pole w skali mapy
+  latex_raw: P_{\text{teren}}=s^{2}\cdot P_{\text{mapa}}
+  conditions: 'Mapa w skali 1 : s, oba pola wyrażone w tych samych jednostkach kwadratowych.'
+  description: 'Długości: d_teren = s·d_mapa. Po obliczeniu warto zamienić cm² na m² lub km².'
+- name: Podział pola trójkąta prostą równoległą
+  latex_raw: \frac{P_{\triangle CDE}}{P_{\triangle CAB}}=k^{2},\qquad P_{ABED}=P_{\triangle CAB}\,(1-k^{2})
+  conditions: DE ∥ AB, D ∈ CA, E ∈ CB, k = CD/CA = DE/AB.
+  description: ABED jest trapezem — jego pole to różnica pól dwóch podobnych trójkątów.
+- name: Procentowa zmiana pola
+  latex_raw: \Delta P\%=(k^{2}-1)\cdot 100\%
+  conditions: Wszystkie wymiary figury zmienione w skali k.
+  description: Dla k < 1 wynik jest ujemny — pole maleje.
+methods:
+- name: Wyznaczanie skali podobieństwa
+  when_to_use: Za każdym razem, gdy w zadaniu pojawiają się dwie figury podobne — to zawsze pierwszy krok.
+  steps:
+  - Ustal, która figura jest 'pierwsza' (mianownik), a która 'druga' (licznik), i zapisz to.
+  - Wskaż parę odpowiadających sobie elementów liniowych (boki naprzeciw równych kątów, wysokości, obwody).
+  - 'Oblicz k jako iloraz: element figury drugiej podzielony przez element figury pierwszej.'
+  - 'Sprawdź sensowność: k > 1 dla powiększenia, 0 < k < 1 dla pomniejszenia.'
+- name: Obliczanie obwodu lub pola figury podobnej
+  when_to_use: Gdy znasz skalę (lub dane pozwalające ją wyznaczyć) oraz obwód/pole jednej z figur.
+  steps:
+  - Wyznacz skalę k zgodnie z ustaloną kolejnością figur.
+  - 'Do obwodu zastosuj mnożnik k: Obw'' = k·Obw.'
+  - 'Do pola zastosuj mnożnik k²: P'' = k²·P.'
+  - Zapisz wynik z właściwą jednostką (liniową dla obwodu, kwadratową dla pola).
+- name: Wyznaczanie skali ze stosunku pól
+  when_to_use: Gdy dane są pola obu figur (lub ich stosunek), a szukane są długości, obwód lub inny element
+    liniowy.
+  steps:
+  - Zapisz stosunek pól P'/P.
+  - Oblicz k = √(P'/P), upraszczając pierwiastek (np. √(25/9) = 5/3).
+  - Pomnóż znaną długość lub obwód figury pierwszej przez k.
+  - 'Sprawdź: czy większemu polu odpowiada większa długość?'
+- name: Zadania z niewiadomym polem i zadanym stosunku (metoda parametru t)
+  when_to_use: Gdy znany jest stosunek obwodów lub boków oraz suma lub różnica pól.
+  steps:
+  - 'Z danych wyznacz skalę k, a z niej stosunek pól k² = m : n.'
+  - Zapisz pola jako P = n·t i P' = m·t z jedną niewiadomą t > 0.
+  - Ułóż równanie z warunku na sumę lub różnicę pól i rozwiąż je.
+  - Podstaw t i podaj oba pola; sprawdź, czy ich stosunek zgadza się z k².
+- name: Pole trapezu odciętego prostą równoległą do boku trójkąta
+  when_to_use: 'W konfiguracji: trójkąt, prosta równoległa do jednego boku przecinająca dwa pozostałe
+    boki.'
+  steps:
+  - Uzasadnij podobieństwo małego trójkąta i całego (kąt wspólny + kąty odpowiadające).
+  - 'Wyznacz k jako stosunek odpowiadających boków (np. DE : AB lub CD : CA).'
+  - 'Oblicz pole małego trójkąta: P_mały = k²·P_duży (albo P_duży = P_mały/k²).'
+  - Pole trapezu = P_duży − P_mały.
+- name: Przeliczanie pól przy skali mapy lub planu
+  when_to_use: 'Gdy dana jest skala 1 : s i pole na mapie lub w terenie.'
+  steps:
+  - 'Zapisz skalę jako liczbę s (np. 1 : 25 000 → s = 25 000).'
+  - 'Z mapy do terenu: pomnóż pole przez s²; z terenu na mapę: podziel przez s².'
+  - Wykonaj rachunek w cm², korzystając z potęg liczby 10.
+  - 'Zamień jednostki: 1 m² = 10 000 cm², 1 km² = 10⁶ m² = 10¹⁰ cm².'
+- name: Obliczanie procentowej zmiany pola
+  when_to_use: Gdy wymiary figury zmieniono o dany procent i pytamy o zmianę pola (lub odwrotnie).
+  steps:
+  - 'Zamień zmianę wymiarów na skalę: wzrost o p% → k = 1 + p/100, spadek o p% → k = 1 − p/100.'
+  - Oblicz k².
+  - Zmiana pola w procentach to (k² − 1)·100%.
+  - 'W zadaniu odwrotnym: z danej zmiany pola oblicz k² , potem k = √(k²) i stąd zmianę wymiarów.'
+examples:
+- statement: Trójkąt o bokach 3 cm, 4 cm i 5 cm ma pole 6 cm². Trójkąt do niego podobny ma najdłuższy
+    bok równy 12,5 cm. Oblicz obwód i pole większego trójkąta.
+  worked_solution: |-
+    Najdłuższe boki odpowiadają sobie, więc skala podobieństwa (od małego do dużego) wynosi k = 12,5 : 5 = 2,5.
+    Obwód małego trójkąta: 3 + 4 + 5 = 12 cm.
+    Obwód rośnie k razy: Obw' = 2,5 · 12 = 30 cm.
+    Pole rośnie k² razy: k² = 2,5² = 6,25, więc P' = 6,25 · 6 = 37,5 cm².
+    Sprawdzenie: boki dużego trójkąta to 7,5; 10; 12,5, a jego pole (jest prostokątny) = ½·7,5·10 = 37,5 cm². Zgadza się.
+    Odpowiedź: obwód 30 cm, pole 37,5 cm².
+  difficulty: 1
+- statement: Dwa trójkąty podobne mają pola 18 cm² i 50 cm². Obwód mniejszego trójkąta wynosi 15 cm. Oblicz
+    obwód większego trójkąta.
+  worked_solution: |-
+    Stosunek pól: P'/P = 50/18 = 25/9.
+    Stosunek pól jest równy kwadratowi skali, więc k² = 25/9, czyli k = √(25/9) = 5/3.
+    Obwody są w stosunku k, zatem Obw' = (5/3)·15 = 25 cm.
+    Sprawdzenie: (25/15)² = (5/3)² = 25/9 = 50/18. Zgadza się.
+    Odpowiedź: 25 cm.
+  difficulty: 2
+- statement: W trójkącie ABC o polu 45 cm² bok AB ma długość 12 cm. Punkty D i E leżą odpowiednio na bokach
+    CA i CB, przy czym odcinek DE jest równoległy do AB i ma długość 8 cm. Oblicz pole trapezu ABED.
+  worked_solution: |-
+    Trójkąty CDE i CAB są podobne: kąt przy wierzchołku C jest wspólny, a kąty CDE i CAB są równe jako kąty odpowiadające przy prostych równoległych DE ∥ AB (cecha kk).
+    Skala podobieństwa trójkąta CDE do trójkąta CAB: k = DE/AB = 8/12 = 2/3.
+    Pole: P(CDE) = k²·P(CAB) = (2/3)²·45 = (4/9)·45 = 20 cm².
+    Trapez ABED jest różnicą trójkąta CAB i trójkąta CDE:
+    P(ABED) = 45 − 20 = 25 cm².
+    Odpowiedź: 25 cm².
+  difficulty: 3
+- statement: 'Działka rekreacyjna zaznaczona jest na mapie w skali 1 : 25 000 jako figura o polu 8 cm².
+    Jakie jest rzeczywiste pole działki? Podaj wynik w kilometrach kwadratowych.'
+  worked_solution: |-
+    Mapa i teren są figurami podobnymi w skali s = 25 000 (1 cm na mapie to 25 000 cm w terenie).
+    Pola są w stosunku s², więc:
+    P_teren = 8 · 25 000² cm² = 8 · 625 000 000 cm² = 5 000 000 000 cm² = 5·10⁹ cm².
+    Zamiana jednostek: 1 m² = 10 000 cm² = 10⁴ cm², zatem
+    P_teren = 5·10⁹ : 10⁴ = 5·10⁵ m² = 500 000 m².
+    Dalej 1 km² = 10⁶ m², więc P_teren = 500 000 : 1 000 000 = 0,5 km².
+    Odpowiedź: 0,5 km² (czyli 50 hektarów).
+    Uwaga: typowy błąd to pomnożenie pola tylko przez 25 000 — dałoby to 100-krotnie zawyżony... a dokładniej 25 000-krotnie zaniżony wynik, bo pominięto drugą potęgę skali.
+  difficulty: 3
+- statement: 'Obwody dwóch podobnych wielokątów są w stosunku 3 : 5, a ich pola różnią się o 64 cm². Oblicz
+    pole każdego z tych wielokątów.'
+  worked_solution: |-
+    Ze stosunku obwodów odczytujemy skalę: k = 5/3 (od mniejszego do większego).
+    Stosunek pól: k² = 25/9, czyli P_małe : P_duże = 9 : 25.
+    Wprowadzamy parametr t > 0: P_małe = 9t, P_duże = 25t.
+    Różnica pól: 25t − 9t = 64, czyli 16t = 64, więc t = 4.
+    Stąd P_małe = 9·4 = 36 cm², P_duże = 25·4 = 100 cm².
+    Sprawdzenie: 100 − 36 = 64 oraz 36 : 100 = 9 : 25 = (3 : 5)². Zgadza się.
+    Odpowiedź: 36 cm² i 100 cm².
+  difficulty: 3
+- statement: Bok kwadratowej płyty tarasowej zwiększono o 25%. O ile procent wzrosło pole płyty? Ile procent
+    wzrósł jej obwód?
+  worked_solution: |-
+    Zwiększenie boku o 25% oznacza skalę k = 1 + 0,25 = 1,25 = 5/4.
+    Obwód jest wielkością liniową, więc rośnie w skali k: nowy obwód = 1,25·stary, czyli wzrost o 25%.
+    Pole rośnie w skali k²: k² = 1,25² = 1,5625, więc nowe pole = 1,5625·stare, czyli wzrost o (1,5625 − 1)·100% = 56,25%.
+    Sprawdzenie liczbowe: bok 4 → 5; pole 16 → 25; 25/16 = 1,5625. Zgadza się.
+    Odpowiedź: obwód wzrósł o 25%, pole o 56,25%.
+  difficulty: 4
+objectives:
+- statement: Wyjaśnić, dlaczego obwody figur podobnych są w stosunku k, a pola w stosunku k².
+  bloom_level: Rozumienie
+- statement: Wyznaczyć skalę podobieństwa dwóch figur na podstawie odpowiadających sobie boków, wysokości
+    lub obwodów.
+  bloom_level: Stosowanie
+- statement: Obliczyć obwód i pole figury podobnej, mając dane skalę oraz obwód i pole figury wyjściowej.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć skalę podobieństwa ze stosunku pól i wykorzystać ją do obliczenia długości odcinka
+    lub obwodu.
+  bloom_level: Stosowanie
+- statement: Rozwiązywać zadania, w których dany jest stosunek boków lub obwodów oraz suma bądź różnica
+    pól figur podobnych.
+  bloom_level: Analiza
+- statement: Uzasadnić podobieństwo trójkątów w konfiguracji z prostą równoległą do boku i obliczyć pole
+    odciętego trójkąta oraz trapezu.
+  bloom_level: Analiza
+- statement: Przeliczać pola między mapą (planem) a terenem, poprawnie stosując kwadrat skali i zamianę
+    jednostek pola.
+  bloom_level: Stosowanie
+- statement: Obliczyć procentową zmianę pola figury wynikającą z procentowej zmiany jej wymiarów i odwrotnie.
+  bloom_level: Analiza
+- statement: Ocenić poprawność cudzego rozumowania dotyczącego pól i obwodów figur podobnych oraz wskazać
+    popełniony błąd.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Pole skaluje się tak jak długości
+  incorrect_reasoning: „Figura jest 3 razy większa, więc jej pole też jest 3 razy większe.”
+  correct_reasoning: Skalują się w skali k tylko wielkości liniowe (boki, wysokości, przekątne, obwód).
+    Pole zawiera iloczyn dwóch długości, więc mnoży się przez k². Przy k = 3 pole rośnie 9-krotnie.
+  severity: 5
+- name: Brak pierwiastkowania przy przejściu od pól do długości
+  incorrect_reasoning: '„Pola mają się jak 25 : 9, więc boki i obwody też mają się jak 25 : 9.”'
+  correct_reasoning: 'Ze stosunku pól skalę otrzymujemy przez pierwiastkowanie: k = √(25/9) = 5/3. Dopiero
+    5/3 jest stosunkiem boków i obwodów.'
+  severity: 5
+- name: Odwrócona skala
+  incorrect_reasoning: „Skala to 2, więc pole drugiej figury jest 4 razy mniejsze.” — bez sprawdzenia,
+    która figura jest w liczniku.
+  correct_reasoning: 'Trzeba jasno zapisać kierunek: jeśli F'' jest podobna do F w skali k, to P(F'')
+    = k²·P(F). Przy zamianie ról figur skala staje się 1/k, a stosunek pól 1/k². Kontrola: większa figura
+    ma większe pole.'
+  severity: 4
+- name: Mnożenie pola przez skalę mapy zamiast przez jej kwadrat
+  incorrect_reasoning: '„Skala 1 : 25 000, pole na mapie 8 cm², więc w terenie 8 · 25 000 cm².”'
+  correct_reasoning: 'Skala dotyczy długości. Pola przelicza się mnożąc przez kwadrat skali: 8 · 25 000²
+    cm². Dopiero potem zamieniamy cm² na m² lub km².'
+  severity: 5
+- name: Błędna zamiana jednostek pola
+  incorrect_reasoning: „1 m = 100 cm, więc 1 m² = 100 cm².”
+  correct_reasoning: 1 m² = 100 cm · 100 cm = 10 000 cm². Analogicznie 1 km² = 1 000 000 m². Jednostki
+    pola przeliczamy przez kwadrat przelicznika długości.
+  severity: 4
+- name: Trapez jako figura podobna do trójkąta
+  incorrect_reasoning: „Prosta równoległa dzieli trójkąt na mały trójkąt i trapez, więc pole trapezu =
+    k²·pole trójkąta.”
+  correct_reasoning: 'Trapez nie jest podobny do trójkąta. Podobne są dwa trójkąty: odcięty i cały. Pole
+    trapezu liczymy jako różnicę: P_trapezu = P_duży − P_mały = P_duży(1 − k²).'
+  severity: 4
+- name: Mylenie stosunku odcinków na boku ze stosunkiem boków
+  incorrect_reasoning: '„CD : DA = 2 : 3, więc skala podobieństwa trójkątów wynosi 2/3.”'
+  correct_reasoning: 'Skala to stosunek całych odpowiadających boków: k = CD : CA = 2 : (2+3) = 2/5. Dopiero
+    wtedy stosunek pól wynosi 4/25.'
+  severity: 4
+- name: Zakładanie podobieństwa bez sprawdzenia
+  incorrect_reasoning: '„Oba czworokąty to prostokąty (albo: mają równe obwody), więc są podobne i można
+    stosować k².”'
+  correct_reasoning: 'Wzory na stosunek obwodów i pól obowiązują wyłącznie dla figur podobnych. Prostokąty
+    2×8 i 4×4 mają równe obwody, ale nie są podobne (różne stosunki boków) i ich pola to 16 i 16... a
+    np. 1×9 i 3×3 mają równe obwody i pola 9 oraz 9 — trzeba zawsze sprawdzić proporcjonalność boków (dla
+    trójkątów: cechy kk, bbb, bkb; wszystkie koła i wszystkie kwadraty są podobne zawsze).'
+  severity: 3
+- name: Procentowy wzrost pola równy procentowemu wzrostowi wymiarów
+  incorrect_reasoning: „Wymiary wzrosły o 20%, więc pole wzrosło o 20%.”
+  correct_reasoning: k = 1,2, więc pole mnoży się przez 1,2² = 1,44 — rośnie o 44%, a nie o 20%.
+  severity: 4
+- name: Dodawanie skal zamiast mnożenia przy złożeniu podobieństw
+  incorrect_reasoning: „Najpierw powiększyłem w skali 2, potem w skali 3, razem w skali 5.”
+  correct_reasoning: 'Kolejne podobieństwa składają się przez mnożenie skal: k = 2·3 = 6, a pole rośnie
+    36 razy.'
+  severity: 2

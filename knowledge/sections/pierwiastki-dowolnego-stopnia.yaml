@@ -1,0 +1,356 @@
+section: pierwiastki-dowolnego-stopnia
+name: Pierwiastki dowolnego stopnia
+scope: Properties of roots of any degree, including odd-degree roots of negative numbers; simplifying
+  root expressions.
+requirements:
+- I.3
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T13:57:12.215005'
+  approved_at: '2026-08-28T18:28:01.135662'
+  approved_by: reviewer
+concepts:
+- name: Pierwiastek arytmetyczny stopnia parzystego
+  description: Dla liczby a ≥ 0 i parzystego n ≥ 2 pierwiastkiem stopnia n z a nazywamy tę jedyną liczbę
+    b ≥ 0, dla której b^n = a. Zapisujemy b = ⁿ√a.
+  explanation: 'Kluczowe są dwa warunki: liczba pod pierwiastkiem musi być nieujemna, a wynik jest z definicji
+    nieujemny. Dlatego ⁴√16 = 2 (a nie ±2) i ⁴√(−16) nie istnieje w zbiorze liczb rzeczywistych. Symbol
+    ⁿ√a oznacza jedną konkretną liczbę, a nie zbiór rozwiązań równania x^n = a.'
+  difficulty: 2
+- name: Pierwiastek stopnia nieparzystego
+  description: Dla dowolnej liczby rzeczywistej a i nieparzystego n ≥ 3 pierwiastkiem stopnia n z a nazywamy
+    tę jedyną liczbę b, dla której b^n = a. Zapisujemy b = ⁿ√a.
+  explanation: 'Ponieważ funkcja x ↦ x^n dla nieparzystego n przyjmuje wszystkie wartości rzeczywiste
+    i jest rosnąca, każda liczba ma dokładnie jeden pierwiastek nieparzystego stopnia — także liczba ujemna.
+    Wynik ma ten sam znak co liczba podpierwiastkowa: ³√(−8) = −2, bo (−2)³ = −8.'
+  difficulty: 2
+- name: Stopień (wykładnik) pierwiastka i liczba podpierwiastkowa
+  description: W zapisie ⁿ√a liczbę n nazywamy stopniem pierwiastka (n ≥ 2, n naturalne), a liczbę a —
+    liczbą (wyrażeniem) podpierwiastkową.
+  explanation: 'Pierwiastek stopnia 2 zapisujemy zwyczajowo bez stopnia: √a. To, czy n jest parzyste,
+    czy nieparzyste, decyduje o dziedzinie (jakie a wolno wstawić) i o znaku wyniku — od tego rozpoczyna
+    się każde zadanie z pierwiastkami wyższych stopni.'
+  difficulty: 1
+- name: Dziedzina wyrażenia z pierwiastkiem
+  description: Wyrażenie ⁿ√W jest określone dla wszystkich rzeczywistych W, gdy n jest nieparzyste, natomiast
+    tylko dla W ≥ 0, gdy n jest parzyste.
+  explanation: Zanim zaczniesz przekształcać, sprawdź stopień. Przy nieparzystym stopniu nie ma żadnych
+    ograniczeń, przy parzystym trzeba pilnować znaku — to samo dotyczy stosowania wzorów na pierwiastek
+    z iloczynu czy ilorazu.
+  difficulty: 2
+- name: Pierwiastek n-tego stopnia z n-tej potęgi
+  description: ⁿ√(aⁿ) = a dla n nieparzystego oraz ⁿ√(aⁿ) = |a| dla n parzystego.
+  explanation: 'Pierwiastek parzystego stopnia „zapomina" o znaku, więc trzeba go odtworzyć wartością
+    bezwzględną: ⁴√((−3)⁴) = ⁴√81 = 3 = |−3|. Przy nieparzystym stopniu znak się zachowuje, więc ⁵√((−3)⁵)
+    = −3.'
+  difficulty: 3
+- name: Liczba niewymierna postaci pierwiastkowej
+  description: Pierwiastek ⁿ√a liczby całkowitej a jest liczbą wymierną tylko wtedy, gdy a jest n-tą potęgą
+    liczby całkowitej (z dokładnością do znaku); w pozostałych przypadkach jest liczbą niewymierną.
+  explanation: ³√8 = 2 jest wymierne, ale ³√7 nie da się zapisać ułamkiem — zostawiamy je w postaci pierwiastka
+    i przekształcamy według własności. Dlatego celem „uproszczenia" nie jest wyliczenie przybliżenia,
+    tylko doprowadzenie do możliwie najprostszej postaci dokładnej.
+  difficulty: 2
+- name: Postać najprostsza wyrażenia pierwiastkowego
+  description: Wyrażenie z pierwiastkiem uważamy za zapisane najprościej, gdy pod pierwiastkiem stopnia
+    n nie ma czynnika będącego n-tą potęgą, stopień pierwiastka jest możliwie najmniejszy, a w mianowniku
+    ułamka nie występuje pierwiastek.
+  explanation: 'To jest lista kontrolna na koniec każdego rachunku: wyłącz czynniki przed pierwiastek,
+    skróć stopień, jeśli się da, usuń niewymierność z mianownika.'
+  difficulty: 2
+- name: Wyłączanie czynnika przed znak pierwiastka
+  description: 'Rozkład liczby podpierwiastkowej na iloczyn n-tej potęgi i reszty: ⁿ√(kⁿ·b) = k·ⁿ√b (dla
+    n parzystego przy k ≥ 0, b ≥ 0).'
+  explanation: Szukasz pod pierwiastkiem stopnia 3 sześcianów (8, 27, 64, 125…), pod pierwiastkiem stopnia
+    4 — czwartych potęg (16, 81, 625…). Najpewniejsza metoda to rozkład na czynniki pierwsze i grupowanie
+    wykładników po n.
+  difficulty: 3
+- name: Włączanie czynnika pod znak pierwiastka
+  description: 'Operacja odwrotna do wyłączania: k·ⁿ√b = ⁿ√(kⁿ·b), przy czym dla n parzystego wymagamy
+    k ≥ 0, a dla k < 0 i n parzystego zapisujemy k·ⁿ√b = −ⁿ√(|k|ⁿ·b).'
+  explanation: 'Przydaje się przy porównywaniu liczb i przy sprowadzaniu sumy pierwiastków do wspólnej
+    postaci. Uwaga na znak: −2·⁴√3 to nie jest ⁴√(16·3).'
+  difficulty: 3
+- name: Sprowadzanie pierwiastków do wspólnego stopnia
+  description: Dla a ≥ 0 zachodzi ⁿ√a = ^(kn)√(a^k), co pozwala zapisać dwa pierwiastki różnych stopni
+    jako pierwiastki tego samego stopnia (najmniejszej wspólnej wielokrotności stopni).
+  explanation: To narzędzie do porównywania (np. ³√3 z ⁴√5) i do mnożenia pierwiastków różnych stopni.
+    Działa jak sprowadzanie ułamków do wspólnego mianownika — tylko że mnożymy stopień i wykładnik liczby
+    podpierwiastkowej przez to samo.
+  difficulty: 3
+- name: Potęga o wykładniku wymiernym
+  description: Dla a > 0 oraz liczb całkowitych m i n ≥ 2 przyjmujemy a^(m/n) = ⁿ√(a^m).
+  explanation: 'Dzięki temu wszystkie prawa działań na potęgach obowiązują też dla pierwiastków. Uwaga:
+    tę definicję stosujemy tylko dla podstaw dodatnich — dla liczb ujemnych zapis (−8)^(1/3) jest niepoprawny,
+    choć ³√(−8) = −2 istnieje.'
+  difficulty: 3
+- name: Usuwanie niewymierności z mianownika
+  description: Przekształcenie ułamka do postaci równoważnej, w której mianownik jest liczbą wymierną,
+    przez rozszerzenie ułamka odpowiednim czynnikiem, np. c/ⁿ√a = c·ⁿ√(a^(n−1)) / a.
+  explanation: Przy pierwiastku stopnia n „dopełniamy" wykładnik pod pierwiastkiem do n. Np. dla ³√3 mnożymy
+    licznik i mianownik przez ³√(3²) = ³√9, bo ³√3·³√9 = ³√27 = 3.
+  difficulty: 3
+- name: Wyrażenia podobne z pierwiastkami
+  description: 'Pierwiastki nazywamy podobnymi, gdy mają ten sam stopień i tę samą liczbę podpierwiastkową;
+    tylko takie składniki wolno redukować: p·ⁿ√b + q·ⁿ√b = (p+q)·ⁿ√b.'
+  explanation: 'Traktuj ⁿ√b jak niewiadomą x: 5x − 2x = 3x, ale 5x + 2y już nie da się skrócić. Dlatego
+    przed dodawaniem najpierw wyłączamy czynniki przed pierwiastek, żeby ujawnić podobieństwo (np. ³√54
+    i ³√16 obydwa sprowadzają się do ³√2).'
+  difficulty: 3
+formulas:
+- name: Definicja pierwiastka stopnia n
+  latex_raw: b=\sqrt[n]{a}\iff b^{n}=a
+  conditions: 'dla n nieparzystego: a, b dowolne rzeczywiste; dla n parzystego: a ≥ 0 i b ≥ 0'
+  description: Warunek b ≥ 0 przy parzystym n odróżnia pierwiastek od rozwiązań równania x^n = a.
+- name: Pierwiastek z iloczynu
+  latex_raw: \sqrt[n]{a\cdot b}=\sqrt[n]{a}\cdot\sqrt[n]{b}
+  conditions: 'n nieparzyste: a, b dowolne; n parzyste: a ≥ 0, b ≥ 0'
+- name: Pierwiastek z ilorazu
+  latex_raw: \sqrt[n]{\dfrac{a}{b}}=\dfrac{\sqrt[n]{a}}{\sqrt[n]{b}}
+  conditions: 'b ≠ 0; n nieparzyste: a, b dowolne; n parzyste: a ≥ 0, b > 0'
+- name: Pierwiastek z potęgi / potęga pierwiastka
+  latex_raw: \sqrt[n]{a^{m}}=\left(\sqrt[n]{a}\right)^{m}
+  conditions: a ≥ 0, m całkowite dodatnie (dla n nieparzystego również a < 0)
+- name: Pierwiastek n-tego stopnia z n-tej potęgi
+  latex_raw: \sqrt[n]{a^{n}}=\begin{cases}a,& n\ \text{nieparzyste}\\ |a|,& n\ \text{parzyste}\end{cases}
+  conditions: a dowolna liczba rzeczywista
+- name: Pierwiastek z pierwiastka
+  latex_raw: \sqrt[m]{\sqrt[n]{a}}=\sqrt[mn]{a}
+  conditions: a ≥ 0 (dla m, n nieparzystych także a < 0)
+- name: Zmiana stopnia pierwiastka
+  latex_raw: \sqrt[n]{a}=\sqrt[kn]{a^{k}}
+  conditions: a ≥ 0, k liczba naturalna dodatnia
+- name: Znak pierwiastka nieparzystego stopnia
+  latex_raw: \sqrt[n]{-a}=-\sqrt[n]{a}
+  conditions: n nieparzyste, a dowolne rzeczywiste
+- name: Wyłączanie czynnika przed pierwiastek
+  latex_raw: \sqrt[n]{k^{n}\cdot b}=k\cdot\sqrt[n]{b}
+  conditions: 'n nieparzyste: k, b dowolne; n parzyste: k ≥ 0, b ≥ 0'
+- name: Potęga o wykładniku wymiernym
+  latex_raw: a^{\frac{m}{n}}=\sqrt[n]{a^{m}},\qquad a^{-\frac{m}{n}}=\frac{1}{\sqrt[n]{a^{m}}}
+  conditions: a > 0, n ≥ 2 naturalne, m całkowite
+- name: Usuwanie niewymierności z mianownika
+  latex_raw: \frac{c}{\sqrt[n]{a}}=\frac{c\cdot\sqrt[n]{a^{\,n-1}}}{a}
+  conditions: a > 0 (dla n nieparzystego również a < 0, a ≠ 0)
+- name: Dodawanie pierwiastków podobnych
+  latex_raw: p\sqrt[n]{b}+q\sqrt[n]{b}=(p+q)\sqrt[n]{b}
+  conditions: ten sam stopień n i ta sama liczba podpierwiastkowa b
+methods:
+- name: Obliczanie pierwiastka dowolnego stopnia z liczby całkowitej
+  when_to_use: Gdy trzeba stwierdzić, czy pierwiastek jest liczbą wymierną, i podać jego wartość, np.
+    ⁵√(−32), ⁴√625.
+  steps:
+  - 'Sprawdź parzystość stopnia n: jeśli n parzyste, a liczba podpierwiastkowa ujemna — pierwiastek nie
+    istnieje w zbiorze liczb rzeczywistych; kończysz.'
+  - Jeśli n nieparzyste i liczba jest ujemna, zapisz ⁿ√(−a) = −ⁿ√a i dalej pracuj na liczbie dodatniej.
+  - Rozłóż liczbę dodatnią na czynniki pierwsze.
+  - Sprawdź, czy wszystkie wykładniki są podzielne przez n; jeśli tak, podziel je przez n i wymnóż wynik.
+  - Jeśli nie wszystkie wykładniki dzielą się przez n, wyłącz przed pierwiastek to, co się da, i zostaw
+    resztę pod pierwiastkiem.
+  - Przywróć znak minus, jeśli był odłożony w kroku 2.
+- name: Upraszczanie iloczynu i ilorazu pierwiastków
+  when_to_use: Gdy w wyrażeniu występuje mnożenie lub dzielenie pierwiastków, zwłaszcza gdy pojedyncze
+    pierwiastki są niewymierne, a ich iloczyn może być wymierny.
+  steps:
+  - 'Sprawdź stopnie: jeśli są równe, przejdź dalej; jeśli różne, sprowadź je do wspólnego stopnia (NWW
+    stopni) wzorem ⁿ√a = ^(kn)√(a^k).'
+  - Upewnij się, że warunki stosowania wzoru są spełnione (dla stopni parzystych liczby podpierwiastkowe
+    nieujemne).
+  - 'Połącz pierwiastki w jeden: ⁿ√a·ⁿ√b = ⁿ√(ab), ⁿ√a : ⁿ√b = ⁿ√(a/b).'
+  - Wykonaj działanie pod pierwiastkiem i rozłóż wynik na czynniki pierwsze.
+  - Wyłącz przed pierwiastek wszystkie n-te potęgi; jeśli da się skrócić stopień pierwiastka z wykładnikiem,
+    zrób to.
+  - Zapisz wynik w postaci najprostszej.
+- name: Wyłączanie czynnika przed znak pierwiastka
+  when_to_use: Gdy liczba podpierwiastkowa jest duża lub gdy chcemy zredukować sumę pierwiastków o różnych
+    liczbach podpierwiastkowych.
+  steps:
+  - Rozłóż liczbę podpierwiastkową na czynniki pierwsze z wykładnikami.
+  - Każdy wykładnik zapisz w postaci n·q + r, gdzie 0 ≤ r < n (n — stopień pierwiastka).
+  - Czynniki z wykładnikiem n·q wyprowadź przed pierwiastek jako potęgę o wykładniku q.
+  - Czynniki z wykładnikiem r zostaw pod pierwiastkiem.
+  - Przy stopniu parzystym i literach o nieznanym znaku pamiętaj o wartości bezwzględnej.
+  - Wymnóż liczby stojące przed pierwiastkiem.
+- name: Redukcja sumy wyrażeń pierwiastkowych
+  when_to_use: Gdy dodajemy lub odejmujemy pierwiastki tego samego stopnia z różnymi liczbami podpierwiastkowymi.
+  steps:
+  - Sprawdź, czy wszystkie pierwiastki mają ten sam stopień (jeśli nie — składników różnych stopni nie
+    łączymy).
+  - W każdym składniku wyłącz czynnik przed pierwiastek, doprowadzając liczbę podpierwiastkową do postaci
+    bez n-tych potęg.
+  - Zgrupuj składniki o tej samej liczbie podpierwiastkowej.
+  - Dodaj lub odejmij współczynniki stojące przed identycznymi pierwiastkami.
+  - Składniki niepodobne zostaw w postaci sumy.
+- name: Usuwanie niewymierności z mianownika przy pierwiastku stopnia n
+  when_to_use: Gdy wynik zawiera pierwiastek w mianowniku, np. 6/³√3 lub 1/⁴√8.
+  steps:
+  - Zapisz mianownik w postaci ⁿ√(a^m) z m < n (najpierw uprość liczbę podpierwiastkową).
+  - Dobierz czynnik ⁿ√(a^(n−m)), bo ⁿ√(a^m)·ⁿ√(a^(n−m)) = ⁿ√(a^n) = a.
+  - Pomnóż licznik i mianownik ułamka przez ten czynnik.
+  - Uprość mianownik do liczby wymiernej.
+  - Skróć ułamek i wyłącz ewentualne czynniki przed pierwiastek w liczniku.
+- name: Porównywanie pierwiastków różnych stopni
+  when_to_use: Gdy trzeba ustalić, która z dwóch liczb niewymiernych typu ³√3 i ⁴√5 jest większa, lub
+    uporządkować takie liczby rosnąco.
+  steps:
+  - Sprawdź, czy obie liczby są nieujemne (dla liczb ujemnych porównuj wartości bezwzględne i odwróć wnioski).
+  - Wyznacz NWW stopni obu pierwiastków — to będzie wspólny stopień N.
+  - Każdy pierwiastek zamień na pierwiastek stopnia N wzorem ⁿ√a = ^N√(a^(N/n)).
+  - Porównaj liczby podpierwiastkowe — większa liczba podpierwiastkowa oznacza większy pierwiastek (przy
+    tym samym stopniu i liczbach nieujemnych).
+  - Zapisz wniosek o porównaniu liczb wyjściowych.
+- name: Upraszczanie wyrażeń pierwiastkowych z literami
+  when_to_use: Gdy pod pierwiastkiem występuje zmienna, np. ⁶√(x⁶), ³√(8a³), √(a²b⁴).
+  steps:
+  - Ustal stopień pierwiastka i sprawdź, dla jakich wartości zmiennej wyrażenie jest określone.
+  - Rozłóż wyrażenie podpierwiastkowe na czynniki będące potęgami.
+  - Zastosuj ⁿ√(aⁿ) = a dla n nieparzystego oraz ⁿ√(aⁿ) = |a| dla n parzystego.
+  - Jeśli z założeń wynika znak zmiennej (np. x ≥ 0), opuść wartość bezwzględną; w przeciwnym razie ją
+    zostaw.
+  - Uporządkuj wynik, wyłączając wszystko, co da się wyłączyć.
+examples:
+- statement: 'Oblicz: a) ³√(−125), b) ⁴√81, c) ⁵√(−1/32), d) ⁴√(−16).'
+  worked_solution: |-
+    a) Stopień 3 jest nieparzysty, więc pierwiastek z liczby ujemnej istnieje. Szukamy b takiego, że b³ = −125. Ponieważ (−5)³ = −125, mamy ³√(−125) = −5. (Można też: ³√(−125) = −³√125 = −5.)
+    b) Stopień 4 jest parzysty, liczba podpierwiastkowa dodatnia, wynik musi być nieujemny: 3⁴ = 81, więc ⁴√81 = 3 (nie ±3).
+    c) Stopień 5 jest nieparzysty: ⁵√(−1/32) = −⁵√(1/32) = −⁵√1 / ⁵√32 = −1/2, bo 2⁵ = 32. Sprawdzenie: (−1/2)⁵ = −1/32.
+    d) Stopień 4 jest parzysty, a liczba podpierwiastkowa ujemna — nie istnieje liczba rzeczywista, której czwarta potęga jest ujemna. Zatem ⁴√(−16) nie istnieje w zbiorze liczb rzeczywistych.
+  difficulty: 1
+- statement: 'Uprość wyrażenie: ³√54 − 2·³√16 + ³√250.'
+  worked_solution: |-
+    Wyłączamy czynniki przed pierwiastek stopnia trzeciego, szukając sześcianów.
+    54 = 27·2 = 3³·2, więc ³√54 = 3·³√2.
+    16 = 8·2 = 2³·2, więc ³√16 = 2·³√2, czyli 2·³√16 = 2·2·³√2 = 4·³√2.
+    250 = 125·2 = 5³·2, więc ³√250 = 5·³√2.
+    Wszystkie składniki są teraz podobne (ten sam stopień i ta sama liczba podpierwiastkowa ³√2):
+    3·³√2 − 4·³√2 + 5·³√2 = (3 − 4 + 5)·³√2 = 4·³√2.
+    Odpowiedź: 4³√2.
+  difficulty: 2
+- statement: 'Oblicz: a) ³√(−16)·³√4, b) ⁴√(2)·⁴√(8), c) √(³√729), d) (⁵√7)⁵ oraz ⁶√((−4)⁶).'
+  worked_solution: |-
+    a) Stopień nieparzysty, więc wzór na iloczyn działa także dla liczby ujemnej: ³√(−16)·³√4 = ³√(−64) = −4, bo (−4)³ = −64.
+    b) Obie liczby dodatnie, stopień 4: ⁴√2·⁴√8 = ⁴√16 = 2, bo 2⁴ = 16.
+    c) Pierwiastek z pierwiastka: √(³√729) = ⁶√729. Ponieważ 729 = 3⁶, otrzymujemy ⁶√(3⁶) = 3. (Można też: ³√729 = 9, a √9 = 3.)
+    d) (⁵√7)⁵ = 7 — pierwiastek i potęga tego samego (nieparzystego) stopnia się znoszą. Natomiast ⁶√((−4)⁶): stopień jest parzysty, więc ⁶√((−4)⁶) = |−4| = 4, a nie −4. Sprawdzenie: (−4)⁶ = 4096 = 4⁶.
+  difficulty: 3
+- statement: 'Usuń niewymierność z mianownika i uprość: a) 6/³√3, b) 10/⁴√8.'
+  worked_solution: |-
+    a) Mianownik to ³√3 = ³√(3¹). Aby dopełnić wykładnik do 3, mnożymy licznik i mianownik przez ³√(3²) = ³√9:
+    6/³√3 = 6·³√9 / (³√3·³√9) = 6·³√9 / ³√27 = 6·³√9 / 3 = 2·³√9.
+    b) Zapisujemy mianownik jako potęgę dwójki: 8 = 2³, więc ⁴√8 = ⁴√(2³). Brakuje jednej dwójki do 2⁴, więc mnożymy przez ⁴√2:
+    10/⁴√(2³) = 10·⁴√2 / ⁴√(2⁴) = 10·⁴√2 / 2 = 5·⁴√2.
+    W obu przypadkach mianownik jest już liczbą wymierną, a pod pierwiastkiem nie ma czynników będących odpowiednio sześcianem ani czwartą potęgą.
+  difficulty: 3
+- statement: 'Uporządkuj rosnąco liczby: a = ³√3, b = ⁴√5, c = √2.'
+  worked_solution: |-
+    Wszystkie liczby są dodatnie, więc możemy porównywać je po sprowadzeniu do wspólnego stopnia.
+    Stopnie pierwiastków to 3, 4 i 2; NWW(3, 4, 2) = 12.
+    a = ³√3 = ¹²√(3⁴) = ¹²√81 (mnożymy stopień przez 4 i wykładnik liczby podpierwiastkowej przez 4).
+    b = ⁴√5 = ¹²√(5³) = ¹²√125.
+    c = √2 = ¹²√(2⁶) = ¹²√64.
+    Przy tym samym stopniu i nieujemnych liczbach podpierwiastkowych większy jest ten pierwiastek, pod którym stoi większa liczba:
+    64 < 81 < 125, zatem ¹²√64 < ¹²√81 < ¹²√125, czyli √2 < ³√3 < ⁴√5.
+    Odpowiedź: c < a < b.
+  difficulty: 4
+- statement: Uprość wyrażenie ³√(−8x³) + ⁴√(16x⁴) − x, gdzie x jest dowolną liczbą rzeczywistą. Podaj
+    wynik osobno dla x ≥ 0 i x < 0.
+  worked_solution: |-
+    Pierwszy składnik: stopień 3 (nieparzysty), więc ³√(−8x³) = ³√((−2x)³) = −2x — bez wartości bezwzględnej i bez ograniczeń na x.
+    Drugi składnik: stopień 4 (parzysty), więc ⁴√(16x⁴) = ⁴√((2x)⁴) = |2x| = 2|x|.
+    Całość: −2x + 2|x| − x = −3x + 2|x|.
+    Dla x ≥ 0: |x| = x, więc wyrażenie równa się −3x + 2x = −x.
+    Dla x < 0: |x| = −x, więc wyrażenie równa się −3x − 2x = −5x (co jest liczbą dodatnią, zgodnie z oczekiwaniem).
+    Sprawdzenie dla x = −1: ³√8 + ⁴√16 − (−1) = 2 + 2 + 1 = 5 = −5·(−1). ✓
+  difficulty: 4
+objectives:
+- statement: Podać definicję pierwiastka stopnia n i rozstrzygnąć, dla jakich liczb podpierwiastkowych
+    jest on określony w zbiorze liczb rzeczywistych.
+  bloom_level: Rozumienie
+- statement: Obliczać pierwiastki dowolnego stopnia z liczb wymiernych, w tym pierwiastki stopnia nieparzystego
+    z liczb ujemnych, korzystając z rozkładu na czynniki pierwsze.
+  bloom_level: Zastosowanie
+- statement: Stosować własności pierwiastka z iloczynu, ilorazu, potęgi oraz pierwiastka z pierwiastka
+    do upraszczania wyrażeń liczbowych.
+  bloom_level: Zastosowanie
+- statement: Wyłączać czynnik przed znak pierwiastka i włączać go pod pierwiastek, dobierając poprawnie
+    potęgi zgodne ze stopniem pierwiastka.
+  bloom_level: Zastosowanie
+- statement: Redukować sumy i różnice wyrażeń pierwiastkowych, rozpoznając pierwiastki podobne.
+  bloom_level: Zastosowanie
+- statement: Usuwać niewymierność z mianownika ułamka zawierającego pierwiastek dowolnego stopnia.
+  bloom_level: Zastosowanie
+- statement: Porównywać i porządkować liczby niewymierne zapisane za pomocą pierwiastków różnych stopni,
+    sprowadzając je do wspólnego stopnia.
+  bloom_level: Analiza
+- statement: Stosować zależność ⁿ√(aⁿ) = a lub |a| w zależności od parzystości stopnia, także w wyrażeniach
+    z parametrem.
+  bloom_level: Analiza
+- statement: Uzasadniać, dlaczego pierwiastek parzystego stopnia z liczby ujemnej nie istnieje, oraz wskazywać
+    kontrprzykłady dla błędnych „wzorów" typu ⁿ√(a+b) = ⁿ√a + ⁿ√b.
+  bloom_level: Ocenianie
+- statement: Przechodzić między zapisem pierwiastkowym a zapisem potęgi o wykładniku wymiernym dla podstaw
+    dodatnich i wskazywać ograniczenia tego zapisu.
+  bloom_level: Rozumienie
+misconceptions:
+- name: Pierwiastek parzystego stopnia z liczby ujemnej
+  incorrect_reasoning: Skoro ³√(−8) = −2, to analogicznie ⁴√(−16) = −2, bo „minus przechodzi przed pierwiastek".
+  correct_reasoning: 'Sprawdź: (−2)⁴ = +16, a nie −16. Każda liczba rzeczywista podniesiona do potęgi
+    parzystej daje wynik nieujemny, więc pierwiastek parzystego stopnia z liczby ujemnej nie istnieje
+    w zbiorze liczb rzeczywistych. Reguła ⁿ√(−a) = −ⁿ√a obowiązuje wyłącznie dla n nieparzystego.'
+  severity: 5
+- name: Pomijanie wartości bezwzględnej przy parzystym stopniu
+  incorrect_reasoning: ⁴√(a⁴) = a i √(a²) = a dla każdego a, bo pierwiastek znosi potęgę.
+  correct_reasoning: 'Wynik pierwiastka parzystego stopnia jest zawsze nieujemny, więc ⁿ√(aⁿ) = |a| dla
+    n parzystego. Przykład: ⁴√((−3)⁴) = ⁴√81 = 3 ≠ −3. Wartość bezwzględną można opuścić dopiero, gdy
+    z założeń wynika, że a ≥ 0.'
+  severity: 4
+- name: Dwie wartości pierwiastka
+  incorrect_reasoning: ⁴√16 = ±2, bo zarówno 2⁴ = 16, jak i (−2)⁴ = 16.
+  correct_reasoning: Symbol ⁿ√a oznacza jedną liczbę — dla parzystego n tę nieujemną. Zatem ⁴√16 = 2.
+    Znak ± pojawia się dopiero przy rozwiązywaniu równania x⁴ = 16, którego rozwiązaniami są x = 2 i x
+    = −2; to co innego niż wartość pierwiastka.
+  severity: 4
+- name: Pierwiastek z sumy
+  incorrect_reasoning: ³√(a + b) = ³√a + ³√b, np. ³√(8 + 27) = 2 + 3 = 5.
+  correct_reasoning: 'Wzory na rozdzielność dotyczą wyłącznie mnożenia i dzielenia. Tu ³√35 ≈ 3,27, a
+    nie 5. Kontrprzykład wystarczy, by odrzucić regułę: pierwiastka z sumy nie da się „rozbić".'
+  severity: 5
+- name: Mnożenie pierwiastków różnych stopni wprost
+  incorrect_reasoning: ³√2·⁴√2 = ⁷√4 albo ³√2·√5 = ³√10 — mnożę liczby podpierwiastkowe niezależnie od
+    stopni.
+  correct_reasoning: 'Wzór ⁿ√a·ⁿ√b = ⁿ√(ab) wymaga tego samego stopnia. Przy różnych stopniach najpierw
+    sprowadź je do wspólnego stopnia: ³√2 = ¹²√(2⁴) = ¹²√16, ⁴√2 = ¹²√(2³) = ¹²√8, więc ³√2·⁴√2 = ¹²√128.'
+  severity: 4
+- name: Dodawanie pierwiastków niepodobnych
+  incorrect_reasoning: ³√2 + ³√5 = ³√7, bo pierwiastki tego samego stopnia się dodają.
+  correct_reasoning: 'Dodawać wolno tylko współczynniki przy identycznych pierwiastkach: 2³√5 + 3³√5 =
+    5³√5. Wyrażenia ³√2 + ³√5 nie da się uprościć — to suma dwóch różnych liczb niewymiernych (numerycznie
+    ok. 1,26 + 1,71 = 2,97, podczas gdy ³√7 ≈ 1,91).'
+  severity: 4
+- name: Zapis potęgi ułamkowej dla podstawy ujemnej
+  incorrect_reasoning: (−8)^(1/3) = ³√(−8) = −2, więc potęgi ułamkowe działają dla liczb ujemnych; stąd
+    np. (−8)^(2/6) = ⁶√64 = 2 = −2 (sprzeczność ignorowana).
+  correct_reasoning: Potęgę o wykładniku wymiernym definiujemy tylko dla podstawy dodatniej — inaczej
+    ten sam wykładnik zapisany dwoma równoważnymi ułamkami dałby różne wyniki. Dla liczb ujemnych używamy
+    wyłącznie zapisu pierwiastkowego ³√(−8) = −2.
+  severity: 3
+- name: Błędne wyłączanie czynnika przed pierwiastek stopnia n
+  incorrect_reasoning: ³√48 = 4·³√3, bo 48 = 16·3, a ³√16 = 4.
+  correct_reasoning: 'Przed pierwiastek stopnia 3 wyłączamy sześciany, nie kwadraty: 48 = 8·6 = 2³·6,
+    więc ³√48 = 2·³√6. Sprawdzenie: (2·³√6)³ = 8·6 = 48, a (4³√3)³ = 64·3 = 192 ≠ 48.'
+  severity: 4
+- name: Zły czynnik przy usuwaniu niewymierności
+  incorrect_reasoning: 6/³√3 = 6·³√3 / (³√3·³√3) = 6³√3/3 = 2³√3 — mnożę przez ten sam pierwiastek, tak
+    jak przy pierwiastku kwadratowym.
+  correct_reasoning: '³√3·³√3 = ³√9, co wciąż jest niewymierne. Trzeba dopełnić wykładnik do stopnia pierwiastka:
+    mnożymy przez ³√(3²) = ³√9, bo ³√3·³√9 = ³√27 = 3. Wynik: 6/³√3 = 2·³√9.'
+  severity: 3
+- name: Porównywanie pierwiastków po liczbach podpierwiastkowych
+  incorrect_reasoning: ⁴√5 < ³√3, bo... nie, przecież 5 > 3, więc ⁴√5 > ³√3 — porównuję tylko liczby pod
+    pierwiastkiem albo tylko stopnie.
+  correct_reasoning: 'Ani sama liczba podpierwiastkowa, ani sam stopień nie rozstrzygają (np. ³√8 = 2
+    > ⁴√9 ≈ 1,73, choć 8 < 9). Trzeba sprowadzić oba pierwiastki do wspólnego stopnia: ³√3 = ¹²√81, ⁴√5
+    = ¹²√125, więc ³√3 < ⁴√5.'
+  severity: 3

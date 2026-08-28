@@ -1,0 +1,311 @@
+section: wzory-skroconego-mnozenia
+name: Wzory skróconego mnożenia
+scope: The identities (a +- b)^2 and a^2 - b^2; using them to expand products and to factor expressions.
+requirements:
+- II.1
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:00:50.591522'
+  approved_at: '2026-08-28T18:28:02.090750'
+  approved_by: reviewer
+concepts:
+- name: Wzory skróconego mnożenia
+  description: 'Tożsamości algebraiczne pozwalające szybko zapisać iloczyn w postaci sumy (rozwinąć) albo
+    sumę w postaci iloczynu (rozłożyć na czynniki). W zakresie podstawowym są to: kwadrat sumy, kwadrat
+    różnicy i różnica kwadratów.'
+  explanation: 'To nie są ''nowe działania'', tylko skrót po wymnożeniu nawiasów. Zawsze można je sprawdzić,
+    mnożąc nawiasy ''każdy z każdym''. Warto je znać na pamięć w obie strony: z lewej na prawą (rozwijanie)
+    i z prawej na lewą (rozkład na czynniki).'
+  difficulty: 1
+- name: Tożsamość algebraiczna
+  description: Równość dwóch wyrażeń algebraicznych prawdziwa dla wszystkich wartości występujących w
+    niej zmiennych (z dziedziny wyrażeń).
+  explanation: Napis (a+b)^2 = a^2+2ab+b^2 jest prawdziwy dla KAŻDYCH liczb a, b — także ujemnych, ułamkowych,
+    niewymiernych. Dlatego pod a i b wolno podstawić dowolne wyrażenia, np. a = 3x, b = 2√5.
+  difficulty: 2
+- name: Kwadrat sumy
+  description: (a+b)^2 = a^2 + 2ab + b^2 — kwadrat pierwszego składnika, plus podwojony iloczyn składników,
+    plus kwadrat drugiego składnika.
+  explanation: 'Interpretacja geometryczna: kwadrat o boku a+b dzieli się na kwadrat a×a, kwadrat b×b
+    i dwa prostokąty a×b — stąd bierze się ''podwojony iloczyn'' 2ab.'
+  difficulty: 1
+- name: Kwadrat różnicy
+  description: (a-b)^2 = a^2 - 2ab + b^2 — kwadrat pierwszego, minus podwojony iloczyn, plus kwadrat drugiego.
+  explanation: 'To ten sam wzór co kwadrat sumy, tylko z b zastąpionym przez (-b): (-b)^2 = b^2 (zawsze
+    plus!), a 2a(-b) = -2ab. Zmienia się wyłącznie znak środkowego wyrazu.'
+  difficulty: 2
+- name: Różnica kwadratów
+  description: a^2 - b^2 = (a-b)(a+b) — różnicę kwadratów dwóch wyrażeń rozkładamy na iloczyn ich różnicy
+    i sumy.
+  explanation: 'To jedyny z trzech wzorów, który naturalnie ''czyta się'' od prawej do lewej: służy głównie
+    do rozkładania na czynniki. Uwaga: suma kwadratów a^2+b^2 NIE rozkłada się na czynniki w liczbach
+    rzeczywistych.'
+  difficulty: 2
+- name: Podwojony iloczyn (wyraz środkowy)
+  description: Składnik 2ab (lub -2ab) w rozwinięciu kwadratu dwumianu.
+  explanation: To 'znak rozpoznawczy' pełnego kwadratu. Jeśli w trójmianie x^2 + px + q mamy q = c^2 oraz
+    p = ±2c, to trójmian jest kwadratem dwumianu (x ± c)^2.
+  difficulty: 2
+- name: Trójmian będący pełnym kwadratem
+  description: Wyrażenie postaci a^2 ± 2ab + b^2, które można zapisać jako (a ± b)^2.
+  explanation: 'Rozpoznajesz je tak: dwa wyrazy skrajne są kwadratami (a^2 i b^2), a wyraz środkowy równa
+    się dokładnie ±2·a·b. Np. 9x^2 - 24x + 16: mamy (3x)^2, 4^2 oraz 2·3x·4 = 24x — czyli (3x-4)^2.'
+  difficulty: 3
+- name: Rozkład na czynniki
+  description: Zapisanie sumy algebraicznej w postaci iloczynu wyrażeń.
+  explanation: 'Standardowa kolejność: najpierw wyłącz wspólny czynnik przed nawias, potem sprawdź wzory
+    skróconego mnożenia, potem ewentualnie grupuj wyrazy. Rozkład służy do skracania ułamków algebraicznych
+    i rozwiązywania równań (iloczyn = 0).'
+  difficulty: 3
+- name: Wyrażenia sprzężone
+  description: Para wyrażeń postaci a+b i a-b (najczęściej z pierwiastkami), których iloczyn wynosi a^2
+    - b^2.
+  explanation: 'Mnożenie przez sprzężenie ''zabija'' pierwiastki: (√5-√2)(√5+√2) = 5-2 = 3. Stąd metoda
+    usuwania niewymierności z mianownika typu 3-√7.'
+  difficulty: 3
+- name: Zastosowanie wzorów do rachunków liczbowych
+  description: Wykorzystanie wzorów skróconego mnożenia do szybkiego obliczania wartości wyrażeń arytmetycznych,
+    np. 102^2 = (100+2)^2 albo 87^2 - 13^2 = (87-13)(87+13).
+  explanation: Rozbijasz liczbę na wygodną sumę/różnicę (setka + reszta) albo dostrzegasz różnicę kwadratów
+    — rachunek staje się wykonalny w pamięci.
+  difficulty: 2
+- name: Tożsamości pochodne
+  description: Związki wynikające ze wzorów, np. a^2+b^2 = (a+b)^2 - 2ab oraz (a+b)^2 - (a-b)^2 = 4ab.
+  explanation: Pozwalają obliczyć a^2+b^2 lub (a-b)^2, gdy znamy tylko sumę a+b i iloczyn ab — bez wyznaczania
+    samych liczb a i b.
+  difficulty: 4
+formulas:
+- name: Kwadrat sumy
+  latex_raw: (a+b)^2 = a^2 + 2ab + b^2
+  conditions: dla dowolnych liczb rzeczywistych a, b (także dla dowolnych wyrażeń algebraicznych)
+  description: Pod a i b wolno podstawić całe wyrażenia, np. (3x+2y)^2 = 9x^2 + 12xy + 4y^2.
+- name: Kwadrat różnicy
+  latex_raw: (a-b)^2 = a^2 - 2ab + b^2
+  conditions: dla dowolnych a, b rzeczywistych
+  description: Ostatni wyraz jest zawsze dodatni, bo (-b)^2 = b^2.
+- name: Różnica kwadratów
+  latex_raw: a^2 - b^2 = (a-b)(a+b)
+  conditions: 'dla dowolnych a, b rzeczywistych; czytana od prawej: (a-b)(a+b) = a^2 - b^2'
+  description: Suma kwadratów a^2+b^2 nie ma rozkładu na czynniki rzeczywiste.
+- name: Symetria kwadratu różnicy
+  latex_raw: (a-b)^2 = (b-a)^2
+  conditions: zawsze; bo b-a = -(a-b), a kwadrat liczby przeciwnej jest ten sam
+- name: Kwadrat wyrażenia przeciwnego
+  latex_raw: (-a-b)^2 = (a+b)^2
+  conditions: zawsze
+- name: Suma kwadratów przez sumę i iloczyn
+  latex_raw: a^2 + b^2 = (a+b)^2 - 2ab
+  conditions: zawsze; wynika bezpośrednio ze wzoru na kwadrat sumy
+- name: Kwadrat różnicy przez sumę i iloczyn
+  latex_raw: (a-b)^2 = (a+b)^2 - 4ab
+  conditions: zawsze
+- name: Różnica kwadratów sumy i różnicy
+  latex_raw: (a+b)^2 - (a-b)^2 = 4ab
+  conditions: zawsze
+- name: Iloczyn wyrażeń sprzężonych z pierwiastkami
+  latex_raw: (\sqrt{x}-\sqrt{y})(\sqrt{x}+\sqrt{y}) = x - y
+  conditions: dla x \ge 0, y \ge 0
+  description: Podstawowe narzędzie przy usuwaniu niewymierności z mianownika.
+- name: Kwadrat iloczynu (potrzebny przy podstawianiu)
+  latex_raw: (ka)^2 = k^2 a^2
+  conditions: zawsze
+  description: Stąd (3x)^2 = 9x^2, a nie 3x^2 — najczęstsze źródło błędów przy stosowaniu wzorów.
+methods:
+- name: Rozwijanie kwadratu dwumianu
+  when_to_use: Gdy trzeba usunąć nawias z kwadratu sumy lub różnicy, np. przy upraszczaniu wyrażeń, przekształcaniu
+    równań albo doprowadzaniu do postaci ogólnej.
+  steps:
+  - 'Zidentyfikuj składniki: co jest ''a'', a co ''b'' (razem ze współczynnikiem liczbowym i znakiem).'
+  - 'Zapisz schemat: a^2, potem 2ab (ze znakiem ''+'' dla sumy, ''-'' dla różnicy), potem b^2.'
+  - 'Podnieś do kwadratu każdy składnik osobno, pamiętając o współczynnikach: (3x)^2 = 9x^2, (2√5)^2 =
+    20.'
+  - 'Oblicz podwojony iloczyn: 2·a·b, mnożąc liczby i zmienne oddzielnie.'
+  - Zredukuj wyrazy podobne i uporządkuj wynik według malejących potęg.
+  - 'Kontrola: podstaw prostą liczbę (np. x = 1) do wyrażenia wyjściowego i do wyniku — muszą dać tę samą
+    wartość.'
+- name: Rozkład różnicy kwadratów na czynniki
+  when_to_use: Gdy wyrażenie jest różnicą dwóch wyrażeń, z których każde jest kwadratem (lub daje się
+    jako kwadrat zapisać) — do skracania ułamków, rozwiązywania równań, uproszczeń.
+  steps:
+  - Sprawdź, czy między wyrazami stoi znak minus (dla sumy kwadratów wzór nie działa).
+  - Jeśli jest wspólny czynnik liczbowy lub literowy — najpierw wyłącz go przed nawias (np. 5x^2-20 =
+    5(x^2-4)).
+  - 'Zapisz każdy wyraz jako kwadrat: pierwszy jako a^2, drugi jako b^2 (a, b to pierwiastki z tych wyrazów).'
+  - Napisz iloczyn (a-b)(a+b).
+  - Sprawdź, czy któryś z czynników nie daje się rozłożyć dalej (np. x^4-16 = (x^2-4)(x^2+4) = (x-2)(x+2)(x^2+4)).
+  - 'Kontrola: wymnóż czynniki i porównaj z wyrażeniem wyjściowym.'
+- name: Rozpoznawanie i zwijanie pełnego kwadratu
+  when_to_use: Gdy trójmian ma postać podejrzanie podobną do a^2 ± 2ab + b^2 i chcemy zapisać go jako
+    kwadrat (uproszczenie, wykazanie nieujemności, rozkład na czynniki).
+  steps:
+  - 'Sprawdź, czy skrajne wyrazy są kwadratami: wyznacz a = √(pierwszy wyraz), b = √(ostatni wyraz).'
+  - Oblicz 2ab i porównaj z wyrazem środkowym co do wartości bezwzględnej.
+  - 'Jeśli się zgadza: wynik to (a+b)^2 przy środkowym ''+'' lub (a-b)^2 przy środkowym ''-''.'
+  - Jeśli się nie zgadza — trójmian nie jest pełnym kwadratem, wzoru nie stosuj.
+- name: Sprytne rachunki liczbowe ze wzorami
+  when_to_use: Gdy trzeba obliczyć bez kalkulatora kwadrat liczby bliskiej okrągłej (98^2, 103^2) albo
+    różnicę kwadratów (2023^2 - 2022^2), albo iloczyn typu 97·103.
+  steps:
+  - 'Dla kwadratu: zapisz liczbę jako sumę/różnicę okrągłej liczby i małej reszty, np. 98 = 100 - 2.'
+  - 'Zastosuj wzór: (100-2)^2 = 10000 - 400 + 4 = 9604.'
+  - 'Dla różnicy kwadratów: rozłóż a^2-b^2 = (a-b)(a+b) — czynnik (a-b) jest zwykle malutki.'
+  - 'Dla iloczynu liczb symetrycznych względem okrągłej: 97·103 = (100-3)(100+3) = 10000-9 = 9991.'
+- name: Upraszczanie wyrażeń z kilkoma nawiasami
+  when_to_use: Gdy wyrażenie zawiera sumę/różnicę kilku kwadratów dwumianów lub iloczynów, np. (2x-1)^2
+    - (x+3)(x-3).
+  steps:
+  - Rozwiń każdy nawias osobno, korzystając z odpowiedniego wzoru; wyniki zapisz w nawiasach.
+  - 'Uwzględnij znak przed nawiasem: minus zmienia znak KAŻDEGO wyrazu w środku.'
+  - Zredukuj wyrazy podobne.
+  - Uporządkuj wynik malejąco względem potęg zmiennej.
+  - Kontrola numeryczna dla wybranej wartości zmiennej.
+- name: Usuwanie niewymierności z mianownika przez sprzężenie
+  when_to_use: Gdy mianownik ma postać a ± √b lub √a ± √b.
+  steps:
+  - Wypisz wyrażenie sprzężone do mianownika (ta sama para wyrazów, przeciwny znak w środku).
+  - Pomnóż licznik i mianownik przez to sprzężenie (mnożymy przez 1, więc wartość się nie zmienia).
+  - W mianowniku zastosuj wzór (a-b)(a+b) = a^2-b^2 — pierwiastki znikają.
+  - Wymnóż licznik i, jeśli można, skróć ułamek.
+- name: Dowodzenie prostych własności liczbowych
+  when_to_use: Gdy trzeba uzasadnić np. że różnica kwadratów dwóch kolejnych liczb naturalnych jest liczbą
+    nieparzystą albo że pewne wyrażenie jest zawsze nieujemne.
+  steps:
+  - Wprowadź oznaczenia literowe (np. n i n+1 dla kolejnych liczb całkowitych).
+  - Zapisz badane wyrażenie i przekształć je wzorami skróconego mnożenia.
+  - 'Doprowadź do postaci, z której teza jest widoczna: iloczynu, kwadratu (kwadrat ≥ 0) lub postaci 2k+1.'
+  - Sformułuj wniosek słowami.
+examples:
+- statement: 'Rozwiń: a) (3x+5)^2, b) (2a-7b)^2, c) (x - 2√3)^2.'
+  worked_solution: |-
+    a) Tu a = 3x, b = 5. Kwadrat pierwszego: (3x)^2 = 9x^2. Podwojony iloczyn: 2·3x·5 = 30x. Kwadrat drugiego: 5^2 = 25. Zatem (3x+5)^2 = 9x^2 + 30x + 25.
+    b) a = 2a', b = 7b (składniki: 2a i 7b). (2a)^2 = 4a^2; 2·(2a)·(7b) = 28ab, ze znakiem minus; (7b)^2 = 49b^2. Zatem (2a-7b)^2 = 4a^2 - 28ab + 49b^2.
+    c) Składniki: x oraz 2√3. x^2; podwojony iloczyn 2·x·2√3 = 4√3·x ze znakiem minus; (2√3)^2 = 4·3 = 12. Zatem (x-2√3)^2 = x^2 - 4√3 x + 12.
+    Sprawdzenie a) dla x = 1: (3+5)^2 = 64 oraz 9+30+25 = 64. Zgadza się.
+  difficulty: 1
+- statement: 'Rozłóż na czynniki: a) 9x^2 - 25, b) 5x^2 - 20, c) 16 - (x+1)^2, d) x^4 - 81.'
+  worked_solution: |-
+    a) 9x^2 = (3x)^2, 25 = 5^2, więc 9x^2 - 25 = (3x-5)(3x+5).
+    b) Najpierw wspólny czynnik: 5x^2 - 20 = 5(x^2-4) = 5(x-2)(x+2).
+    c) Traktujemy 16 = 4^2 oraz b = x+1: 16 - (x+1)^2 = (4-(x+1))(4+(x+1)) = (3-x)(5+x).
+    d) x^4 = (x^2)^2, 81 = 9^2, więc x^4-81 = (x^2-9)(x^2+9) = (x-3)(x+3)(x^2+9). Czynnika x^2+9 nie rozkładamy — to suma kwadratów.
+  difficulty: 2
+- statement: 'Oblicz w pamięci: a) 103^2, b) 98^2, c) 2024^2 - 2023^2, d) 96·104.'
+  worked_solution: |-
+    a) 103^2 = (100+3)^2 = 10000 + 2·100·3 + 9 = 10000 + 600 + 9 = 10609.
+    b) 98^2 = (100-2)^2 = 10000 - 400 + 4 = 9604.
+    c) 2024^2 - 2023^2 = (2024-2023)(2024+2023) = 1·4047 = 4047.
+    d) 96·104 = (100-4)(100+4) = 100^2 - 4^2 = 10000 - 16 = 9984.
+  difficulty: 2
+- statement: Uprość wyrażenie W(x) = (2x-3)^2 - (x+4)(x-4) + 3(x-1)^2 i oblicz W(2).
+  worked_solution: |-
+    Rozwijamy kolejno:
+    (2x-3)^2 = 4x^2 - 12x + 9,
+    (x+4)(x-4) = x^2 - 16 (różnica kwadratów),
+    3(x-1)^2 = 3(x^2 - 2x + 1) = 3x^2 - 6x + 3.
+    Zatem W(x) = (4x^2 - 12x + 9) - (x^2 - 16) + (3x^2 - 6x + 3).
+    Uwaga na minus przed nawiasem: -(x^2-16) = -x^2 + 16.
+    W(x) = 4x^2 - 12x + 9 - x^2 + 16 + 3x^2 - 6x + 3 = 6x^2 - 18x + 28.
+    W(2) = 6·4 - 36 + 28 = 24 - 36 + 28 = 16.
+    Kontrola bezpośrednia: (4-3)^2 - (6)(-2) + 3(1)^2 = 1 + 12 + 3 = 16. Zgadza się.
+  difficulty: 3
+- statement: Liczby a i b spełniają a + b = 7 oraz ab = 10. Oblicz a^2 + b^2 oraz (a-b)^2. Następnie usuń
+    niewymierność z mianownika ułamka 6/(4-√10).
+  worked_solution: |-
+    Z kwadratu sumy: (a+b)^2 = a^2 + 2ab + b^2, więc a^2+b^2 = (a+b)^2 - 2ab = 49 - 20 = 29.
+    Dalej (a-b)^2 = a^2 - 2ab + b^2 = 29 - 20 = 9. (Równoważnie (a-b)^2 = (a+b)^2 - 4ab = 49 - 40 = 9.)
+    Usuwanie niewymierności: mnożymy licznik i mianownik przez sprzężenie 4+√10:
+    6/(4-√10) = 6(4+√10)/((4-√10)(4+√10)) = 6(4+√10)/(16-10) = 6(4+√10)/6 = 4 + √10.
+  difficulty: 4
+- statement: Wykaż, że dla każdej liczby całkowitej n różnica kwadratów dwóch kolejnych liczb całkowitych
+    jest liczbą nieparzystą, oraz że wyrażenie x^2 - 6x + 11 przyjmuje wyłącznie wartości dodatnie.
+  worked_solution: |-
+    Część 1: kolejne liczby całkowite to n i n+1. Ich kwadraty różnią się o
+    (n+1)^2 - n^2 = (n^2 + 2n + 1) - n^2 = 2n + 1.
+    (Alternatywnie ze wzoru na różnicę kwadratów: ((n+1)-n)((n+1)+n) = 1·(2n+1).)
+    Liczba 2n+1 jest z definicji nieparzysta dla całkowitego n, co kończy dowód.
+    Część 2: grupujemy pierwsze dwa wyrazy w pełny kwadrat. Skoro x^2 - 6x to początek (x-3)^2 = x^2 - 6x + 9, piszemy
+    x^2 - 6x + 11 = (x^2 - 6x + 9) + 2 = (x-3)^2 + 2.
+    Kwadrat dowolnej liczby rzeczywistej jest nieujemny, więc (x-3)^2 ≥ 0, a zatem (x-3)^2 + 2 ≥ 2 > 0 dla każdego x. Wyrażenie jest więc zawsze dodatnie (najmniejszą wartość 2 przyjmuje dla x = 3).
+  difficulty: 5
+objectives:
+- statement: Odtworzyć z pamięci wzory na kwadrat sumy, kwadrat różnicy i różnicę kwadratów oraz uzasadnić
+    je przez wymnożenie nawiasów.
+  bloom_level: Zapamiętywanie/Rozumienie
+- statement: Rozwinąć kwadrat dwumianu, w którym składniki zawierają współczynniki liczbowe, zmienne i
+    pierwiastki, np. (2x-3√2)^2.
+  bloom_level: Stosowanie
+- statement: Rozłożyć na czynniki wyrażenie będące różnicą kwadratów, także po wcześniejszym wyłączeniu
+    wspólnego czynnika lub przy zastosowaniu wzoru dwukrotnie.
+  bloom_level: Stosowanie
+- statement: Rozpoznać trójmian będący pełnym kwadratem i zapisać go w postaci (a ± b)^2.
+  bloom_level: Analizowanie
+- statement: Uprościć wyrażenie algebraiczne zawierające kilka kwadratów dwumianów i iloczynów sprzężonych,
+    poprawnie traktując znak przed nawiasem.
+  bloom_level: Stosowanie
+- statement: Wykorzystać wzory skróconego mnożenia do sprawnego obliczania wartości wyrażeń liczbowych
+    bez kalkulatora (kwadraty liczb bliskich okrągłym, różnice kwadratów, iloczyny liczb symetrycznych).
+  bloom_level: Stosowanie
+- statement: Usunąć niewymierność z mianownika postaci a ± √b, mnożąc przez wyrażenie sprzężone.
+  bloom_level: Stosowanie
+- statement: Obliczyć a^2+b^2 lub (a-b)^2, znając a+b i ab, korzystając z tożsamości pochodnych.
+  bloom_level: Analizowanie
+- statement: Przeprowadzić prosty dowód algebraiczny (np. o różnicy kwadratów kolejnych liczb całkowitych
+    lub o stałym znaku wyrażenia) z wykorzystaniem wzorów skróconego mnożenia i nieujemności kwadratu.
+  bloom_level: Tworzenie/Ocenianie
+- statement: Wykryć i poprawić typowy błąd w cudzym przekształceniu (np. brak podwojonego iloczynu, zły
+    znak, rozkład sumy kwadratów), uzasadniając to kontrprzykładem liczbowym.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Zapominanie o podwojonym iloczynie
+  incorrect_reasoning: (a+b)^2 = a^2 + b^2, np. (x+3)^2 = x^2 + 9.
+  correct_reasoning: 'Kwadrat sumy to nie suma kwadratów. Mnożąc nawiasy: (x+3)(x+3) = x^2 + 3x + 3x +
+    9 = x^2 + 6x + 9. Test liczbowy: dla x = 1 mamy (1+3)^2 = 16, a x^2+9 = 10 — wynik błędny.'
+  severity: 5
+- name: Znak ostatniego wyrazu w kwadracie różnicy
+  incorrect_reasoning: (a-b)^2 = a^2 - 2ab - b^2 albo (a-b)^2 = a^2 - b^2, bo 'minus przechodzi na wszystko'.
+  correct_reasoning: '(-b)^2 = b^2, więc ostatni wyraz jest zawsze dodatni: (a-b)^2 = a^2 - 2ab + b^2.
+    Minus pojawia się wyłącznie przy wyrazie środkowym.'
+  severity: 5
+- name: Rozkładanie sumy kwadratów
+  incorrect_reasoning: x^2 + 16 = (x+4)(x-4) — 'przecież jest wzór na kwadraty'.
+  correct_reasoning: 'Wzór dotyczy różnicy: x^2 - 16 = (x-4)(x+4). Suma kwadratów x^2+16 nie ma rozkładu
+    na czynniki liniowe rzeczywiste; sprawdzenie: (x+4)(x-4) = x^2-16 ≠ x^2+16.'
+  severity: 4
+- name: Zły kwadrat współczynnika
+  incorrect_reasoning: (3x+2)^2 = 3x^2 + 12x + 4, bo 'x podnosimy do kwadratu, a trójkę przepisujemy'.
+  correct_reasoning: 'Do kwadratu podnosimy cały składnik: (3x)^2 = 3^2·x^2 = 9x^2. Poprawnie (3x+2)^2
+    = 9x^2 + 12x + 4.'
+  severity: 4
+- name: Niepoprawny znak po minusie przed nawiasem
+  incorrect_reasoning: (x+1)^2 - (x-2)^2 = x^2+2x+1 - x^2-4x+4 = -2x+5.
+  correct_reasoning: 'Minus zmienia znak wszystkich wyrazów rozwinięcia: -(x^2-4x+4) = -x^2+4x-4. Zatem
+    wynik to (x^2+2x+1) - x^2 + 4x - 4 = 6x - 3. (Można też od razu: (x+1)^2-(x-2)^2 = ((x+1)-(x-2))((x+1)+(x-2))
+    = 3(2x-1).)'
+  severity: 4
+- name: Pierwiastek z sumy
+  incorrect_reasoning: √(a^2+b^2) = a + b, przez analogię do wzorów skróconego mnożenia.
+  correct_reasoning: 'Bo a^2+b^2 ≠ (a+b)^2 — brakuje 2ab. Kontrprzykład: a=3, b=4 daje √25 = 5, a a+b
+    = 7. Pierwiastkowanie ''wyraz po wyrazie'' jest niedozwolone.'
+  severity: 4
+- name: Zwijanie trójmianu bez sprawdzenia wyrazu środkowego
+  incorrect_reasoning: x^2 + 10x + 9 = (x+3)^2, bo 9 = 3^2 i skrajne wyrazy są kwadratami.
+  correct_reasoning: 'Trzeba jeszcze sprawdzić wyraz środkowy: 2·x·3 = 6x, a mamy 10x — to nie jest pełny
+    kwadrat. Pełnym kwadratem byłoby x^2 + 6x + 9.'
+  severity: 3
+- name: Pominięcie wspólnego czynnika przed użyciem wzoru
+  incorrect_reasoning: 2x^2 - 18 = (√2x - √18)(√2x + √18) — 'trzeba pierwiastkować wyrazy'.
+  correct_reasoning: 'Najpierw wyłączamy wspólny czynnik: 2x^2 - 18 = 2(x^2-9) = 2(x-3)(x+3). Rozkład
+    powinien być możliwie prosty, z czynnikami wymiernymi.'
+  severity: 3
+- name: Mylenie (a-b)^2 z (b-a)^2 jako liczb przeciwnych
+  incorrect_reasoning: (3-x)^2 = -(x-3)^2, bo nawiasy są 'odwrotne'.
+  correct_reasoning: 'b-a = -(a-b), a kwadrat liczby przeciwnej jest taki sam: (3-x)^2 = (x-3)^2. Znak
+    minus przed kwadratem dałby wartość niedodatnią, co jest niemożliwe dla kwadratu.'
+  severity: 3
+- name: Mnożenie tylko licznika przy usuwaniu niewymierności
+  incorrect_reasoning: 6/(4-√10) = 6(4+√10)/(4-√10) — 'domnażam sprzężenie do licznika'.
+  correct_reasoning: 'Mnożymy licznik i mianownik przez to samo wyrażenie (czyli przez 1), inaczej zmieniamy
+    wartość ułamka: 6(4+√10)/((4-√10)(4+√10)) = 6(4+√10)/6 = 4+√10.'
+  severity: 3

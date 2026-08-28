@@ -1,0 +1,367 @@
+section: twierdzenie-cosinusow-pole-trojkata
+name: Twierdzenie cosinusów i pole trójkąta przez sinus
+scope: Law of cosines; area = 1/2 * a * b * sin(gamma); choosing between them from the given data.
+requirements:
+- VII.3
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:23:57.705316'
+  approved_at: '2026-08-28T18:28:06.885136'
+  approved_by: reviewer
+concepts:
+- name: Standardowe oznaczenia w trójkącie
+  description: W trójkącie ABC boki oznaczamy a = BC, b = AC, c = AB, a kąty α, β, γ przy wierzchołkach
+    odpowiednio A, B, C. Bok a leży naprzeciw kąta α, bok b naprzeciw β, bok c naprzeciw γ.
+  explanation: 'Cała siła wzorów trygonometrycznych bierze się z tej odpowiedniości: literka boku i literka
+    kąta o tym samym ''numerze'' leżą naprzeciw siebie. Zanim podstawisz cokolwiek do wzoru, opisz rysunek
+    tymi literami — połowa błędów znika.'
+  difficulty: 1
+- name: Kąt zawarty między bokami
+  description: Kąt zawarty między dwoma bokami trójkąta to kąt przy wspólnym wierzchołku tych boków; boki
+    a i b mają wspólny wierzchołek C, więc kątem między nimi jest γ.
+  explanation: 'Zarówno twierdzenie cosinusów, jak i wzór na pole przez sinus wymagają dokładnie tego
+    kąta — nie któregokolwiek. Test: przyłóż palce do dwóch boków, kąt, który ''widzisz w rozwidleniu'',
+    jest kątem zawartym.'
+  difficulty: 1
+- name: Twierdzenie cosinusów
+  description: 'W dowolnym trójkącie kwadrat boku jest równy sumie kwadratów dwóch pozostałych boków pomniejszonej
+    o podwojony iloczyn tych boków i cosinusa kąta między nimi: a² = b² + c² − 2bc·cos α.'
+  explanation: 'Myśl o tym jak o twierdzeniu Pitagorasa z poprawką. Wyraz −2bc·cos α jest ''karą'' albo
+    ''premią'' za to, że kąt nie jest prosty: gdy kąt jest ostry, cos > 0 i bok naprzeciw jest krótszy
+    niż w trójkącie prostokątnym; gdy rozwarty, cos < 0 i bok naprzeciw jest dłuższy.'
+  difficulty: 2
+- name: Twierdzenie cosinusów jako uogólnienie twierdzenia Pitagorasa
+  description: Dla α = 90° mamy cos 90° = 0, więc wzór redukuje się do a² = b² + c².
+  explanation: 'To dobry sposób na zapamiętanie wzoru i na sprawdzenie, czy nie pomyliłeś znaku: podstaw
+    90° i musi wyjść Pitagoras.'
+  difficulty: 2
+- name: Wzór na cosinus kąta z trzech boków
+  description: Z twierdzenia cosinusów wyznaczamy cos α = (b² + c² − a²)/(2bc); analogicznie dla pozostałych
+    kątów.
+  explanation: To narzędzie do sytuacji BBB (znane trzy boki). W liczniku zawsze odejmujemy kwadrat boku
+    leżącego naprzeciw szukanego kąta — reszta jest 'plusowa'.
+  difficulty: 3
+- name: Rozpoznawanie rodzaju kąta ze znaku cosinusa
+  description: Jeśli a² < b² + c², to kąt α jest ostry; jeśli a² = b² + c², to prosty; jeśli a² > b² +
+    c², to rozwarty.
+  explanation: 'Wynika wprost ze znaku wyrażenia 2bc·cos α (bo 2bc > 0). W praktyce: żeby sprawdzić, czy
+    trójkąt jest rozwartokątny, wystarczy porównać kwadrat najdłuższego boku z sumą kwadratów dwóch krótszych
+    — kąt rozwarty może być tylko naprzeciw najdłuższego boku.'
+  difficulty: 2
+- name: Cosinus kąta rozwartego
+  description: Dla 90° < γ < 180° zachodzi cos γ < 0, przy czym cos(180° − γ) = −cos γ.
+  explanation: 'Dlatego przy kącie 120° we wzorze dwa minusy dają plus: −2bc·cos 120° = −2bc·(−½) = +bc.
+    Trójkąt z kątem rozwartym ma bok naprzeciw dłuższy niż wynikałoby z Pitagorasa — to zgadza się z intuicją
+    ''rozchylonych ramion''.'
+  difficulty: 3
+- name: Pole trójkąta przez dwa boki i sinus kąta między nimi
+  description: P = ½·a·b·sin γ, gdzie γ jest kątem zawartym między bokami a i b.
+  explanation: To po prostu P = ½·podstawa·wysokość, w którym wysokość opuszczona na bok a wynosi h =
+    b·sin γ. Wzór działa też dla kąta rozwartego, bo wtedy spodek wysokości leży poza bokiem, ale h nadal
+    równa się b·sin γ.
+  difficulty: 2
+- name: Sinus kąta i kąta przyległego
+  description: sin(180° − γ) = sin γ, więc dwa różne kąty (ostry i rozwarty) mogą mieć ten sam sinus,
+    np. sin 30° = sin 150° = ½.
+  explanation: 'Konsekwencja praktyczna: gdy z pola wyznaczasz sin γ, dostajesz zwykle DWA możliwe kąty.
+    Z cosinusa natomiast kąt trójkąta wyznacza się jednoznacznie, bo cosinus zmienia znak w 90°.'
+  difficulty: 3
+- name: Jedynka trygonometryczna jako most między cos a sin
+  description: sin²γ + cos²γ = 1, a ponieważ kąt trójkąta spełnia 0° < γ < 180°, to sin γ > 0 i sin γ
+    = √(1 − cos²γ).
+  explanation: 'Pozwala policzyć pole trójkąta o danych trzech bokach bez znajomości miary kąta: najpierw
+    cos z twierdzenia cosinusów, potem sin z jedynki, na końcu pole. Znak zawsze bierzemy dodatni, nawet
+    gdy cos był ujemny.'
+  difficulty: 3
+- name: Wartości funkcji trygonometrycznych kątów 30°, 45°, 60°, 120°, 135°, 150°
+  description: sin 30° = ½, sin 45° = √2/2, sin 60° = √3/2; cos 30° = √3/2, cos 45° = √2/2, cos 60° =
+    ½; sin 120° = √3/2, cos 120° = −½; sin 135° = √2/2, cos 135° = −√2/2; sin 150° = ½, cos 150° = −√3/2.
+  explanation: W zadaniach 'ładnych' pojawiają się prawie wyłącznie te kąty. Warto je znać na pamięć,
+    bo wtedy wyniki wychodzą w postaci dokładnej (z pierwiastkami), a nie przybliżonej.
+  difficulty: 2
+- name: 'Dane wyznaczające trójkąt: BKB, BBB, KBK'
+  description: BKB — dwa boki i kąt między nimi; BBB — trzy boki; KBK — dwa kąty i bok. Twierdzenie cosinusów
+    obsługuje przypadki BKB i BBB.
+  explanation: Rozpoznanie konfiguracji danych to pierwszy krok każdego zadania. BKB i BBB → cosinusy;
+    gdy w danych występuje para 'bok i kąt naprzeciw niego' → wygodniejsze jest twierdzenie sinusów.
+  difficulty: 3
+- name: Pole równoległoboku przez sinus
+  description: Równoległobok o bokach a, b i kącie α między nimi ma pole P = a·b·sin α; równoległobok
+    składa się z dwóch przystających trójkątów o polu ½ab sin α.
+  explanation: Naturalne rozszerzenie wzoru — przydaje się w zadaniach o rombie (P = a²·sin α) i o polach
+    figur złożonych.
+  difficulty: 2
+- name: Kontrola poprawności wyniku
+  description: Wyznaczony cosinus musi spełniać −1 < cos α < 1, a boki muszą spełniać nierówność trójkąta;
+    ponadto naprzeciw dłuższego boku leży większy kąt.
+  explanation: Jeśli z rachunków wyjdzie cos α = 1,3 albo bok dłuższy niż suma dwóch pozostałych, to znak,
+    że gdzieś jest błąd rachunkowy lub dane są sprzeczne. Zasada 'większy bok — większy kąt' pozwala szybko
+    ocenić sensowność wyniku.
+  difficulty: 3
+formulas:
+- name: Twierdzenie cosinusów (trzy wersje)
+  latex_raw: a^2 = b^2 + c^2 - 2bc\cos\alpha,\qquad b^2 = a^2 + c^2 - 2ac\cos\beta,\qquad c^2 = a^2 +
+    b^2 - 2ab\cos\gamma
+  conditions: Dowolny trójkąt o bokach a, b, c i kątach α, β, γ leżących naprzeciw tych boków.
+  description: Kąt występujący we wzorze jest zawsze kątem między tymi dwoma bokami, których kwadraty
+    dodajemy.
+- name: Cosinus kąta z trzech boków
+  latex_raw: \cos\gamma = \frac{a^2 + b^2 - c^2}{2ab}
+  conditions: Dane trzy boki trójkąta (przypadek BBB); a, b to boki tworzące kąt γ, c leży naprzeciw γ.
+  description: Znak wyniku od razu mówi, czy kąt jest ostry (+), prosty (0), czy rozwarty (−).
+- name: Twierdzenie Pitagorasa jako przypadek szczególny
+  latex_raw: \gamma = 90^\circ \Rightarrow c^2 = a^2 + b^2
+  conditions: Kąt między bokami a i b jest prosty.
+  description: Powstaje przez podstawienie cos 90° = 0.
+- name: Pole trójkąta przez sinus kąta
+  latex_raw: P = \tfrac{1}{2}ab\sin\gamma = \tfrac{1}{2}bc\sin\alpha = \tfrac{1}{2}ac\sin\beta
+  conditions: Kąt musi być kątem zawartym między dwoma użytymi bokami; 0° < kąt < 180°.
+  description: Dla γ = 90° daje P = ½ab, czyli zwykły wzór dla trójkąta prostokątnego.
+- name: Sinus wyznaczony z pola
+  latex_raw: \sin\gamma = \frac{2P}{ab}
+  conditions: Znane pole P oraz dwa boki a, b tworzące kąt γ.
+  description: 'Zwykle daje dwa rozwiązania: γ oraz 180° − γ (chyba że sin γ = 1).'
+- name: Wysokość przez sinus
+  latex_raw: h_a = b\sin\gamma
+  conditions: h_a — wysokość opuszczona na bok a, γ — kąt między bokami a i b.
+  description: Uzasadnienie wzoru na pole; działa także dla kąta rozwartego.
+- name: Kąty przyległe
+  latex_raw: \sin(180^\circ-\gamma)=\sin\gamma,\qquad \cos(180^\circ-\gamma)=-\cos\gamma
+  conditions: 0° < γ < 180°.
+  description: Tłumaczy niejednoznaczność kąta wyznaczanego z sinusa i jednoznaczność wyznaczanego z cosinusa.
+- name: Jedynka trygonometryczna dla kąta trójkąta
+  latex_raw: \sin\gamma=\sqrt{1-\cos^2\gamma}
+  conditions: 0° < γ < 180°, więc sin γ > 0 — pierwiastek bierzemy ze znakiem plus.
+  description: Pozwala przejść od twierdzenia cosinusów do wzoru na pole bez wyznaczania miary kąta.
+- name: Pole równoległoboku i rombu
+  latex_raw: P_{\text{równ.}} = ab\sin\alpha,\qquad P_{\text{romb}} = a^2\sin\alpha
+  conditions: a, b — długości boków, α — kąt między nimi.
+  description: Wynika z podziału równoległoboku przekątną na dwa przystające trójkąty.
+- name: Kryterium rodzaju trójkąta
+  latex_raw: c^2 < a^2+b^2 \Rightarrow \gamma<90^\circ;\quad c^2=a^2+b^2 \Rightarrow \gamma=90^\circ;\quad
+    c^2>a^2+b^2 \Rightarrow \gamma>90^\circ
+  conditions: c — bok leżący naprzeciw kąta γ; do zbadania rozwartokątności bierzemy c jako najdłuższy
+    bok.
+  description: Bezpośredni wniosek ze znaku wyrażenia 2ab cos γ.
+methods:
+- name: Wyznaczanie trzeciego boku (dane BKB)
+  when_to_use: Gdy znane są dwa boki trójkąta i kąt zawarty między nimi, a szukamy boku leżącego naprzeciw
+    tego kąta.
+  steps:
+  - Narysuj trójkąt i opisz dane literami a, b, c, α, β, γ tak, by szukany bok leżał naprzeticw danego
+    kąta.
+  - Zapisz twierdzenie cosinusów w wersji, w której po lewej stronie stoi kwadrat szukanego boku.
+  - Podstaw dane liczbowe; wartość cosinusa kąta z tablicy (dla 30°, 45°, 60°, 120°, 135°, 150° — dokładną).
+  - 'Oblicz kolejno: kwadraty boków, iloczyn 2bc·cos α (pilnując znaku!), różnicę.'
+  - Wyciągnij pierwiastek arytmetyczny i uprość wynik.
+  - 'Sprawdź sensowność: wynik dodatni, nierówność trójkąta spełniona, dłuższy bok naprzeciw większego
+    kąta.'
+- name: Wyznaczanie kąta z trzech boków (dane BBB)
+  when_to_use: Gdy znane są wszystkie trzy boki i szukamy miary jednego z kątów lub chcemy zbadać, czy
+    trójkąt jest ostro-, prosto- czy rozwartokątny.
+  steps:
+  - Zidentyfikuj bok leżący naprzeciw szukanego kąta — nazwij go c, pozostałe a i b.
+  - Zastosuj wzór cos γ = (a² + b² − c²)/(2ab).
+  - Oblicz licznik i mianownik, skróć ułamek.
+  - 'Odczytaj kąt: jeśli cos γ jest jedną z wartości tablicowych (±½, ±√2/2, ±√3/2, 0), podaj kąt dokładnie;
+    w przeciwnym razie oceń tylko znak (kąt ostry/rozwarty) lub użyj tablic.'
+  - Jeśli badasz rodzaj trójkąta, wystarczy porównać c² z a² + b² dla najdłuższego boku c.
+- name: Obliczanie pola z dwóch boków i kąta między nimi
+  when_to_use: Gdy dane są dwa boki i kąt zawarty między nimi (BKB), a szukane jest pole.
+  steps:
+  - Sprawdź, czy dany kąt naprawdę leży MIĘDZY danymi bokami; jeśli nie — najpierw dolicz brakujący kąt
+    z sumy kątów 180° lub zmień parę boków.
+  - Zapisz P = ½·a·b·sin γ.
+  - 'Podstaw dokładną wartość sinusa (pamiętaj: sin 120° = sin 60° = √3/2).'
+  - Wykonaj mnożenie, uprość wynik, dopisz jednostkę kwadratową.
+- name: Pole trójkąta o danych trzech bokach (przez cosinus i jedynkę)
+  when_to_use: Gdy dane są trzy boki, a szukane jest pole i nie chcemy (lub nie umiemy) odczytać miary
+    kąta.
+  steps:
+  - Wybierz jeden kąt, np. γ między bokami a i b, i oblicz cos γ = (a² + b² − c²)/(2ab).
+  - Oblicz sin γ = √(1 − cos²γ), zawsze ze znakiem plus.
+  - Podstaw do P = ½·a·b·sin γ.
+  - Uprość pierwiastki; sprawdź, czy pole jest dodatnie i rozsądnie duże w porównaniu z ½ab (bo sin γ
+    ≤ 1, więc P ≤ ½ab).
+- name: Wyznaczanie kąta z danego pola
+  when_to_use: Gdy dane są dwa boki i pole trójkąta, a szukany jest kąt między tymi bokami.
+  steps:
+  - Z P = ½ab sin γ wyznacz sin γ = 2P/(ab).
+  - Sprawdź, czy otrzymana wartość należy do przedziału (0; 1]; jeśli jest większa od 1 — takie dane są
+    sprzeczne.
+  - 'Podaj oba kąty: γ ostry i 180° − γ rozwarty (chyba że sin γ = 1, wtedy γ = 90°, jedno rozwiązanie).'
+  - Jeśli treść zadania rozstrzyga (np. 'trójkąt ostrokątny', 'kąt rozwarty'), odrzuć niepasujące rozwiązanie;
+    w przeciwnym razie zostaw oba i policz oba warianty dalszych wielkości.
+- name: 'Wybór narzędzia: cosinusy, sinusy czy pole'
+  when_to_use: Na starcie każdego zadania o trójkącie nieprostokątnym, żeby nie błądzić.
+  steps:
+  - 'Wypisz, co jest dane, w schemacie: BKB, BBB, KBK, BBK.'
+  - Jeżeli dane to BKB (kąt między bokami) — twierdzenie cosinusów dla trzeciego boku oraz ½ab sin γ dla
+    pola.
+  - Jeżeli dane to BBB — twierdzenie cosinusów, aby znaleźć kąt (lub cos kąta), a potem ewentualnie pole.
+  - Jeżeli w danych występuje bok i kąt leżący naprzeciw niego (KBK, BBK) — użyj twierdzenia sinusów;
+    cosinusy byłyby wtedy równaniem kwadratowym.
+  - 'Jeżeli trójkąt jest prostokątny — nie komplikuj: Pitagoras i definicje sin/cos w trójkącie prostokątnym.'
+  - Po obliczeniach wróć do rysunku i sprawdź zgodność wyniku z proporcjami figury.
+examples:
+- statement: W trójkącie ABC dane są boki a = 5, b = 8 oraz kąt γ = 60° między nimi. Oblicz bok c oraz
+    pole trójkąta.
+  worked_solution: |-
+    Kąt γ leży między bokami a i b, więc naprzeciw niego leży bok c. Stosujemy twierdzenie cosinusów:
+    c² = a² + b² − 2ab·cos γ = 5² + 8² − 2·5·8·cos 60°.
+    Ponieważ cos 60° = ½, mamy 2·5·8·½ = 40, zatem
+    c² = 25 + 64 − 40 = 49, czyli c = 7.
+    Pole: P = ½·a·b·sin γ = ½·5·8·sin 60° = 20·(√3/2) = 10√3 ≈ 17,3.
+    Kontrola: 7 < 5 + 8, a najdłuższy bok (8) leży naprzeciw największego kąta — dane są spójne.
+  difficulty: 2
+- statement: Boki trójkąta mają długości 6, 10 i 14. Wyznacz miarę największego kąta tego trójkąta i oblicz
+    jego pole.
+  worked_solution: |-
+    Największy kąt leży naprzeciw najdłuższego boku, czyli boku 14. Oznaczmy a = 6, b = 10, c = 14 i szukajmy γ (naprzeciw c).
+    cos γ = (a² + b² − c²)/(2ab) = (36 + 100 − 196)/(2·6·10) = (−60)/120 = −½.
+    Cosinus jest ujemny, więc kąt jest rozwarty: γ = 120°.
+    Pole: P = ½·a·b·sin γ = ½·6·10·sin 120° = 30·(√3/2) = 15√3 ≈ 25,98.
+    Uwaga: sin 120° = sin 60° = √3/2 — sinus jest dodatni, mimo że cosinus był ujemny.
+    Sprawdzenie rodzaju trójkąta: 14² = 196 > 36 + 100 = 136, więc trójkąt jest rozwartokątny — zgodnie z wynikiem.
+  difficulty: 3
+- statement: Dwie drogi wychodzą z tego samego skrzyżowania pod kątem 120°. Pierwszy pieszy przeszedł
+    300 m jedną drogą, drugi 500 m drugą. W jakiej odległości od siebie się znajdują?
+  worked_solution: |-
+    Powstaje trójkąt o bokach 300 m i 500 m oraz kącie 120° między nimi; szukamy boku naprzeciw tego kąta (oznaczmy go x).
+    x² = 300² + 500² − 2·300·500·cos 120°.
+    cos 120° = −½, więc −2·300·500·(−½) = +150000 (dwa minusy dają plus!).
+    x² = 90 000 + 250 000 + 150 000 = 490 000, zatem x = 700.
+    Piesi są w odległości 700 m.
+    Komentarz: gdyby kąt był prosty, odległość wynosiłaby √(90 000 + 250 000) ≈ 583 m — kąt rozwarty 'rozsuwa' punkty, więc wynik większy jest sensowny.
+  difficulty: 3
+- statement: W trójkącie ABC bok AB ma długość 8, bok AC ma długość 5, a pole trójkąta wynosi 10. Wyznacz
+    możliwe miary kąta BAC i dla każdej z nich oblicz długość boku BC.
+  worked_solution: |-
+    Kąt BAC = α leży między bokami AB = c = 8 i AC = b = 5. Z wzoru na pole:
+    P = ½·b·c·sin α  ⟹ 10 = ½·5·8·sin α = 20 sin α ⟹ sin α = ½.
+    W przedziale (0°; 180°) daje to dwa kąty: α = 30° lub α = 150°.
+    Przypadek 1 (α = 30°, cos α = √3/2):
+    a² = b² + c² − 2bc·cos α = 25 + 64 − 2·5·8·(√3/2) = 89 − 40√3 ≈ 89 − 69,28 = 19,72, więc a = √(89 − 40√3) ≈ 4,44.
+    Przypadek 2 (α = 150°, cos α = −√3/2):
+    a² = 25 + 64 + 40√3 = 89 + 40√3 ≈ 158,28, więc a = √(89 + 40√3) ≈ 12,58.
+    Oba trójkąty istnieją (nierówność trójkąta: 4,44 < 13 oraz 12,58 < 13), więc zadanie ma dwa rozwiązania. Jeśli w treści dodano by 'trójkąt jest ostrokątny', zostawiamy tylko przypadek 1.
+  difficulty: 4
+- statement: W trójkącie ABC mamy a = 4, b = 6 oraz cos γ = 1/4, gdzie γ jest kątem między tymi bokami.
+    Oblicz bok c oraz pole trójkąta w postaci dokładnej.
+  worked_solution: |-
+    Bok: c² = a² + b² − 2ab·cos γ = 16 + 36 − 2·4·6·(1/4) = 52 − 12 = 40, więc c = √40 = 2√10 ≈ 6,32.
+    Pole: potrzebujemy sin γ. Kąt trójkąta spełnia 0° < γ < 180°, więc sin γ > 0:
+    sin γ = √(1 − cos²γ) = √(1 − 1/16) = √(15/16) = √15/4.
+    P = ½·a·b·sin γ = ½·4·6·(√15/4) = 12·(√15/4) = 3√15 ≈ 11,6.
+    Kontrola: maksymalne możliwe pole przy bokach 4 i 6 to ½·4·6 = 12 (dla kąta prostego); 11,6 < 12 i rzeczywiście cos γ = 0,25 oznacza kąt bliski 75,5°, czyli niewiele mniej niż 90°.
+  difficulty: 4
+objectives:
+- statement: Sformułować twierdzenie cosinusów w trzech równoważnych wersjach i wskazać, który kąt odpowiada
+    któremu bokowi.
+  bloom_level: Zapamiętywanie
+- statement: Wyjaśnić, dlaczego twierdzenie cosinusów jest uogólnieniem twierdzenia Pitagorasa oraz jak
+    znak wyrazu −2bc cos α wiąże się z rodzajem kąta.
+  bloom_level: Rozumienie
+- statement: Uzasadnić wzór P = ½ab sin γ, wyprowadzając go z zależności h = b sin γ i wzoru P = ½·podstawa·wysokość,
+    także dla kąta rozwartego.
+  bloom_level: Rozumienie
+- statement: Obliczyć trzeci bok trójkąta, mając dane dwa boki i kąt między nimi (BKB), z użyciem dokładnych
+    wartości cosinusów kątów 30°, 45°, 60°, 120°, 135°, 150°.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć cosinus kąta (i jego miarę, gdy jest to kąt tablicowy) w trójkącie o danych trzech
+    bokach.
+  bloom_level: Stosowanie
+- statement: Obliczyć pole trójkąta oraz pole równoległoboku i rombu, korzystając ze wzoru z sinusem kąta
+    między bokami.
+  bloom_level: Stosowanie
+- statement: Obliczyć pole trójkąta o danych trzech bokach, łącząc twierdzenie cosinusów z jedynką trygonometryczną.
+  bloom_level: Stosowanie
+- statement: Rozstrzygnąć, czy trójkąt o danych bokach jest ostrokątny, prostokątny czy rozwartokątny,
+    porównując kwadrat najdłuższego boku z sumą kwadratów pozostałych.
+  bloom_level: Analiza
+- statement: Dobrać właściwe narzędzie (twierdzenie cosinusów, twierdzenie sinusów, wzór na pole, zależności
+    w trójkącie prostokątnym) na podstawie układu danych w zadaniu.
+  bloom_level: Analiza
+- statement: Przeanalizować niejednoznaczność kąta wyznaczonego z równania sin γ = 2P/(ab) i rozstrzygnąć,
+    które rozwiązanie jest zgodne z warunkami zadania.
+  bloom_level: Analiza
+- statement: Zbudować model matematyczny sytuacji praktycznej (odległości, działki, konstrukcje) prowadzący
+    do trójkąta i rozwiązać go za pomocą twierdzenia cosinusów lub wzoru na pole.
+  bloom_level: Tworzenie
+- statement: Ocenić poprawność otrzymanego wyniku, korzystając z warunków −1 < cos α < 1, nierówności
+    trójkąta, ograniczenia P ≤ ½ab oraz zasady 'większy bok — większy kąt'.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Stosowanie twierdzenia Pitagorasa w trójkącie nieprostokątnym
+  incorrect_reasoning: '''Mam dwa boki 5 i 8, więc trzeci to √(25+64) = √89'' — pominięcie składnika −2bc·cos
+    α.'
+  correct_reasoning: Pitagoras to szczególny przypadek twierdzenia cosinusów dla kąta 90°. Przy kącie
+    60° trzeba odjąć 2·5·8·½ = 40, co daje c = 7, a nie √89 ≈ 9,43. Zawsze sprawdź, czy kąt między bokami
+    jest prosty.
+  severity: 5
+- name: Użycie kąta, który nie leży między danymi bokami
+  incorrect_reasoning: Podstawianie do a² = b² + c² − 2bc·cos α dowolnego znanego kąta, np. kąta β, albo
+    liczenie pola jako ½·a·b·sin β.
+  correct_reasoning: We wzorze cosinusów kąt musi być zawarty między bokami b i c (czyli leżeć naprzeciw
+    boku a). W polu ½ab sin γ kąt γ musi być kątem między bokami a i b. Jeśli dany kąt jest inny, najpierw
+    oblicz właściwy kąt (np. z sumy 180°) albo dobierz inną parę boków.
+  severity: 5
+- name: Błąd znaku przy kącie rozwartym
+  incorrect_reasoning: '''cos 120° = ½, więc c² = a² + b² − 2ab·½'' — pominięcie minusa w wartości cosinusa
+    lub ''skrócenie'' dwóch minusów do minusa.'
+  correct_reasoning: cos 120° = −½, więc −2ab·cos 120° = +ab. Przy kącie rozwartym wyraz poprawkowy DODAJE
+    się, bo bok naprzeciw kąta rozwartego jest dłuższy niż w trójkącie prostokątnym o tych samych ramionach.
+  severity: 4
+- name: Zły znak w liczniku wzoru na cosinus
+  incorrect_reasoning: Zapisywanie cos γ = (a² + b² + c²)/(2ab) lub odejmowanie kwadratu niewłaściwego
+    boku, np. tego, który tworzy kąt.
+  correct_reasoning: 'W liczniku odejmujemy kwadrat boku LEŻĄCEGO NAPRZECIW szukanego kąta: cos γ = (a²
+    + b² − c²)/(2ab). Kontrola: gdy c jest bardzo krótkie, cos γ powinien być bliski 1 (kąt mały) — sprawdź
+    to na swoim wzorze.'
+  severity: 4
+- name: Błąd kolejności działań w wyrażeniu 2bc cos α
+  incorrect_reasoning: Liczenie b² + c² − 2bc, a dopiero potem mnożenie całości przez cos α.
+  correct_reasoning: Mnożenie 2·b·c·cos α jest jednym składnikiem — najpierw oblicz cały iloczyn (łącznie
+    z cosinusem), potem odejmij go od sumy kwadratów.
+  severity: 3
+- name: Zapominanie o pierwiastku na końcu
+  incorrect_reasoning: Otrzymanie c² = 49 i podanie odpowiedzi 'c = 49'.
+  correct_reasoning: 'Twierdzenie cosinusów daje kwadrat boku. Ostatnim krokiem zawsze jest pierwiastkowanie:
+    c = √49 = 7. Warto podkreślić w zapisie ''c² = ...'', żeby o tym nie zapomnieć.'
+  severity: 4
+- name: Przyjmowanie jednego rozwiązania przy wyznaczaniu kąta z sinusa
+  incorrect_reasoning: '''sin α = ½, więc α = 30°'' — pominięcie możliwości α = 150°.'
+  correct_reasoning: 'Dla kątów trójkąta sin(180° − α) = sin α, więc z równania sin α = ½ wynikają dwa
+    kąty: 30° i 150°. Oba trzeba rozważyć, chyba że warunki zadania (np. trójkąt ostrokątny, α mniejszy
+    od innego kąta) wykluczają jedno z nich.'
+  severity: 4
+- name: Ujemny sinus po wyliczeniu z jedynki trygonometrycznej
+  incorrect_reasoning: '''cos γ = −½, więc sin γ = −√3/2'' albo branie obu znaków pierwiastka.'
+  correct_reasoning: Każdy kąt trójkąta należy do (0°; 180°), a tam sinus jest dodatni. Zawsze sin γ =
+    +√(1 − cos²γ). Ujemne pole nie ma sensu.
+  severity: 4
+- name: Mylenie boku z wysokością we wzorze na pole
+  incorrect_reasoning: Liczenie P = ½·a·b·sin γ, gdzie b jest wysokością, a nie bokiem — czyli podwójne
+    uwzględnienie sinusa.
+  correct_reasoning: We wzorze P = ½ab sin γ litery a i b oznaczają DŁUGOŚCI BOKÓW. Wysokość to dopiero
+    iloczyn h = b·sin γ. Jeśli znasz wysokość, użyj zwykłego wzoru P = ½·podstawa·wysokość.
+  severity: 3
+- name: Wybór twierdzenia cosinusów tam, gdzie naturalne jest twierdzenie sinusów
+  incorrect_reasoning: 'Przy danych: bok, kąt naprzeciw niego i drugi kąt — układanie równania z cosinusów
+    i utknięcie w równaniu kwadratowym z dwiema niewiadomymi.'
+  correct_reasoning: Gdy w danych jest para 'bok i kąt naprzeciw niego', najprościej użyć twierdzenia
+    sinusów. Twierdzenie cosinusów rezerwujemy dla układów BKB i BBB.
+  severity: 3
+- name: Ignorowanie kontroli sensowności wyniku
+  incorrect_reasoning: Akceptowanie wyniku cos α = 1,2 albo boku dłuższego niż suma dwóch pozostałych.
+  correct_reasoning: Zawsze musi być −1 < cos α < 1 oraz spełniona nierówność trójkąta. Wynik poza tymi
+    zakresami oznacza błąd rachunkowy lub sprzeczne dane — trzeba wrócić do obliczeń.
+  severity: 3
+- name: Zły tryb kalkulatora (radiany zamiast stopni)
+  incorrect_reasoning: Wpisanie cos 60 przy ustawieniu RAD i otrzymanie ≈ −0,952 zamiast 0,5.
+  correct_reasoning: Miary kątów w zadaniach planimetrycznych podawane są w stopniach — kalkulator musi
+    być w trybie DEG. Dla kątów tablicowych najlepiej w ogóle nie korzystać z kalkulatora, tylko z wartości
+    dokładnych.
+  severity: 2

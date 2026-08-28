@@ -1,0 +1,306 @@
+section: wylaczanie-wspolnego-czynnika
+name: Wyłączanie wspólnego czynnika przed nawias
+scope: Taking a common monomial factor out of an algebraic sum; recognising a common factor and factoring
+  by grouping in simple cases.
+requirements:
+- II.3
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:03:22.034642'
+  approved_at: '2026-08-28T18:28:22.122320'
+  approved_by: reviewer
+concepts:
+- name: Suma algebraiczna
+  description: Wyrażenie będące sumą (lub różnicą) wyrazów, np. 3x² − 5xy + 7. Każdy składnik takiej sumy
+    nazywamy wyrazem sumy algebraicznej.
+  explanation: 'Zanim zaczniesz cokolwiek wyłączać przed nawias, ustal, ile wyrazów ma suma i gdzie kończy
+    się jeden wyraz, a zaczyna następny. Znak minus traktuj jako część wyrazu: w 3x² − 5xy wyrazami są
+    3x² oraz −5xy.'
+  difficulty: 1
+- name: Jednomian
+  description: Iloczyn liczby (współczynnika) i potęg zmiennych o wykładnikach naturalnych, np. −4a²b,
+    7x, 12.
+  explanation: Jednomian to 'jeden kawałek' bez znaków + i −. Dwa jednomiany mnożymy, mnożąc współczynniki
+    i dodając wykładniki tych samych zmiennych — dlatego przy wyłączaniu przed nawias wykładniki będziemy
+    odejmować.
+  difficulty: 1
+- name: Prawo rozdzielności mnożenia względem dodawania
+  description: Dla dowolnych liczb (i wyrażeń) a, b, c zachodzi a(b + c) = ab + ac.
+  explanation: Wyłączanie wspólnego czynnika przed nawias to po prostu czytanie tej równości od prawej
+    do lewej. Mnożenie przez nawias 'rozbija' wyrażenie, wyłączanie — 'skleja' je z powrotem.
+  difficulty: 1
+- name: Rozkład na czynniki (faktoryzacja)
+  description: Przekształcenie sumy algebraicznej do postaci iloczynu wyrażeń.
+  explanation: 'Cel jest zawsze ten sam: zamiast ''+'' pomiędzy wyrazami ma pojawić się ''·''. Postać
+    iloczynowa jest cenna, bo pozwala skracać ułamki algebraiczne, szybko liczyć wartości liczbowe i rozwiązywać
+    równania (iloczyn jest zerem, gdy któryś czynnik jest zerem).'
+  difficulty: 2
+- name: Wspólny czynnik
+  description: Wyrażenie, przez które podzielny jest każdy wyraz sumy algebraicznej.
+  explanation: Szukając go, patrz osobno na liczby i osobno na każdą literę. Wspólny czynnik istnieje
+    tylko wtedy, gdy dana litera występuje we WSZYSTKICH wyrazach — jeden wyraz bez tej litery blokuje
+    jej wyłączenie.
+  difficulty: 2
+- name: Największy wspólny czynnik liczbowy (NWD współczynników)
+  description: Największa liczba naturalna dzieląca wszystkie współczynniki wyrazów sumy.
+  explanation: W 12x + 18 współczynniki to 12 i 18, NWD(12,18) = 6, więc wyłączamy 6, nie 2 i nie 3. Wyłączenie
+    mniejszego dzielnika nie jest błędem rachunkowym, ale rozkład jest wtedy niepełny — w nawiasie zostaje
+    jeszcze wspólny czynnik.
+  difficulty: 2
+- name: Najniższa potęga zmiennej
+  description: Przy wyłączaniu zmiennej przed nawias bierzemy ją w najmniejszym wykładniku, jaki występuje
+    wśród wyrazów sumy.
+  explanation: W x⁵ + x³ + x⁴ najmniejszy wykładnik to 3, więc wyłączamy x³. Gdybyśmy wyłączyli x⁵, w
+    nawiasie pojawiłyby się ujemne wykładniki — a to już nie jest wielomian.
+  difficulty: 2
+- name: Wyłączanie czynnika ujemnego
+  description: Przed nawias można wyłączyć czynnik ze znakiem minus, np. −2x, −1; wtedy wszystkie wyrazy
+    w nawiasie zmieniają znaki na przeciwne.
+  explanation: Zapis −a − b = −(a + b) oraz 4 − x = −(x − 4). Stosujemy to, gdy chcemy, by pierwszy wyraz
+    w nawiasie był dodatni albo by dwa nawiasy stały się identyczne.
+  difficulty: 3
+- name: Wspólny czynnik w postaci nawiasu
+  description: Wspólnym czynnikiem może być całe wyrażenie, np. (x − 2) w a(x − 2) + 5(x − 2).
+  explanation: 'Potraktuj nawias jak jedną literę: a·t + 5·t = t(a + 5). Uwaga na kolejność: (x − 2) i
+    (2 − x) to nie to samo, ale (2 − x) = −(x − 2), więc wystarczy zmienić znak.'
+  difficulty: 3
+- name: Grupowanie wyrazów
+  description: 'Metoda rozkładu sumy o czterech (lub więcej) wyrazach: dzielimy wyrazy na grupy, w każdej
+    wyłączamy wspólny czynnik, a następnie wyłączamy powstały wspólny nawias.'
+  explanation: Grupowanie działa tylko wtedy, gdy po pierwszym kroku w obu grupach powstanie TEN SAM nawias.
+    Jeśli nie powstał, spróbuj innego podziału wyrazów lub innego znaku wyłączanego czynnika.
+  difficulty: 3
+- name: Sprawdzenie rozkładu przez wymnożenie
+  description: 'Kontrola poprawności: mnożymy otrzymany iloczyn i porównujemy z wyrażeniem wyjściowym.'
+  explanation: 'To darmowa gwarancja poprawności — zajmuje kilkanaście sekund i wychwytuje najczęstsze
+    błędy: zgubioną jedynkę i pomylony znak.'
+  difficulty: 1
+- name: Zastosowania rozkładu na czynniki
+  description: 'Postać iloczynowa służy do: skracania ułamków algebraicznych, obliczania wartości wyrażeń
+    liczbowych, rozwiązywania równań postaci iloczyn = 0.'
+  explanation: Np. 2¹⁰ + 2¹¹ = 2¹⁰(1 + 2) = 3·2¹⁰ — bez kalkulatora. Albo x² − 3x = 0 ⇔ x(x − 3) = 0 ⇔
+    x = 0 lub x = 3.
+  difficulty: 3
+formulas:
+- name: Rozdzielność / podstawowy wzór wyłączania
+  latex_raw: ab + ac = a(b+c)
+  conditions: a, b, c — dowolne liczby lub wyrażenia algebraiczne
+  description: Czytany od lewej — mnożenie przez nawias; od prawej — wyłączanie wspólnego czynnika.
+- name: Wyłączanie z sumy wielu wyrazów
+  latex_raw: ab + ac + ad = a(b + c + d)
+  conditions: dowolna liczba wyrazów zawierających czynnik a
+  description: Liczba wyrazów w nawiasie zawsze równa się liczbie wyrazów wyjściowej sumy.
+- name: Wyłączanie jedynki
+  latex_raw: a + ab = a\cdot 1 + a\cdot b = a(1+b)
+  conditions: gdy jeden z wyrazów jest równy wyłączanemu czynnikowi
+  description: 'Najczęstsze źródło błędu: po podzieleniu wyrazu przez samego siebie zostaje 1, a nie 0.'
+- name: Wyłączanie potęgi zmiennej
+  latex_raw: x^{m} + x^{n} = x^{k}\left(x^{m-k} + x^{n-k}\right),\quad k=\min(m,n)
+  conditions: m, n liczby naturalne
+  description: Wykładniki w nawiasie są nieujemne właśnie dlatego, że k jest najmniejszym wykładnikiem.
+- name: Ogólna postać wyłączanego jednomianu
+  latex_raw: a x^{m}y^{p} + b x^{n}y^{q} = \mathrm{NWD}(a,b)\, x^{\min(m,n)} y^{\min(p,q)}\left(\ldots\right)
+  conditions: a, b liczby całkowite; wykładniki naturalne
+  description: Przepis na 'największy' możliwy wspólny czynnik jednomianowy.
+- name: Zmiana znaku przed nawiasem
+  latex_raw: -a - b = -(a+b),\qquad -a + b = -(a-b)
+  conditions: zawsze
+  description: Wyłączenie minusa zmienia znak każdego wyrazu w nawiasie.
+- name: Przeciwne nawiasy
+  latex_raw: b - a = -(a - b)
+  conditions: zawsze
+  description: Kluczowa sztuczka przy grupowaniu i skracaniu ułamków algebraicznych.
+- name: Wyłączanie wspólnego nawiasu
+  latex_raw: a(x+y) + b(x+y) = (x+y)(a+b)
+  conditions: gdy w obu wyrazach występuje ten sam nawias
+  description: Nawias traktujemy jak pojedynczy czynnik.
+- name: Rozkład przez grupowanie
+  latex_raw: ax + ay + bx + by = a(x+y) + b(x+y) = (x+y)(a+b)
+  conditions: gdy po pogrupowaniu powstaje ten sam nawias w obu grupach
+  description: Podział na grupy można wybrać na kilka sposobów; wynik jest ten sam.
+- name: Wyłączanie potęgi liczby
+  latex_raw: a^{n} + a^{n+1} = a^{n}(1+a)
+  conditions: a ≠ 0 (dla n naturalnego dowolne a)
+  description: Pozwala liczyć wyrażenia typu 3¹⁰ + 3¹¹ bez potęgowania.
+- name: Równanie iloczynowe
+  latex_raw: A\cdot B = 0 \iff A = 0 \ \text{lub}\ B = 0
+  conditions: A, B — dowolne wyrażenia
+  description: Dlatego równania typu x² = 5x rozwiązujemy przez przeniesienie wszystkiego na jedną stronę
+    i wyłączenie x, a nie przez dzielenie przez x.
+methods:
+- name: Wyłączanie jednomianu przed nawias
+  when_to_use: Gdy wszystkie wyrazy sumy algebraicznej mają wspólny czynnik liczbowy lub literowy i chcemy
+    zapisać sumę w postaci iloczynu.
+  steps:
+  - Zapisz wyrazy sumy wraz z ich znakami; policz, ile ich jest.
+  - 'Wyznacz wspólny czynnik liczbowy: NWD wartości bezwzględnych współczynników (jeśli NWD = 1, część
+    liczbowa to 1).'
+  - Dla każdej litery sprawdź, czy występuje we wszystkich wyrazach; jeśli tak, weź ją w najniższym występującym
+    wykładniku.
+  - Zapisz iloczyn znalezionych części — to wyłączany jednomian; postaw go przed nawiasem.
+  - Podziel po kolei każdy wyraz przez wyłączony jednomian (współczynniki dziel, wykładniki odejmuj) i
+    wpisz wyniki do nawiasu z odpowiednimi znakami.
+  - Pamiętaj, że wyraz identyczny z wyłączanym czynnikiem daje w nawiasie 1.
+  - Sprawdź wynik, wymnażając nawias przez czynnik.
+- name: Wyłączanie czynnika ze znakiem minus
+  when_to_use: Gdy pierwszy wyraz jest ujemny, gdy chcemy uporządkować wyrażenie lub gdy trzeba uzgodnić
+    dwa nawiasy przeciwne, np. (x − 3) i (3 − x).
+  steps:
+  - Ustal wyłączany czynnik jak zwykle, po czym dopisz przed nim znak minus.
+  - Podziel każdy wyraz przez ten ujemny czynnik — co jest równoważne wyłączeniu czynnika dodatniego i
+    zmianie wszystkich znaków w nawiasie.
+  - 'Sprawdź: pierwszy wyraz w nawiasie powinien teraz mieć znak przeciwny niż w wyrażeniu wyjściowym.'
+  - Zweryfikuj przez wymnożenie, zwracając szczególną uwagę na znaki.
+- name: Rozkład na czynniki przez grupowanie
+  when_to_use: Gdy suma ma cztery (lub więcej) wyrazów i nie ma czynnika wspólnego dla wszystkich, ale
+    ma go w parach.
+  steps:
+  - Sprawdź najpierw, czy nie ma czynnika wspólnego dla wszystkich wyrazów — jeśli jest, wyłącz go na
+    początku.
+  - Podziel wyrazy na dwie grupy (najczęściej pierwsze dwa i ostatnie dwa), ewentualnie zmieniając wcześniej
+    kolejność wyrazów.
+  - W każdej grupie wyłącz jej własny wspólny czynnik.
+  - 'Porównaj powstałe nawiasy: jeśli są identyczne — wyłącz ten nawias przed drugi nawias złożony z wyłączonych
+    czynników.'
+  - Jeśli nawiasy różnią się tylko znakami, wyłącz w drugiej grupie czynnik ujemny, by je uzgodnić.
+  - Jeśli nawiasy nadal się nie zgadzają, wróć do kroku 2 i pogrupuj wyrazy inaczej.
+  - Sprawdź wynik przez wymnożenie dwóch nawiasów.
+- name: Wykorzystanie rozkładu do obliczenia wartości wyrażenia liczbowego
+  when_to_use: Gdy trzeba bez kalkulatora obliczyć wyrażenie z dużymi potęgami lub dużymi liczbami, np.
+    2¹⁵ + 2¹⁶ albo 37·48 + 37·52.
+  steps:
+  - Znajdź powtarzający się czynnik (liczbę lub potęgę o najmniejszym wykładniku).
+  - Wyłącz go przed nawias.
+  - Uprość zawartość nawiasu — zwykle otrzymasz małą liczbę.
+  - Wykonaj końcowe mnożenie lub zostaw wynik w postaci iloczynu potęg.
+- name: Rozwiązywanie prostego równania przez wyłączenie czynnika
+  when_to_use: Gdy równanie ma postać, którą można sprowadzić do 'iloczyn = 0', np. x² = 7x, 3x² + 6x
+    = 0.
+  steps:
+  - Przenieś wszystkie wyrazy na jedną stronę, tak by po drugiej zostało 0.
+  - Wyłącz wspólny czynnik przed nawias.
+  - 'Skorzystaj z warunku: iloczyn jest zerem, gdy co najmniej jeden czynnik jest zerem.'
+  - Rozwiąż powstałe równania liniowe i zapisz wszystkie rozwiązania.
+  - Nigdy nie dziel obu stron przez wyrażenie zawierające niewiadomą — traci się wtedy rozwiązanie.
+examples:
+- statement: 'Wyłącz wspólny czynnik przed nawias: a) 12x + 18, b) 5a² − 5a, c) 4x²y − 6xy².'
+  worked_solution: |-
+    a) Współczynniki 12 i 18, NWD(12,18) = 6. Litera x nie występuje w wyrazie 18, więc jej nie wyłączamy. 12x + 18 = 6·2x + 6·3 = 6(2x + 3). Sprawdzenie: 6·2x + 6·3 = 12x + 18. ✓
+    b) NWD(5,5) = 5, litera a występuje w obu wyrazach, najniższy wykładnik to 1, więc wyłączamy 5a. Dzielimy: 5a² : 5a = a, (−5a) : 5a = −1. Zatem 5a² − 5a = 5a(a − 1). Uwaga: drugi wyraz daje −1, a nie 0. Sprawdzenie: 5a·a − 5a·1 = 5a² − 5a. ✓
+    c) NWD(4,6) = 2. Litera x: wykładniki 2 i 1 → bierzemy x. Litera y: wykładniki 1 i 2 → bierzemy y. Wyłączamy 2xy: 4x²y : 2xy = 2x, (−6xy²) : 2xy = −3y. Zatem 4x²y − 6xy² = 2xy(2x − 3y). Sprawdzenie: 2xy·2x − 2xy·3y = 4x²y − 6xy². ✓
+  difficulty: 1
+- statement: 'Zapisz w postaci iloczynu: −15x³y + 25x²y² − 5x²y, wyłączając czynnik ujemny.'
+  worked_solution: |-
+    Współczynniki: 15, 25, 5 → NWD = 5. Litera x: wykładniki 3, 2, 2 → x². Litera y: wykładniki 1, 2, 1 → y. Największy wspólny jednomian to 5x²y; ponieważ pierwszy wyraz jest ujemny, wyłączymy −5x²y.
+    Dzielimy każdy wyraz przez −5x²y:
+    (−15x³y) : (−5x²y) = 3x,
+    25x²y² : (−5x²y) = −5y,
+    (−5x²y) : (−5x²y) = 1.
+    Zatem −15x³y + 25x²y² − 5x²y = −5x²y(3x − 5y + 1).
+    Sprawdzenie: −5x²y·3x = −15x³y; −5x²y·(−5y) = 25x²y²; −5x²y·1 = −5x²y. Suma zgadza się z wyrażeniem wyjściowym. ✓
+    (Równie poprawny zapis: 5x²y(−3x + 5y − 1).)
+  difficulty: 2
+- statement: 'Oblicz bez kalkulatora: a) 3¹⁰ + 3¹¹, b) 2⁵⁰ − 2⁴⁸, c) 47·36 + 47·64.'
+  worked_solution: |-
+    a) Najniższa potęga to 3¹⁰, a 3¹¹ = 3¹⁰·3. Zatem 3¹⁰ + 3¹¹ = 3¹⁰(1 + 3) = 4·3¹⁰.
+    b) Najniższa potęga to 2⁴⁸, a 2⁵⁰ = 2⁴⁸·2² = 4·2⁴⁸. Zatem 2⁵⁰ − 2⁴⁸ = 2⁴⁸(4 − 1) = 3·2⁴⁸.
+    c) Wspólny czynnik to 47: 47·36 + 47·64 = 47(36 + 64) = 47·100 = 4700.
+  difficulty: 2
+- statement: 'Rozłóż na czynniki: a) 5(x − 2) + x(x − 2), b) 3a(a + 4) − (a + 4), c) 7(x − 1) + 2(1 −
+    x).'
+  worked_solution: |-
+    a) Wspólnym czynnikiem jest nawias (x − 2). Traktując go jak jedną literę: 5·(x−2) + x·(x−2) = (x − 2)(5 + x).
+    b) Drugi wyraz to 1·(a + 4). Wyłączamy (a + 4): 3a(a + 4) − 1·(a + 4) = (a + 4)(3a − 1). Znowu kluczowa jest jedynka.
+    c) Nawiasy (x − 1) i (1 − x) są przeciwne: 1 − x = −(x − 1). Zatem 2(1 − x) = −2(x − 1) i całe wyrażenie to 7(x − 1) − 2(x − 1) = (x − 1)(7 − 2) = 5(x − 1).
+    Sprawdzenie c): 5(x − 1) = 5x − 5, a 7(x−1) + 2(1−x) = 7x − 7 + 2 − 2x = 5x − 5. ✓
+  difficulty: 3
+- statement: 'a) Rozłóż na czynniki przez grupowanie: x³ + 2x² + 5x + 10 oraz 6ab − 3b + 4a − 2. b) Rozwiąż
+    równanie x³ + 2x² + 5x + 10 = 0... a jeśli to za trudne, rozwiąż prostsze równanie 2x² = 8x.'
+  worked_solution: |-
+    a) x³ + 2x² + 5x + 10: grupujemy (x³ + 2x²) + (5x + 10). W pierwszej grupie wyłączamy x²: x²(x + 2); w drugiej wyłączamy 5: 5(x + 2). Nawiasy są identyczne, więc x²(x + 2) + 5(x + 2) = (x + 2)(x² + 5). Sprawdzenie: (x+2)(x²+5) = x³ + 5x + 2x² + 10. ✓
+    6ab − 3b + 4a − 2: grupujemy (6ab − 3b) + (4a − 2) = 3b(2a − 1) + 2(2a − 1) = (2a − 1)(3b + 2). Sprawdzenie: (2a−1)(3b+2) = 6ab + 4a − 3b − 2. ✓
+    b) Z rozkładu: (x + 2)(x² + 5) = 0. Ponieważ x² + 5 ≥ 5 > 0 dla każdego x, iloczyn jest zerem tylko gdy x + 2 = 0, czyli x = −2.
+    Równanie 2x² = 8x: przenosimy wszystko na lewo: 2x² − 8x = 0, wyłączamy 2x: 2x(x − 4) = 0, więc 2x = 0 lub x − 4 = 0, czyli x = 0 lub x = 4. Uwaga: dzielenie obu stron przez x zgubiłoby rozwiązanie x = 0.
+  difficulty: 4
+objectives:
+- statement: Rozpoznać wyrazy sumy algebraicznej wraz z ich znakami i wskazać ich wspólny czynnik (część
+    liczbową i literową).
+  bloom_level: Rozumienie
+- statement: Wyznaczyć największy wspólny czynnik jednomianowy jako iloczyn NWD współczynników i zmiennych
+    w najniższych wykładnikach.
+  bloom_level: Stosowanie
+- statement: Wyłączyć jednomian przed nawias z sumy algebraicznej o dwóch, trzech i więcej wyrazach, poprawnie
+    zapisując wyraz równy 1.
+  bloom_level: Stosowanie
+- statement: Wyłączyć przed nawias czynnik ujemny, poprawnie zmieniając znaki wszystkich wyrazów w nawiasie.
+  bloom_level: Stosowanie
+- statement: Wyłączyć przed nawias wspólny czynnik będący wyrażeniem w nawiasie, w tym po uzgodnieniu
+    nawiasów przeciwnych za pomocą tożsamości b − a = −(a − b).
+  bloom_level: Stosowanie
+- statement: Rozłożyć na czynniki prostą sumę czterech wyrazów metodą grupowania i uzasadnić wybór podziału
+    na grupy.
+  bloom_level: Analiza
+- statement: Zweryfikować poprawność rozkładu przez wymnożenie i wykryć w cudzym rozwiązaniu typowe błędy
+    (zgubiona jedynka, zły znak, niepełne wyłączenie).
+  bloom_level: Ocenianie
+- statement: Wykorzystać wyłączanie wspólnego czynnika do obliczenia wartości wyrażenia liczbowego z potęgami
+    bez użycia kalkulatora.
+  bloom_level: Stosowanie
+- statement: Zastosować rozkład na czynniki do rozwiązania równania sprowadzalnego do postaci iloczyn
+    = 0 i wyjaśnić, dlaczego nie wolno dzielić równania przez wyrażenie z niewiadomą.
+  bloom_level: Analiza
+misconceptions:
+- name: Zgubiona jedynka
+  incorrect_reasoning: 5a² − 5a = 5a(a) albo 5a(a − 0), bo 'po wyłączeniu 5a z wyrazu −5a nic nie zostaje'.
+  correct_reasoning: 'Wyłączanie to dzielenie, a wyraz podzielony przez samego siebie daje 1, nie 0. Poprawnie:
+    5a² − 5a = 5a(a − 1). Kontrola: liczba wyrazów w nawiasie musi być taka sama jak w wyjściowej sumie.'
+  severity: 5
+- name: Wyłączanie najwyższej potęgi zamiast najniższej
+  incorrect_reasoning: x³ + x⁵ = x⁵(1 + x⁻²), bo 'wyłączam największą potęgę'.
+  correct_reasoning: 'Wyłącza się najniższy występujący wykładnik: x³ + x⁵ = x³(1 + x²). Ujemne wykładniki
+    w nawiasie są sygnałem, że wybrano zły czynnik.'
+  severity: 4
+- name: Wyłączanie litery, której nie ma we wszystkich wyrazach
+  incorrect_reasoning: 12x + 18 = 6x(2 + 3) lub 3x² + 6 = 3x(x + 2).
+  correct_reasoning: 'Czynnik musi dzielić KAŻDY wyraz. Liczba 18 nie zawiera x, więc x nie może być wyłączone:
+    12x + 18 = 6(2x + 3), a 3x² + 6 = 3(x² + 2). Zawsze sprawdzaj wynik przez wymnożenie.'
+  severity: 5
+- name: Błędy znaków przy wyłączaniu minusa
+  incorrect_reasoning: −4x + 8 = −4(x + 2), bo 'minus dotyczy tylko pierwszego wyrazu'.
+  correct_reasoning: 'Wyłączenie −4 zmienia znak każdego wyrazu: −4x + 8 = −4(x − 2). Sprawdzenie: −4·x
+    + (−4)·(−2) = −4x + 8. ✓'
+  severity: 4
+- name: Mylenie nawiasów przeciwnych
+  incorrect_reasoning: a(x − 3) + b(3 − x) = (x − 3)(a + b), bo 'to ten sam nawias, tylko przestawiony'.
+  correct_reasoning: 'Zamiana kolejności działa przy dodawaniu, nie przy odejmowaniu: 3 − x = −(x − 3).
+    Poprawnie: a(x − 3) − b(x − 3) = (x − 3)(a − b).'
+  severity: 4
+- name: Niepełne wyłączenie czynnika
+  incorrect_reasoning: 12x² + 18x = 2x(6x + 9) i uznanie zadania za zakończone.
+  correct_reasoning: 'Rachunkowo jest to prawda, ale w nawiasie wciąż jest wspólny czynnik 3. Największy
+    wspólny czynnik to 6x: 12x² + 18x = 6x(2x + 3). Po wyłączeniu zawsze sprawdź, czy współczynniki w
+    nawiasie nie mają jeszcze wspólnego dzielnika.'
+  severity: 2
+- name: Dzielenie równania przez niewiadomą
+  incorrect_reasoning: x² = 5x ⇒ dzielę obie strony przez x ⇒ x = 5, jedno rozwiązanie.
+  correct_reasoning: 'Dzielenie przez x jest dozwolone tylko gdy x ≠ 0, więc gubi się rozwiązanie x =
+    0. Poprawnie: x² − 5x = 0 ⇒ x(x − 5) = 0 ⇒ x = 0 lub x = 5.'
+  severity: 5
+- name: Mylenie sumy z iloczynem przy wyłączaniu
+  incorrect_reasoning: 2x + 3x = 5x², bo 'dodaję współczynniki i mnożę litery' albo 2x + 3y = 5xy.
+  correct_reasoning: 'Wyłączanie czynnika to nie mnożenie wyrazów: 2x + 3x = x(2 + 3) = 5x. Wyrażenia
+    2x i 3y nie mają wspólnego czynnika literowego, więc 2x + 3y już się nie upraszcza.'
+  severity: 3
+- name: Grupowanie 'na siłę'
+  incorrect_reasoning: x³ + 2x² + 5x + 7 = x²(x + 2) + (5x + 7) i uznanie, że to rozkład na czynniki.
+  correct_reasoning: Grupowanie kończy się sukcesem tylko wtedy, gdy w obu grupach powstanie ten sam nawias.
+    Tu tak nie jest, więc trzeba spróbować innego podziału, a jeśli żaden nie zadziała — wyrażenia nie
+    da się rozłożyć tą metodą. Suma dwóch iloczynów nie jest postacią iloczynową.
+  severity: 3
+- name: Zapominanie o nawiasie przy wyniku
+  incorrect_reasoning: 6x + 9 = 3·2x + 3, bo 'wyłączyłem 3'.
+  correct_reasoning: 'Wynik musi być iloczynem czynnika i CAŁEJ sumy w nawiasie: 3(2x + 3). Brak nawiasu
+    zmienia wartość wyrażenia.'
+  severity: 3

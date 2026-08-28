@@ -1,0 +1,354 @@
+section: ciagi-rekurencyjne-monotonicznosc
+name: Ciągi rekurencyjne i monotoniczność ciągu
+scope: Computing the first terms of a recursively defined sequence; deciding in simple cases whether a
+  sequence is increasing or decreasing.
+requirements:
+- VI.2
+- VI.3
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:05:58.478749'
+  approved_at: '2026-08-28T18:28:05.765692'
+  approved_by: reviewer
+concepts:
+- name: Ciąg (liczbowy nieskończony)
+  description: Ciąg liczbowy nieskończony to funkcja określona na zbiorze liczb naturalnych dodatnich
+    N+ = {1, 2, 3, ...} o wartościach rzeczywistych; wartość tej funkcji dla argumentu n zapisujemy a_n
+    i nazywamy n-tym wyrazem ciągu.
+  explanation: 'Myśl o ciągu jak o ponumerowanej liście liczb: a_1, a_2, a_3, ... Numer n (indeks) jest
+    zawsze liczbą naturalną dodatnią — nie wolno wstawiać n = 0, n = 1/2 ani n ujemnego. Zapis (a_n) oznacza
+    cały ciąg, a a_n pojedynczy wyraz.'
+  difficulty: 1
+- name: Wzór ogólny ciągu
+  description: Wzór ogólny (jawny) to formuła pozwalająca obliczyć wyraz a_n bezpośrednio z numeru n,
+    np. a_n = 2n - 5.
+  explanation: 'To najwygodniejszy opis: żeby poznać a_{100}, wstawiamy n = 100 i liczymy od razu, bez
+    znajomości wcześniejszych wyrazów.'
+  difficulty: 1
+- name: Ciąg określony rekurencyjnie
+  description: Ciąg jest określony rekurencyjnie, gdy podany jest jeden lub kilka wyrazów początkowych
+    oraz wzór (zależność rekurencyjna) wyrażający kolejny wyraz przez wyraz(y) poprzednie, np. a_1 = 2,
+    a_{n+1} = 3a_n - 1 dla n ≥ 1.
+  explanation: 'Rekurencja to „przepis na następny krok”. Nie da się od razu policzyć a_{50} — trzeba
+    iść po kolei: a_1 → a_2 → a_3 → ... Definicja rekurencyjna zawsze musi mieć warunek początkowy, inaczej
+    ciąg nie jest jednoznacznie wyznaczony.'
+  difficulty: 2
+- name: Warunek początkowy
+  description: Podana z góry wartość (lub wartości) pierwszych wyrazów ciągu rekurencyjnego, od której
+    startuje cały proces liczenia.
+  explanation: Bez a_1 wzór a_{n+1} = 2a_n opisuje nieskończenie wiele różnych ciągów. Warunek początkowy
+    „zaczepia” ciąg w konkretnym miejscu.
+  difficulty: 1
+- name: Rekurencja dwuwyrazowa
+  description: Zależność, w której kolejny wyraz zależy od dwóch poprzednich, np. a_1 = 1, a_2 = 1, a_{n+2}
+    = a_{n+1} + a_n (ciąg Fibonacciego).
+  explanation: Wtedy potrzebne są dwa wyrazy startowe. Liczenie przebiega tak samo — krok po kroku, tylko
+    w każdym kroku patrzymy o dwa miejsca wstecz.
+  difficulty: 2
+- name: Podstawianie w zależności rekurencyjnej
+  description: Aby obliczyć kolejny wyraz, w miejsce n we wzorze a_{n+1} = f(n, a_n) wstawiamy konkretną
+    liczbę naturalną, a w miejsce a_n — obliczoną wcześniej wartość.
+  explanation: Kluczowa umiejętność techniczna. Np. dla a_{n+1} = a_n + 2n przy n = 3 dostajemy a_4 =
+    a_3 + 6 (nie a_3 + 2n!). Zawsze najpierw zapisz, jakie n bierzesz.
+  difficulty: 2
+- name: Ciąg rosnący
+  description: Ciąg (a_n) jest rosnący, gdy dla każdego n ∈ N+ zachodzi a_{n+1} > a_n.
+  explanation: Każdy następny wyraz jest ostro większy od poprzedniego. Warunek musi być spełniony dla
+    WSZYSTKICH n, nie tylko dla kilku pierwszych.
+  difficulty: 2
+- name: Ciąg malejący
+  description: Ciąg (a_n) jest malejący, gdy dla każdego n ∈ N+ zachodzi a_{n+1} < a_n.
+  explanation: 'Każdy następny wyraz jest ostro mniejszy od poprzedniego. Uwaga: ciąg o wyrazach ujemnych,
+    np. -1, -2, -3, ..., jest malejący, choć „wartości bezwzględne rosną”.'
+  difficulty: 2
+- name: Ciąg niemalejący i nierosnący
+  description: Ciąg jest niemalejący, gdy a_{n+1} ≥ a_n dla każdego n; nierosnący, gdy a_{n+1} ≤ a_n dla
+    każdego n.
+  explanation: To wersje „słabe”, dopuszczające powtarzanie wyrazów, np. 1, 1, 2, 2, 3, 3, ... jest niemalejący,
+    ale nie jest rosnący.
+  difficulty: 2
+- name: Ciąg stały
+  description: 'Ciąg, którego wszystkie wyrazy są równe: a_{n+1} = a_n dla każdego n ∈ N+.'
+  explanation: Jest jednocześnie niemalejący i nierosnący, ale nie jest ani rosnący, ani malejący.
+  difficulty: 1
+- name: Ciąg monotoniczny
+  description: Ciąg, który jest rosnący, malejący, niemalejący lub nierosnący (czyli różnica a_{n+1} -
+    a_n ma stały znak lub jest zerem dla wszystkich n).
+  explanation: '„Monotoniczny” to zbiorcza nazwa: ciąg idzie cały czas w jedną stronę. Ciąg, którego różnice
+    raz są dodatnie, a raz ujemne (np. a_n = (-1)^n), nie jest monotoniczny.'
+  difficulty: 2
+- name: Metoda różnicy (badanie znaku a_{n+1} - a_n)
+  description: 'Podstawowe narzędzie badania monotoniczności: tworzymy różnicę r_n = a_{n+1} - a_n, upraszczamy
+    ją i ustalamy jej znak dla wszystkich n ∈ N+.'
+  explanation: Jeśli po uproszczeniu r_n > 0 dla każdego n — ciąg rosnący; r_n < 0 dla każdego n — malejący;
+    znak się zmienia — ciąg niemonotoniczny. Uproszczenie do postaci iloczynu lub ilorazu wyrażeń o oczywistym
+    znaku (np. 3/((n+1)(n+2))) jest sercem tej metody.
+  difficulty: 3
+- name: Metoda ilorazu (badanie a_{n+1}/a_n)
+  description: 'Dla ciągu o wszystkich wyrazach dodatnich: jeśli a_{n+1}/a_n > 1 dla każdego n, ciąg jest
+    rosnący; jeśli a_{n+1}/a_n < 1 dla każdego n, ciąg jest malejący.'
+  explanation: Wygodna przy wzorach z potęgami i silniami, gdzie odejmowanie jest brzydkie, a dzielenie
+    skraca się pięknie. Warunek dodatniości wyrazów jest konieczny — bez niego wnioski są fałszywe.
+  difficulty: 3
+- name: Monotoniczność ciągu rekurencyjnego typu a_{n+1} = a_n + f(n)
+  description: Gdy rekurencja ma postać a_{n+1} = a_n + f(n), to a_{n+1} - a_n = f(n), więc monotoniczność
+    ciągu zależy wyłącznie od znaku wyrażenia f(n) dla n ∈ N+.
+  explanation: Różnica jest dana wprost — nie trzeba nic odejmować, wystarczy zbadać znak f(n). To najczęstszy
+    „prosty przypadek” badania monotoniczności ciągu zadanego rekurencyjnie.
+  difficulty: 3
+- name: Znak wyrażenia dla n naturalnych
+  description: Przy badaniu znaku różnicy wolno korzystać z tego, że n ≥ 1 i n jest liczbą całkowitą,
+    np. n + 1 > 0, 2n - 1 > 0, n² + n > 0.
+  explanation: 'To upraszcza pracę: wiele wyrażeń, które dla dowolnych rzeczywistych x mogłyby zmieniać
+    znak, dla n ≥ 1 mają znak stały. Zawsze warto napisać uzasadnienie: „dla n ≥ 1 mamy 2n - 5 > 0 tylko
+    gdy n ≥ 3”.'
+  difficulty: 3
+- name: Wykres ciągu
+  description: Zbiór izolowanych punktów (n, a_n) w układzie współrzędnych, gdzie n przebiega liczby naturalne
+    dodatnie.
+  explanation: Wykres ciągu to punkty, a nie linia ciągła. Ciąg rosnący ma punkty „wspinające się” w prawo.
+    Wykres pomaga wstępnie odgadnąć monotoniczność, ale nie jest dowodem.
+  difficulty: 2
+formulas:
+- name: Definicja ciągu rosnącego
+  latex_raw: (a_n)\ \text{rosnący} \iff \forall n\in\mathbb{N}^+ \; a_{n+1}-a_n>0
+  conditions: warunek musi zachodzić dla każdego n ∈ N+
+  description: 'Równoważnie: a_{n+1} > a_n dla każdego n.'
+- name: Definicja ciągu malejącego
+  latex_raw: (a_n)\ \text{malejący} \iff \forall n\in\mathbb{N}^+ \; a_{n+1}-a_n<0
+  conditions: warunek musi zachodzić dla każdego n ∈ N+
+- name: Ciąg niemalejący / nierosnący / stały
+  latex_raw: a_{n+1}-a_n\ge 0\ (\text{niemalejący}),\quad a_{n+1}-a_n\le 0\ (\text{nierosnący}),\quad
+    a_{n+1}-a_n=0\ (\text{stały})
+  conditions: dla każdego n ∈ N+
+- name: Kryterium ilorazowe monotoniczności
+  latex_raw: a_n>0 \ \text{dla każdego } n:\quad \frac{a_{n+1}}{a_n}>1 \Rightarrow (a_n)\ \text{rosnący},\qquad
+    \frac{a_{n+1}}{a_n}<1 \Rightarrow (a_n)\ \text{malejący}
+  conditions: wszystkie wyrazy ciągu muszą być dodatnie
+  description: Dla wyrazów ujemnych nierówności się odwracają — bezpieczniej użyć wtedy metody różnicy.
+- name: Wyznaczanie a_{n+1} ze wzoru ogólnego
+  latex_raw: a_n=f(n)\ \Rightarrow\ a_{n+1}=f(n+1)
+  conditions: n ∈ N+
+  description: W miejsce KAŻDEGO n we wzorze wstawiamy (n+1) w nawiasie.
+- name: Różnica dla rekurencji addytywnej
+  latex_raw: a_{n+1}=a_n+f(n)\ \Rightarrow\ a_{n+1}-a_n=f(n)
+  conditions: rekurencja postaci „poprzedni wyraz plus coś zależnego od n”
+  description: Monotoniczność zależy tylko od znaku f(n) dla n ≥ 1.
+- name: Różnica dla ciągu z wielomianem kwadratowym
+  latex_raw: a_n=an^2+bn+c\ \Rightarrow\ a_{n+1}-a_n=2an+a+b
+  conditions: a, b, c — stałe rzeczywiste
+  description: Różnica jest funkcją liniową n, więc łatwo zbadać jej znak dla n ≥ 1.
+- name: Kolejne wyrazy rekurencji liniowej
+  latex_raw: a_1=p,\quad a_{n+1}=q\,a_n+r \ \Rightarrow\ a_2=qp+r,\ a_3=q(qp+r)+r,\ \dots
+  conditions: p, q, r — dane liczby, n ≥ 1
+  description: Wyrazy liczymy wyłącznie po kolei.
+methods:
+- name: Obliczanie początkowych wyrazów ciągu zadanego rekurencyjnie
+  when_to_use: Gdy dany jest wyraz (lub wyrazy) początkowy i wzór na a_{n+1} (albo a_{n+2}) i trzeba podać
+    kilka pierwszych wyrazów.
+  steps:
+  - 'Wypisz dane: wyraz(y) początkowy oraz wzór rekurencyjny wraz z zakresem n (np. dla n ≥ 1).'
+  - Ustal, ile wyrazów masz obliczyć i w jakiej kolejności — zawsze od najmniejszego indeksu.
+  - 'Podstaw n = 1: przepisz wzór, wstawiając 1 za n oraz znaną wartość a_1 za a_n; oblicz a_2.'
+  - Podstaw n = 2, używając świeżo obliczonego a_2; oblicz a_3.
+  - Powtarzaj krok po kroku, za każdym razem zapisując, jakie n podstawiasz i jakiej wartości poprzedniego
+    wyrazu używasz.
+  - 'Uporządkuj wynik: wypisz wyrazy w kolejności a_1, a_2, a_3, ... i sprawdź, czy ich liczba zgadza
+    się z poleceniem.'
+- name: Badanie monotoniczności metodą różnicy (wzór ogólny)
+  when_to_use: Gdy ciąg dany jest wzorem ogólnym a_n = f(n) i trzeba rozstrzygnąć, czy jest rosnący, czy
+    malejący.
+  steps:
+  - Zapisz a_{n+1}, wstawiając (n+1) w nawiasie w miejsce każdego n we wzorze.
+  - Utwórz różnicę a_{n+1} - a_n.
+  - 'Uprość: rozwiń nawiasy (wielomiany) lub sprowadź do wspólnego mianownika (ułamki) i zredukuj.'
+  - 'Doprowadź wynik do postaci, z której znak jest widoczny: iloczyn, iloraz lub wyrażenie liniowe.'
+  - Zbadaj znak dla n ∈ N+, korzystając z n ≥ 1 (np. n + 2 > 0, 2n + 3 > 0).
+  - 'Wyciągnij wniosek: znak stale dodatni → ciąg rosnący, stale ujemny → malejący, zmienny → ciąg niemonotoniczny
+    (wskaż wtedy konkretne n, dla których znaki są różne).'
+- name: Badanie monotoniczności metodą ilorazu
+  when_to_use: Gdy wszystkie wyrazy ciągu są dodatnie, a wzór zawiera potęgi, iloczyny lub silnie, dzięki
+    czemu iloraz ładnie się skraca.
+  steps:
+  - Sprawdź i zapisz, że a_n > 0 dla każdego n ∈ N+ (to warunek stosowania metody).
+  - Wyznacz a_{n+1} przez podstawienie (n+1).
+  - Utwórz iloraz a_{n+1}/a_n i skróć wszystko, co się da (własności potęg, skracanie silni).
+  - 'Porównaj otrzymane wyrażenie z liczbą 1: rozwiąż nierówność a_{n+1}/a_n > 1 lub przekształć ją równoważnie.'
+  - Sprawdź, czy nierówność zachodzi dla wszystkich n ≥ 1.
+  - 'Sformułuj wniosek: iloraz > 1 dla każdego n → rosnący; iloraz < 1 dla każdego n → malejący; iloraz
+    = 1 → ciąg stały.'
+- name: Badanie monotoniczności ciągu zadanego rekurencyjnie
+  when_to_use: Gdy ciąg opisano wzorem a_{n+1} = a_n + f(n) lub a_{n+1} = a_n · g(n) i pytanie dotyczy
+    monotoniczności.
+  steps:
+  - Przekształć rekurencję tak, by po jednej stronie została różnica a_{n+1} - a_n (przenieś a_n na lewą
+    stronę) albo iloraz a_{n+1}/a_n.
+  - Jeśli otrzymałeś różnicę równą f(n) — zbadaj znak f(n) dla n ≥ 1.
+  - Jeśli otrzymałeś iloraz równy g(n) — najpierw upewnij się (licząc kilka wyrazów lub z warunku początkowego),
+    że wyrazy są dodatnie, a potem porównaj g(n) z 1.
+  - Jeżeli znak zależy od n, wyznacz, dla których n jest dodatni, a dla których ujemny, i stwierdź brak
+    monotoniczności (ewentualnie monotoniczność od pewnego miejsca).
+  - Zapisz wniosek pełnym zdaniem z odwołaniem do definicji.
+- name: Wstępne rozpoznanie charakteru ciągu przez obliczenie kilku wyrazów
+  when_to_use: Jako pierwszy krok orientacyjny, zanim przeprowadzisz właściwe uzasadnienie, albo gdy chcesz
+    obalić hipotezę o monotoniczności.
+  steps:
+  - Oblicz a_1, a_2, a_3, a_4 (przy wzorze ogólnym — przez podstawienie, przy rekurencji — krok po kroku).
+  - 'Porównaj sąsiednie wyrazy i sformułuj przypuszczenie: rosnący, malejący czy zmienny.'
+  - 'Jeśli wśród różnic pojawiają się obie: dodatnia i ujemna — ciąg NIE jest monotoniczny i wskazanie
+    tych dwóch przypadków jest pełnym uzasadnieniem.'
+  - Jeśli różnice mają jeden znak — to jeszcze nie dowód; przejdź do metody różnicy lub ilorazu dla dowolnego
+    n.
+examples:
+- statement: 'Ciąg (a_n) określony jest rekurencyjnie: a_1 = 3, a_{n+1} = 2a_n - 5 dla n ≥ 1. Oblicz cztery
+    początkowe wyrazy tego ciągu i sprawdź, czy jest on monotoniczny.'
+  worked_solution: |-
+    Wyrazy liczymy po kolei.
+    n = 1: a_2 = 2a_1 - 5 = 2·3 - 5 = 1.
+    n = 2: a_3 = 2a_2 - 5 = 2·1 - 5 = -3.
+    n = 3: a_4 = 2a_3 - 5 = 2·(-3) - 5 = -11.
+    Zatem a_1 = 3, a_2 = 1, a_3 = -3, a_4 = -11.
+    Różnice: a_2 - a_1 = -2 < 0, a_3 - a_2 = -4 < 0, a_4 - a_3 = -8 < 0. Wyrazy maleją.
+    Uzasadnienie ogólne: a_{n+1} - a_n = (2a_n - 5) - a_n = a_n - 5. Ponieważ a_1 = 3 < 5, a każdy kolejny wyraz jest jeszcze mniejszy, mamy a_n < 5 dla każdego n, więc a_n - 5 < 0. Ciąg jest malejący.
+  difficulty: 2
+- statement: Ciąg (a_n) dany jest wzorem a_n = n² - 6n + 1. Zbadaj monotoniczność tego ciągu.
+  worked_solution: |-
+    Wyznaczamy a_{n+1}: a_{n+1} = (n+1)² - 6(n+1) + 1 = n² + 2n + 1 - 6n - 6 + 1 = n² - 4n - 4.
+    Różnica: a_{n+1} - a_n = (n² - 4n - 4) - (n² - 6n + 1) = 2n - 5.
+    Badamy znak 2n - 5 dla n ∈ N+:
+    • n = 1: 2 - 5 = -3 < 0, czyli a_2 < a_1,
+    • n = 2: 4 - 5 = -1 < 0,
+    • n = 3: 6 - 5 = 1 > 0, czyli a_4 > a_3.
+    Różnica przyjmuje zarówno wartości ujemne, jak i dodatnie, więc ciąg NIE jest monotoniczny: nie jest ani rosnący, ani malejący.
+    (Dodatkowo: dla n ≥ 3 mamy 2n - 5 > 0, więc od wyrazu a_3 ciąg już rośnie. Sprawdzenie: a_1 = -4, a_2 = -7, a_3 = -8, a_4 = -7, a_5 = -4.)
+  difficulty: 3
+- statement: Wykaż, że ciąg o wzorze a_n = (2n - 1)/(n + 1) jest rosnący.
+  worked_solution: |-
+    Zauważmy, że mianownik n + 1 > 0 dla n ∈ N+, więc wzór ma sens.
+    a_{n+1} = (2(n+1) - 1)/((n+1) + 1) = (2n + 1)/(n + 2).
+    Różnica:
+    a_{n+1} - a_n = (2n+1)/(n+2) - (2n-1)/(n+1)
+    = [(2n+1)(n+1) - (2n-1)(n+2)] / [(n+2)(n+1)].
+    Licznik: (2n+1)(n+1) = 2n² + 3n + 1; (2n-1)(n+2) = 2n² + 3n - 2.
+    Różnica liczników: (2n² + 3n + 1) - (2n² + 3n - 2) = 3.
+    Zatem a_{n+1} - a_n = 3 / [(n+1)(n+2)].
+    Dla każdego n ≥ 1 mamy n + 1 > 0 i n + 2 > 0, więc mianownik jest dodatni, a licznik równy 3 > 0. Stąd a_{n+1} - a_n > 0 dla każdego n ∈ N+, czyli ciąg (a_n) jest rosnący. ∎
+  difficulty: 3
+- statement: Ciąg (a_n) o wyrazach dodatnich dany jest wzorem a_n = 2^n / (n + 1). Ustal, czy jest rosnący,
+    czy malejący, korzystając z metody ilorazu.
+  worked_solution: |-
+    Dla każdego n ∈ N+ mamy 2^n > 0 i n + 1 > 0, więc a_n > 0 — metodę ilorazu wolno zastosować.
+    a_{n+1} = 2^{n+1} / (n + 2).
+    Iloraz:
+    a_{n+1}/a_n = [2^{n+1}/(n+2)] · [(n+1)/2^n] = 2·(n+1)/(n+2) = (2n+2)/(n+2).
+    Porównujemy z 1: (2n+2)/(n+2) > 1. Ponieważ n + 2 > 0, mnożymy obustronnie przez n + 2 bez zmiany znaku nierówności:
+    2n + 2 > n + 2 ⟺ n > 0.
+    Warunek n > 0 jest spełniony dla każdego n ∈ N+, zatem a_{n+1}/a_n > 1 dla każdego n, czyli ciąg jest rosnący.
+    Sprawdzenie: a_1 = 1, a_2 = 4/3, a_3 = 2, a_4 = 16/5 = 3,2 — istotnie rośnie.
+  difficulty: 4
+- statement: 'Ciąg (a_n) określony jest rekurencyjnie: a_1 = 1/2, a_{n+1} = a_n/(a_n + 1) dla n ≥ 1. Oblicz
+    a_2, a_3, a_4 oraz uzasadnij, że ciąg jest malejący.'
+  worked_solution: |-
+    Obliczamy wyrazy krok po kroku.
+    a_2 = a_1/(a_1 + 1) = (1/2)/(1/2 + 1) = (1/2)/(3/2) = 1/3.
+    a_3 = a_2/(a_2 + 1) = (1/3)/(4/3) = 1/4.
+    a_4 = a_3/(a_3 + 1) = (1/4)/(5/4) = 1/5.
+    Widać, że a_1 = 1/2, a_2 = 1/3, a_3 = 1/4, a_4 = 1/5 — nasuwa się wzór a_n = 1/(n+1).
+    Uzasadnienie monotoniczności bez wzoru ogólnego: wszystkie wyrazy są dodatnie (start a_1 > 0, a jeśli a_n > 0, to a_n + 1 > 0 i a_{n+1} = a_n/(a_n+1) > 0). Wtedy
+    a_{n+1} - a_n = a_n/(a_n + 1) - a_n = a_n·[1/(a_n + 1) - 1] = a_n·[(1 - a_n - 1)/(a_n + 1)] = -a_n²/(a_n + 1).
+    Licznik -a_n² < 0 (bo a_n > 0), mianownik a_n + 1 > 0, więc a_{n+1} - a_n < 0 dla każdego n ∈ N+.
+    Ciąg jest malejący. (Zgadza się to ze wzorem a_n = 1/(n+1): mianownik rośnie, więc ułamek maleje.)
+  difficulty: 4
+objectives:
+- statement: Odczytać z zapisu rekurencyjnego wyraz początkowy i regułę przejścia oraz wyjaśnić różnicę
+    między wzorem ogólnym a wzorem rekurencyjnym.
+  bloom_level: Rozumienie
+- statement: Obliczyć kilka początkowych wyrazów ciągu określonego rekurencyjnie, w tym rekurencją zależną
+    od n oraz rekurencją dwuwyrazową (typu Fibonacciego).
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć a_{n+1} ze wzoru ogólnego przez poprawne podstawienie (n+1) i uprościć otrzymane
+    wyrażenie.
+  bloom_level: Zastosowanie
+- statement: Podać definicje ciągu rosnącego, malejącego, niemalejącego, nierosnącego i stałego oraz rozpoznać
+    typ ciągu na podstawie wypisanych wyrazów lub wykresu.
+  bloom_level: Wiedza/Rozumienie
+- statement: Zbadać monotoniczność ciągu danego wzorem ogólnym (wielomianowym lub wymiernym) metodą znaku
+    różnicy a_{n+1} - a_n i zapisać poprawny wniosek.
+  bloom_level: Analiza
+- statement: Zastosować kryterium ilorazowe do ciągu o wyrazach dodatnich, uzasadniając wcześniej spełnienie
+    warunku dodatniości.
+  bloom_level: Zastosowanie
+- statement: Ustalić monotoniczność ciągu zadanego rekurencyjnie postaci a_{n+1} = a_n + f(n) przez zbadanie
+    znaku f(n) dla n ∈ N+.
+  bloom_level: Analiza
+- statement: Uzasadnić, że dany ciąg nie jest monotoniczny, wskazując konkretne wyrazy (lub wartości n),
+    dla których różnice mają przeciwne znaki.
+  bloom_level: Analiza
+- statement: Ocenić poprawność cudzego rozumowania o monotoniczności (np. opartego wyłącznie na kilku
+    pierwszych wyrazach lub na ilorazie dla wyrazów ujemnych) i wskazać błąd.
+  bloom_level: Ocenianie
+- statement: Sformułować pełne uzasadnienie monotoniczności ciągu w formie krótkiego dowodu odwołującego
+    się do definicji.
+  bloom_level: Tworzenie
+misconceptions:
+- name: Kilka wyrazów zamiast dowodu
+  incorrect_reasoning: „a_1 = -4, a_2 = -7, a_3 = -8 — wyrazy maleją, więc ciąg jest malejący.”
+  correct_reasoning: 'Sprawdzenie skończenie wielu wyrazów nigdy nie dowodzi monotoniczności, bo definicja
+    wymaga warunku dla KAŻDEGO n. Dla a_n = n² - 6n + 1 dalej ciąg rośnie (a_4 = -7 > a_3 = -8). Aby udowodnić
+    monotoniczność, trzeba zbadać znak a_{n+1} - a_n dla dowolnego n. (Odwrotnie jednak: znalezienie dwóch
+    różnic o przeciwnych znakach WYSTARCZY, by obalić monotoniczność.)'
+  severity: 5
+- name: Mylenie a_{n+1} z a_n + 1
+  incorrect_reasoning: „a_n = 3n - 2, więc a_{n+1} = a_n + 1 = 3n - 1.”
+  correct_reasoning: 'a_{n+1} to następny WYRAZ (podstawiamy n+1 za n), a a_n + 1 to poprzedni wyraz powiększony
+    o 1 — to zupełnie co innego. Poprawnie: a_{n+1} = 3(n+1) - 2 = 3n + 1. Zawsze wstawiaj (n+1) w nawiasie
+    w miejsce każdego wystąpienia n.'
+  severity: 5
+- name: Brak nawiasów przy podstawianiu n+1
+  incorrect_reasoning: „a_n = n² - 6n + 1, więc a_{n+1} = n+1² - 6n+1 + 1.”
+  correct_reasoning: 'Podstawiając, trzeba całe wyrażenie (n+1) ująć w nawias: a_{n+1} = (n+1)² - 6(n+1)
+    + 1 = n² - 4n - 4. Pominięcie nawiasów prowadzi do błędnej różnicy i błędnego wniosku.'
+  severity: 4
+- name: Odwrócona kolejność w różnicy
+  incorrect_reasoning: „Liczę a_n - a_{n+1}; wyszło ujemne, więc ciąg malejący.”
+  correct_reasoning: 'Kryterium sformułowane jest dla różnicy a_{n+1} - a_n (następny minus poprzedni).
+    Jeżeli liczysz a_n - a_{n+1}, wnioski się odwracają. Najbezpieczniej trzymać się schematu: a_{n+1}
+    - a_n > 0 ⟹ rosnący.'
+  severity: 4
+- name: Metoda ilorazu przy wyrazach ujemnych
+  incorrect_reasoning: „a_n = -2^n; iloraz a_{n+1}/a_n = 2 > 1, więc ciąg jest rosnący.”
+  correct_reasoning: 'Kryterium ilorazowe obowiązuje tylko dla ciągów o wyrazach dodatnich. Tu wyrazy
+    są ujemne: -2, -4, -8, ..., a różnica a_{n+1} - a_n = -2^{n+1} + 2^n = -2^n < 0, więc ciąg jest malejący.
+    Przy wyrazach ujemnych lub zmiennego znaku stosuj metodę różnicy.'
+  severity: 4
+- name: Ciąg ujemny „rosnący co do wartości bezwzględnej”
+  incorrect_reasoning: „Wyrazy -1, -4, -9, -16 są coraz większe co do wartości, więc ciąg rośnie.”
+  correct_reasoning: 'Porównujemy same liczby, a nie ich wartości bezwzględne: -4 < -1, -9 < -4, ... Ciąg
+    jest malejący. Monotoniczność zależy od położenia liczb na osi, nie od ich „wielkości bez znaku”.'
+  severity: 3
+- name: Traktowanie n jak dowolnej liczby rzeczywistej
+  incorrect_reasoning: „Różnica wynosi 2n - 5; miejsce zerowe to n = 2,5, więc dla n < 2,5 ciąg maleje,
+    a w n = 2,5 osiąga minimum.”
+  correct_reasoning: 'Wyrazy ciągu istnieją tylko dla n naturalnych dodatnich. Miejsce zerowe 2,5 służy
+    jedynie do rozdzielenia przypadków: dla n ∈ {1, 2} różnica jest ujemna, dla n ≥ 3 dodatnia. Nie mówimy
+    o wyrazie a_{2,5} — taki wyraz nie istnieje.'
+  severity: 3
+- name: Rekurencja bez wyrazu początkowego lub liczona „ze skokiem”
+  incorrect_reasoning: „Mam a_{n+1} = 4a_n - 3, więc a_5 = 4·5 - 3 = 17.”
+  correct_reasoning: 'We wzorze rekurencyjnym a_n oznacza poprzedni WYRAZ, a nie numer. Aby obliczyć a_5,
+    trzeba mieć a_1 i przejść kolejno: a_2, a_3, a_4, a_5. Nie da się przeskoczyć do dalekiego wyrazu
+    bez wcześniejszych.'
+  severity: 5
+- name: Mylenie „rosnący” z „niemalejący”
+  incorrect_reasoning: „Ciąg 2, 2, 3, 3, 4, 4, ... jest rosnący, bo nigdy nie maleje.”
+  correct_reasoning: Ciąg rosnący wymaga ostrej nierówności a_{n+1} > a_n dla każdego n. Tutaj a_2 = a_1,
+    więc ciąg jest tylko niemalejący. Ciąg stały nie jest ani rosnący, ani malejący.
+  severity: 3
+- name: Błędny wniosek z niepełnego uproszczenia różnicy
+  incorrect_reasoning: „Różnica wyszła (3 - n)/(n² + n) — licznik bywa ujemny, więc ciąg jest malejący.”
+  correct_reasoning: Trzeba zbadać znak CAŁEGO wyrażenia dla wszystkich n ≥ 1. Tu mianownik jest zawsze
+    dodatni, ale licznik 3 - n jest dodatni dla n = 1, 2, zerowy dla n = 3 i ujemny dla n ≥ 4 — ciąg nie
+    jest monotoniczny. Wniosek formułujemy dopiero po pełnej analizie znaku.
+  severity: 4

@@ -1,0 +1,424 @@
+section: dowody-geometryczne
+name: Dowody geometryczne
+scope: Structuring a plane-geometry proof; typical arguments with congruent triangles, angles and the
+  circle theorems.
+requirements:
+- VIII.11
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:04:03.627770'
+  approved_at: '2026-08-28T18:28:19.495832'
+  approved_by: reviewer
+concepts:
+- name: 'Twierdzenie: założenie i teza'
+  description: 'Twierdzenie geometryczne ma postać implikacji: „jeżeli Z (założenie), to T (teza)”. Założenie
+    to informacje dane w zadaniu (własności figury), teza to zdanie, które trzeba uzasadnić.'
+  explanation: 'Pierwszy krok każdego dowodu to rozdzielenie tekstu na dwie listy: CO WIEM i CO MAM POKAZAĆ.
+    Jeśli tego nie zrobisz, łatwo w trakcie dowodu użyć tezy jako argumentu. Warto zapisać założenie i
+    tezę w symbolach, np. Z: |AB|=|AC|, T: |∡ABC|=|∡ACB|.'
+  difficulty: 1
+- name: Dowód (wprost)
+  description: Skończony ciąg zdań, z których każde jest założeniem, definicją, wcześniej udowodnionym
+    twierdzeniem albo logicznym wnioskiem z poprzednich zdań, kończący się tezą.
+  explanation: 'Dowód to łańcuch: z A wynika B, z B wynika C, …, aż do tezy. Każde ogniwo musi mieć uzasadnienie
+    („bo kąty wierzchołkowe”, „bo cecha bok–kąt–bok”). Rysunek pomaga wpaść na pomysł, ale sam rysunek
+    nigdy nie jest dowodem.'
+  difficulty: 2
+- name: Dowód nie wprost
+  description: Metoda polegająca na przyjęciu, że teza jest fałszywa, i wyprowadzeniu z tego sprzeczności
+    z założeniem lub ze znanym twierdzeniem; sprzeczność dowodzi prawdziwości tezy.
+  explanation: 'Stosuje się ją głównie do tez typu „proste nie są równoległe”, „punkt nie leży na okręgu”,
+    „trójkąt nie jest prostokątny”. Schemat: „Przypuśćmy, że … . Wtedy … . Otrzymana równość jest sprzeczna
+    z … . Zatem przypuszczenie było fałszywe.”'
+  difficulty: 3
+- name: Kontrprzykład
+  description: Konkretna figura spełniająca założenie, ale nie spełniająca tezy; wskazanie kontrprzykładu
+    obala zdanie ogólne.
+  explanation: Żeby obalić zdanie „każdy…”, wystarczy jeden przykład. Żeby udowodnić zdanie „każdy…”,
+    jeden przykład nie wystarcza — to najczęstsza pułapka logiczna w geometrii.
+  difficulty: 2
+- name: Twierdzenie odwrotne
+  description: Do twierdzenia „jeżeli Z, to T” twierdzeniem odwrotnym jest „jeżeli T, to Z”. Twierdzenie
+    odwrotne może być prawdziwe lub fałszywe niezależnie od twierdzenia wyjściowego.
+  explanation: Np. twierdzenie Pitagorasa i twierdzenie do niego odwrotne są oba prawdziwe, ale „w rombie
+    przekątne są prostopadłe” ma fałszywe odwrócenie w wersji „w czworokącie o prostopadłych przekątnych
+    boki są równe”. W dowodzie trzeba używać tej wersji, która faktycznie została udowodniona.
+  difficulty: 3
+- name: Przystawanie trójkątów
+  description: Trójkąty ABC i A'B'C' przystają (ABC ≅ A'B'C'), gdy istnieje przekształcenie odpowiedniości
+    wierzchołków, przy którym odpowiadające boki i kąty są równe.
+  explanation: 'Przystawanie to „ta sama figura, inne położenie”. Kolejność liter jest istotna: zapis
+    ABC ≅ KLM oznacza |AB|=|KL|, |BC|=|LM|, |CA|=|MK| oraz równość kątów przy odpowiadających wierzchołkach.
+    Z przystawania wyciąga się WSZYSTKIE równości boków i kątów — to główne narzędzie dowodowe.'
+  difficulty: 2
+- name: Cechy przystawania trójkątów (bbb, bkb, kbk)
+  description: 'bbb: trzy pary równych boków; bkb: dwa boki i kąt między nimi; kbk: dwa kąty i bok między
+    nimi (równoważnie: bok i dwa dowolne kąty, bo trzeci kąt się dolicza).'
+  explanation: 'To „minimalne pakiety danych”, które wystarczą, by trójkąty przystawały. Zestaw bok–bok–kąt
+    nieleżący między nimi (bbk) na ogół NIE wystarcza. Wyjątek praktyczny: dla trójkątów prostokątnych
+    przeciwprostokątna i przyprostokątna wyznaczają trójkąt (wynika to z tw. Pitagorasa i cechy bbb).'
+  difficulty: 2
+- name: Podobieństwo trójkątów
+  description: Trójkąty są podobne, gdy mają równe odpowiadające kąty (cecha kkk), albo proporcjonalne
+    odpowiadające boki (bbb), albo dwa boki proporcjonalne i równy kąt między nimi (bkb).
+  explanation: Podobieństwo daje równości proporcji, przystawanie — równości długości. W dowodach z odcinkami
+    „w tym samym stosunku” szuka się podobieństwa; najczęściej dostajemy je z kąta wspólnego i pary kątów
+    równych (np. odpowiadających przy prostych równoległych).
+  difficulty: 3
+- name: Kąty przy prostych równoległych
+  description: Przy przecięciu dwóch prostych równoległych trzecią prostą kąty odpowiadające są równe,
+    kąty naprzemianległe wewnętrzne są równe, a kąty jednostronne wewnętrzne sumują się do 180°.
+  explanation: 'To silnik większości „rachunków kątowych”. Działa też w drugą stronę: równość kątów naprzemianległych
+    dowodzi równoległości prostych — stąd typowe dowody równoległości.'
+  difficulty: 2
+- name: Kąty wierzchołkowe i przyległe
+  description: Kąty wierzchołkowe (utworzone przez dwie przecinające się proste, leżące naprzeciw siebie)
+    są równe; kąty przyległe sumują się do 180°.
+  explanation: Najprostsze narzędzie do przenoszenia informacji o kątach przez punkt przecięcia prostych,
+    m.in. w dowodach o przekątnych czworokątów.
+  difficulty: 1
+- name: Trójkąt równoramienny
+  description: Trójkąt o dwóch bokach równej długości; kąty przy podstawie są równe, a wysokość poprowadzona
+    z wierzchołka między ramionami jest jednocześnie środkową, dwusieczną i osią symetrii.
+  explanation: 'Kluczowe w dowodach z okręgiem: każdy trójkąt o dwóch bokach będących promieniami tego
+    samego okręgu jest równoramienny. To najczęstszy sposób „wyprodukowania” równych kątów z niczego.'
+  difficulty: 2
+- name: Kąt środkowy i kąt wpisany
+  description: Kąt środkowy ma wierzchołek w środku okręgu, kąt wpisany — na okręgu; oba mogą być oparte
+    na tym samym łuku.
+  explanation: 'Zawsze pytaj: „na jakim łuku oparty jest ten kąt?”. Twierdzenia o kątach działają wyłącznie
+    dla kątów opartych na TYM SAMYM łuku, a nie na tej samej cięciwie po przeciwnych stronach.'
+  difficulty: 2
+- name: Czworokąt wpisany w okrąg
+  description: Czworokąt, którego wszystkie wierzchołki leżą na jednym okręgu; jego przeciwległe kąty
+    sumują się do 180°.
+  explanation: Dowodzi się tego jednym rachunkiem z twierdzenia o kącie wpisanym (dwa kąty wpisane opierają
+    się na dwóch dopełniających się łukach). Twierdzenie odwrotne (suma 180° ⇒ czworokąt wpisany) też
+    jest prawdziwe i bywa użyteczne.
+  difficulty: 3
+- name: Styczna do okręgu
+  description: Prosta mająca dokładnie jeden punkt wspólny z okręgiem; jest prostopadła do promienia poprowadzonego
+    do punktu styczności.
+  explanation: Styczna zawsze wprowadza do rysunku kąt prosty — a kąt prosty pozwala użyć tw. Pitagorasa
+    i cech przystawania trójkątów prostokątnych.
+  difficulty: 2
+- name: Symetralna odcinka i dwusieczna kąta
+  description: Symetralna odcinka to zbiór punktów równoodległych od jego końców; dwusieczna kąta to zbiór
+    punktów wewnątrz kąta równoodległych od jego ramion.
+  explanation: Te charakteryzacje pozwalają zamieniać zdanie „|PA|=|PB|” na „P leży na symetralnej AB”
+    i odwrotnie — bardzo wygodne w dowodach o środku okręgu opisanego czy o osiach symetrii.
+  difficulty: 3
+- name: Odcinek łączący środki boków (linia środkowa)
+  description: Odcinek łączący środki dwóch boków trójkąta jest równoległy do trzeciego boku i ma połowę
+    jego długości.
+  explanation: Standardowe narzędzie, gdy w założeniu pojawiają się środki boków; często pozwala udowodnić
+    równoległość bez rachunku kątów.
+  difficulty: 3
+- name: Poprawne rysowanie i oznaczenia
+  description: Rysunek pomocniczy z konsekwentnymi oznaczeniami (α, β, x) i zaznaczonymi danymi z założenia;
+    rysunek ma być „ogólny”, a nie szczególny.
+  explanation: Rysuj trójkąt wyraźnie różnoboczny, a czworokąt wyraźnie nieregularny — inaczej zaczniesz
+    korzystać z własności, których nie ma w założeniu. Rysunek organizuje myślenie, ale każde zdanie dowodu
+    musi mieć uzasadnienie tekstowe.
+  difficulty: 1
+formulas:
+- name: Suma kątów w trójkącie
+  latex_raw: \alpha+\beta+\gamma=180^\circ
+  conditions: dowolny trójkąt na płaszczyźnie
+  description: Podstawowe równanie każdego rachunku kątowego.
+- name: Twierdzenie o kącie zewnętrznym
+  latex_raw: \delta=\alpha+\beta
+  conditions: δ — kąt zewnętrzny trójkąta przy wierzchołku C, α, β — kąty wewnętrzne przy pozostałych
+    wierzchołkach
+  description: Wynika z sumy kątów i z kątów przyległych.
+- name: Suma kątów wewnętrznych wielokąta
+  latex_raw: S_n=(n-2)\cdot 180^\circ
+  conditions: wielokąt wypukły o n bokach
+- name: Kąty w trójkącie równoramiennym
+  latex_raw: '|AB|=|AC| \iff |\sphericalangle ABC|=|\sphericalangle ACB|'
+  conditions: trójkąt ABC
+  description: Twierdzenie i twierdzenie odwrotne są oba prawdziwe.
+- name: Twierdzenie o kącie wpisanym i środkowym
+  latex_raw: '|\sphericalangle \text{środkowy}| = 2\,|\sphericalangle \text{wpisany}|'
+  conditions: oba kąty oparte na tym samym łuku tego samego okręgu
+- name: Kąty wpisane oparte na tym samym łuku
+  latex_raw: '|\sphericalangle APB|=|\sphericalangle AQB|'
+  conditions: P, Q leżą na okręgu po tej samej stronie cięciwy AB (na tym samym łuku)
+- name: Kąt oparty na półokręgu (twierdzenie Talesa o okręgu)
+  latex_raw: '|\sphericalangle ACB| = 90^\circ'
+  conditions: AB — średnica okręgu, C — punkt okręgu różny od A i B
+  description: 'Twierdzenie odwrotne: jeśli kąt ACB jest prosty, to C leży na okręgu o średnicy AB.'
+- name: Czworokąt wpisany w okrąg
+  latex_raw: \alpha+\gamma=180^\circ,\qquad \beta+\delta=180^\circ
+  conditions: czworokąt ABCD wpisany w okrąg, kąty kolejno przy A, B, C, D
+- name: Styczna i promień
+  latex_raw: OP \perp k
+  conditions: k — styczna do okręgu o środku O w punkcie P
+- name: Odcinki stycznych z punktu zewnętrznego
+  latex_raw: '|PA|=|PB|'
+  conditions: PA, PB — odcinki stycznych poprowadzonych z punktu P do okręgu, A, B — punkty styczności
+- name: Twierdzenie Pitagorasa i twierdzenie odwrotne
+  latex_raw: a^2+b^2=c^2 \iff \gamma = 90^\circ
+  conditions: trójkąt o bokach a, b, c, przy czym γ jest kątem naprzeciw boku c
+- name: Linia środkowa trójkąta
+  latex_raw: MN \parallel BC \quad\text{oraz}\quad |MN|=\tfrac{1}{2}|BC|
+  conditions: M, N — środki boków AB i AC trójkąta ABC
+- name: Skala podobieństwa
+  latex_raw: \frac{a'}{a}=\frac{b'}{b}=\frac{c'}{c}=k
+  conditions: trójkąty podobne w odpowiedniości a↔a', b↔b', c↔c'
+  description: Obwody są w stosunku k, pola w stosunku k².
+methods:
+- name: Ogólny schemat redagowania dowodu geometrycznego
+  when_to_use: Zawsze, gdy polecenie brzmi „udowodnij”, „wykaż”, „uzasadnij”.
+  steps:
+  - Wykonaj czytelny rysunek ogólny (bez przypadkowych symetrii) i nanieś dane z założenia.
+  - Wypisz osobno ZAŁOŻENIE (co dane) i TEZĘ (co udowodnić), najlepiej w symbolach.
+  - Wprowadź oznaczenia niewiadomych kątów/odcinków (α, β, x) — minimalną liczbę liter.
+  - 'Zaplanuj drogę: jaką znaną własność trzeba wykorzystać, żeby z założenia dojść do tezy (przystawanie?
+    rachunek kątów? okrąg?).'
+  - Zapisz kolejne kroki, każdy z uzasadnieniem („z cechy bkb…”, „bo kąty naprzemianległe…”).
+  - 'Zakończ zdaniem wskazującym, że otrzymano dokładnie tezę: „co należało wykazać”.'
+  - Sprawdź, czy w żadnym kroku nie użyto tezy ani własności widocznej tylko na rysunku.
+- name: Dowód przez przystawanie trójkątów
+  when_to_use: Gdy teza mówi o równości odcinków, równości kątów, o dwusiecznej, środku odcinka, symetrii
+    figury.
+  steps:
+  - Wskaż dwa trójkąty, w których leżą porównywane elementy (odcinki/kąty z tezy).
+  - Ustal odpowiedniość wierzchołków i zapisz ją konsekwentnie (np. ABС ↔ ADC).
+  - 'Zbierz trzy pary równych elementów: z założenia, z własności figury (bok wspólny!, kąty wierzchołkowe,
+    kąty naprzemianległe, promienie okręgu).'
+  - 'Nazwij użytą cechę: bbb, bkb lub kbk — sprawdź, czy dane są ułożone dokładnie tak, jak wymaga cecha.'
+  - Z przystawania wypisz tę równość odpowiadających elementów, która jest tezą.
+  - Zapisz wniosek końcowy.
+- name: Rachunek kątów (angle chasing)
+  when_to_use: Gdy teza jest równością lub zależnością między miarami kątów, albo dowodem prostopadłości/równoległości.
+  steps:
+  - Oznacz literami jak najmniej kątów; pozostałe wyrażaj przez nie.
+  - 'Wykorzystaj kolejno: sumę kątów w trójkącie, kąty przyległe i wierzchołkowe, kąty przy prostych równoległych,
+    trójkąty równoramienne.'
+  - Jeśli w figurze jest okrąg, dopisz zależności z twierdzenia o kącie wpisanym i środkowym.
+  - Ułóż równania na oznaczone kąty i przekształć je algebraicznie do postaci tezy.
+  - Zinterpretuj wynik geometrycznie (np. suma kątów jednostronnych 180° ⇒ proste równoległe).
+- name: Dowód z wykorzystaniem twierdzeń o okręgu
+  when_to_use: Gdy w figurze występują cięciwy, średnice, styczne, punkty na okręgu.
+  steps:
+  - Zaznacz środek O i dorysuj promienie do wszystkich zaznaczonych punktów okręgu — powstają trójkąty
+    równoramienne.
+  - Dla każdego kąta w tezie ustal, na jakim łuku jest oparty.
+  - 'Zastosuj: kąt wpisany = połowa środkowego; kąty na tym samym łuku równe; kąt oparty na średnicy =
+    90°; kąty przeciwległe czworokąta wpisanego = 180°.'
+  - Jeśli jest styczna — dopisz kąt prosty między styczną a promieniem w punkcie styczności.
+  - Przelicz kąty do tezy albo skorzystaj z przystawania powstałych trójkątów.
+- name: Dowód nie wprost
+  when_to_use: Gdy teza to zaprzeczenie („nie jest prostopadła”, „nie istnieje”, „nie może być”) lub gdy
+    dowód wprost nie rusza z miejsca.
+  steps:
+  - 'Zapisz: „Przypuśćmy, że teza jest fałszywa”, i sformułuj precyzyjnie zaprzeczenie tezy.'
+  - Prowadź poprawne rozumowanie z założenia i z tego przypuszczenia.
+  - Doprowadź do sprzeczności (np. suma kątów trójkąta większa niż 180°, dwa różne punkty przecięcia stycznej
+    z okręgiem).
+  - 'Stwierdź: przypuszczenie jest fałszywe, zatem teza jest prawdziwa.'
+- name: Dowód z podobieństwa trójkątów
+  when_to_use: Gdy teza dotyczy proporcji odcinków, iloczynów długości albo stosunku pól.
+  steps:
+  - Wskaż trójkąty zawierające odcinki z tezy i ustal odpowiedniość wierzchołków.
+  - Znajdź dwie pary równych kątów (kąt wspólny, kąt prosty, kąty odpowiadające przy równoległych, kąty
+    wpisane na tym samym łuku).
+  - Powołaj się na cechę kk (kkk) podobieństwa.
+  - Zapisz proporcję odpowiadających boków w poprawnej kolejności.
+  - Przekształć proporcję (mnożenie na krzyż) do postaci tezy.
+examples:
+- statement: 'Udowodnij, że w trójkącie równoramiennym kąty przy podstawie są równe. (Założenie: w trójkącie
+    ABC zachodzi |AB| = |AC|. Teza: |∡ABC| = |∡ACB|.)'
+  worked_solution: |-
+    Rysunek: trójkąt ABC o ramionach AB i AC oraz podstawie BC. Poprowadźmy dwusieczną kąta BAC; niech przecina ona bok BC w punkcie D.
+
+    Porównajmy trójkąty ABD i ACD:
+    1) |AB| = |AC| — z założenia;
+    2) |∡BAD| = |∡CAD| — bo AD jest dwusieczną kąta BAC;
+    3) |AD| = |AD| — bok wspólny.
+    Mamy więc dwa boki i kąt między nimi, zatem z cechy bkb trójkąty ABD i ACD są przystające: ABD ≅ ACD.
+
+    Z przystawania wynika równość odpowiadających kątów, w szczególności |∡ABD| = |∡ACD|, czyli |∡ABC| = |∡ACB|.
+
+    To jest dokładnie teza, co należało udowodnić.
+
+    Uwaga metodyczna: kąt wspólny/bok wspólny to najczęściej „trzecia dana”, której brakuje do zastosowania cechy przystawania — zawsze go szukaj.
+  difficulty: 2
+- statement: 'Udowodnij, że przekątne równoległoboku dzielą się na połowy. (Założenie: ABCD jest równoległobokiem,
+    S — punkt przecięcia przekątnych AC i BD. Teza: |AS| = |SC| oraz |BS| = |SD|.)'
+  worked_solution: |-
+    Rysunek: równoległobok ABCD (wyraźnie nieprostokątny!), przekątne przecinają się w S.
+
+    Rozważmy trójkąty ABS i CDS.
+    1) |AB| = |CD| — przeciwległe boki równoległoboku są równe.
+    2) |∡BAS| = |∡DCS| — to kąty naprzemianległe przy prostych równoległych AB i CD przeciętych prostą AC.
+    3) |∡ABS| = |∡CDS| — kąty naprzemianległe przy prostych równoległych AB i CD przeciętych prostą BD.
+
+    Mamy bok i dwa przylegające do niego kąty, więc z cechy kbk trójkąty ABS i CDS są przystające (w odpowiedniości A↔C, B↔D, S↔S).
+
+    Z przystawania: |AS| = |CS| oraz |BS| = |DS|.
+
+    Zatem punkt S jest środkiem obu przekątnych — przekątne równoległoboku dzielą się na połowy, co należało udowodnić.
+
+    Kontrola poprawności: nigdzie nie założyliśmy, że boki są prostopadłe ani równe — dowód działa dla dowolnego równoległoboku.
+  difficulty: 3
+- statement: 'Udowodnij, że kąt wpisany oparty na średnicy okręgu jest kątem prostym. (Założenie: AB —
+    średnica okręgu o środku O, C — punkt tego okręgu różny od A i B. Teza: |∡ACB| = 90°.)'
+  worked_solution: |-
+    Rysunek: okrąg o środku O, średnica AB, punkt C na okręgu. Dorysowujemy promień OC.
+
+    Odcinki OA, OB, OC są promieniami, więc |OA| = |OB| = |OC| = r.
+
+    Trójkąt AOC jest równoramienny (|OA| = |OC|), więc kąty przy podstawie AC są równe; oznaczmy |∡OAC| = |∡OCA| = α.
+    Trójkąt BOC jest równoramienny (|OB| = |OC|), więc |∡OBC| = |∡OCB| = β.
+
+    Rozpatrzmy trójkąt ABC. Suma jego kątów wynosi 180°:
+    |∡BAC| + |∡ABC| + |∡ACB| = 180°,
+    czyli α + β + (α + β) = 180°, bo |∡ACB| = |∡OCA| + |∡OCB| = α + β.
+
+    Stąd 2(α + β) = 180°, więc α + β = 90°, czyli |∡ACB| = 90°.
+
+    To jest teza. Zauważ, że dowód nie korzystał z twierdzenia o kącie wpisanym — przeciwnie, jest to jego szczególny przypadek udowodniony „od zera” za pomocą trójkątów równoramiennych. To standardowy chwyt: promienie do punktów okręgu produkują trójkąty równoramienne, a te — równe kąty.
+  difficulty: 3
+- statement: Z punktu P leżącego na zewnątrz okręgu o środku O poprowadzono dwie styczne, styczne w punktach
+    A i B. Udowodnij, że |PA| = |PB| oraz że prosta PO jest dwusieczną kąta APB.
+  worked_solution: |-
+    Rysunek: okrąg o środku O, punkt P na zewnątrz, styczne PA i PB, dorysowane promienie OA, OB oraz odcinek OP.
+
+    Założenie: PA i PB są styczne do okręgu w punktach A i B. Teza: |PA| = |PB| oraz |∡APO| = |∡BPO|.
+
+    Krok 1. Ponieważ prosta PA jest styczna do okręgu w punkcie A, to OA ⊥ PA, czyli |∡OAP| = 90°. Analogicznie |∡OBP| = 90°. Trójkąty OAP i OBP są więc prostokątne o przeciwprostokątnej OP.
+
+    Krok 2. Z twierdzenia Pitagorasa w trójkącie OAP: |PA|² = |OP|² − |OA|² = |OP|² − r².
+    Analogicznie w trójkącie OBP: |PB|² = |OP|² − |OB|² = |OP|² − r².
+    Zatem |PA|² = |PB|², a ponieważ długości są dodatnie, |PA| = |PB|. To pierwsza część tezy.
+
+    Krok 3. Teraz trójkąty OAP i OBP mają: |OA| = |OB| = r, |PA| = |PB| (krok 2) oraz wspólny bok OP. Z cechy bbb są przystające: OAP ≅ OBP.
+    Z przystawania |∡APO| = |∡BPO|, czyli półprosta PO dzieli kąt APB na dwa równe kąty — jest jego dwusieczną.
+
+    Co należało udowodnić.
+  difficulty: 4
+- statement: Czworokąt ABCD jest wpisany w okrąg. Udowodnij, że |∡DAB| + |∡BCD| = 180°.
+  worked_solution: |-
+    Rysunek: okrąg o środku O, na nim kolejno punkty A, B, C, D, poprowadzone boki czworokąta oraz promienie OB i OD.
+
+    Oznaczenia: niech α = |∡DAB| (kąt wpisany przy wierzchołku A) i γ = |∡BCD| (kąt wpisany przy wierzchołku C).
+
+    Krok 1. Kąt DAB jest kątem wpisanym opartym na łuku BCD (tym łuku BD, który zawiera punkt C). Kąt środkowy oparty na tym samym łuku oznaczmy przez φ. Z twierdzenia o kącie wpisanym i środkowym: φ = 2α.
+
+    Krok 2. Kąt BCD jest kątem wpisanym opartym na drugim łuku BD (tym, który zawiera punkt A). Kąt środkowy oparty na tym łuku oznaczmy ψ. Z tego samego twierdzenia: ψ = 2γ.
+
+    Krok 3. Kąty środkowe φ i ψ są oparte na dwóch łukach, które razem tworzą cały okrąg, a więc uzupełniają się do kąta pełnego:
+    φ + ψ = 360°.
+
+    Krok 4. Podstawiamy: 2α + 2γ = 360°, czyli α + γ = 180°.
+
+    Zatem |∡DAB| + |∡BCD| = 180°, co należało udowodnić. Analogicznie (albo z sumy kątów czworokąta równej 360°) otrzymujemy |∡ABC| + |∡CDA| = 180°.
+
+    Uwaga: kluczowe było staranne ustalenie, na KTÓRYM łuku BD oparty jest każdy z kątów — bez tego krok 3 nie ma sensu.
+  difficulty: 4
+objectives:
+- statement: Wyodrębnić z treści zadania geometrycznego założenie i tezę oraz zapisać je za pomocą symboli
+    i oznaczeń na rysunku.
+  bloom_level: Rozumienie
+- statement: Wykonać poprawny, ogólny rysunek pomocniczy i wprowadzić oszczędne oznaczenia kątów i odcinków.
+  bloom_level: Zastosowanie
+- statement: Uzasadniać przystawanie dwóch trójkątów, wskazując właściwą cechę (bbb, bkb, kbk) i poprawną
+    odpowiedniość wierzchołków, a następnie wyprowadzać z niej równości boków i kątów.
+  bloom_level: Zastosowanie
+- statement: Przeprowadzać rachunek kątów, wykorzystując sumę kątów w trójkącie i wielokącie, kąty przyległe,
+    wierzchołkowe, odpowiadające i naprzemianległe oraz własności trójkąta równoramiennego.
+  bloom_level: Zastosowanie
+- statement: Stosować twierdzenia o okręgu (kąt środkowy i wpisany, kąt oparty na średnicy, czworokąt
+    wpisany, styczna prostopadła do promienia, równość odcinków stycznych) jako kroki dowodu.
+  bloom_level: Zastosowanie
+- statement: Dobierać strategię dowodu (przystawanie, podobieństwo, rachunek kątów, dowód nie wprost)
+    do postaci tezy.
+  bloom_level: Analiza
+- statement: Zredagować pełny dowód geometryczny jako uporządkowany ciąg kroków, z których każdy ma podane
+    uzasadnienie, zakończony wyraźnym stwierdzeniem tezy.
+  bloom_level: Tworzenie
+- statement: 'Ocenić poprawność cudzego rozumowania geometrycznego: wykryć błędne koło, korzystanie z
+    rysunku, użycie nieistniejącej cechy przystawania lub mylenie twierdzenia z odwrotnym.'
+  bloom_level: Ocenianie
+- statement: Obalić fałszywe zdanie ogólne dotyczące figur płaskich przez podanie kontrprzykładu.
+  bloom_level: Analiza
+misconceptions:
+- name: Rysunek zamiast dowodu
+  incorrect_reasoning: „Z rysunku widać, że te odcinki są równe (albo że kąt jest prosty), więc teza jest
+    prawdziwa.” Uczeń mierzy linijką lub kątomierzem i uznaje to za uzasadnienie.
+  correct_reasoning: Rysunek jest tylko ilustracją jednego przypadku i zawsze jest niedokładny. Każda
+    równość musi wynikać z założenia, definicji lub twierdzenia. Rysunek służy do znalezienia pomysłu,
+    a nie do uzasadnienia kroku.
+  severity: 5
+- name: Sprawdzenie przykładu jako dowód ogólny
+  incorrect_reasoning: „Sprawdziłem dla trójkąta o bokach 3, 4, 5 i się zgadza, więc twierdzenie jest
+    prawdziwe dla każdego trójkąta.”
+  correct_reasoning: Jeden (ani sto) przykładów nie dowodzi zdania ogólnego; potrzebne jest rozumowanie
+    dla dowolnej figury spełniającej założenie. Pojedynczy przykład wystarcza tylko do OBALENIA zdania
+    ogólnego (kontrprzykład).
+  severity: 5
+- name: Korzystanie z tezy w dowodzie (błędne koło)
+  incorrect_reasoning: „Skoro |AS| = |SC|, to trójkąty ABS i CBS przystają, więc przekątne dzielą się
+    na połowy.” — użyto tego, co miało być udowodnione.
+  correct_reasoning: Teza może pojawić się dopiero jako ostatni wniosek. W trakcie dowodu wolno używać
+    wyłącznie założenia, definicji i wcześniej udowodnionych faktów. Warto po napisaniu dowodu przejrzeć
+    każdy krok i sprawdzić jego źródło.
+  severity: 5
+- name: Dorabianie własności, których nie ma w założeniu
+  incorrect_reasoning: „Ten czworokąt ma równe boki, więc jest kwadratem”, albo „ten trójkąt wygląda na
+    równoboczny, więc kąty mają po 60°” — mimo że w treści była mowa tylko o czworokącie/trójkącie.
+  correct_reasoning: Wolno używać wyłącznie własności zapisanych w założeniu lub z nich wynikających.
+    Dlatego rysunek pomocniczy trzeba robić „możliwie nieregularny” — wtedy nie kusi, by korzystać z przypadkowej
+    symetrii.
+  severity: 4
+- name: Cecha „bok–bok–kąt” (bbk)
+  incorrect_reasoning: „Trójkąty mają dwa równe boki i jeden równy kąt, więc przystają.” — przy czym kąt
+    nie leży między tymi bokami.
+  correct_reasoning: Cechy przystawania to bbb, bkb (kąt MIĘDZY danymi bokami) i kbk. Układ bok–bok–kąt
+    nieleżący między nimi nie wyznacza trójkąta jednoznacznie. Wyjątkiem jest sytuacja, gdy ten kąt jest
+    prosty — wtedy trzeci bok wyliczamy z twierdzenia Pitagorasa i wracamy do cechy bbb.
+  severity: 4
+- name: Zła odpowiedniość wierzchołków w przystawaniu/podobieństwie
+  incorrect_reasoning: Uczeń pisze ABC ≅ KLM (lub proporcję AB/KL = BC/LM), nie sprawdziwszy, które wierzchołki
+    sobie odpowiadają, i wyciąga równości niewłaściwych par boków.
+  correct_reasoning: 'Kolejność liter koduje odpowiedniość: pierwszej literze odpowiada pierwsza, drugiej
+    druga itd. Przed zapisaniem równości/proporcji ustal odpowiedniość na podstawie równych kątów i dopiero
+    wtedy wypisuj pary boków.'
+  severity: 3
+- name: Mylenie twierdzenia z twierdzeniem odwrotnym
+  incorrect_reasoning: „Kąt ACB ma 90°, więc AB jest średnicą” — powiedziane w sytuacji, gdy w ogóle nie
+    wiadomo, że C leży na tym okręgu; albo „przekątne są prostopadłe, więc to romb”.
+  correct_reasoning: Implikacja i jej odwrotność to dwa różne zdania. Wolno powołać się na wersję odwrotną
+    tylko wtedy, gdy jest ona osobno prawdziwym twierdzeniem (np. odwrotne tw. Pitagorasa, odwrotne tw.
+    o kącie opartym na średnicy — z dodatkowym założeniem o położeniu punktu).
+  severity: 4
+- name: Kąty wpisane oparte na „tej samej cięciwie”, ale na różnych łukach
+  incorrect_reasoning: „Kąty APB i AQB opierają się na cięciwie AB, więc są równe” — mimo że P i Q leżą
+    po przeciwnych stronach cięciwy.
+  correct_reasoning: Twierdzenie mówi o kątach opartych na TYM SAMYM ŁUKU. Gdy wierzchołki są po przeciwnych
+    stronach cięciwy, kąty nie są równe, tylko sumują się do 180° (czworokąt wpisany). Zawsze wskaż łuk,
+    na którym oparty jest kąt.
+  severity: 4
+- name: Podwajanie/połowienie w złą stronę
+  incorrect_reasoning: „Kąt wpisany jest dwa razy większy od środkowego opartego na tym samym łuku.”
+  correct_reasoning: 'Odwrotnie: kąt środkowy jest dwa razy większy od wpisanego (kąt wpisany = połowa
+    środkowego). Pomaga pamięciowo przypadek średnicy: kąt środkowy 180°, kąt wpisany 90°.'
+  severity: 3
+- name: Brak wniosku i uzasadnień poszczególnych kroków
+  incorrect_reasoning: Uczeń wypisuje ciąg równości kątów bez podania, skąd każda pochodzi, i kończy zapis
+    bez stwierdzenia, że otrzymano tezę.
+  correct_reasoning: 'Dowód to tekst matematyczny: przy każdym kroku podaj powód („bo kąty wierzchołkowe”,
+    „z cechy kbk”, „z twierdzenia o kącie wpisanym”), a na końcu wyraźnie stwierdź, że otrzymana zależność
+    jest tezą.'
+  severity: 3
+- name: Nieprawidłowe zaprzeczenie tezy w dowodzie nie wprost
+  incorrect_reasoning: Aby udowodnić „AB ∥ CD”, uczeń przypuszcza, że „AB ⊥ CD” — czyli zaprzecza tezy
+    zbyt wąsko.
+  correct_reasoning: Zaprzeczeniem zdania „proste są równoległe” jest „proste nie są równoległe”, czyli
+    przecinają się (w jednym punkcie). Zaprzeczenie musi obejmować wszystkie przypadki inne niż teza,
+    inaczej dowód niczego nie rozstrzyga.
+  severity: 3

@@ -1,0 +1,329 @@
+section: kat-wpisany-i-srodkowy
+name: Twierdzenie o kącie wpisanym i środkowym
+scope: 'The inscribed-angle theorem: an inscribed angle is half the central angle on the same arc; inscribed
+  angles on the same arc are equal; the angle in a semicircle is right. Using these to find angles in
+  circle figures.'
+requirements:
+- VIII.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:20:14.351207'
+  approved_at: '2026-08-28T18:28:23.641998'
+  approved_by: reviewer
+concepts:
+- name: Okrąg, promień, cięciwa, średnica
+  description: Okrąg o środku O i promieniu r to zbiór punktów płaszczyzny odległych od O o r. Cięciwa
+    to odcinek o obu końcach na okręgu; średnica to cięciwa przechodząca przez środek (najdłuższa cięciwa,
+    |AB| = 2r).
+  explanation: Każdy odcinek łączący środek z punktem okręgu ma tę samą długość r — to jest źródło wszystkich
+    trójkątów równoramiennych, które pojawiają się w zadaniach o kątach w okręgu. Gdy w zadaniu widzisz
+    środek O i punkty na okręgu, natychmiast zaznacz OA = OB = OC = r.
+  difficulty: 1
+- name: Łuk okręgu i łuki wyznaczone przez cięciwę
+  description: 'Dwa różne punkty A, B okręgu dzielą go na dwa łuki: krótszy (mniejszy) i dłuższy (większy).
+    Mówimy, że kąt jest oparty na łuku AB, jeśli jego ramiona przechodzą przez A i B, a łuk AB leży wewnątrz
+    kąta.'
+  explanation: 'Sama para punktów A, B nie wystarcza — trzeba wiedzieć, o który z dwóch łuków chodzi.
+    Dlatego zawsze patrz, po której stronie cięciwy AB leży wierzchołek kąta wpisanego: kąt opiera się
+    na tym łuku, który leży po przeciwnej stronie niż wierzchołek.'
+  difficulty: 2
+- name: Kąt środkowy
+  description: Kąt, którego wierzchołek jest środkiem okręgu, a ramiona zawierają promienie. Kąt środkowy
+    AOB jest oparty na łuku AB leżącym wewnątrz tego kąta.
+  explanation: 'Kąt środkowy jest "miarą łuku": łukowi o mierze 90° odpowiada kąt środkowy 90°. Suma miar
+    obu łuków wyznaczonych przez A i B wynosi 360°, więc kątowi wypukłemu AOB o mierze β odpowiada kąt
+    wklęsły o mierze 360° − β, oparty na drugim łuku.'
+  difficulty: 1
+- name: Kąt wpisany
+  description: Kąt, którego wierzchołek leży na okręgu, a oba ramiona zawierają cięciwy tego okręgu (przecinają
+    okrąg w dwóch dalszych punktach).
+  explanation: Wierzchołek MUSI leżeć na okręgu. Kąt o wierzchołku wewnątrz koła (np. w punkcie przecięcia
+    cięciw) ani o wierzchołku na zewnątrz nie jest kątem wpisanym i twierdzenia do niego wprost nie stosujemy.
+  difficulty: 1
+- name: Twierdzenie o kącie wpisanym i środkowym
+  description: Kąt wpisany jest dwa razy mniejszy od kąta środkowego opartego na tym samym łuku; równoważnie
+    kąt środkowy jest dwa razy większy od kąta wpisanego opartego na tym samym łuku.
+  explanation: 'Kluczowe słowa: "na tym samym łuku". Dowód opiera się na trójkątach równoramiennych: promień
+    poprowadzony z wierzchołka kąta wpisanego do środka rozbija figurę na trójkąty równoramienne, a kąt
+    środkowy jest kątem zewnętrznym takiego trójkąta.'
+  difficulty: 2
+- name: Kąty wpisane oparte na tym samym łuku
+  description: Wszystkie kąty wpisane oparte na tym samym łuku mają równe miary.
+  explanation: 'Wynika natychmiast z twierdzenia: każdy z nich jest połową tego samego kąta środkowego.
+    Praktycznie: wierzchołek kąta wpisanego można "przesuwać" po łuku, a miara kąta się nie zmienia —
+    to najczęściej używane narzędzie w zadaniach.'
+  difficulty: 2
+- name: Kąty wpisane oparte na dopełniających się łukach
+  description: Jeśli dwa kąty wpisane opierają się na tej samej cięciwie AB, ale ich wierzchołki leżą
+    po przeciwnych stronach AB (na różnych łukach), to suma ich miar wynosi 180°.
+  explanation: Bo jeden jest połową kąta środkowego β, drugi połową kąta 360° − β, a ½β + ½(360° − β)
+    = 180°. Stąd bierze się własność czworokąta wpisanego w okrąg.
+  difficulty: 3
+- name: Kąt wpisany oparty na półokręgu (twierdzenie Talesa o okręgu)
+  description: 'Kąt wpisany oparty na półokręgu (czyli taki, którego ramiona przechodzą przez końce średnicy)
+    jest kątem prostym. Odwrotnie: jeśli kąt wpisany ma miarę 90°, to opiera się na średnicy.'
+  explanation: 'Szczególny przypadek twierdzenia: kąt środkowy oparty na półokręgu to kąt półpełny 180°,
+    a jego połowa to 90°. Sygnał w zadaniu: "AB jest średnicą" prawie zawsze oznacza "szukaj kąta prostego"
+    i dalej twierdzenie Pitagorasa lub funkcje trygonometryczne w trójkącie prostokątnym.'
+  difficulty: 2
+- name: Trójkąt równoramienny utworzony przez dwa promienie
+  description: Dla punktów A, B na okręgu o środku O trójkąt AOB jest równoramienny (|OA| = |OB| = r),
+    więc kąty przy podstawie AB są równe i wynoszą (180° − |∠AOB|)/2.
+  explanation: 'To narzędzie "przekładu": pozwala przejść od kąta środkowego do kątów w trójkącie i z
+    powrotem. Gdy zadanie podaje kąt między promieniem a cięciwą, najpierw wyznacz kąt środkowy, potem
+    wpisany.'
+  difficulty: 2
+- name: Czworokąt wpisany w okrąg
+  description: Czworokąt, którego wszystkie wierzchołki leżą na jednym okręgu. W takim czworokącie sumy
+    miar kątów przeciwległych są równe 180°.
+  explanation: 'Bezpośredni wniosek z twierdzenia o kącie wpisanym: kąty przy wierzchołkach A i C opierają
+    się na dwóch dopełniających się łukach BD, więc razem dają połowę z 360°, czyli 180°.'
+  difficulty: 3
+- name: Równe cięciwy — równe łuki — równe kąty
+  description: W jednym okręgu równe cięciwy wyznaczają równe łuki i równe kąty środkowe, a więc także
+    równe kąty wpisane na nich oparte (i odwrotnie).
+  explanation: 'Użyteczne przy wielokątach foremnych wpisanych w okrąg: bok n-kąta foremnego widać ze
+    środka pod kątem 360°/n, a z pozostałych wierzchołków pod kątem 180°/n.'
+  difficulty: 3
+- name: Kąt między cięciwami przecinającymi się wewnątrz okręgu
+  description: Kąt utworzony przez dwie przecinające się wewnątrz okręgu cięciwy jest równy połowie sumy
+    miar dwóch łuków wyciętych przez ramiona tego kąta i jego kąta wierzchołkowego.
+  explanation: 'Nie trzeba uczyć się tego na pamięć — wyprowadza się to w dwóch krokach: rysujemy dodatkową
+    cięciwę, korzystamy z kątów wpisanych i z twierdzenia o kącie zewnętrznym trójkąta.'
+  difficulty: 4
+formulas:
+- name: Zależność kąta wpisanego i środkowego
+  latex_raw: \alpha = \tfrac{1}{2}\beta \qquad \Longleftrightarrow \qquad \beta = 2\alpha
+  conditions: α — kąt wpisany, β — kąt środkowy, oba oparte na tym samym łuku tego samego okręgu.
+  description: Jeśli α > 90°, to odpowiadający kąt środkowy β = 2α > 180° jest kątem wklęsłym; kąt wypukły
+    przy środku ma wtedy miarę 360° − 2α.
+- name: Kąty wpisane oparte na tym samym łuku
+  latex_raw: \angle ACB = \angle ADB
+  conditions: C, D leżą na tym samym łuku wyznaczonym przez cięciwę AB (po tej samej stronie AB).
+- name: Kąty wpisane po przeciwnych stronach cięciwy
+  latex_raw: \angle ACB + \angle ADB = 180^\circ
+  conditions: C i D leżą na różnych łukach wyznaczonych przez cięciwę AB.
+- name: Kąt oparty na średnicy
+  latex_raw: '|\angle ACB| = 90^\circ'
+  conditions: AB — średnica okręgu, C — dowolny punkt okręgu różny od A i B.
+  description: 'Twierdzenie odwrotne też zachodzi: jeśli |∠ACB| = 90°, to AB jest średnicą okręgu opisanego
+    na trójkącie ABC.'
+- name: Suma miar dwóch łuków (kątów środkowych)
+  latex_raw: \beta_1 + \beta_2 = 360^\circ
+  conditions: β₁, β₂ — kąty środkowe oparte na dwóch łukach wyznaczonych przez tę samą cięciwę.
+- name: Kąty przy podstawie trójkąta z dwóch promieni
+  latex_raw: '|\angle OAB| = |\angle OBA| = \frac{180^\circ - |\angle AOB|}{2} = 90^\circ - \tfrac12|\angle
+    AOB|'
+  conditions: O — środek okręgu, A, B — punkty okręgu (trójkąt AOB równoramienny).
+- name: Czworokąt wpisany w okrąg
+  latex_raw: \alpha + \gamma = 180^\circ, \qquad \beta + \delta = 180^\circ
+  conditions: ABCD — czworokąt wpisany w okrąg, α, β, γ, δ — jego kolejne kąty wewnętrzne.
+- name: Kąt między przecinającymi się cięciwami
+  latex_raw: '|\angle APC| = \tfrac12\big(\overset{\frown}{AC} + \overset{\frown}{BD}\big)'
+  conditions: Cięciwy AB i CD przecinają się w punkcie P wewnątrz okręgu; łuki AC i BD to łuki "objęte"
+    przez kąt APC i kąt do niego wierzchołkowy.
+  description: 'Wyprowadzenie: |∠APC| jest kątem zewnętrznym trójkąta, więc równa się sumie kątów wpisanych
+    ½·łuk AC i ½·łuk BD.'
+- name: Kąt, pod jakim widać bok n-kąta foremnego
+  latex_raw: \beta = \frac{360^\circ}{n}, \qquad \alpha = \frac{180^\circ}{n}
+  conditions: n-kąt foremny wpisany w okrąg; β — kąt środkowy oparty na boku, α — kąt wpisany oparty na
+    boku (wierzchołek w innym wierzchołku wielokąta, na dłuższym łuku).
+methods:
+- name: Przejście kąt wpisany ↔ kąt środkowy
+  when_to_use: Gdy dany jest jeden z kątów (wpisany lub środkowy) opartych na tym samym łuku, a szukamy
+    drugiego.
+  steps:
+  - Zidentyfikuj cięciwę (parę punktów A, B), na której oparte są oba kąty.
+  - 'Ustal, na którym z dwóch łuków AB oparty jest dany kąt: łuk leży wewnątrz kąta, po przeciwnej stronie
+    cięciwy niż wierzchołek kąta wpisanego.'
+  - Jeśli dany jest kąt środkowy β oparty na tym łuku, licz α = β/2; jeśli dany jest kąt wpisany α, licz
+    β = 2α.
+  - Sprawdź, czy otrzymany kąt środkowy jest wypukły; jeśli 2α > 180°, to kąt wypukły przy środku ma miarę
+    360° − 2α (kąt wklęsły to 2α).
+  - Zapisz odpowiedź z jednostką i sprawdź sensowność (kąt wpisany zawsze w przedziale (0°, 180°)).
+- name: Wykorzystanie kątów wpisanych opartych na tym samym łuku
+  when_to_use: Gdy w figurze występuje kilka kątów o wierzchołkach na okręgu i wspólnej cięciwie, a bezpośrednie
+    liczenie jest utrudnione.
+  steps:
+  - Wypisz wszystkie cięciwy figury i zaznacz kąty wpisane oparte na każdej z nich.
+  - Kąty oparte na tej samej cięciwie i mające wierzchołki po tej samej jej stronie oznacz tą samą literą
+    — są równe.
+  - Kąty oparte na tej samej cięciwie, ale z wierzchołkami po przeciwnych stronach, powiąż zależnością
+    α + α' = 180°.
+  - Ułóż równanie z sumy kątów trójkąta (180°) lub czworokąta (360°) i rozwiąż.
+- name: Metoda trójkątów równoramiennych (promienie)
+  when_to_use: Gdy w zadaniu występuje środek okręgu O połączony z punktami okręgu, a dane są kąty między
+    promieniem a cięciwą.
+  steps:
+  - Zaznacz wszystkie promienie i napisz przy nich r — każdy trójkąt z dwoma promieniami jest równoramienny.
+  - W trójkącie równoramiennym oznacz równe kąty przy podstawie.
+  - 'Z sumy kątów trójkąta wyznacz kąt środkowy: |∠AOB| = 180° − 2·(kąt przy podstawie).'
+  - Jeśli szukany jest kąt wpisany, podziel otrzymany kąt środkowy przez 2 (pamiętając o wyborze właściwego
+    łuku).
+  - Ewentualnie sprawdź wynik, korzystając z tego, że suma kątów środkowych wokół O wynosi 360°.
+- name: Rozwiązywanie trójkąta wpisanego, gdy bok jest średnicą
+  when_to_use: Gdy w treści pojawia się średnica okręgu i punkt na okręgu (albo gdy szukamy okręgu opisanego
+    na trójkącie prostokątnym).
+  steps:
+  - Zauważ, że kąt przy wierzchołku leżącym na okręgu, oparty na średnicy, ma miarę 90°.
+  - Pozostałe dwa kąty trójkąta sumują się do 90° — wyznacz brakujący z odejmowania.
+  - Jeśli potrzebne są długości, zastosuj twierdzenie Pitagorasa lub funkcje trygonometryczne kąta ostrego.
+  - 'Pamiętaj o zależności odwrotnej: środek okręgu opisanego na trójkącie prostokątnym to środek przeciwprostokątnej,
+    a promień to jej połowa.'
+- name: Liczenie kątów w czworokącie wpisanym w okrąg
+  when_to_use: Gdy cztery wierzchołki figury leżą na jednym okręgu i dane są niektóre kąty wewnętrzne
+    lub kąty środkowe.
+  steps:
+  - Sprawdź kolejność wierzchołków na okręgu i wskaż pary kątów przeciwległych.
+  - Zastosuj α + γ = 180° oraz β + δ = 180° do wyznaczenia brakujących kątów.
+  - Jeśli dane są łuki lub kąty środkowe, zamień je na kąty wpisane, dzieląc przez 2.
+  - 'Skontroluj wynik: suma wszystkich czterech kątów musi wynosić 360°.'
+- name: Praca z rysunkiem — porządkowanie danych
+  when_to_use: W każdym zadaniu tekstowym o kątach w okręgu, zwłaszcza gdy rysunku nie ma.
+  steps:
+  - Narysuj okrąg, zaznacz środek O i wszystkie wymienione punkty w kolejności podanej w treści.
+  - Zaznacz dane kąty i wszystkie równe odcinki (promienie, ewentualne równe cięciwy).
+  - Podpisz szukany kąt literą x i wyraź przez x lub przez dane inne kąty figury.
+  - 'Wypisz dostępne zależności: kąt wpisany–środkowy, suma kątów trójkąta, kąty przy podstawie, suma
+    kątów wokół punktu 360°.'
+  - Rozwiąż otrzymane równanie i zinterpretuj wynik na rysunku (czy kąt wygląda na ostry/rozwarty zgodnie
+    z obliczeniem).
+examples:
+- statement: Punkty A, B leżą na okręgu o środku O, przy czym kąt środkowy wypukły AOB ma miarę 110°.
+    Punkt C leży na dłuższym łuku AB, a punkt D — na krótszym łuku AB. Oblicz miary kątów ACB i ADB.
+  worked_solution: |-
+    Kąt wpisany ACB ma wierzchołek na dłuższym łuku, więc opiera się na krótszym łuku AB — tym samym, na którym oparty jest kąt środkowy wypukły o mierze 110°. Zatem |∠ACB| = ½ · 110° = 55°.
+
+    Kąt wpisany ADB ma wierzchołek na krótszym łuku, więc opiera się na dłuższym łuku AB. Kąt środkowy oparty na dłuższym łuku (kąt wklęsły) ma miarę 360° − 110° = 250°. Zatem |∠ADB| = ½ · 250° = 125°.
+
+    Sprawdzenie: 55° + 125° = 180°, co zgadza się z własnością kątów wpisanych opartych na tej samej cięciwie po przeciwnych jej stronach.
+  difficulty: 1
+- statement: Odcinek AB jest średnicą okręgu o środku O, a punkt C leży na tym okręgu. Wiadomo, że |∠CAB|
+    = 28°. Oblicz miary kątów ACB, ABC oraz kąta środkowego BOC.
+  worked_solution: |-
+    Kąt ACB jest kątem wpisanym opartym na półokręgu (na średnicy AB), więc |∠ACB| = 90°.
+
+    Z sumy kątów w trójkącie ABC: |∠ABC| = 180° − 90° − 28° = 62°.
+
+    Kąt środkowy BOC i kąt wpisany BAC opierają się na tym samym łuku BC (nie zawierającym punktu A), więc |∠BOC| = 2 · 28° = 56°.
+
+    Kontrola inną drogą: trójkąt AOC jest równoramienny (|OA| = |OC| = r), więc |∠OCA| = |∠OAC| = 28°. Kąt BOC jest kątem zewnętrznym tego trójkąta przy wierzchołku O, zatem |∠BOC| = 28° + 28° = 56°. Zgadza się.
+  difficulty: 2
+- statement: Trójkąt ABC jest wpisany w okrąg o środku O, przy czym |∠BAC| = 50°, |∠ABC| = 60°. Oblicz
+    miary kątów środkowych BOC, AOC, AOB oraz miarę kąta OBC.
+  worked_solution: |-
+    Najpierw trzeci kąt trójkąta: |∠ACB| = 180° − 50° − 60° = 70°.
+
+    Kąt środkowy BOC opiera się na łuku BC, na tym samym co kąt wpisany BAC: |∠BOC| = 2 · 50° = 100°.
+    Kąt środkowy AOC opiera się na łuku AC, na tym samym co kąt wpisany ABC: |∠AOC| = 2 · 60° = 120°.
+    Kąt środkowy AOB opiera się na łuku AB, na tym samym co kąt wpisany ACB: |∠AOB| = 2 · 70° = 140°.
+
+    Sprawdzenie: 100° + 120° + 140° = 360° — kąty te wypełniają pełny kąt wokół O (środek leży wewnątrz trójkąta, bo wszystkie kąty trójkąta są ostre).
+
+    Kąt OBC: trójkąt BOC jest równoramienny (|OB| = |OC| = r) z kątem 100° przy wierzchołku O, więc |∠OBC| = |∠OCB| = (180° − 100°)/2 = 40°.
+  difficulty: 3
+- statement: Czworokąt ABCD jest wpisany w okrąg. Wiadomo, że |∠ABC| = 105°, a kąt środkowy oparty na
+    łuku AB (nie zawierającym punktów C i D) ma miarę 80°. Oblicz miary kątów ADC oraz ACB.
+  worked_solution: |-
+    1) Kąty ABC i ADC są kątami przeciwległymi czworokąta wpisanego w okrąg, więc |∠ABC| + |∠ADC| = 180°, skąd |∠ADC| = 180° − 105° = 75°.
+    (Można to też uzasadnić wprost: oba kąty opierają się na dopełniających się łukach AC, a ½β + ½(360° − β) = 180°.)
+
+    2) Kąt ACB jest kątem wpisanym opartym na łuku AB nie zawierającym C, czyli na tym samym łuku, na którym oparty jest dany kąt środkowy 80°. Zatem |∠ACB| = ½ · 80° = 40°.
+
+    Odpowiedź: |∠ADC| = 75°, |∠ACB| = 40°.
+  difficulty: 3
+- statement: Cięciwy AB i CD okręgu przecinają się w punkcie P leżącym wewnątrz okręgu. Łuk AC (ten "objęty"
+    przez kąt APC) ma miarę 70°, a łuk BD (objęty przez kąt wierzchołkowy BPD) — miarę 50°. Oblicz miarę
+    kąta APC.
+  worked_solution: |-
+    Rozważmy trójkąt APD (wierzchołki: A na okręgu, P — punkt przecięcia, D na okręgu).
+
+    Kąt ADC (czyli ∠ADP) jest kątem wpisanym opartym na łuku AC o mierze 70°, więc |∠ADP| = ½ · 70° = 35°.
+    Kąt DAB (czyli ∠DAP) jest kątem wpisanym opartym na łuku BD o mierze 50°, więc |∠DAP| = ½ · 50° = 25°.
+
+    Kąt APC jest kątem zewnętrznym trójkąta APD przy wierzchołku P (bo P leży między A i B oraz między C i D), a kąt zewnętrzny równa się sumie dwóch kątów wewnętrznych do niego nieprzyległych:
+    |∠APC| = |∠ADP| + |∠DAP| = 35° + 25° = 60°.
+
+    Uwaga: wynik zgadza się ze wzorem |∠APC| = ½(70° + 50°) = 60°. Zwróć uwagę, że kąt APC NIE jest kątem wpisanym (jego wierzchołek leży wewnątrz koła), więc nie wolno było liczyć go jako połowy jednego tylko łuku.
+  difficulty: 4
+objectives:
+- statement: Rozpoznać na rysunku kąt środkowy i kąt wpisany oraz wskazać łuk, na którym każdy z nich
+    jest oparty.
+  bloom_level: Zrozumienie
+- statement: Obliczyć miarę kąta wpisanego, znając miarę kąta środkowego opartego na tym samym łuku, i
+    odwrotnie — także w przypadku, gdy odpowiedni kąt środkowy jest wklęsły.
+  bloom_level: Zastosowanie
+- statement: Wykorzystać równość kątów wpisanych opartych na tym samym łuku oraz zależność α + α' = 180°
+    dla kątów po przeciwnych stronach cięciwy do wyznaczania brakujących kątów figury.
+  bloom_level: Zastosowanie
+- statement: Stosować twierdzenie o kącie wpisanym opartym na półokręgu (kąt prosty) i twierdzenie odwrotne,
+    w tym rozpoznawać, że środek okręgu opisanego na trójkącie prostokątnym jest środkiem przeciwprostokątnej.
+  bloom_level: Zastosowanie
+- statement: Łączyć twierdzenie o kącie wpisanym z własnościami trójkąta równoramiennego zbudowanego z
+    dwóch promieni oraz z sumą kątów trójkąta i kątów wokół punktu.
+  bloom_level: Analiza
+- statement: Wyznaczać miary kątów w czworokącie wpisanym w okrąg i uzasadniać własność sum kątów przeciwległych
+    za pomocą kątów wpisanych.
+  bloom_level: Analiza
+- statement: 'Zaplanować rozwiązanie zadania geometrycznego bez gotowego rysunku: sporządzić poprawny
+    rysunek pomocniczy, oznaczyć dane i szukane, wybrać odpowiednie zależności kątowe i zapisać równanie.'
+  bloom_level: Tworzenie
+- statement: Ocenić poprawność podanego rozumowania o kątach w okręgu, wskazując błąd (np. zły łuk, wierzchołek
+    nieleżący na okręgu, brak założenia o średnicy).
+  bloom_level: Ocenianie
+misconceptions:
+- name: Mnożenie zamiast dzielenia (i odwrotnie)
+  incorrect_reasoning: Dany kąt środkowy 80°, uczeń liczy kąt wpisany jako 2 · 80° = 160° (albo mając
+    kąt wpisany 30°, podaje kąt środkowy 15°).
+  correct_reasoning: 'Kąt wpisany jest zawsze mniejszy (dwa razy) od kąta środkowego opartego na tym samym
+    łuku: α = β/2, β = 2α. Szybki test pamięciowy: kąt oparty na średnicy — kąt środkowy 180°, wpisany
+    90°, więc wpisany to połowa.'
+  severity: 4
+- name: Ignorowanie tego, na którym łuku oparty jest kąt
+  incorrect_reasoning: '"Kąt środkowy AOB ma 240°, ale kąt nie może być większy od 180°, więc biorę 120°"
+    albo "kąt wpisany ACB = ½ · 100° niezależnie od tego, gdzie leży C".'
+  correct_reasoning: 'Cięciwa AB wyznacza dwa łuki i dwa kąty środkowe: β oraz 360° − β. Kąt wpisany o
+    wierzchołku C opiera się na tym łuku, który leży po przeciwnej stronie cięciwy niż C, i to jego kąt
+    środkowy trzeba podzielić przez 2. Dlatego dwa kąty wpisane po przeciwnych stronach cięciwy dają w
+    sumie 180°, a nie są równe.'
+  severity: 5
+- name: Uznanie za kąt wpisany kąta o wierzchołku wewnątrz lub na zewnątrz koła
+  incorrect_reasoning: Cięciwy AB i CD przecinają się w P; uczeń pisze |∠APC| = ½·(łuk AC), traktując
+    P jak punkt okręgu.
+  correct_reasoning: Kąt wpisany musi mieć wierzchołek NA okręgu. Dla wierzchołka wewnątrz koła kąt jest
+    równy połowie sumy dwóch przeciwległych łuków — najbezpieczniej wyprowadzić to z kąta zewnętrznego
+    trójkąta i dwóch kątów wpisanych.
+  severity: 4
+- name: Zakładanie, że bok trójkąta wpisanego jest średnicą
+  incorrect_reasoning: '"Trójkąt jest wpisany w okrąg, więc jeden z jego kątów ma 90°."'
+  correct_reasoning: 'Kąt prosty pojawia się tylko wtedy, gdy jeden z boków jest średnicą (przechodzi
+    przez środek okręgu). Trzeba to mieć w danych albo udowodnić. Odwrotnie: jeśli wiemy, że kąt wpisany
+    ma 90°, to naprzeciw niego leży średnica.'
+  severity: 4
+- name: Mylenie kąta środkowego z dowolnym kątem o wierzchołku O
+  incorrect_reasoning: W trójkącie AOB uczeń bierze kąt OAB (przy podstawie) i traktuje go jak kąt środkowy
+    oparty na łuku AB.
+  correct_reasoning: Kąt środkowy ma wierzchołek w środku okręgu O. Kąt OAB to kąt między cięciwą a promieniem
+    — jego miara to (180° − |∠AOB|)/2. Aby dostać kąt środkowy, korzystamy z sumy kątów w trójkącie równoramiennym.
+  severity: 3
+- name: Przekonanie, że miara kąta wpisanego zależy od położenia wierzchołka na łuku
+  incorrect_reasoning: '"Punkt C jest bliżej cięciwy AB, więc kąt ACB jest inny niż kąt AC''B dla dalszego
+    punktu C'' tego samego łuku."'
+  correct_reasoning: Wszystkie kąty wpisane oparte na tym samym łuku są równe, bo każdy z nich jest połową
+    tego samego kąta środkowego. Miara nie zależy od położenia wierzchołka wewnątrz danego łuku.
+  severity: 3
+- name: Stosowanie własności czworokąta wpisanego do dowolnego czworokąta
+  incorrect_reasoning: '"W każdym czworokącie kąty przeciwległe dają 180°."'
+  correct_reasoning: 'Zależność α + γ = 180° zachodzi tylko dla czworokątów, których wszystkie cztery
+    wierzchołki leżą na jednym okręgu. W dowolnym czworokącie pewna jest tylko suma wszystkich kątów:
+    360°.'
+  severity: 3
+- name: Mieszanie kątów w różnych okręgach
+  incorrect_reasoning: Uczeń porównuje kąt wpisany w jednym okręgu z kątem środkowym w drugim, korzystając
+    ze wzoru β = 2α.
+  correct_reasoning: Twierdzenie dotyczy kątów w JEDNYM okręgu i opartych na TYM SAMYM łuku. Przy dwóch
+    okręgach trzeba osobno prowadzić rachunki w każdym z nich i łączyć je przez wspólne odcinki lub kąty
+    figury.
+  severity: 2

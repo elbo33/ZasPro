@@ -1,0 +1,376 @@
+section: uklady-rownan-liniowych
+name: 'Układy równań liniowych: rozwiązywanie, interpretacja i zastosowania'
+scope: Solving 2x2 linear systems; consistent, dependent and inconsistent systems as pairs of lines; translating
+  a word problem into a system and interpreting the solution.
+requirements:
+- IV.1
+- IV.2
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:30:03.999049'
+  approved_at: '2026-08-28T18:28:03.602687'
+  approved_by: reviewer
+concepts:
+- name: Równanie liniowe z dwiema niewiadomymi
+  description: Równanie postaci Ax + By + C = 0 (równoważnie Ax + By = C'), gdzie A, B, C są liczbami
+    rzeczywistymi i A, B nie są jednocześnie równe zeru; x, y to niewiadome.
+  explanation: Jego rozwiązaniem nie jest pojedyncza liczba, lecz para liczb (x, y). Takich par jest nieskończenie
+    wiele, a zbiór wszystkich rozwiązań to prosta w układzie współrzędnych. Warto od razu myśleć o równaniu
+    liniowym jak o 'przepisie na prostą'.
+  difficulty: 1
+- name: Rozwiązanie układu równań
+  description: Para liczb (x₀, y₀), która po podstawieniu spełnia jednocześnie każde równanie układu.
+  explanation: 'Kluczowe słowo to ''jednocześnie''. Geometrycznie: punkt leżący na obu prostych, czyli
+    punkt wspólny. Rozwiązanie zawsze zapisujemy jako parę, np. x = 2, y = −3 albo (2, −3).'
+  difficulty: 1
+- name: Układ dwóch równań liniowych z dwiema niewiadomymi
+  description: Zapis { a₁x + b₁y = c₁ ; a₂x + b₂y = c₂ } — żądanie, by obie równości zachodziły dla tej
+    samej pary (x, y).
+  explanation: 'Klamra oznacza koniunkcję warunków (''i''), a nie alternatywę. Każde równanie to prosta,
+    więc układ to pytanie: jak te dwie proste leżą względem siebie?'
+  difficulty: 1
+- name: Układ oznaczony
+  description: Układ mający dokładnie jedno rozwiązanie.
+  explanation: 'Geometrycznie: proste przecinają się w jednym punkcie (mają różne współczynniki kierunkowe).
+    Rachunkowo: przy eliminacji dochodzimy do równania typu 5x = 10, z którego x wyznacza się jednoznacznie.'
+  difficulty: 2
+- name: Układ nieoznaczony
+  description: Układ mający nieskończenie wiele rozwiązań.
+  explanation: 'Geometrycznie: obie proste pokrywają się — drugie równanie jest ''tym samym równaniem
+    pomnożonym przez liczbę''. Rachunkowo: otrzymujemy tożsamość typu 0 = 0. Rozwiązaniem jest cała prosta,
+    np. wszystkie pary (x, 2x − 1).'
+  difficulty: 2
+- name: Układ sprzeczny
+  description: Układ nieposiadający żadnego rozwiązania.
+  explanation: 'Geometrycznie: proste są równoległe i różne (ten sam kierunek, inny wyraz wolny). Rachunkowo:
+    dochodzimy do fałszywej równości typu 0 = 7. Nie piszemy wtedy ''x = 0'', tylko ''układ sprzeczny,
+    brak rozwiązań''.'
+  difficulty: 2
+- name: Interpretacja geometryczna układu
+  description: Utożsamienie każdego równania układu z prostą i odczytanie liczby rozwiązań z wzajemnego
+    położenia tych prostych.
+  explanation: 'Trzy i tylko trzy możliwości: przecinające się (1 rozwiązanie), pokrywające się (nieskończenie
+    wiele), równoległe rozłączne (brak). Nie istnieje układ liniowy 2×2 mający dokładnie 2 rozwiązania.'
+  difficulty: 2
+- name: Postać kierunkowa i współczynnik kierunkowy
+  description: Jeśli B ≠ 0, równanie Ax + By = C można zapisać jako y = ax + b, gdzie a = −A/B jest współczynnikiem
+    kierunkowym, a b wyrazem wolnym.
+  explanation: 'Najszybszy sposób klasyfikacji: równe a i równe b → proste pokrywają się (nieoznaczony);
+    równe a i różne b → równoległe (sprzeczny); różne a → przecinają się (oznaczony).'
+  difficulty: 2
+- name: Układy równoważne
+  description: Układy mające dokładnie ten sam zbiór rozwiązań.
+  explanation: 'Przekształcenia zachowujące równoważność: pomnożenie obu stron jednego równania przez
+    liczbę różną od zera, dodanie/odjęcie równań stronami, zastąpienie niewiadomej wyrażeniem z drugiego
+    równania. Dzięki temu wolno układ upraszczać.'
+  difficulty: 2
+- name: Metoda podstawiania
+  description: Wyznaczenie z jednego równania jednej niewiadomej i wstawienie otrzymanego wyrażenia do
+    drugiego równania.
+  explanation: Najwygodniejsza, gdy przy którejś niewiadomej stoi współczynnik 1 lub −1. Po podstawieniu
+    zostaje jedno równanie z jedną niewiadomą.
+  difficulty: 2
+- name: Metoda przeciwnych współczynników (eliminacji)
+  description: Domnożenie równań tak, by współczynniki przy jednej niewiadomej były liczbami przeciwnymi,
+    a następnie dodanie równań stronami.
+  explanation: Najwygodniejsza, gdy wszystkie współczynniki są 'brzydkie'. Pamiętaj o mnożeniu CAŁEGO
+    równania, łącznie z wyrazem wolnym.
+  difficulty: 2
+- name: Wyznacznik układu
+  description: Dla układu { a₁x + b₁y = c₁ ; a₂x + b₂y = c₂ } liczba W = a₁b₂ − a₂b₁.
+  explanation: 'Pomocnicze narzędzie: W ≠ 0 ⇔ układ oznaczony. Gdy W = 0, układ jest nieoznaczony albo
+    sprzeczny i trzeba to rozstrzygnąć osobno (np. porównując równania). Na poziomie podstawowym wyznacznik
+    jest wygodnym testem, ale zawsze można go zastąpić eliminacją.'
+  difficulty: 3
+- name: Układ z parametrem
+  description: Układ, w którym współczynniki zależą od litery (np. m), a pytanie dotyczy tego, dla jakich
+    wartości parametru układ jest oznaczony, nieoznaczony lub sprzeczny.
+  explanation: 'Schemat: najpierw znajdź wartości parametru zerujące wyznacznik (lub zrównujące współczynniki
+    kierunkowe), potem dla każdej z nich sprawdź, czy równania są zgodne, czy sprzeczne.'
+  difficulty: 3
+- name: Model matematyczny zadania tekstowego
+  description: Zestaw oznaczeń niewiadomych wraz z układem równań opisującym warunki podane w treści zadania.
+  explanation: Zawsze zaczynaj od zdania 'Niech x oznacza ..., y oznacza ...' z jednostkami. Każde zdanie
+    treści zamień na jedno równanie — dwie niewiadome wymagają dwóch niezależnych warunków.
+  difficulty: 3
+- name: Dziedzina (warunki zadania tekstowego)
+  description: Ograniczenia, jakie z sensu zadania spełniać muszą niewiadome (np. dodatnie, całkowite,
+    cyfra od 0 do 9, wiek mniejszy od ...).
+  explanation: Rozwiązanie układu jest tylko liczbą — dopiero konfrontacja z dziedziną decyduje, czy jest
+    odpowiedzią. Rozwiązanie niespełniające warunków odrzucamy i piszemy, że zadanie nie ma rozwiązania.
+  difficulty: 3
+- name: Zapis liczby dwucyfrowej
+  description: Liczba o cyfrze dziesiątek a i cyfrze jedności b to 10a + b, gdzie a ∈ {1,...,9}, b ∈ {0,...,9}.
+  explanation: Bardzo częsty motyw zadań tekstowych. Liczba powstała z przestawienia cyfr to 10b + a.
+    Nigdy nie pisz 'ab' jako iloczynu.
+  difficulty: 2
+- name: Sprawdzenie i odpowiedź
+  description: Podstawienie znalezionej pary do obu wyjściowych równań (lub do treści zadania) i sformułowanie
+    odpowiedzi pełnym zdaniem z jednostkami.
+  explanation: To jedyny sposób wychwycenia błędu rachunkowego. W zadaniu tekstowym sprawdzamy w treści,
+    a nie w swoim układzie — inaczej nie wykryjemy źle ułożonego równania.
+  difficulty: 1
+formulas:
+- name: Postać ogólna układu 2×2
+  latex_raw: \begin{cases} a_1x + b_1y = c_1 \\ a_2x + b_2y = c_2 \end{cases}
+  conditions: (a₁, b₁) ≠ (0,0) oraz (a₂, b₂) ≠ (0,0) — każde równanie opisuje prostą
+  description: Przed klasyfikacją warto doprowadzić oba równania do tej postaci (niewiadome po lewej,
+    liczby po prawej).
+- name: Wyznacznik układu
+  latex_raw: W = \begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix} = a_1b_2 - a_2b_1
+  conditions: układ zapisany w postaci ogólnej
+  description: W ≠ 0 ⇔ układ oznaczony; W = 0 ⇔ układ nieoznaczony lub sprzeczny.
+- name: Wyznaczniki niewiadomych (wzory Cramera)
+  latex_raw: W_x = c_1b_2 - c_2b_1,\quad W_y = a_1c_2 - a_2c_1,\quad x = \frac{W_x}{W},\quad y = \frac{W_y}{W}
+  conditions: tylko gdy W ≠ 0
+  description: Wygodne narzędzie kontrolne; przy W = 0 wzorów nie wolno stosować.
+- name: Warunki klasyfikacji przez proporcje współczynników
+  latex_raw: \frac{a_1}{a_2} \neq \frac{b_1}{b_2}\ \Rightarrow\ \text{oznaczony};\quad \frac{a_1}{a_2}
+    = \frac{b_1}{b_2} = \frac{c_1}{c_2}\ \Rightarrow\ \text{nieoznaczony};\quad \frac{a_1}{a_2} = \frac{b_1}{b_2}
+    \neq \frac{c_1}{c_2}\ \Rightarrow\ \text{sprzeczny}
+  conditions: wszystkie mianowniki a₂, b₂, c₂ różne od zera
+  description: Gdy któryś współczynnik jest zerem, zamiast ilorazów użyj wyznacznika lub porównania równań.
+- name: Klasyfikacja przez postać kierunkową
+  latex_raw: y = a_1x + b_1,\ y = a_2x + b_2:\quad a_1 \neq a_2 \Rightarrow \text{oznaczony},\quad a_1
+    = a_2 \wedge b_1 \neq b_2 \Rightarrow \text{sprzeczny},\quad a_1 = a_2 \wedge b_1 = b_2 \Rightarrow
+    \text{nieoznaczony}
+  conditions: oba równania dają się zapisać w postaci kierunkowej, tzn. współczynniki przy y są niezerowe
+- name: Zapis liczby dwucyfrowej i jej odwrócenia
+  latex_raw: n = 10a + b,\qquad n' = 10b + a
+  conditions: a ∈ {1,…,9}, b ∈ {0,…,9}, obie cyfry całkowite
+- name: Zależność droga–prędkość–czas
+  latex_raw: s = v\cdot t
+  conditions: ruch jednostajny; jednostki muszą być zgodne (km i h albo m i s)
+- name: Procent liczby i podwyżka/obniżka
+  latex_raw: 'p\%\ \text{z}\ a = \frac{p}{100}\cdot a,\qquad a\ \text{po podwyżce o } p\%: a\left(1+\frac{p}{100}\right),\qquad
+    \text{po obniżce}: a\left(1-\frac{p}{100}\right)'
+  conditions: a > 0, p ≥ 0
+  description: Przydatne przy układaniu drugiego równania w zadaniach o cenach.
+- name: Mieszaniny (bilans składnika)
+  latex_raw: \frac{p_1}{100}x + \frac{p_2}{100}y = \frac{p}{100}(x+y)
+  conditions: x, y — masy (objętości) mieszanych roztworów o stężeniach p₁%, p₂%, p — stężenie mieszaniny
+  description: Drugim równaniem jest zwykle x + y = całkowita masa mieszaniny.
+methods:
+- name: Metoda podstawiania
+  when_to_use: Gdy w którymś równaniu współczynnik przy x lub y wynosi 1 albo −1, albo gdy jedna niewiadoma
+    jest już wyrażona przez drugą (typowe w zadaniach tekstowych).
+  steps:
+  - 'Uporządkuj oba równania: usuń nawiasy, ułamki (mnożąc przez wspólny mianownik) i przenieś niewiadome
+    na lewą stronę.'
+  - Wybierz równanie i niewiadomą z najprostszym współczynnikiem; wyznacz tę niewiadomą, np. y = ... .
+  - Wstaw otrzymane wyrażenie w miejsce tej niewiadomej w DRUGIM równaniu (nie w tym samym!).
+  - Rozwiąż powstałe równanie z jedną niewiadomą.
+  - Podstaw znalezioną wartość do wzoru z kroku 2 i oblicz drugą niewiadomą.
+  - Sprawdź parę w obu wyjściowych równaniach i zapisz odpowiedź w postaci (x, y).
+  - Jeśli w kroku 4 otrzymasz 0 = 0 — układ nieoznaczony; jeśli 0 = liczba ≠ 0 — układ sprzeczny.
+- name: Metoda przeciwnych współczynników (eliminacji)
+  when_to_use: Gdy wszystkie współczynniki są różne od ±1 lub gdy podstawianie prowadziłoby do ułamków.
+  steps:
+  - Zapisz oba równania w postaci a₁x + b₁y = c₁, a₂x + b₂y = c₂.
+  - Wybierz niewiadomą do wyeliminowania (zwykle tę o mniejszej wspólnej wielokrotności współczynników).
+  - Pomnóż jedno lub oba równania (całe, ze wszystkimi wyrazami) przez takie liczby, by współczynniki
+    przy wybranej niewiadomej stały się przeciwne.
+  - Dodaj równania stronami — wybrana niewiadoma znika.
+  - Rozwiąż otrzymane równanie z jedną niewiadomą.
+  - Wstaw wynik do dowolnego z równań wyjściowych i wyznacz drugą niewiadomą.
+  - Sprawdź parę i zapisz odpowiedź; tożsamość 0 = 0 oznacza układ nieoznaczony, fałsz 0 = c ≠ 0 — układ
+    sprzeczny.
+- name: Klasyfikacja układu i jego interpretacja geometryczna
+  when_to_use: 'Gdy pytanie brzmi: ile rozwiązań ma układ, jak leżą proste, czy układ jest oznaczony /
+    nieoznaczony / sprzeczny.'
+  steps:
+  - Doprowadź oba równania do postaci ogólnej ax + by = c.
+  - Oblicz wyznacznik W = a₁b₂ − a₂b₁ (albo zapisz oba równania w postaci kierunkowej y = ax + b).
+  - 'Jeśli W ≠ 0 (różne współczynniki kierunkowe): układ oznaczony — proste przecinają się w jednym punkcie,
+    którym jest rozwiązanie.'
+  - 'Jeśli W = 0, sprawdź, czy jedno równanie powstaje z drugiego przez pomnożenie przez liczbę: jeśli
+    tak — układ nieoznaczony, proste pokrywają się.'
+  - Jeśli W = 0, a wyrazy wolne 'nie pasują' — układ sprzeczny, proste są równoległe i rozłączne.
+  - Sformułuj wniosek jednocześnie językiem algebry (liczba rozwiązań) i geometrii (położenie prostych).
+- name: Rozwiązywanie układu metodą graficzną
+  when_to_use: Gdy trzeba zilustrować rozwiązanie lub oszacować je z rysunku, a współczynniki są prostymi
+    liczbami całkowitymi.
+  steps:
+  - Z każdego równania wyznacz y (postać kierunkowa) lub znajdź punkty przecięcia z osiami.
+  - Narysuj obie proste w jednym układzie współrzędnych, zaznaczając po dwa dokładne punkty każdej.
+  - Odczytaj współrzędne punktu wspólnego — to kandydat na rozwiązanie.
+  - Sprawdź odczytaną parę rachunkowo w obu równaniach (rysunek daje tylko przybliżenie).
+  - Brak punktu wspólnego → układ sprzeczny; jedna prosta pokrywająca drugą → układ nieoznaczony.
+- name: Badanie układu z parametrem
+  when_to_use: Gdy współczynniki zależą od parametru m i pytamy, dla jakich m układ jest oznaczony, nieoznaczony
+    lub sprzeczny.
+  steps:
+  - Zapisz układ w postaci ogólnej, grupując wyrażenia z parametrem przy x i przy y.
+  - Oblicz wyznacznik W jako wyrażenie zależne od m.
+  - Rozwiąż równanie W = 0 — otrzymane wartości m to jedyni kandydaci na układ nieoznaczony lub sprzeczny.
+  - Dla wszystkich pozostałych m układ jest oznaczony.
+  - Dla każdej wartości m z kroku 3 podstaw ją do układu i rozstrzygnij bezpośrednio (eliminacją), czy
+    wychodzi 0 = 0, czy 0 = c ≠ 0.
+  - Zapisz odpowiedź w postaci warunków na m.
+- name: Rozwiązywanie zadania tekstowego za pomocą układu równań
+  when_to_use: Gdy w treści występują dwie nieznane wielkości i dwa niezależne warunki je wiążące (ceny
+    i liczby sztuk, wiek, cyfry liczby, obwód i boki, ruch, mieszaniny).
+  steps:
+  - 'Przeczytaj treść i nazwij niewiadome: ''x — ... (jednostka), y — ... (jednostka)''.'
+  - Zapisz warunki dziedziny wynikające z sensu zadania (x > 0, x całkowite, x cyfra itp.).
+  - Przetłumacz każde zdanie treści na jedno równanie; sprawdź, czy jednostki po obu stronach się zgadzają.
+  - Zapisz układ i rozwiąż go wybraną metodą (podstawianie lub eliminacja).
+  - Sprawdź, czy otrzymana para spełnia warunki dziedziny; jeśli nie — zadanie nie ma rozwiązania.
+  - Zweryfikuj wynik bezpośrednio w treści zadania (czy zgadzają się wszystkie podane liczby).
+  - Odpowiedz pełnym zdaniem na pytanie zadania, pamiętając, że pytanie może dotyczyć innej wielkości
+    niż x i y (np. sumy albo różnicy).
+examples:
+- statement: 'Rozwiąż układ równań: { 2x + y = 7 ; 3x − 4y = 5 } i podaj interpretację geometryczną wyniku.'
+  worked_solution: |-
+    Metoda podstawiania. Z pierwszego równania: y = 7 − 2x.
+    Podstawiamy do drugiego: 3x − 4(7 − 2x) = 5, czyli 3x − 28 + 8x = 5, więc 11x = 33, stąd x = 3.
+    Wracamy: y = 7 − 2·3 = 1.
+    Sprawdzenie: 2·3 + 1 = 7 ✓ ; 3·3 − 4·1 = 9 − 4 = 5 ✓.
+    Odpowiedź: (x, y) = (3, 1). Układ jest oznaczony (W = 2·(−4) − 3·1 = −11 ≠ 0). Geometrycznie: proste y = −2x + 7 oraz y = 0,75x − 1,25 mają różne współczynniki kierunkowe, więc przecinają się dokładnie w jednym punkcie o współrzędnych (3, 1).
+  difficulty: 1
+- statement: |-
+    Rozstrzygnij, czy podane układy są oznaczone, nieoznaczone czy sprzeczne, i opisz położenie odpowiednich prostych:
+    (a) { 2x − 3y = 4 ; −4x + 6y = 1 },  (b) { x + 2y = 5 ; 3x + 6y = 15 },  (c) { x − y = 2 ; 2x + y = 7 }.
+  worked_solution: |-
+    (a) W = 2·6 − (−4)·(−3) = 12 − 12 = 0, więc układ nie jest oznaczony. Mnożąc pierwsze równanie przez (−2) dostajemy −4x + 6y = −8, a drugie mówi −4x + 6y = 1. Ta sama lewa strona nie może być równa −8 i 1, więc układ jest SPRZECZNY. Proste y = (2/3)x − 4/3 i y = (2/3)x + 1/6 mają ten sam współczynnik kierunkowy i różne wyrazy wolne — są równoległe i nie mają punktów wspólnych.
+    (b) W = 1·6 − 3·2 = 0. Drugie równanie to pierwsze pomnożone przez 3, więc oba opisują to samo. Układ jest NIEOZNACZONY: rozwiązaniem jest każda para postaci (x, (5 − x)/2), x ∈ R. Proste pokrywają się.
+    (c) W = 1·1 − 2·(−1) = 3 ≠ 0, układ OZNACZONY. Dodając równania stronami: 3x = 9, x = 3, więc y = 1. Proste przecinają się w punkcie (3, 1).
+  difficulty: 2
+- statement: Za 3 zeszyty i 4 długopisy zapłacono 26 zł, a za 5 takich samych zeszytów i 2 takie same
+    długopisy — 27 zł. Ile kosztuje jeden zeszyt, a ile jeden długopis?
+  worked_solution: |-
+    Oznaczenia: x — cena jednego zeszytu (w zł), y — cena jednego długopisu (w zł); z sensu zadania x > 0, y > 0.
+    Układ: { 3x + 4y = 26 ; 5x + 2y = 27 }.
+    Metoda przeciwnych współczynników: mnożymy drugie równanie przez (−2): −10x − 4y = −54.
+    Dodajemy stronami do pierwszego: (3x − 10x) + (4y − 4y) = 26 − 54, czyli −7x = −28, stąd x = 4.
+    Z drugiego równania: 5·4 + 2y = 27, więc 2y = 7, y = 3,5.
+    Warunki dziedziny: 4 > 0 i 3,5 > 0 — spełnione (cena nie musi być liczbą całkowitą złotych).
+    Sprawdzenie w treści: 3·4 + 4·3,5 = 12 + 14 = 26 ✓ ; 5·4 + 2·3,5 = 20 + 7 = 27 ✓.
+    Odpowiedź: zeszyt kosztuje 4 zł, a długopis 3,50 zł.
+  difficulty: 2
+- statement: Suma cyfr pewnej liczby dwucyfrowej jest równa 11. Jeżeli przestawimy cyfry tej liczby, otrzymamy
+    liczbę o 27 większą od pierwotnej. Wyznacz tę liczbę.
+  worked_solution: |-
+    Oznaczenia: a — cyfra dziesiątek, b — cyfra jedności; a ∈ {1,…,9}, b ∈ {0,…,9}, obie całkowite. Liczba wyjściowa to 10a + b, liczba po przestawieniu cyfr to 10b + a.
+    Warunki: a + b = 11 oraz 10b + a = 10a + b + 27.
+    Drugie równanie porządkujemy: 10b + a − 10a − b = 27, czyli 9b − 9a = 27, więc b − a = 3.
+    Układ: { a + b = 11 ; −a + b = 3 }. Dodajemy stronami: 2b = 14, b = 7, stąd a = 11 − 7 = 4.
+    Dziedzina: a = 4 ∈ {1,…,9}, b = 7 ∈ {0,…,9} — cyfry poprawne.
+    Sprawdzenie w treści: liczba to 47, suma cyfr 4 + 7 = 11 ✓, po przestawieniu 74, a 74 − 47 = 27 ✓.
+    Odpowiedź: szukana liczba to 47.
+  difficulty: 3
+- statement: Dany jest układ { (m − 1)x + 2y = 4 ; 3x + (m + 1)y = m + 3 } z parametrem m. Dla jakich
+    m układ jest oznaczony, dla jakich nieoznaczony, a dla jakich sprzeczny?
+  worked_solution: |-
+    Wyznacznik: W = (m − 1)(m + 1) − 3·2 = m² − 1 − 6 = m² − 7.
+    Układ jest oznaczony, gdy W ≠ 0, czyli gdy m ≠ √7 i m ≠ −√7 (proste przecinają się w jednym punkcie).
+    Pozostają dwa przypadki do zbadania.
+    1) m = √7: układ ma postać { (√7 − 1)x + 2y = 4 ; 3x + (√7 + 1)y = √7 + 3 }. Sprawdzamy proporcję: pierwsze równanie pomnożone przez 3/(√7 − 1) = 3(√7 + 1)/6 = (√7 + 1)/2 daje 3x + (√7 + 1)y = 4·(√7 + 1)/2 = 2√7 + 2. Prawa strona drugiego równania to √7 + 3. Czy 2√7 + 2 = √7 + 3? To znaczyłoby √7 = 1, co jest fałszem. Zatem dla m = √7 układ jest SPRZECZNY (proste równoległe rozłączne).
+    2) m = −√7: analogicznie mnożymy pierwsze równanie przez 3/(−√7 − 1) = −3(√7 − 1)/6 = −(√7 − 1)/2 i otrzymujemy 3x + (1 − √7)·... — wygodniej porównać wyrazy wolne: warunek zgodności to 4·3 = (m − 1)(m + 3), czyli 12 = m² + 2m − 3. Dla m² = 7 daje to 12 = 7 + 2m − 3 = 4 + 2m, czyli m = 4 — sprzeczne z m = −√7. Zatem i tu układ jest SPRZECZNY.
+    Odpowiedź: dla m ∈ R \ {−√7, √7} układ jest oznaczony; dla m = √7 oraz m = −√7 układ jest sprzeczny; nie istnieje wartość m, dla której układ byłby nieoznaczony.
+  difficulty: 4
+objectives:
+- statement: Sprawdzić, czy dana para liczb jest rozwiązaniem układu równań liniowych z dwiema niewiadomymi.
+  bloom_level: Zrozumienie
+- statement: Rozwiązać układ dwóch równań liniowych metodą podstawiania.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać układ dwóch równań liniowych metodą przeciwnych współczynników, w tym układ wymagający
+    wcześniejszego uporządkowania (nawiasy, ułamki).
+  bloom_level: Zastosowanie
+- statement: Rozpoznać na podstawie przebiegu obliczeń (0 = 0 lub 0 = c ≠ 0) albo wyznacznika, że układ
+    jest oznaczony, nieoznaczony lub sprzeczny.
+  bloom_level: Analiza
+- statement: 'Podać interpretację geometryczną układu: opisać wzajemne położenie prostych odpowiadające
+    każdemu z trzech typów układów i wskazać rozwiązanie jako punkt wspólny.'
+  bloom_level: Zrozumienie
+- statement: Rozwiązać prosty układ metodą graficzną i zweryfikować odczytany wynik rachunkowo.
+  bloom_level: Zastosowanie
+- statement: Zbadać, dla jakich wartości parametru układ jest oznaczony, nieoznaczony lub sprzeczny.
+  bloom_level: Analiza
+- statement: 'Ułożyć układ równań opisujący zadanie tekstowe: zdefiniować niewiadome z jednostkami, zapisać
+    warunki dziedziny i przetłumaczyć zdania treści na równania.'
+  bloom_level: Zastosowanie
+- statement: Rozwiązać zadanie tekstowe (ceny i ilości, wiek, cyfry liczby, obwody i wymiary, ruch, mieszaniny)
+    za pomocą układu równań i zinterpretować wynik w kontekście treści.
+  bloom_level: Zastosowanie
+- statement: 'Ocenić poprawność otrzymanego rozwiązania: sprawdzić je w wyjściowych równaniach i w treści
+    zadania oraz odrzucić wynik sprzeczny z warunkami zadania.'
+  bloom_level: Ocena
+- statement: Uzasadnić, dlaczego układ dwóch równań liniowych z dwiema niewiadomymi nie może mieć dokładnie
+    dwóch rozwiązań.
+  bloom_level: Analiza
+misconceptions:
+- name: Mylenie układu nieoznaczonego ze sprzecznym
+  incorrect_reasoning: '''Po dodaniu równań wyszło 0 = 0, czyli x = 0 i y = 0'' albo ''wyszło 0 = 5, więc
+    układ ma nieskończenie wiele rozwiązań''.'
+  correct_reasoning: 0 = 0 to zdanie prawdziwe — każda para spełniająca jedno z równań spełnia i drugie,
+    więc rozwiązań jest nieskończenie wiele (układ nieoznaczony, proste się pokrywają). 0 = 5 to zdanie
+    fałszywe — żadna para nie spełnia obu równań, układ jest sprzeczny (proste równoległe rozłączne).
+    Ani jedno, ani drugie nie oznacza, że x = 0.
+  severity: 5
+- name: Wyznacznik W = 0 utożsamiany ze sprzecznością
+  incorrect_reasoning: '''W = 0, więc układ jest sprzeczny.'''
+  correct_reasoning: 'W = 0 oznacza tylko, że układ NIE jest oznaczony. Trzeba dodatkowo sprawdzić wyrazy
+    wolne: jeśli jedno równanie jest wielokrotnością drugiego (razem z wyrazem wolnym), układ jest nieoznaczony;
+    w przeciwnym razie sprzeczny.'
+  severity: 4
+- name: Stosowanie proporcji a₁/a₂ = b₁/b₂ = c₁/c₂ bez sprawdzenia zer
+  incorrect_reasoning: Uczeń mechanicznie pisze ilorazy współczynników, choć któryś z mianowników jest
+    zerem (np. w równaniu 2x = 6 mamy b₂ = 0), i dzieli przez zero.
+  correct_reasoning: Kryterium proporcji obowiązuje tylko przy niezerowych mianownikach. W razie zer bezpieczniej
+    użyć wyznacznika W = a₁b₂ − a₂b₁ albo po prostu wykonać eliminację i zobaczyć, co wyjdzie.
+  severity: 3
+- name: Mnożenie tylko części równania
+  incorrect_reasoning: 'Aby uzyskać przeciwne współczynniki, uczeń mnoży przez 2 tylko wyrazy z niewiadomymi,
+    zapominając o wyrazie wolnym: z x + 3y = 5 robi 2x + 6y = 5.'
+  correct_reasoning: 'Mnożymy obie strony równania, czyli KAŻDY wyraz: 2x + 6y = 10. Tylko wtedy nowy
+    układ jest równoważny wyjściowemu.'
+  severity: 4
+- name: Podstawienie do tego samego równania
+  incorrect_reasoning: Uczeń wyznacza y z pierwszego równania i wstawia je z powrotem do pierwszego równania,
+    otrzymując tożsamość 0 = 0 i wnioskując, że układ jest nieoznaczony.
+  correct_reasoning: Wyrażenie wyznaczone z jednego równania trzeba podstawić do DRUGIEGO równania — tylko
+    wtedy wykorzystujemy oba warunki. Podstawienie do tego samego równania zawsze daje tożsamość i niczego
+    nie rozstrzyga.
+  severity: 4
+- name: Zatrzymanie się na jednej niewiadomej
+  incorrect_reasoning: Po obliczeniu x = 3 uczeń zapisuje odpowiedź 'x = 3' i kończy zadanie.
+  correct_reasoning: Rozwiązaniem układu jest PARA liczb. Znalezioną wartość trzeba wstawić do jednego
+    z równań i wyznaczyć drugą niewiadomą, a odpowiedź podać w postaci (x, y).
+  severity: 3
+- name: Przekonanie, że dwa równania zawsze dają jedno rozwiązanie
+  incorrect_reasoning: '''Dwie niewiadome i dwa równania — na pewno wyjdzie dokładnie jedno rozwiązanie.'''
+  correct_reasoning: Dwa równania dają jedno rozwiązanie tylko wtedy, gdy są niezależne (W ≠ 0). Jeśli
+    drugie równanie powiela pierwsze, rozwiązań jest nieskończenie wiele; jeśli mu przeczy — nie ma żadnego.
+  severity: 3
+- name: Odczyt punktu przecięcia z rysunku bez sprawdzenia
+  incorrect_reasoning: Uczeń odczytuje z wykresu 'mniej więcej (1,2; 2,9)' i podaje to jako dokładne rozwiązanie.
+  correct_reasoning: Metoda graficzna daje jedynie przybliżenie i ilustrację. Odczytaną parę należy podstawić
+    do obu równań, a właściwy wynik uzyskać rachunkowo.
+  severity: 2
+- name: Brak zdefiniowania niewiadomych w zadaniu tekstowym
+  incorrect_reasoning: Uczeń od razu pisze układ równań z x i y, nie mówiąc, co one oznaczają, i miesza
+    jednostki (część kwot w złotych, część w groszach).
+  correct_reasoning: Model zaczyna się od zdania 'x — ... (jednostka), y — ... (jednostka)'. Ujednolicone
+    jednostki i jasne oznaczenia zapobiegają błędnym równaniom i pozwalają poprawnie zinterpretować wynik.
+  severity: 4
+- name: Zapis liczby dwucyfrowej jako iloczynu cyfr
+  incorrect_reasoning: Liczbę o cyfrach a i b uczeń zapisuje jako a·b lub 'ab' i układa z tego równanie.
+  correct_reasoning: Liczba dwucyfrowa o cyfrze dziesiątek a i cyfrze jedności b to 10a + b; po przestawieniu
+    cyfr 10b + a. Dodatkowo a ≥ 1, a obie cyfry są liczbami całkowitymi z przedziału 0–9.
+  severity: 4
+- name: Pominięcie warunków dziedziny w zadaniu tekstowym
+  incorrect_reasoning: Wychodzi 'liczba osób = 6,5' albo 'wiek = −4' i uczeń podaje to jako odpowiedź,
+    bo 'układ tak wyszedł'.
+  correct_reasoning: 'Wynik trzeba skonfrontować z sensem zadania: liczba osób i cyfry muszą być całkowite
+    i nieujemne, ceny i wymiary dodatnie. Wynik niespełniający tych warunków oznacza albo błąd w modelu,
+    albo brak rozwiązania zadania.'
+  severity: 4
+- name: Odpowiedź na inne pytanie niż zadane
+  incorrect_reasoning: Uczeń oblicza x i y i podaje obie liczby, mimo że zadanie pyta np. o ich sumę,
+    o pole prostokąta albo o liczbę utworzoną z cyfr.
+  correct_reasoning: Po rozwiązaniu układu należy wrócić do pytania z treści i wykonać ostatni krok (dodać,
+    pomnożyć, złożyć liczbę), a odpowiedź sformułować pełnym zdaniem.
+  severity: 3

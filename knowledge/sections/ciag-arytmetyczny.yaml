@@ -1,0 +1,304 @@
+section: ciag-arytmetyczny
+name: 'Ciąg arytmetyczny: n-ty wyraz i suma'
+scope: Recognising an arithmetic sequence; the nth term and the sum of the first n terms.
+requirements:
+- VI.4
+- VI.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:08:17.637601'
+  approved_at: '2026-08-28T18:28:05.991483'
+  approved_by: reviewer
+concepts:
+- name: Ciąg (liczbowy) i jego wyrazy
+  description: Ciąg liczbowy to funkcja, która każdej liczbie naturalnej n ≥ 1 przyporządkowuje liczbę
+    a_n zwaną n-tym wyrazem ciągu. Ciąg zapisujemy (a_n) lub a_1, a_2, a_3, ….
+  explanation: 'Myśl o ciągu jak o ponumerowanej liście liczb: numer n to ''miejsce w kolejce'', a a_n
+    to liczba stojąca na tym miejscu. Wzór ogólny (np. a_n = 3n − 1) to przepis, który pozwala policzyć
+    dowolny wyraz bez wypisywania poprzednich.'
+  difficulty: 1
+- name: Ciąg arytmetyczny
+  description: Ciąg (a_n) o co najmniej trzech wyrazach nazywamy arytmetycznym, gdy istnieje stała liczba
+    r taka, że dla każdego n ≥ 1 zachodzi a_{n+1} = a_n + r.
+  explanation: Każdy kolejny wyraz powstaje z poprzedniego przez dodanie tej samej liczby. Kluczowe słowo
+    to 'tej samej' – różnica musi być stała dla wszystkich n, a nie tylko dla kilku pierwszych sprawdzonych
+    par.
+  difficulty: 2
+- name: Różnica ciągu arytmetycznego r
+  description: Liczba r = a_{n+1} − a_n, jednakowa dla wszystkich n; nazywana różnicą ciągu.
+  explanation: 'Odejmujemy zawsze wyraz wcześniejszy od późniejszego (następny minus poprzedni). r pełni
+    rolę ''kroku'': o ile podskakuje ciąg przy przejściu do następnego wyrazu.'
+  difficulty: 2
+- name: Monotoniczność ciągu arytmetycznego
+  description: Ciąg arytmetyczny jest rosnący, gdy r > 0, malejący, gdy r < 0, i stały, gdy r = 0.
+  explanation: Znak różnicy od razu rozstrzyga o zachowaniu ciągu – nie trzeba badać a_{n+1} − a_n osobno,
+    bo ta różnica jest właśnie równa r.
+  difficulty: 2
+- name: Wzór ogólny (n-ty wyraz) ciągu arytmetycznego
+  description: a_n = a_1 + (n − 1)·r dla n ≥ 1.
+  explanation: Aby dojść od a_1 do a_n, robimy n − 1 kroków po r (a nie n kroków!). Stąd bierze się nawias
+    (n − 1). Zauważ, że po rozwinięciu a_n = r·n + (a_1 − r), czyli wzór ogólny ciągu arytmetycznego jest
+    zawsze funkcją liniową zmiennej n.
+  difficulty: 2
+- name: Własność (warunek) środkowego wyrazu
+  description: Ciąg (a_n) jest arytmetyczny wtedy i tylko wtedy, gdy dla każdego n ≥ 2 zachodzi a_n =
+    (a_{n−1} + a_{n+1})/2, czyli 2a_n = a_{n−1} + a_{n+1}.
+  explanation: 'Środkowy z trzech kolejnych wyrazów jest średnią arytmetyczną sąsiadów. To najwygodniejsze
+    narzędzie w zadaniach typu: ''dla jakiego x liczby …, …, … tworzą ciąg arytmetyczny?''.'
+  difficulty: 3
+- name: Suma n początkowych wyrazów S_n
+  description: S_n = a_1 + a_2 + … + a_n – suma n pierwszych wyrazów ciągu.
+  explanation: 'S_n to nie wyraz ciągu, tylko wynik dodawania. Ważny związek: a_n = S_n − S_{n−1} dla
+    n ≥ 2 oraz a_1 = S_1.'
+  difficulty: 2
+- name: Idea wyprowadzenia wzoru na S_n (metoda Gaussa)
+  description: Sumę zapisujemy dwa razy – raz od początku, raz od końca – i dodajemy stronami; każda z
+    n par ma tę samą sumę a_1 + a_n, więc 2S_n = n(a_1 + a_n).
+  explanation: 'Warto to raz zobaczyć: dzięki stałej różnicy pary ''skrajne'' mają jednakowe sumy (a_1
+    + a_n = a_2 + a_{n−1} = …). Zapamiętanie idei ratuje, gdy zapomni się wzoru.'
+  difficulty: 3
+- name: Suma jako funkcja kwadratowa numeru n
+  description: Dla ciągu arytmetycznego S_n = (r/2)n² + (a_1 − r/2)n, czyli S_n jest wielomianem stopnia
+    co najwyżej 2 względem n bez wyrazu wolnego.
+  explanation: 'Odwrotnie: jeśli S_n = An² + Bn (bez stałej), to ciąg na pewno jest arytmetyczny o różnicy
+    r = 2A. To szybki test dla zadań, w których dany jest wzór na sumę.'
+  difficulty: 4
+- name: Ciąg skończony i liczba wyrazów
+  description: W ciągu skończonym a_1, a_2, …, a_n liczba wyrazów wynosi n; jeśli sumujemy wyrazy od a_k
+    do a_n, to jest ich n − k + 1.
+  explanation: 'Częsty punkt pomyłek: wyrazów od a_5 do a_20 jest 20 − 5 + 1 = 16, a nie 15. Sumę takiego
+    fragmentu liczymy jako S_20 − S_4.'
+  difficulty: 3
+formulas:
+- name: Definicja różnicy
+  latex_raw: r = a_{n+1} - a_n
+  conditions: dla każdego n ≥ 1; wartość musi być taka sama dla wszystkich n
+  description: 'Zawsze: następny minus poprzedni.'
+- name: Wzór na n-ty wyraz
+  latex_raw: a_n = a_1 + (n-1)r
+  conditions: ciąg arytmetyczny o pierwszym wyrazie a_1 i różnicy r, n ≥ 1
+- name: Wzór na n-ty wyraz z dowolnego wyrazu
+  latex_raw: a_n = a_k + (n-k)r
+  conditions: ciąg arytmetyczny, n, k ≥ 1
+  description: Wygodne, gdy znamy np. a_3, a nie a_1.
+- name: Warunek środkowego wyrazu
+  latex_raw: 2a_n = a_{n-1} + a_{n+1} \quad\Longleftrightarrow\quad a_n = \frac{a_{n-1}+a_{n+1}}{2}
+  conditions: n ≥ 2; warunek konieczny i wystarczający, by trzy kolejne wyrazy tworzyły ciąg arytmetyczny
+- name: Suma n początkowych wyrazów (wersja z a_n)
+  latex_raw: S_n = \frac{a_1 + a_n}{2}\cdot n
+  conditions: ciąg arytmetyczny, n ≥ 1; stosujemy, gdy znamy a_1 i a_n
+- name: Suma n początkowych wyrazów (wersja z r)
+  latex_raw: S_n = \frac{2a_1 + (n-1)r}{2}\cdot n
+  conditions: ciąg arytmetyczny, n ≥ 1; stosujemy, gdy znamy a_1 i r
+- name: Związek wyrazu z sumą
+  latex_raw: a_1 = S_1,\qquad a_n = S_n - S_{n-1}\ \ (n \ge 2)
+  conditions: dowolny ciąg liczbowy (nie tylko arytmetyczny)
+- name: Suma fragmentu ciągu
+  latex_raw: a_k + a_{k+1} + \dots + a_n = S_n - S_{k-1}
+  conditions: 1 ≤ k ≤ n
+- name: Wzór ogólny jako funkcja liniowa n
+  latex_raw: a_n = rn + (a_1 - r)
+  conditions: ciąg arytmetyczny
+  description: Współczynnik przy n jest równy różnicy r.
+- name: Suma jako funkcja kwadratowa n
+  latex_raw: S_n = \frac{r}{2}n^2 + \left(a_1 - \frac{r}{2}\right)n
+  conditions: ciąg arytmetyczny
+  description: Brak wyrazu wolnego; jeśli S_n = An² + Bn, to r = 2A, a_1 = A + B.
+methods:
+- name: Sprawdzanie, czy ciąg dany wzorem ogólnym jest arytmetyczny
+  when_to_use: Gdy dany jest wzór a_n = … (zależny od n) i pytamy, czy ciąg jest arytmetyczny oraz jaka
+    jest jego różnica.
+  steps:
+  - Wypisz a_{n+1}, podstawiając w miejsce każdego n wyrażenie (n+1) — koniecznie w nawiasie.
+  - Oblicz różnicę a_{n+1} − a_n i uprość wyrażenie.
+  - Jeśli wynik jest liczbą niezależną od n, ciąg jest arytmetyczny i ta liczba to r.
+  - Jeśli wynik zależy od n, ciąg nie jest arytmetyczny (wystarczy wskazać dwie różne wartości, np. a_2
+    − a_1 ≠ a_3 − a_2).
+  - Odczytaj a_1, podstawiając n = 1.
+- name: Sprawdzanie, czy skończona lista liczb tworzy ciąg arytmetyczny
+  when_to_use: Gdy podano konkretne liczby, np. 2, 5, 8, 12.
+  steps:
+  - 'Oblicz różnice kolejnych par: a_2 − a_1, a_3 − a_2, a_4 − a_3, …'
+  - Porównaj wszystkie otrzymane różnice.
+  - Jeśli wszystkie są równe — ciąg jest arytmetyczny o różnicy r równej tej wspólnej wartości.
+  - Jeśli choć jedna się różni — ciąg nie jest arytmetyczny; jako uzasadnienie podaj konkretne dwie nierówne
+    różnice.
+- name: Wyznaczanie x z warunku 'trzy wyrażenia tworzą ciąg arytmetyczny'
+  when_to_use: Gdy dane są trzy kolejne wyrazy zawierające niewiadomą, np. x − 1, 2x + 1, 5x − 1.
+  steps:
+  - 'Zapisz warunek środkowego wyrazu: 2·(wyraz środkowy) = (wyraz pierwszy) + (wyraz trzeci).'
+  - Rozwiąż powstałe równanie względem niewiadomej (pamiętaj o nawiasach przy podstawianiu).
+  - Podstaw znalezioną wartość i oblicz trzy konkretne wyrazy.
+  - 'Sprawdź: różnice kolejnych wyrazów muszą być równe; wyznacz r.'
+- name: Wyznaczanie a_1 i r z dwóch warunków (układ równań)
+  when_to_use: Gdy dane są np. dwa wyrazy o różnych numerach, albo wyraz i suma.
+  steps:
+  - Każdy warunek zapisz wzorem a_k = a_1 + (k−1)r lub S_n = (2a_1 + (n−1)r)n/2.
+  - Otrzymasz układ dwóch równań z niewiadomymi a_1 i r.
+  - Rozwiąż układ (najczęściej metodą odejmowania stronami lub podstawiania).
+  - 'Skrót przy dwóch wyrazach: a_n − a_k = (n − k)r, skąd od razu r, potem a_1.'
+  - Sprawdź wynik, licząc kontrolnie jeden z danych wyrazów.
+- name: Obliczanie sumy S_n
+  when_to_use: Gdy trzeba dodać n początkowych wyrazów ciągu arytmetycznego.
+  steps:
+  - 'Ustal, co znasz: a_1 i r, czy a_1 i a_n.'
+  - Jeśli znasz a_1 i r — użyj S_n = (2a_1 + (n−1)r)·n/2.
+  - Jeśli znasz a_1 i a_n — użyj S_n = (a_1 + a_n)·n/2.
+  - Jeśli brakuje a_n, policz go najpierw ze wzoru a_n = a_1 + (n−1)r.
+  - Podstaw wartości, uprość i wykonaj działania (uważaj na znaki przy ujemnym r).
+- name: Wyznaczanie liczby wyrazów n z równania na sumę lub na wyraz
+  when_to_use: Gdy pytanie brzmi 'ile początkowych wyrazów należy dodać, aby suma wynosiła …' lub 'którym
+    wyrazem ciągu jest liczba …'.
+  steps:
+  - Zapisz odpowiedni wzór (S_n lub a_n) i przyrównaj do danej liczby.
+  - 'Uporządkuj równanie: przy a_n będzie liniowe, przy S_n — kwadratowe względem n.'
+  - Rozwiąż równanie (dla kwadratowego oblicz Δ i oba pierwiastki).
+  - Odrzuć rozwiązania niebędące liczbami naturalnymi dodatnimi — n musi być numerem wyrazu.
+  - Sformułuj odpowiedź zdaniem.
+- name: Badanie ciągu danego wzorem na sumę
+  when_to_use: Gdy podano S_n = … i trzeba znaleźć a_n lub sprawdzić, czy ciąg jest arytmetyczny.
+  steps:
+  - Oblicz a_1 = S_1.
+  - Dla n ≥ 2 policz a_n = S_n − S_{n−1}, podstawiając (n−1) w miejsce n w nawiasach.
+  - Uprość wyrażenie na a_n.
+  - Sprawdź, czy wzór dla n ≥ 2 daje też poprawne a_1 (jeśli tak, obowiązuje dla wszystkich n).
+  - 'Zbadaj a_{n+1} − a_n; stała wartość oznacza ciąg arytmetyczny. Alternatywnie: jeśli S_n = An² + Bn,
+    to od razu r = 2A.'
+examples:
+- statement: Ciąg (a_n) określony jest wzorem a_n = 5 − 3n dla n ≥ 1. Wykaż, że jest to ciąg arytmetyczny,
+    podaj a_1 i r, oblicz a_20 oraz S_20.
+  worked_solution: |-
+    1) Wyznaczam a_{n+1}: a_{n+1} = 5 − 3(n + 1) = 5 − 3n − 3 = 2 − 3n.
+    2) Różnica: a_{n+1} − a_n = (2 − 3n) − (5 − 3n) = 2 − 3n − 5 + 3n = −3.
+    Wynik nie zależy od n, więc ciąg jest arytmetyczny o różnicy r = −3 (ciąg malejący).
+    3) a_1 = 5 − 3·1 = 2.
+    4) a_20 = 5 − 3·20 = 5 − 60 = −55 (kontrola wzorem: a_20 = a_1 + 19r = 2 + 19·(−3) = 2 − 57 = −55).
+    5) S_20 = (a_1 + a_20)/2 · 20 = (2 + (−55))/2 · 20 = (−53)/2 · 20 = −53 · 10 = −530.
+    Odpowiedź: ciąg jest arytmetyczny, a_1 = 2, r = −3, a_20 = −55, S_20 = −530.
+  difficulty: 2
+- statement: W ciągu arytmetycznym a_3 = 7 i a_8 = 22. Wyznacz różnicę r, pierwszy wyraz a_1 oraz sumę
+    piętnastu początkowych wyrazów.
+  worked_solution: |-
+    1) Korzystam z a_n = a_k + (n − k)r: a_8 = a_3 + 5r, czyli 22 = 7 + 5r.
+    2) Stąd 5r = 15, więc r = 3.
+    3) a_3 = a_1 + 2r ⇒ 7 = a_1 + 6 ⇒ a_1 = 1.
+    4) S_15 = (2a_1 + 14r)/2 · 15 = (2·1 + 14·3)/2 · 15 = (2 + 42)/2 · 15 = 22 · 15 = 330.
+    Sprawdzenie: a_15 = 1 + 14·3 = 43, więc S_15 = (1 + 43)/2 · 15 = 22 · 15 = 330. ✓
+    Odpowiedź: r = 3, a_1 = 1, S_15 = 330.
+  difficulty: 3
+- statement: Liczby x − 1, 2x + 1, 5x − 1 (w podanej kolejności) są trzema kolejnymi wyrazami ciągu arytmetycznego.
+    Wyznacz x, podaj te liczby, a następnie — traktując je jako a_1, a_2, a_3 pewnego ciągu arytmetycznego
+    — oblicz sumę dwunastu początkowych wyrazów tego ciągu.
+  worked_solution: |-
+    1) Warunek środkowego wyrazu: 2(2x + 1) = (x − 1) + (5x − 1).
+    2) Lewa strona: 4x + 2. Prawa strona: 6x − 2.
+    3) 4x + 2 = 6x − 2 ⇒ 4 = 2x ⇒ x = 2.
+    4) Wyrazy: x − 1 = 1, 2x + 1 = 5, 5x − 1 = 9. Różnice: 5 − 1 = 4 i 9 − 5 = 4 — zgodne, więc r = 4, a_1 = 1.
+    5) S_12 = (2a_1 + 11r)/2 · 12 = (2·1 + 11·4)/2 · 12 = (2 + 44)/2 · 12 = 23 · 12 = 276.
+    Odpowiedź: x = 2; liczby to 1, 5, 9; S_12 = 276.
+  difficulty: 3
+- statement: Ile początkowych wyrazów ciągu arytmetycznego 3, 7, 11, 15, … należy dodać, aby otrzymać
+    210?
+  worked_solution: |-
+    1) Odczytuję: a_1 = 3, r = 7 − 3 = 4 (kolejne różnice też dają 4).
+    2) S_n = (2·3 + (n − 1)·4)/2 · n = (6 + 4n − 4)/2 · n = (4n + 2)/2 · n = (2n + 1)n = 2n² + n.
+    3) Równanie: 2n² + n = 210, czyli 2n² + n − 210 = 0.
+    4) Δ = 1² − 4·2·(−210) = 1 + 1680 = 1681, √Δ = 41.
+    5) n = (−1 − 41)/4 = −10,5 (odrzucam, bo n musi być liczbą naturalną dodatnią) lub n = (−1 + 41)/4 = 40/4 = 10.
+    6) Sprawdzenie: a_10 = 3 + 9·4 = 39, S_10 = (3 + 39)/2 · 10 = 21 · 10 = 210. ✓
+    Odpowiedź: należy dodać 10 początkowych wyrazów.
+  difficulty: 4
+- statement: Suma n początkowych wyrazów pewnego ciągu (a_n) wyraża się wzorem S_n = n² + 2n. Wyznacz
+    wzór na a_n i uzasadnij, że ciąg jest arytmetyczny. Oblicz też a_5 + a_6 + … + a_10.
+  worked_solution: |-
+    1) a_1 = S_1 = 1 + 2 = 3.
+    2) Dla n ≥ 2: S_{n−1} = (n − 1)² + 2(n − 1) = n² − 2n + 1 + 2n − 2 = n² − 1.
+    3) a_n = S_n − S_{n−1} = (n² + 2n) − (n² − 1) = 2n + 1.
+    4) Wzór działa też dla n = 1: 2·1 + 1 = 3 = a_1, więc a_n = 2n + 1 dla każdego n ≥ 1.
+    5) a_{n+1} − a_n = (2(n+1) + 1) − (2n + 1) = 2 — stała, zatem ciąg jest arytmetyczny o r = 2 (można też od razu: S_n = An² + Bn z A = 1, więc r = 2A = 2).
+    6) Suma fragmentu: a_5 + … + a_10 = S_10 − S_4 = (100 + 20) − (16 + 8) = 120 − 24 = 96.
+    Sprawdzenie: wyrazy od a_5 = 11 do a_10 = 21, jest ich 10 − 5 + 1 = 6, suma = (11 + 21)/2 · 6 = 16 · 6 = 96. ✓
+    Odpowiedź: a_n = 2n + 1, ciąg arytmetyczny o r = 2, szukana suma wynosi 96.
+  difficulty: 4
+objectives:
+- statement: Podać definicję ciągu arytmetycznego i wskazać jego różnicę r na podstawie wypisanych wyrazów.
+  bloom_level: Zapamiętywanie
+- statement: Wyjaśnić związek między znakiem różnicy r a monotonicznością ciągu oraz między wzorem a_n
+    = rn + (a_1 − r) a liniowością.
+  bloom_level: Rozumienie
+- statement: Sprawdzić, czy ciąg dany wzorem ogólnym lub listą liczb jest arytmetyczny, obliczając a_{n+1}
+    − a_n i uzasadniając wniosek.
+  bloom_level: Stosowanie
+- statement: Stosować wzór a_n = a_1 + (n − 1)r do obliczania dowolnego wyrazu, pierwszego wyrazu lub
+    różnicy.
+  bloom_level: Stosowanie
+- statement: Wyznaczać a_1 i r z układu równań powstałego z dwóch danych warunków (np. dwóch wyrazów lub
+    wyrazu i sumy).
+  bloom_level: Stosowanie
+- statement: Obliczać sumę n początkowych wyrazów ciągu arytmetycznego obiema wersjami wzoru oraz sumę
+    fragmentu ciągu jako S_n − S_{k−1}.
+  bloom_level: Stosowanie
+- statement: Wyznaczać niewiadomą z warunku, że trzy wyrażenia tworzą kolejne wyrazy ciągu arytmetycznego
+    (2a_n = a_{n−1} + a_{n+1}).
+  bloom_level: Stosowanie
+- statement: Rozwiązywać równania na n wynikające z warunków na a_n lub S_n i odrzucać rozwiązania niedopuszczalne
+    dla numeru wyrazu.
+  bloom_level: Analizowanie
+- statement: Wyznaczyć wzór na a_n z danego wzoru na S_n i uzasadnić, że otrzymany ciąg jest arytmetyczny.
+  bloom_level: Analizowanie
+- statement: Ocenić poprawność otrzymanego wyniku przez kontrolne obliczenie wyrazu lub sumy inną metodą.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Różnica liczona 'w drugą stronę'
+  incorrect_reasoning: Dla ciągu 10, 7, 4, … uczeń liczy r = a_1 − a_2 = 10 − 7 = 3 i przyjmuje r = 3,
+    otrzymując ciąg rosnący.
+  correct_reasoning: 'Z definicji r = a_{n+1} − a_n, czyli następny minus poprzedni: r = 7 − 10 = −3.
+    Ujemna różnica odpowiada ciągowi malejącemu, co zgadza się z wypisanymi liczbami.'
+  severity: 4
+- name: Pomylenie (n − 1) z n we wzorze na wyraz
+  incorrect_reasoning: a_n = a_1 + n·r, więc np. a_10 = a_1 + 10r.
+  correct_reasoning: 'Od a_1 do a_n wykonujemy n − 1 kroków po r, więc a_n = a_1 + (n − 1)r i a_10 = a_1
+    + 9r. Kontrola: dla n = 1 wzór musi dać a_1, a a_1 + 1·r ≠ a_1.'
+  severity: 5
+- name: Sprawdzanie 'arytmetyczności' na jednej parze wyrazów
+  incorrect_reasoning: Skoro a_2 − a_1 = 4, to ciąg jest arytmetyczny o r = 4.
+  correct_reasoning: Jedna równość niczego nie dowodzi. Dla ciągu danego wzorem trzeba pokazać, że a_{n+1}
+    − a_n jest stałe dla każdego n; dla skończonej listy — sprawdzić wszystkie kolejne różnice. Np. 1,
+    5, 9, 14 nie jest arytmetyczny, bo 14 − 9 = 5 ≠ 4.
+  severity: 4
+- name: Mylenie a_n z S_n
+  incorrect_reasoning: 'Pytanie brzmi ''oblicz sumę dziesięciu początkowych wyrazów'', a uczeń podaje
+    a_10 (albo odwrotnie: mając policzyć a_10, podaje S_10).'
+  correct_reasoning: a_10 to jedna liczba stojąca na dziesiątym miejscu, S_10 to wynik dodania dziesięciu
+    liczb. We wzorze S_n = (a_1 + a_n)/2 · n wyraz a_n jest tylko składnikiem — po jego obliczeniu trzeba
+    jeszcze wykonać mnożenie przez n i dzielenie przez 2.
+  severity: 4
+- name: Brak nawiasów przy podstawianiu n+1 lub n−1
+  incorrect_reasoning: Dla a_n = 5 − 3n uczeń pisze a_{n+1} = 5 − 3n + 1 zamiast 5 − 3(n + 1).
+  correct_reasoning: Podstawiamy całe wyrażenie (n + 1) w miejsce n, więc a_{n+1} = 5 − 3(n + 1) = 2 −
+    3n. Bez nawiasu wychodzi błędna różnica i fałszywy wniosek.
+  severity: 4
+- name: Zły warunek na trzy kolejne wyrazy
+  incorrect_reasoning: Aby liczby p, q, s tworzyły ciąg arytmetyczny, musi zachodzić q² = p·s albo q =
+    p + s.
+  correct_reasoning: 'Warunek q² = p·s dotyczy ciągu geometrycznego. Dla arytmetycznego środkowy wyraz
+    jest średnią arytmetyczną sąsiadów: 2q = p + s.'
+  severity: 5
+- name: Akceptowanie niecałkowitego lub ujemnego n
+  incorrect_reasoning: 'Z równania 2n² + n − 210 = 0 wychodzą n = 10 i n = −10,5, więc odpowiedź: n =
+    10 lub n = −10,5.'
+  correct_reasoning: n jest numerem wyrazu (liczbą wyrazów), więc musi być liczbą naturalną dodatnią.
+    Rozwiązania ujemne i ułamkowe odrzucamy, wyraźnie to zaznaczając.
+  severity: 3
+- name: Błędne liczenie liczby wyrazów fragmentu ciągu
+  incorrect_reasoning: Wyrazów od a_5 do a_20 jest 20 − 5 = 15, więc suma = (a_5 + a_20)/2 · 15.
+  correct_reasoning: Wyrazów jest 20 − 5 + 1 = 16. Bezpieczniej liczyć taką sumę jako S_20 − S_4.
+  severity: 3
+- name: Traktowanie liniowego wzoru na a_n jako warunku wystarczającego bez sprawdzenia
+  incorrect_reasoning: Ciąg a_n = n² − n jest arytmetyczny, bo 'ma ładny wzór' / bo a_2 − a_1 = 2.
+  correct_reasoning: Liczymy a_{n+1} − a_n = ((n+1)² − (n+1)) − (n² − n) = 2n, co zależy od n, więc ciąg
+    nie jest arytmetyczny (a_2 − a_1 = 2, a a_3 − a_2 = 4). Arytmetyczne są dokładnie te ciągi, których
+    wzór ogólny jest funkcją liniową n.
+  severity: 3

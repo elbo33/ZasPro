@@ -1,0 +1,342 @@
+section: dzialania-na-wielomianach
+name: Działania na wielomianach
+scope: Adding, subtracting and multiplying polynomials in one and several variables; ordering and collecting
+  terms.
+requirements:
+- II.2
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:16:48.090806'
+  approved_at: '2026-08-28T18:28:02.316207'
+  approved_by: reviewer
+concepts:
+- name: Jednomian
+  description: Wyrażenie algebraiczne będące iloczynem liczby (współczynnika) i potęg zmiennych o wykładnikach
+    naturalnych, np. 5x^3, -2ab^2, 7, x.
+  explanation: 'Jednomian to ''najmniejszy klocek'', z którego budujemy wielomiany. Nie wolno w nim dzielić
+    przez zmienną ani wyciągać z niej pierwiastka: 3/x oraz √x jednomianami nie są.'
+  difficulty: 1
+- name: Wielomian jednej zmiennej
+  description: Wyrażenie postaci W(x)=a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x + a_0, gdzie a_i są liczbami
+    rzeczywistymi, n liczbą naturalną.
+  explanation: Myśl o wielomianie jak o sumie jednomianów jednej zmiennej. Każdy jednomian to jeden 'wyraz'
+    wielomianu; litery a_i to współczynniki, a_0 to wyraz wolny.
+  difficulty: 1
+- name: Wielomian wielu zmiennych
+  description: Suma jednomianów zawierających więcej niż jedną zmienną, np. P(x,y)=3x^2y - 4xy + y^3 -
+    5.
+  explanation: Reguły działań są dokładnie takie same jak dla jednej zmiennej — jedyna różnica polega
+    na tym, że wyrazy podobne muszą mieć zgodne wykładniki przy KAŻDEJ zmiennej.
+  difficulty: 2
+- name: Współczynnik i wyraz wolny
+  description: Współczynnik przy x^k to liczba stojąca przy tej potędze; wyraz wolny to wyraz nie zawierający
+    zmiennej (współczynnik przy x^0).
+  explanation: Wyraz wolny to po prostu W(0). Jeśli jakiejś potęgi nie widać w zapisie, jej współczynnik
+    jest równy 0 (np. w x^3-1 współczynnik przy x^2 wynosi 0).
+  difficulty: 1
+- name: Stopień jednomianu
+  description: Dla jednej zmiennej — wykładnik potęgi; dla wielu zmiennych — suma wykładników wszystkich
+    zmiennych, np. stopień 4x^2y^3 wynosi 5.
+  explanation: Przy wielu zmiennych 'sumujemy wykładniki'. Stały jednomian różny od zera ma stopień 0.
+  difficulty: 2
+- name: Stopień wielomianu
+  description: Największy ze stopni jednomianów tworzących wielomian (po redukcji wyrazów podobnych).
+  explanation: Zawsze najpierw redukuj, dopiero potem odczytuj stopień — inaczej najwyższy wyraz może
+    się okazać skreślony. Wielomianowi zerowemu stopnia się nie przypisuje.
+  difficulty: 2
+- name: Wyrazy podobne
+  description: Jednomiany różniące się co najwyżej współczynnikiem liczbowym, czyli mające identyczną
+    część literową (te same zmienne w tych samych potęgach).
+  explanation: '2x^2y i -5x^2y są podobne; 2x^2y i 2xy^2 nie są. Test: zasłoń liczby — jeśli reszta wygląda
+    tak samo, wyrazy są podobne.'
+  difficulty: 2
+- name: Redukcja wyrazów podobnych
+  description: 'Zastąpienie sumy wyrazów podobnych jednym wyrazem przez dodanie ich współczynników: ax^k
+    + bx^k = (a+b)x^k.'
+  explanation: To zwykłe wyłączanie wspólnego czynnika przed nawias. Dodajemy tylko liczby — część literowa
+    pozostaje bez zmian.
+  difficulty: 1
+- name: Wielomian uporządkowany
+  description: 'Wielomian zapisany tak, że stopnie kolejnych wyrazów maleją (rzadziej: rosną).'
+  explanation: 'Porządkowanie to standard zapisu odpowiedzi: -1+3x^2-2x zapisujemy jako 3x^2-2x-1. Dzięki
+    temu od razu widać stopień, współczynnik wiodący i wyraz wolny.'
+  difficulty: 1
+- name: Równość wielomianów
+  description: Dwa wielomiany są równe, gdy po uporządkowaniu i redukcji mają te same współczynniki przy
+    odpowiadających sobie potęgach.
+  explanation: 'Stąd bierze się metoda porównywania współczynników: jeśli ma zachodzić x^2+ax+3 = x^2-5x+b,
+    to a=-5 i b=3.'
+  difficulty: 3
+- name: Wartość wielomianu
+  description: Liczba W(a) otrzymana przez podstawienie liczby a w miejsce zmiennej i wykonanie działań.
+  explanation: 'Wartość służy też do szybkiego sprawdzenia rachunków: jeśli poprawnie wymnożyliśmy wielomiany,
+    to dla dowolnej liczby (np. x=1 lub x=2) obie strony muszą dać ten sam wynik.'
+  difficulty: 2
+- name: Rozdzielność mnożenia względem dodawania
+  description: Prawo a(b+c)=ab+ac, na którym opiera się całe mnożenie wielomianów.
+  explanation: 'Mnożenie wielomianów to wielokrotne zastosowanie tego prawa: ''każdy wyraz z pierwszego
+    nawiasu przez każdy wyraz z drugiego''.'
+  difficulty: 2
+- name: Wzory skróconego mnożenia jako skrót rachunkowy
+  description: Gotowe wyniki mnożenia typowych nawiasów, np. (a+b)^2=a^2+2ab+b^2, (a-b)(a+b)=a^2-b^2.
+  explanation: Nie są nową matematyką — to zapamiętane wyniki mnożenia 'każdy z każdym'. Warto je znać,
+    bo skracają rachunki i zmniejszają ryzyko błędu znaku.
+  difficulty: 2
+formulas:
+- name: Postać ogólna wielomianu jednej zmiennej
+  latex_raw: W(x)=a_nx^n+a_{n-1}x^{n-1}+\dots+a_1x+a_0
+  conditions: a_i \in \mathbb{R}, n \in \mathbb{N}; jeśli a_n \neq 0, to stopień W wynosi n
+  description: Brakująca potęga oznacza współczynnik równy 0.
+- name: Dodawanie wyrazów podobnych
+  latex_raw: ax^k+bx^k=(a+b)x^k
+  conditions: te same zmienne w tych samych potęgach
+  description: Wykładnika NIE zmieniamy.
+- name: Mnożenie jednomianów (potęgi o tej samej podstawie)
+  latex_raw: (ax^m)\cdot(bx^n)=ab\,x^{m+n}
+  conditions: m,n \in \mathbb{N}
+  description: Współczynniki mnożymy, wykładniki dodajemy.
+- name: Mnożenie jednomianów wielu zmiennych
+  latex_raw: (a x^{m_1}y^{n_1})\cdot(b x^{m_2}y^{n_2})=ab\,x^{m_1+m_2}y^{n_1+n_2}
+  conditions: wykładniki naturalne
+  description: Wykładniki dodajemy osobno dla każdej zmiennej.
+- name: Rozdzielność (mnożenie jednomianu przez wielomian)
+  latex_raw: a(b+c)=ab+ac,\qquad a(b-c)=ab-ac
+  conditions: zawsze
+- name: Mnożenie dwumianów
+  latex_raw: (a+b)(c+d)=ac+ad+bc+bd
+  conditions: zawsze
+  description: Cztery iloczyny — 'każdy z każdym'.
+- name: Opuszczanie nawiasu ze znakiem minus
+  latex_raw: -(a+b-c)=-a-b+c
+  conditions: zawsze
+  description: Zmieniamy znak KAŻDEGO wyrazu w nawiasie.
+- name: Stopień sumy
+  latex_raw: \deg(W+P)\le \max(\deg W,\deg P)
+  conditions: W+P \neq 0
+  description: Nierówność ostra, gdy najwyższe wyrazy się zredukują.
+- name: Stopień iloczynu
+  latex_raw: \deg(W\cdot P)=\deg W+\deg P
+  conditions: W \neq 0 i P \neq 0
+  description: Współczynnik wiodący iloczynu = iloczyn współczynników wiodących, więc nigdy się nie zeruje.
+- name: Kwadrat sumy i różnicy
+  latex_raw: (a+b)^2=a^2+2ab+b^2,\qquad (a-b)^2=a^2-2ab+b^2
+  conditions: zawsze
+- name: Różnica kwadratów
+  latex_raw: (a-b)(a+b)=a^2-b^2
+  conditions: zawsze
+- name: Sześcian sumy i różnicy
+  latex_raw: (a+b)^3=a^3+3a^2b+3ab^2+b^3,\qquad (a-b)^3=a^3-3a^2b+3ab^2-b^3
+  conditions: zawsze
+- name: Suma i różnica sześcianów
+  latex_raw: a^3-b^3=(a-b)(a^2+ab+b^2),\qquad a^3+b^3=(a+b)(a^2-ab+b^2)
+  conditions: zawsze
+  description: Czytane od prawej do lewej są wygodnym skrótem przy mnożeniu.
+- name: Współczynnik przy x^k w iloczynie
+  latex_raw: c_k=\sum_{i+j=k}a_i b_j
+  conditions: W(x)=\sum a_i x^i,\ P(x)=\sum b_j x^j
+  description: 'Praktycznie: zbieramy tylko te pary wyrazów, których wykładniki sumują się do k.'
+methods:
+- name: Porządkowanie i redukcja wielomianu
+  when_to_use: Za każdym razem, gdy wynik działań ma być zapisany w postaci ostatecznej albo gdy trzeba
+    odczytać stopień lub współczynniki.
+  steps:
+  - Opuść wszystkie nawiasy, pilnując znaków.
+  - Pogrupuj wyrazy podobne (te same zmienne w tych samych potęgach) — pomocne jest podkreślanie ich różnymi
+    znakami.
+  - Dodaj współczynniki w każdej grupie, część literową przepisz bez zmian.
+  - Zapisz wyrazy w kolejności malejących stopni.
+  - Odczytaj stopień, współczynnik wiodący i wyraz wolny.
+- name: Dodawanie wielomianów
+  when_to_use: Gdy trzeba wyznaczyć W(x)+P(x).
+  steps:
+  - 'Zapisz sumę: (W)+(P).'
+  - Opuść nawiasy — przy znaku '+' wszystkie wyrazy przepisujemy bez zmian.
+  - Zredukuj wyrazy podobne.
+  - Uporządkuj wynik malejąco.
+- name: Odejmowanie wielomianów
+  when_to_use: Gdy trzeba wyznaczyć W(x)-P(x) lub uprościć wyrażenie z minusem przed nawiasem.
+  steps:
+  - 'Zapisz różnicę w nawiasach: (W)-(P).'
+  - Zmień znak każdego wyrazu odejmowanego wielomianu (mnożenie przez -1).
+  - Zredukuj wyrazy podobne.
+  - Uporządkuj wynik i sprawdź stopień — mógł się obniżyć.
+- name: Mnożenie jednomianu przez wielomian
+  when_to_use: Gdy przed nawiasem stoi liczba lub jednomian, np. 3x^2(2x-5).
+  steps:
+  - Pomnóż współczynnik jednomianu przez współczynnik każdego wyrazu w nawiasie.
+  - Dodaj wykładniki przy każdej zmiennej osobno.
+  - Pilnuj znaków (minus razy minus daje plus).
+  - Zredukuj i uporządkuj.
+- name: Mnożenie wielomianu przez wielomian ('każdy z każdym')
+  when_to_use: Gdy mnożymy dwa nawiasy o co najmniej dwóch wyrazach.
+  steps:
+  - Sprawdź, czy nie da się użyć wzoru skróconego mnożenia — to szybsza droga.
+  - 'Jeśli nie: pomnóż kolejno pierwszy wyraz pierwszego nawiasu przez wszystkie wyrazy drugiego, potem
+    drugi wyraz itd.'
+  - 'Policz iloczyny cząstkowe: przy m i n wyrazach powinno ich być m·n — to kontrola kompletności.'
+  - Zredukuj wyrazy podobne i uporządkuj.
+  - 'Sprawdź stopień wyniku: powinien być sumą stopni czynników.'
+- name: Kontrola wyniku przez podstawienie liczby
+  when_to_use: Po każdym dłuższym mnożeniu lub upraszczaniu, gdy chcemy sprawdzić rachunki.
+  steps:
+  - Wybierz wygodną liczbę, np. x=1 (lub x=2, gdy x=1 zbyt wiele upraszcza).
+  - Oblicz wartość wyrażenia wyjściowego dla tej liczby.
+  - Oblicz wartość otrzymanego wyniku dla tej samej liczby.
+  - Jeśli liczby się różnią — gdzieś jest błąd; jeśli są równe, wynik jest bardzo prawdopodobnie poprawny.
+- name: Wyznaczanie jednego współczynnika iloczynu bez pełnego mnożenia
+  when_to_use: Gdy pytanie dotyczy tylko współczynnika przy konkretnej potędze albo wyrazu wolnego.
+  steps:
+  - Ustal, przy jakiej potędze x^k szukasz współczynnika.
+  - Wypisz wszystkie pary wyrazów (jeden z pierwszego, drugi z drugiego wielomianu), których wykładniki
+    sumują się do k.
+  - Pomnóż współczynniki w każdej parze.
+  - Dodaj otrzymane iloczyny — to szukany współczynnik.
+- name: Dobieranie parametru z warunku na współczynniki
+  when_to_use: Gdy w wielomianie występuje litera-parametr i mamy warunek typu 'brak wyrazu z x^2' lub
+    'wielomiany są równe'.
+  steps:
+  - Wykonaj wskazane działania i uporządkuj wynik według potęg zmiennej.
+  - Zapisz współczynnik przy interesującej potędze jako wyrażenie z parametrem.
+  - Przyrównaj go do wymaganej wartości (0, gdy wyrazu ma nie być).
+  - Rozwiąż otrzymane równanie i zapisz odpowiedź; w razie potrzeby sprawdź wynik przez podstawienie.
+- name: Działania na wielomianach wielu zmiennych
+  when_to_use: Gdy w wyrażeniu występują co najmniej dwie litery-zmienne, np. x i y albo a i b.
+  steps:
+  - Wykonaj mnożenia, dodając wykładniki oddzielnie dla każdej zmiennej.
+  - Ustal wspólny porządek zapisu części literowej (np. najpierw x, potem y) — łatwiej wtedy dostrzec
+    wyrazy podobne.
+  - Zredukuj wyrazy o identycznej części literowej.
+  - Uporządkuj wynik według malejących potęg wybranej zmiennej.
+examples:
+- statement: Dane są wielomiany W(x)=2x^3-x+4 oraz P(x)=-x^3+5x^2-7. Wyznacz W(x)+P(x) oraz W(x)-P(x)
+    i podaj stopnie otrzymanych wielomianów.
+  worked_solution: |-
+    Suma: W(x)+P(x)=(2x^3-x+4)+(-x^3+5x^2-7). Opuszczamy nawiasy bez zmiany znaków: 2x^3-x+4-x^3+5x^2-7. Redukujemy: wyrazy z x^3: 2x^3-x^3=x^3; wyraz z x^2: 5x^2 (nie ma pary); wyraz z x: -x; wyrazy wolne: 4-7=-3. Po uporządkowaniu: W(x)+P(x)=x^3+5x^2-x-3, stopień 3.
+    Różnica: W(x)-P(x)=(2x^3-x+4)-(-x^3+5x^2-7). Zmieniamy znak każdego wyrazu drugiego nawiasu: 2x^3-x+4+x^3-5x^2+7. Redukujemy: 2x^3+x^3=3x^3; -5x^2; -x; 4+7=11. Zatem W(x)-P(x)=3x^3-5x^2-x+11, stopień 3.
+    Sprawdzenie dla x=1: W(1)=2-1+4=5, P(1)=-1+5-7=-3. Suma powinna dać 2: 1+5-1-3=2 ✔. Różnica powinna dać 8: 3-5-1+11=8 ✔.
+  difficulty: 1
+- statement: 'Wykonaj mnożenie i uporządkuj wynik: (2x-3)(x^2+4x-5).'
+  worked_solution: |-
+    Mnożymy każdy wyraz pierwszego nawiasu przez każdy wyraz drugiego (powinno powstać 2·3=6 iloczynów):
+    2x·x^2=2x^3, 2x·4x=8x^2, 2x·(-5)=-10x,
+    (-3)·x^2=-3x^2, (-3)·4x=-12x, (-3)·(-5)=15.
+    Zapisujemy sumę: 2x^3+8x^2-10x-3x^2-12x+15.
+    Redukcja: x^3: 2x^3; x^2: 8x^2-3x^2=5x^2; x: -10x-12x=-22x; wyraz wolny: 15.
+    Wynik: 2x^3+5x^2-22x+15. Stopień 1+2=3 ✔.
+    Kontrola dla x=1: (2-3)(1+4-5)=(-1)·0=0 oraz 2+5-22+15=0 ✔.
+  difficulty: 2
+- statement: 'Uprość wyrażenie: (2a-3b)(a+b)-(a-2b)^2, gdzie a, b są dowolnymi liczbami rzeczywistymi.'
+  worked_solution: |-
+    Pierwszy iloczyn: (2a-3b)(a+b)=2a·a+2a·b-3b·a-3b·b=2a^2+2ab-3ab-3b^2=2a^2-ab-3b^2.
+    Drugi składnik ze wzoru na kwadrat różnicy: (a-2b)^2=a^2-2·a·2b+(2b)^2=a^2-4ab+4b^2.
+    Odejmujemy CAŁE wyrażenie, więc zmieniamy znaki wszystkich jego wyrazów:
+    2a^2-ab-3b^2-a^2+4ab-4b^2.
+    Redukcja wyrazów podobnych: a^2: 2a^2-a^2=a^2; ab: -ab+4ab=3ab; b^2: -3b^2-4b^2=-7b^2.
+    Wynik: a^2+3ab-7b^2 (wielomian dwóch zmiennych stopnia 2).
+    Kontrola dla a=1, b=1: (2-3)(1+1)-(1-2)^2=-2-1=-3 oraz 1+3-7=-3 ✔.
+  difficulty: 3
+- statement: W iloczynie (x^2-2x+3)(2x^2+x-4) wyznacz współczynnik przy x^2 oraz wyraz wolny, nie wykonując
+    całego mnożenia. Następnie sprawdź wynik, wykonując mnożenie w całości.
+  worked_solution: |-
+    Współczynnik przy x^2: szukamy par wyrazów, których wykładniki sumują się do 2:
+    x^2·(-4) → -4x^2; (-2x)·x → -2x^2; 3·2x^2 → 6x^2.
+    Suma współczynników: -4-2+6=0, czyli w iloczynie NIE MA wyrazu z x^2.
+    Wyraz wolny: iloczyn wyrazów wolnych 3·(-4)=-12.
+    Pełne mnożenie (9 iloczynów):
+    x^2·2x^2=2x^4, x^2·x=x^3, x^2·(-4)=-4x^2,
+    (-2x)·2x^2=-4x^3, (-2x)·x=-2x^2, (-2x)·(-4)=8x,
+    3·2x^2=6x^2, 3·x=3x, 3·(-4)=-12.
+    Redukcja: x^4: 2x^4; x^3: x^3-4x^3=-3x^3; x^2: -4x^2-2x^2+6x^2=0; x: 8x+3x=11x; wyraz wolny: -12.
+    Wynik: 2x^4-3x^3+11x-12 — potwierdza obie odpowiedzi. Stopień 2+2=4 ✔.
+  difficulty: 3
+- statement: Dla jakiej wartości parametru m wielomian W(x)=(x^2+mx+1)(x-2)+3x^2 nie zawiera wyrazu z
+    x^2? Dla znalezionego m podaj stopień i wyraz wolny wielomianu W.
+  worked_solution: |-
+    Najpierw mnożenie: (x^2+mx+1)(x-2)=x^3-2x^2+mx^2-2mx+x-2 = x^3+(m-2)x^2+(1-2m)x-2.
+    Dodajemy 3x^2: W(x)=x^3+(m-2+3)x^2+(1-2m)x-2=x^3+(m+1)x^2+(1-2m)x-2.
+    Brak wyrazu z x^2 oznacza, że współczynnik przy x^2 jest równy zeru: m+1=0, czyli m=-1.
+    Wtedy W(x)=x^3+(1-2·(-1))x-2=x^3+3x-2. Stopień wielomianu wynosi 3, a wyraz wolny -2.
+    Sprawdzenie dla x=1, m=-1: (1-1+1)(1-2)+3=(1)(-1)+3=2 oraz 1+3-2=2 ✔.
+  difficulty: 4
+objectives:
+- statement: Rozpoznać, czy dane wyrażenie jest wielomianem, wskazać jego wyrazy, współczynniki, wyraz
+    wolny i stopień (także dla wielomianów wielu zmiennych).
+  bloom_level: Rozumienie
+- statement: Uporządkować wielomian według malejących potęg zmiennej i zredukować wyrazy podobne.
+  bloom_level: Zastosowanie
+- statement: Dodawać i odejmować wielomiany jednej i wielu zmiennych, poprawnie opuszczając nawiasy ze
+    znakiem minus.
+  bloom_level: Zastosowanie
+- statement: Mnożyć jednomian przez wielomian oraz wielomian przez wielomian metodą 'każdy z każdym',
+    a wynik uporządkować.
+  bloom_level: Zastosowanie
+- statement: Wykorzystywać wzory skróconego mnożenia jako skrót przy mnożeniu i upraszczaniu wyrażeń wielomianowych.
+  bloom_level: Zastosowanie
+- statement: Upraszczać złożone wyrażenia zawierające sumy, różnice, iloczyny i potęgi nawiasów, także
+    w kilku zmiennych.
+  bloom_level: Analiza
+- statement: Wyznaczyć wybrany współczynnik iloczynu wielomianów (np. przy x^2 lub wyraz wolny) bez wykonywania
+    pełnego mnożenia.
+  bloom_level: Analiza
+- statement: Wyznaczyć wartość parametru z warunku dotyczącego współczynników wielomianu lub równości
+    wielomianów.
+  bloom_level: Analiza
+- statement: Uzasadnić, jaki jest stopień sumy i iloczynu wielomianów, oraz podać przykład sumy o obniżonym
+    stopniu.
+  bloom_level: Analiza
+- statement: Sprawdzić poprawność wykonanych działań przez podstawienie wybranej wartości zmiennej i wykryć
+    błąd rachunkowy.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Minus przed nawiasem zmienia znak tylko pierwszego wyrazu
+  incorrect_reasoning: 5x-(2x-3)=5x-2x-3=3x-3
+  correct_reasoning: 'Minus przed nawiasem to mnożenie przez -1, więc zmienia znak KAŻDEGO wyrazu: 5x-(2x-3)=5x-2x+3=3x+3.
+    To najczęstszy błąd przy odejmowaniu wielomianów.'
+  severity: 5
+- name: Dodawanie wykładników przy dodawaniu wyrazów podobnych
+  incorrect_reasoning: 3x^2+5x^2=8x^4
+  correct_reasoning: 'Przy dodawaniu wyrazów podobnych dodajemy tylko współczynniki, część literowa pozostaje:
+    3x^2+5x^2=8x^2. Wykładniki dodaje się przy MNOŻENIU: 3x^2·5x^2=15x^4.'
+  severity: 5
+- name: Redukowanie wyrazów, które nie są podobne
+  incorrect_reasoning: x^2+3x=4x^2 albo 2xy+3x^2y=5x^2y^2
+  correct_reasoning: Redukować wolno tylko wyrazy o identycznej części literowej. x^2 i 3x nie są podobne
+    — wyrażenie x^2+3x jest już uproszczone. Podobnie 2xy i 3x^2y zostają osobno.
+  severity: 4
+- name: (a+b)^2 = a^2+b^2
+  incorrect_reasoning: (x+3)^2=x^2+9, bo potęgujemy każdy składnik.
+  correct_reasoning: 'Kwadrat to iloczyn (x+3)(x+3), a więc ''każdy z każdym'': x^2+3x+3x+9=x^2+6x+9.
+    Brakuje podwojonego iloczynu 2ab.'
+  severity: 5
+- name: Niepełne mnożenie nawiasów
+  incorrect_reasoning: (2x-3)(x^2+4x-5)=2x·x^2-3·(-5)=2x^3+15 — mnożymy 'pierwszy przez pierwszy, ostatni
+    przez ostatni'.
+  correct_reasoning: Trzeba wykonać wszystkie m·n iloczynów. Przy 2 i 3 wyrazach powinno powstać 6 składników;
+    policzenie ich jest dobrą kontrolą kompletności.
+  severity: 5
+- name: Stopień sumy zawsze równy większemu ze stopni
+  incorrect_reasoning: Skoro W ma stopień 3 i P ma stopień 3, to W+P ma stopień 3.
+  correct_reasoning: 'Najwyższe wyrazy mogą się zredukować: (2x^3+x)+(-2x^3+5)=x+5, stopień 1. Dla sumy
+    zachodzi tylko deg(W+P) ≤ max(deg W, deg P). Dla iloczynu niezerowych wielomianów stopnie zawsze się
+    dodają.'
+  severity: 3
+- name: Błędny stopień jednomianu wielu zmiennych
+  incorrect_reasoning: Stopień jednomianu 4x^2y^3 wynosi 3, bo to najwyższy wykładnik.
+  correct_reasoning: 'Przy wielu zmiennych stopień jednomianu to SUMA wykładników: 2+3=5.'
+  severity: 3
+- name: Gubienie znaku przy mnożeniu ujemnych wyrazów
+  incorrect_reasoning: (-2x)·(-4)=-8x
+  correct_reasoning: 'Iloczyn dwóch liczb ujemnych jest dodatni: (-2x)·(-4)=8x. Warto zapisywać znak razem
+    ze współczynnikiem, traktując wyraz jako ''-2x'', a nie ''x z minusem obok''.'
+  severity: 4
+- name: Mnożenie wykładnika zamiast dodawania przy potęgowaniu jednomianu
+  incorrect_reasoning: (3x^2)^3=3x^6 — potęgujemy tylko zmienną.
+  correct_reasoning: 'Potęgujemy cały jednomian, także współczynnik: (3x^2)^3=3^3·x^{2·3}=27x^6.'
+  severity: 4
+- name: Traktowanie wyrażeń z x w mianowniku lub pod pierwiastkiem jako wielomianów
+  incorrect_reasoning: W(x)=2x^2+3/x-1 to wielomian stopnia 2.
+  correct_reasoning: Wielomian może zawierać wyłącznie potęgi zmiennej o wykładnikach naturalnych. 3/x
+    = 3x^{-1} nie spełnia tego warunku, więc to wyrażenie nie jest wielomianem.
+  severity: 3

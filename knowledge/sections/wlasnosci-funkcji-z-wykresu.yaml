@@ -1,0 +1,389 @@
+section: wlasnosci-funkcji-z-wykresu
+name: Odczytywanie własności funkcji z wykresu
+scope: 'From a graph: domain, range, zeros, intervals of monotonicity, intervals of constant sign, greatest
+  and least value.'
+requirements:
+- V.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:40:13.072684'
+  approved_at: '2026-08-28T18:28:04.569781'
+  approved_by: reviewer
+concepts:
+- name: Wykres funkcji
+  description: Zbiór wszystkich punktów płaszczyzny o współrzędnych (x, f(x)), gdzie x należy do dziedziny
+    funkcji f.
+  explanation: 'Myśl o wykresie jak o „tabelce narysowanej": każdy punkt wykresu koduje jedną parę argument–wartość.
+    Argument odczytujemy na osi OX (poziomo), wartość na osi OY (pionowo). Odczytanie własności funkcji
+    to zawsze przetłumaczenie obrazka na język zbiorów liczbowych.'
+  difficulty: 1
+- name: Odczyt wartości funkcji dla danego argumentu
+  description: Aby odczytać f(a), znajdujemy na osi OX punkt a, idziemy pionowo do wykresu i z punktu
+    przecięcia poziomo do osi OY.
+  explanation: 'Kierunek „pionowo, potem poziomo" jest zawsze taki sam. Odwrotna droga (poziomo od liczby
+    na OY do wykresu, potem pionowo do OX) daje odpowiedź na inne pytanie: dla jakich argumentów funkcja
+    przyjmuje daną wartość, czyli rozwiązanie równania f(x) = b.'
+  difficulty: 1
+- name: Dziedzina funkcji odczytana z wykresu
+  description: Zbiór wszystkich argumentów, dla których funkcja jest określona; z wykresu jest to rzut
+    prostokątny wykresu na oś OX.
+  explanation: Wyobraź sobie, że wykres „spada cieniem" pionowo na oś OX — ten cień to dziedzina. Zwykle
+    jest to przedział lub suma przedziałów. Kropka pusta na końcu oznacza, że tego argumentu w dziedzinie
+    nie ma (nawias otwarty), kropka pełna — że jest (nawias domknięty).
+  difficulty: 2
+- name: Zbiór wartości funkcji odczytany z wykresu
+  description: Zbiór wszystkich wartości przyjmowanych przez funkcję; z wykresu jest to rzut prostokątny
+    wykresu na oś OY.
+  explanation: Tym razem „cień" pada poziomo na oś OY. Szukamy najniższego i najwyższego poziomu, na jakim
+    leży wykres, i sprawdzamy, czy wykres pokrywa wszystko pomiędzy (przy wykresach ciągłych zwykle tak,
+    przy wykresach „poszarpanych" mogą powstać dziury).
+  difficulty: 2
+- name: Miejsce zerowe
+  description: Argument x należący do dziedziny, dla którego f(x) = 0; na wykresie odpowiada mu punkt
+    wspólny wykresu z osią OX.
+  explanation: Miejsce zerowe to LICZBA (współrzędna x), a nie punkt. Jeśli wykres przecina oś OX w punkcie
+    (3, 0), to miejscem zerowym jest 3. Miejsc zerowych może nie być wcale, może być kilka, a nawet cały
+    przedział (gdy fragment wykresu leży na osi OX).
+  difficulty: 2
+- name: Funkcja rosnąca / malejąca w przedziale
+  description: 'f jest rosnąca w przedziale I, gdy dla wszystkich x1, x2 ∈ I: x1 < x2 ⟹ f(x1) < f(x2);
+    malejąca, gdy x1 < x2 ⟹ f(x1) > f(x2).'
+  explanation: 'Na wykresie: idąc oczami w prawo, wykres „wspina się" (rosnąca) albo „opada" (malejąca).
+    Ważne, że mówimy o przedziale, więc odpowiedź zawsze podajemy jako przedział argumentów, np. ⟨1, 3⟩.'
+  difficulty: 2
+- name: Funkcja stała w przedziale
+  description: f jest stała w przedziale I, gdy dla wszystkich x ∈ I wartość f(x) jest ta sama.
+  explanation: Na wykresie to poziomy odcinek. Funkcja stała nie jest ani rosnąca, ani malejąca — to osobny
+    typ zachowania, warto go wymienić przy opisie monotoniczności.
+  difficulty: 2
+- name: Przedziały monotoniczności
+  description: Maksymalne przedziały dziedziny, w których funkcja jest rosnąca, malejąca albo stała.
+  explanation: Wykres dzielimy na kawałki w punktach „zawrotu" (wierzchołki, szczyty, doliny) i każdy
+    kawałek opisujemy osobno. Końce takich przedziałów zwykle dołączamy (przedziały domknięte), bo w wierzchołku
+    funkcja nadal spełnia definicję monotoniczności na całym zamkniętym kawałku.
+  difficulty: 3
+- name: Przedziały stałego znaku (znak funkcji)
+  description: Zbiory argumentów, dla których f(x) > 0 (wykres nad osią OX) oraz f(x) < 0 (wykres pod
+    osią OX).
+  explanation: Znak funkcji odczytujemy patrząc, po której stronie osi OX leży wykres. Odpowiedzią jest
+    zbiór ARGUMENTÓW. Granicami tych zbiorów są miejsca zerowe (i końce dziedziny).
+  difficulty: 2
+- name: Rozwiązywanie nierówności f(x) > a (≥, <, ≤) z wykresu
+  description: Zbiór argumentów, dla których wykres leży nad (odpowiednio pod) prostą poziomą y = a, ewentualnie
+    razem z punktami wspólnymi wykresu i tej prostej.
+  explanation: 'Rysujemy pomocniczą prostą poziomą y = a, znajdujemy punkty jej przecięcia z wykresem,
+    rzutujemy je na oś OX i odczytujemy, na których kawałkach osi OX wykres jest wyżej (lub niżej). To
+    uogólnienie odczytywania znaku: znak to przypadek a = 0.'
+  difficulty: 3
+- name: Wartość największa i najmniejsza funkcji w przedziale domkniętym
+  description: Wartość największa f w przedziale ⟨p, q⟩ to taka wartość M = f(x0), że f(x) ≤ M dla każdego
+    x ∈ ⟨p, q⟩; analogicznie wartość najmniejsza m z warunkiem f(x) ≥ m.
+  explanation: To zawsze WARTOŚĆ (liczba na osi OY) — najwyższy i najniższy poziom, jaki osiąga rozważany
+    fragment wykresu. Kandydatów szukamy w wierzchołkach wykresu i na końcach przedziału.
+  difficulty: 3
+- name: Argument, dla którego wartość największa (najmniejsza) jest przyjmowana
+  description: Liczba x0 z rozważanego przedziału, dla której f(x0) równa się wartości największej (najmniejszej).
+  explanation: To odpowiedź na pytanie „gdzie?", a nie „ile?". Takich argumentów może być kilka, a nawet
+    cały przedział (gdy wykres ma poziomy odcinek na najniższym poziomie).
+  difficulty: 3
+- name: Kropka pełna i kropka pusta na wykresie
+  description: Kropka pełna oznacza, że punkt należy do wykresu; kropka pusta (kółeczko) — że dany punkt
+    do wykresu nie należy, choć wykres do niego „dochodzi".
+  explanation: To one decydują o tym, czy w opisie dziedziny, zbioru wartości czy rozwiązania nierówności
+    użyć nawiasu ostrego ⟨ ⟩ czy okrągłego ( ). Przy kropce pustej wartość graniczna nie jest przyjmowana,
+    więc wartość największa/najmniejsza może w ogóle nie istnieć.
+  difficulty: 3
+- name: Nieistnienie wartości największej lub najmniejszej
+  description: Sytuacja, w której wykres zbliża się do pewnego poziomu, ale nigdy go nie osiąga (np. przez
+    kropkę pustą lub przedział otwarty).
+  explanation: 'Pytanie brzmi zawsze: czy wśród przyjmowanych wartości jest wartość skrajna? Jeśli funkcja
+    rośnie na przedziale (0, 4⟩, to największa wartość istnieje (dla x = 4), ale najmniejszej nie ma,
+    bo 0 nie należy do dziedziny.'
+  difficulty: 4
+- name: Rozwiązywanie równania f(x) = b z wykresu
+  description: Zbiór argumentów, w których wykres przecina prostą poziomą y = b.
+  explanation: Liczba rozwiązań to liczba punktów wspólnych wykresu z tą prostą. To bardzo częsty sposób
+    pytania „dla ilu argumentów funkcja przyjmuje wartość b".
+  difficulty: 2
+formulas:
+- name: Warunek należenia punktu do wykresu
+  latex_raw: P=(a,b)\in \text{wykres } f \iff a\in D_f \ \text{oraz}\ b=f(a)
+  conditions: f — funkcja o dziedzinie D_f
+  description: 'Podstawa każdego odczytu: pierwsza współrzędna to argument, druga to wartość.'
+- name: Dziedzina jako rzut wykresu
+  latex_raw: D_f=\{x\in\mathbb{R}:\ \text{prosta pionowa przechodząca przez } (x,0) \text{ ma punkt wspólny
+    z wykresem}\}
+  conditions: dla dowolnego wykresu funkcji
+- name: Zbiór wartości jako rzut wykresu
+  latex_raw: ZW_f=\{y\in\mathbb{R}:\ \text{prosta pozioma } y=\text{const ma punkt wspólny z wykresem}\}
+  conditions: dla dowolnego wykresu funkcji
+- name: Miejsce zerowe
+  latex_raw: x_0 \text{ jest miejscem zerowym} \iff x_0\in D_f \ \text{i}\ f(x_0)=0
+  conditions: punkt (x_0,0) leży na wykresie
+- name: Definicja monotoniczności
+  latex_raw: \text{f rosnąca w } I:\ \forall_{x_1,x_2\in I}\ x_1<x_2\Rightarrow f(x_1)<f(x_2);\qquad \text{f
+    malejąca w } I:\ \forall_{x_1,x_2\in I}\ x_1<x_2\Rightarrow f(x_1)>f(x_2)
+  conditions: I — przedział zawarty w dziedzinie
+- name: Funkcja niemalejąca / nierosnąca
+  latex_raw: \text{niemalejąca}:\ x_1<x_2\Rightarrow f(x_1)\le f(x_2);\qquad \text{nierosnąca}:\ x_1<x_2\Rightarrow
+    f(x_1)\ge f(x_2)
+  conditions: I — przedział zawarty w dziedzinie
+  description: Takie funkcje mogą mieć fragmenty stałe.
+- name: Zbiory stałego znaku
+  latex_raw: '\{x: f(x)>0\}\ -\ \text{wykres nad OX},\qquad \{x: f(x)<0\}\ -\ \text{wykres pod OX}'
+  conditions: granicami tych zbiorów są miejsca zerowe i końce dziedziny
+- name: Nierówność z prostą poziomą
+  latex_raw: f(x)\ge a \iff \text{punkt } (x,f(x)) \text{ leży na prostej } y=a \text{ lub nad nią}
+  conditions: a — dana liczba rzeczywista, x ∈ D_f
+- name: Wartość największa w przedziale
+  latex_raw: M=\max_{x\in\langle p,q\rangle} f(x) \iff \exists_{x_0\in\langle p,q\rangle} f(x_0)=M \ \text{oraz}\
+    \forall_{x\in\langle p,q\rangle} f(x)\le M
+  conditions: ⟨p, q⟩ ⊂ D_f
+  description: Analogicznie wartość najmniejsza m z nierównością f(x) ≥ m.
+- name: Zbiór wartości na przedziale domkniętym a wartości skrajne
+  latex_raw: f(\langle p,q\rangle)\subseteq \langle m, M\rangle,\quad m=\min f,\ M=\max f
+  conditions: gdy wartości skrajne istnieją; dla wykresu ciągłego zachodzi równość
+methods:
+- name: Odczytywanie dziedziny z wykresu
+  when_to_use: Gdy pytanie brzmi „podaj dziedzinę funkcji, której wykres przedstawiono na rysunku".
+  steps:
+  - Zlokalizuj skrajny lewy i skrajny prawy punkt wykresu.
+  - Zrzutuj je pionowo na oś OX i odczytaj ich pierwsze współrzędne.
+  - Sprawdź, czy na końcach są kropki pełne (nawias ⟨ lub ⟩), czy puste (nawias ( lub )), czy strzałki
+    (przedział nieograniczony).
+  - Sprawdź, czy w środku wykresu nie ma przerwy — jeśli jest, dziedzina jest sumą przedziałów.
+  - Zapisz odpowiedź jako przedział lub sumę przedziałów, np. D = ⟨-4, 1) ∪ ⟨2, 5⟩.
+- name: Odczytywanie zbioru wartości z wykresu
+  when_to_use: Gdy trzeba podać zbiór wartości (ZW) funkcji przedstawionej wykresem.
+  steps:
+  - Znajdź najniżej i najwyżej położony punkt wykresu.
+  - Zrzutuj je poziomo na oś OY i odczytaj drugie współrzędne.
+  - Ustal, czy te skrajne wartości są przyjmowane (kropka pełna) czy nie (kropka pusta).
+  - Sprawdź, czy wykres pokrywa wszystkie poziomy pomiędzy — jeśli nie (skok, luka), rozbij zbiór wartości
+    na sumę przedziałów lub dopisz pojedyncze wartości.
+  - Zapisz odpowiedź jako zbiór liczb na osi OY.
+- name: Odczytywanie miejsc zerowych
+  when_to_use: Gdy pytanie dotyczy miejsc zerowych, rozwiązań równania f(x)=0 lub punktów przecięcia z
+    osią OX.
+  steps:
+  - Znajdź wszystkie punkty wspólne wykresu z osią OX.
+  - Odczytaj ich pierwsze współrzędne (odcięte).
+  - Sprawdź, czy wykres nie leży na osi OX na całym odcinku — wtedy miejscem zerowym jest każdy argument
+    z tego przedziału.
+  - Zapisz odpowiedź jako liczby (nie punkty), np. x = -2,5 oraz x = 1,5.
+- name: Wyznaczanie przedziałów monotoniczności
+  when_to_use: Gdy trzeba podać, w jakich przedziałach funkcja rośnie, maleje lub jest stała.
+  steps:
+  - Prowadź wzrok wzdłuż wykresu od lewej do prawej.
+  - 'Zaznacz argumenty, w których wykres zmienia charakter: szczyty, doliny, początki i końce odcinków
+    poziomych, końce dziedziny.'
+  - Podziel dziedzinę tymi argumentami na kolejne przedziały.
+  - 'Dla każdego przedziału określ: wykres się wznosi (rosnąca), opada (malejąca), jest poziomy (stała).'
+  - Zapisz odpowiedź osobno dla każdego przedziału, używając przedziałów domkniętych tam, gdzie punkt
+    należy do dziedziny — nigdy nie łącz przedziałów monotoniczności znakiem sumy.
+- name: Odczytywanie przedziałów stałego znaku
+  when_to_use: 'Gdy pytanie brzmi: dla jakich argumentów funkcja przyjmuje wartości dodatnie / ujemne
+    / nieujemne / niedodatnie.'
+  steps:
+  - Wyznacz miejsca zerowe — one dzielą dziedzinę na kawałki.
+  - Na każdym kawałku sprawdź, czy wykres jest nad osią OX (wartości dodatnie), czy pod nią (ujemne).
+  - Zbierz kawałki tego samego znaku w sumę przedziałów.
+  - 'Zdecyduj o nawiasach: przy ostrej nierówności (>0, <0) miejsca zerowe wykluczamy, przy nieostrej
+    (≥0, ≤0) dołączamy; końce dziedziny dołączamy, jeśli należą do dziedziny.'
+  - Zapisz odpowiedź jako zbiór argumentów.
+- name: Rozwiązywanie nierówności f(x) ≥ a (lub ≤ a) z wykresu
+  when_to_use: Gdy pytanie dotyczy argumentów, dla których wartości funkcji są większe (nie mniejsze)
+    lub mniejsze (nie większe) od danej liczby a.
+  steps:
+  - Narysuj (lub wyobraź sobie) prostą poziomą y = a.
+  - Znajdź wszystkie punkty wspólne tej prostej z wykresem i zrzutuj je na oś OX — otrzymasz punkty graniczne.
+  - Ustal, na których kawałkach osi OX wykres leży nad prostą (dla ≥, >) lub pod nią (dla ≤, <).
+  - Dołącz punkty graniczne, jeśli nierówność jest nieostra; pomiń je przy nierówności ostrej.
+  - Uwzględnij dziedzinę i zapisz odpowiedź jako sumę przedziałów argumentów.
+- name: Wyznaczanie wartości największej i najmniejszej w przedziale domkniętym
+  when_to_use: Gdy trzeba podać największą/najmniejszą wartość funkcji w danym przedziale ⟨p, q⟩ oraz
+    argumenty, dla których jest przyjmowana.
+  steps:
+  - Ogranicz uwagę wyłącznie do fragmentu wykresu nad przedziałem ⟨p, q⟩ (zasłoń resztę).
+  - 'Wypisz kandydatów: wartości na końcach f(p) i f(q) oraz wartości w wierzchołkach (szczytach i dolinach)
+    leżących wewnątrz przedziału.'
+  - 'Porównaj te wartości: największa z nich to wartość największa M, najmniejsza to wartość najmniejsza
+    m.'
+  - Odczytaj wszystkie argumenty x, dla których wykres osiąga poziom M, i wszystkie, dla których osiąga
+    poziom m (może być ich kilka lub cały przedział).
+  - 'Zapisz odpowiedź w formie: wartość największa wynosi M i jest przyjmowana dla x = ...; wartość najmniejsza
+    wynosi m i jest przyjmowana dla x = ...'
+  - 'Sprawdź kropki puste: jeśli skrajny poziom nie jest osiągany, napisz, że dana wartość nie istnieje.'
+- name: Pełny opis własności funkcji z wykresu (procedura kompletna)
+  when_to_use: Gdy polecenie brzmi „odczytaj z wykresu własności funkcji" i wymaga kilku odpowiedzi naraz.
+  steps:
+  - Dziedzina — rzut na OX (z uwzględnieniem kropek).
+  - Zbiór wartości — rzut na OY.
+  - Miejsca zerowe — punkty wspólne z OX.
+  - Znak funkcji — nad/pod osią OX.
+  - Monotoniczność — kolejne przedziały wzrostu, spadku, stałości.
+  - Wartości skrajne w podanym przedziale wraz z argumentami.
+  - 'Na koniec sprawdź spójność: miejsca zerowe muszą leżeć w dziedzinie, wartości skrajne muszą należeć
+    do zbioru wartości.'
+examples:
+- statement: 'Funkcja f jest określona dla x ∈ ⟨-4, 5⟩, a jej wykresem jest łamana o kolejnych wierzchołkach:
+    A(-4, 3), B(-2, -1), C(1, -1), D(3, 3), E(5, 1) (końce zaznaczone kropkami pełnymi). Odczytaj: dziedzinę,
+    zbiór wartości, miejsca zerowe oraz przedziały monotoniczności.'
+  worked_solution: |-
+    Dziedzina: skrajne punkty wykresu mają odcięte -4 i 5, oba z kropkami pełnymi, wykres jest nieprzerwany, więc D = ⟨-4, 5⟩.
+
+    Zbiór wartości: najniżej wykres leży na poziomie y = -1 (odcinek BC), najwyżej na poziomie y = 3 (punkty A i D). Wykres jest ciągły i pokrywa wszystkie poziomy pomiędzy, więc ZW = ⟨-1, 3⟩.
+
+    Miejsca zerowe: szukamy punktów wspólnych z osią OX. Na odcinku AB wykres schodzi z poziomu 3 do -1, więc przecina oś OX; odcinek AB ma równanie y = 3 - 2(x + 4) = -2x - 5, zatem -2x - 5 = 0 daje x = -2,5. Na odcinku CD wykres wznosi się z -1 do 3; jego równanie to y = -1 + 2(x - 1) = 2x - 3, więc 2x - 3 = 0 daje x = 1,5. Odcinek DE ma wartości od 3 do 1, czyli dodatnie — nie daje miejsc zerowych. Miejsca zerowe: x = -2,5 oraz x = 1,5.
+
+    Monotoniczność: od A do B wykres opada — f maleje w ⟨-4, -2⟩; od B do C wykres jest poziomy — f jest stała w ⟨-2, 1⟩; od C do D wykres się wznosi — f rośnie w ⟨1, 3⟩; od D do E wykres opada — f maleje w ⟨3, 5⟩.
+  difficulty: 2
+- statement: 'Dla funkcji f z poprzedniego przykładu (łamana o wierzchołkach A(-4,3), B(-2,-1), C(1,-1),
+    D(3,3), E(5,1)) wyznacz: (a) zbiór argumentów, dla których f(x) < 0; (b) rozwiązanie nierówności f(x)
+    ≥ 2; (c) wartość największą i najmniejszą funkcji w przedziale ⟨0, 4⟩ oraz argumenty, dla których
+    są przyjmowane.'
+  worked_solution: |-
+    (a) Miejsca zerowe to -2,5 i 1,5. Między nimi wykres leży pod osią OX (np. cały odcinek BC na poziomie -1), a na zewnątrz — nad osią. Zatem f(x) < 0 dla x ∈ (-2,5; 1,5). (Dla porządku: f(x) > 0 dla x ∈ ⟨-4; -2,5) ∪ (1,5; 5⟩.)
+
+    (b) Rysujemy prostą y = 2. Przecina ona wykres na odcinku CD: 2x - 3 = 2, czyli x = 2,5, oraz na odcinku DE, którego równanie to y = 3 - (x - 3) = 6 - x: 6 - x = 2, czyli x = 4. Na lewo od x = 2,5 wykres jest poniżej prostej y = 2, między 2,5 a 4 — na niej lub nad nią, na prawo od 4 — poniżej. Nierówność jest nieostra, więc końce dołączamy: f(x) ≥ 2 dla x ∈ ⟨2,5; 4⟩.
+
+    (c) Ograniczamy się do fragmentu nad przedziałem ⟨0, 4⟩. Kandydaci: f(0) = -1 (odcinek BC), wierzchołek D: f(3) = 3, koniec f(4) = 6 - 4 = 2, oraz „dolina" — cały odcinek poziomy dla x ∈ ⟨0, 1⟩ o wartości -1. Największa z tych wartości to 3, najmniejsza to -1.
+    Wartość największa wynosi 3 i jest przyjmowana dla x = 3. Wartość najmniejsza wynosi -1 i jest przyjmowana dla każdego x ∈ ⟨0, 1⟩.
+  difficulty: 3
+- statement: 'Na rysunku przedstawiono fragment wykresu funkcji kwadratowej g(x) = (x - 2)² - 4 narysowany
+    dla x ∈ ⟨-1, 5⟩ (oba końce z kropkami pełnymi). Odczytaj: zbiór wartości, miejsca zerowe, przedziały
+    monotoniczności, zbiór rozwiązań nierówności g(x) ≤ 0 oraz wartość najmniejszą i największą w przedziale
+    ⟨-1, 5⟩ wraz z argumentami.'
+  worked_solution: |-
+    Wierzchołek paraboli to W(2, -4) — najniższy punkt wykresu. Końce: g(-1) = (-3)² - 4 = 5, g(5) = 3² - 4 = 5.
+
+    Zbiór wartości: wykres schodzi od poziomu 5 do -4 i wraca do 5, pokrywając wszystko pomiędzy, więc ZW = ⟨-4, 5⟩.
+
+    Miejsca zerowe: punkty wspólne z osią OX. (x - 2)² - 4 = 0 ⟺ (x - 2)² = 4 ⟺ x = 0 lub x = 4. Oba należą do ⟨-1, 5⟩, więc miejsca zerowe to 0 i 4.
+
+    Monotoniczność: na lewo od wierzchołka wykres opada, na prawo wznosi się. Zatem g maleje w ⟨-1, 2⟩ i rośnie w ⟨2, 5⟩.
+
+    Nierówność g(x) ≤ 0: wykres leży na osi OX lub pod nią między miejscami zerowymi. Nierówność nieostra, więc końce dołączamy: x ∈ ⟨0, 4⟩.
+
+    Wartości skrajne w ⟨-1, 5⟩: najniższy punkt to wierzchołek — wartość najmniejsza wynosi -4 i jest przyjmowana dla x = 2. Najwyższy poziom to 5, osiągany na obu końcach — wartość największa wynosi 5 i jest przyjmowana dla x = -1 oraz dla x = 5 (dwa argumenty!).
+  difficulty: 3
+- statement: 'Wykres funkcji h składa się z dwóch odcinków: odcinka od punktu (-3, 1) [kropka pełna] do
+    punktu (1, 3) [kropka pusta] oraz odcinka od punktu (2, -2) [kropka pełna] do punktu (5, 4) [kropka
+    pusta]. Odczytaj dziedzinę, zbiór wartości, miejsca zerowe i przedziały monotoniczności. Następnie
+    zbadaj, czy w przedziale ⟨2, 5) istnieje wartość największa i najmniejsza funkcji h.'
+  worked_solution: |-
+    Dziedzina: pierwszy odcinek daje argumenty od -3 (włącznie, kropka pełna) do 1 (bez, kropka pusta); drugi od 2 (włącznie) do 5 (bez). Między 1 a 2 wykresu nie ma. Zatem D = ⟨-3, 1) ∪ ⟨2, 5).
+
+    Zbiór wartości: pierwszy odcinek wznosi się od 1 do 3, przy czym 3 nie jest przyjmowane — daje wartości ⟨1, 3). Drugi wznosi się od -2 do 4, przy czym 4 nie jest przyjmowane — daje ⟨-2, 4). Suma: ⟨-2, 4) ∪ ⟨1, 3) = ⟨-2, 4). Zatem ZW = ⟨-2, 4).
+
+    Miejsca zerowe: pierwszy odcinek leży w całości nad osią OX (wartości od 1 do 3), więc nie daje miejsc zerowych. Drugi odcinek prowadzi od (2, -2) do (5, 4): jego równanie to y = -2 + 2(x - 2) = 2x - 6, a 2x - 6 = 0 daje x = 3. Miejsce zerowe: x = 3.
+
+    Monotoniczność: h rośnie w ⟨-3, 1) i rośnie w ⟨2, 5). Zapisujemy to jako dwa osobne przedziały — nie wolno napisać, że h rośnie w ⟨-3, 1) ∪ ⟨2, 5), bo np. dla x₁ = 0,9 i x₂ = 2 mamy x₁ < x₂, ale h(x₁) ≈ 2,95 > h(x₂) = -2, co przeczy definicji funkcji rosnącej.
+
+    Wartości skrajne w ⟨2, 5): fragment wykresu nad tym przedziałem rośnie od h(2) = -2 do poziomu bliskiego 4, ale 4 nie jest przyjmowane (kropka pusta). Wartość najmniejsza istnieje i wynosi -2, jest przyjmowana dla x = 2. Wartość największa nie istnieje: dla każdego argumentu z ⟨2, 5) można znaleźć argument bliższy 5, dla którego wartość jest większa.
+  difficulty: 4
+objectives:
+- statement: Odczytać z wykresu wartość funkcji dla danego argumentu oraz wskazać wszystkie argumenty,
+    dla których funkcja przyjmuje daną wartość.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć z wykresu dziedzinę funkcji, poprawnie interpretując kropki pełne, kropki puste
+    i przerwy w wykresie.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć z wykresu zbiór wartości funkcji, w tym w przypadku wykresu złożonego z kilku fragmentów.
+  bloom_level: Zastosowanie
+- statement: Odczytać miejsca zerowe funkcji i zapisać je jako liczby, odróżniając je od punktów przecięcia
+    wykresu z osiami układu.
+  bloom_level: Zrozumienie
+- statement: Wskazać przedziały, w których funkcja jest rosnąca, malejąca lub stała, i zapisać je jako
+    oddzielne przedziały zgodnie z definicją monotoniczności.
+  bloom_level: Analiza
+- statement: Odczytać z wykresu przedziały, w których funkcja przyjmuje wartości dodatnie, ujemne, nieujemne
+    lub niedodatnie.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać graficznie nierówności postaci f(x) > a, f(x) ≥ a, f(x) < a, f(x) ≤ a, posługując
+    się prostą poziomą y = a i poprawnie dobierając nawiasy przedziałów.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć wartość największą i najmniejszą funkcji w zadanym przedziale domkniętym oraz podać
+    wszystkie argumenty, dla których te wartości są przyjmowane.
+  bloom_level: Analiza
+- statement: Ocenić, czy w danym przedziale wartość największa lub najmniejsza funkcji istnieje, i uzasadnić
+    odpowiedź, odwołując się do otwartości przedziału lub kropek pustych.
+  bloom_level: Ocena
+- statement: Sporządzić pełny, uporządkowany opis własności funkcji na podstawie jej wykresu i sprawdzić
+    spójność odczytanych informacji.
+  bloom_level: Synteza
+misconceptions:
+- name: Mylenie dziedziny ze zbiorem wartości
+  incorrect_reasoning: „Dziedzina to zbiór wartości funkcji, więc odczytuję ją z osi OY."
+  correct_reasoning: 'Dziedzina to zbiór ARGUMENTÓW — odczytujemy ją z osi OX (rzut poziomy wykresu na
+    oś odciętych). Zbiór wartości odczytujemy z osi OY. Pomocne hasło: „x — dziedzina, y — wartości".'
+  severity: 5
+- name: Podawanie miejsca zerowego jako punktu
+  incorrect_reasoning: „Wykres przecina oś OX w punkcie (3, 0), więc miejscem zerowym jest (3, 0)."
+  correct_reasoning: 'Miejsce zerowe to liczba — argument, dla którego wartość funkcji wynosi 0. Poprawna
+    odpowiedź: x = 3. Punkt (3, 0) to punkt przecięcia wykresu z osią OX, a nie miejsce zerowe.'
+  severity: 3
+- name: Miejsce zerowe utożsamiane z przecięciem osi OY
+  incorrect_reasoning: „Wykres przecina oś OY w punkcie (0, -5), więc miejsce zerowe to -5."
+  correct_reasoning: Punkt przecięcia z osią OY to wartość f(0), czyli tutaj f(0) = -5. Miejsca zerowe
+    znajdujemy na osi OX, tam gdzie y = 0.
+  severity: 4
+- name: Łączenie przedziałów monotoniczności sumą zbiorów
+  incorrect_reasoning: „Funkcja maleje w ⟨-4, -2⟩ i maleje w ⟨3, 5⟩, więc maleje w ⟨-4, -2⟩ ∪ ⟨3, 5⟩."
+  correct_reasoning: 'Monotoniczność definiujemy w PRZEDZIALE. Sumę zbiorów można łatwo obalić: biorąc
+    x₁ z pierwszego i x₂ z drugiego kawałka, warunek x₁ < x₂ ⟹ f(x₁) > f(x₂) zwykle nie zachodzi. Zawsze
+    wypisujemy przedziały monotoniczności oddzielnie.'
+  severity: 4
+- name: Mylenie wartości największej z argumentem
+  incorrect_reasoning: „Największa wartość funkcji w ⟨0, 4⟩ jest osiągana dla x = 3, więc największa wartość
+    to 3."
+  correct_reasoning: 'Wartość to liczba na osi OY, argument to liczba na osi OX. Jeśli wykres w x = 3
+    sięga poziomu y = 5, to wartość największa wynosi 5 i jest przyjmowana dla argumentu x = 3. Zawsze
+    rozdzielaj odpowiedzi: „ile" i „dla jakiego x".'
+  severity: 5
+- name: Podawanie rozwiązania nierówności f(x) > a jako zbioru wartości
+  incorrect_reasoning: „f(x) > 2 dla wartości od 2 do 3, więc odpowiedź to (2, 3⟩ na osi OY."
+  correct_reasoning: Rozwiązaniem nierówności jest zbiór ARGUMENTÓW x, dla których wykres leży nad prostą
+    y = 2. Punkty przecięcia z prostą rzutujemy na oś OX i to ich odcięte tworzą przedziały odpowiedzi.
+  severity: 5
+- name: Ignorowanie kropek pustych i pełnych
+  incorrect_reasoning: „Wykres kończy się nad x = 5, więc dziedzina to ⟨-3, 5⟩, a wartość największa to
+    wartość w punkcie końcowym."
+  correct_reasoning: 'Kropka pusta oznacza, że punkt NIE należy do wykresu: dziedzina to ⟨-3, 5), a wartość
+    „graniczna" nie jest przyjmowana — wartość największa może wtedy w ogóle nie istnieć. Zawsze sprawdzaj
+    typ kropki przed wyborem nawiasu.'
+  severity: 4
+- name: Przekonanie, że wartość największa istnieje zawsze
+  incorrect_reasoning: „W każdym przedziale funkcja ma wartość największą i najmniejszą, wystarczy popatrzeć
+    na końce."
+  correct_reasoning: 'Gwarancję (dla wykresu ciągłego) daje dopiero przedział DOMKNIĘTY zawarty w dziedzinie.
+    Przy przedziale otwartym lub przy kropce pustej wartość skrajna może nie być osiągana i wtedy poprawną
+    odpowiedzią jest: „nie istnieje".'
+  severity: 4
+- name: Uznawanie funkcji stałej za rosnącą lub malejącą
+  incorrect_reasoning: '„Na poziomym odcinku funkcja nie maleje, więc jest rosnąca (albo: rośnie w słabym
+    sensie)."'
+  correct_reasoning: Funkcja stała nie jest ani rosnąca, ani malejąca — spełnia tylko warunki niemalejąca
+    i nierosnąca jednocześnie. W opisie monotoniczności odcinek poziomy podajemy jako przedział, w którym
+    funkcja jest stała.
+  severity: 3
+- name: Zapominanie o jednej gałęzi przy odczycie znaku lub wartości skrajnych
+  incorrect_reasoning: „Wartość największa 5 jest przyjmowana dla x = -1" — mimo że wykres sięga poziomu
+    5 również dla x = 5.
+  correct_reasoning: Trzeba podać WSZYSTKIE argumenty, dla których osiągany jest dany poziom — może ich
+    być kilka, a przy odcinku poziomym cały przedział. Po odczytaniu poziomu M przeciągnij wzdłuż prostej
+    y = M i policz punkty wspólne z wykresem.
+  severity: 3
+- name: Odczyt wartości „w drugą stronę"
+  incorrect_reasoning: „Aby odczytać f(2), znajduję 2 na osi OY i idę poziomo do wykresu."
+  correct_reasoning: 'f(2) to wartość dla argumentu 2: startujemy z liczby 2 na osi OX, idziemy pionowo
+    do wykresu, potem poziomo do OY. Ruch od osi OY odpowiada rozwiązywaniu równania f(x) = 2, czyli szukaniu
+    argumentów.'
+  severity: 4
+- name: Mylenie nierówności ostrej z nieostrą przy zapisie przedziałów
+  incorrect_reasoning: „f(x) ≥ 0 dla x ∈ (0, 4), bo w 0 i 4 funkcja jest równa zero, a zero nie jest dodatnie."
+  correct_reasoning: 'Warunek „nie mniejsze niż 0" obejmuje także wartość 0, więc miejsca zerowe dołączamy:
+    x ∈ ⟨0, 4⟩. Nawias otwarty stosujemy tylko przy nierówności ostrej f(x) > 0.'
+  severity: 3

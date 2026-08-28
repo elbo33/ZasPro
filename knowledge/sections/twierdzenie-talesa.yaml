@@ -1,0 +1,348 @@
+section: twierdzenie-talesa
+name: Twierdzenie Talesa
+scope: 'Thales'' theorem and its converse: parallel lines cut proportional segments on two transversals;
+  using it to find unknown lengths, and the intercept theorem in a triangle.'
+requirements:
+- VIII.7
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:29:32.572131'
+  approved_at: '2026-08-28T18:28:24.496309'
+  approved_by: reviewer
+concepts:
+- name: Proste równoległe i transwersala
+  description: Dwie proste na płaszczyźnie są równoległe (zapis k ∥ l), gdy nie mają punktu wspólnego
+    lub pokrywają się. Prostą, która przecina inne proste, nazywamy transwersalą (sieczną).
+  explanation: 'W twierdzeniu Talesa mamy zawsze dwie „role”: proste równoległe, które kroją, oraz dwie
+    sieczne, które są krojone. Zanim zaczniesz liczyć, ustal na rysunku, które proste są równoległe (na
+    rysunku zaznacza się to strzałkami), a które są siecznymi.'
+  difficulty: 1
+- name: Odcinki proporcjonalne
+  description: 'Odcinki a, b oraz c, d nazywamy proporcjonalnymi, gdy a/b = c/d, czyli gdy ich stosunki
+    są równe (równoważnie: a·d = b·c).'
+  explanation: Proporcjonalność to równość stosunków, a nie równość długości. Ten sam stosunek 2/3 mają
+    pary 2 i 3, 4 i 6, 10 i 15 — dlatego z proporcji zawsze da się wyznaczyć jedną niewiadomą, gdy znamy
+    trzy pozostałe wielkości.
+  difficulty: 1
+- name: Odcinki odpowiadające sobie
+  description: Odcinki wyznaczone na obu siecznych przez tę samą parę prostych równoległych (lub przez
+    punkt przecięcia siecznych i tę samą prostą równoległą).
+  explanation: 'To najważniejsze pojęcie techniczne całego działu. Proporcję wolno zapisać tylko wtedy,
+    gdy po obu stronach znaku równości stoją odcinki „w tej samej roli”: część do części, całość do całości,
+    część do całości — ale zawsze konsekwentnie na jednej i drugiej siecznej.'
+  difficulty: 2
+- name: Twierdzenie Talesa (wersja w kącie)
+  description: Jeżeli ramiona kąta o wierzchołku O przetniemy dwiema prostymi równoległymi, przecinającymi
+    jedno ramię w punktach A, B, a drugie w punktach A′, B′ (przy czym A i A′ leżą na tej samej prostej
+    równoległej), to |OA|/|OB| = |OA′|/|OB′|.
+  explanation: 'Myśl o tym jak o „skalowaniu”: przesuwając prostą równoległą wzdłuż kąta, wydłużasz oba
+    odcinki od wierzchołka w tym samym stosunku. Wierzchołek kąta jest punktem odniesienia — od niego
+    mierzysz.'
+  difficulty: 2
+- name: Twierdzenie Talesa (wersja z wiązką prostych równoległych)
+  description: 'Jeżeli trzy (lub więcej) proste równoległe przecinają dwie sieczne, to odcinki wyznaczone
+    na jednej siecznej są proporcjonalne do odpowiadających im odcinków na drugiej siecznej: |AB|/|BC|
+    = |A′B′|/|B′C′|.'
+  explanation: 'To ta sama treść co wersja w kącie, tylko bez rysowania punktu przecięcia siecznych (sieczne
+    mogą być nawet równoległe — wtedy wszystkie odpowiadające odcinki są równe). Praktyczny obraz: równoległe
+    „linie na kartce w linie” dzielą każdą ukośną kreskę w tym samym stosunku.'
+  difficulty: 2
+- name: Twierdzenie odwrotne do twierdzenia Talesa
+  description: Jeżeli proste przecinające ramiona kąta wyznaczają na nich odcinki proporcjonalne (|OA|/|OB|
+    = |OA′|/|OB′|, przy czym A, B leżą na jednym ramieniu, a A′, B′ na drugim po tej samej stronie wierzchołka),
+    to proste AA′ i BB′ są równoległe.
+  explanation: 'Twierdzenie proste służy do liczenia długości, twierdzenie odwrotne — do uzasadniania
+    równoległości. Uwaga: potrzebne jest założenie, że punkty leżą na ramionach kąta (po tej samej stronie
+    wierzchołka), inaczej wniosek może być fałszywy.'
+  difficulty: 3
+- name: Twierdzenie o odcinku równoległym do boku trójkąta (intercept theorem)
+  description: Jeżeli prosta równoległa do boku BC trójkąta ABC przecina bok AB w punkcie D, a bok AC
+    w punkcie E, to |AD|/|AB| = |AE|/|AC| = |DE|/|BC| oraz |AD|/|DB| = |AE|/|EC|.
+  explanation: 'To najczęściej spotykana konfiguracja: „mały trójkąt ADE w dużym trójkącie ABC”. Kluczowa
+    obserwacja: stosunek odcinka równoległego |DE| do boku |BC| równa się stosunkowi CAŁYCH boków (AD
+    do AB), a nie stosunkowi części do części.'
+  difficulty: 3
+- name: Związek Talesa z podobieństwem trójkątów
+  description: 'W konfiguracji trójkątowej trójkąty ADE i ABC są podobne (cecha kąt-kąt: kąt A wspólny,
+    kąty odpowiadające przy prostych równoległych równe) w skali k = |AD|/|AB|.'
+  explanation: 'Podobieństwo jest „mocniejsze” od samego Talesa: daje proporcję również dla trzeciego
+    boku (DE i BC), której samo twierdzenie Talesa nie dostarcza. Dlatego długość odcinka równoległego
+    liczymy, powołując się na podobieństwo (lub na wersję rozszerzoną twierdzenia).'
+  difficulty: 3
+- name: Konfiguracja „motylka” (proste równoległe po dwóch stronach punktu przecięcia)
+  description: Gdy dwie proste przecinają się w punkcie S, a proste równoległe k ∥ l leżą po przeciwnych
+    stronach S, powstają dwa trójkąty podobne o wspólnym wierzchołku S; odpowiadające sobie odcinki są
+    proporcjonalne.
+  explanation: 'Typowy przykład: trapez z przekątnymi. Trójkąty przy podstawach są podobne, więc |AS|/|SC|
+    = |AB|/|CD|. Formalnie uzasadniamy to podobieństwem (kąty wierzchołkowe i naprzemianległe), a nie
+    „gołym” twierdzeniem Talesa.'
+  difficulty: 4
+- name: Linia środkowa trójkąta
+  description: Odcinek łączący środki dwóch boków trójkąta; jest równoległy do trzeciego boku i ma połowę
+    jego długości.
+  explanation: Szczególny przypadek konfiguracji Talesa dla skali k = 1/2. Warto zapamiętać jako gotowy
+    fakt — pojawia się w zadaniach o polach i obwodach.
+  difficulty: 2
+- name: Podział odcinka w danym stosunku
+  description: Punkt P dzieli odcinek AB w stosunku m:n, gdy |AP|/|PB| = m/n; wtedy |AP| = m/(m+n)·|AB|.
+  explanation: 'Przejście „część:część → część:całość” (dopełnianie proporcji) jest w zadaniach Talesa
+    niezbędne: jeżeli |AD|:|DB| = 2:3, to |AD|:|AB| = 2:5. Wystarczy dodać części.'
+  difficulty: 2
+- name: Własności proporcji
+  description: 'Dla b, d ≠ 0: a/b = c/d ⟺ ad = bc; ponadto a/b = c/d ⟺ b/a = d/c ⟺ a/c = b/d ⟺ (a+b)/b
+    = (c+d)/d.'
+  explanation: Te przekształcenia pozwalają przechodzić między równoważnymi zapisami tej samej proporcji
+    Talesa (np. od „część:część” do „całość:część”), a mnożenie na krzyż zamienia proporcję w zwykłe równanie
+    liniowe.
+  difficulty: 2
+formulas:
+- name: Twierdzenie Talesa – proporcja od wierzchołka
+  latex_raw: \frac{|OA|}{|OB|}=\frac{|OA'|}{|OB'|}
+  conditions: A, B leżą na jednym ramieniu kąta o wierzchołku O, A′, B′ na drugim, AA′ ∥ BB′.
+  description: 'Równoważne zapisy: |OA|/|OA′| = |OB|/|OB′| oraz |OA|·|OB′| = |OB|·|OA′|.'
+- name: Twierdzenie Talesa – proporcja części do części
+  latex_raw: \frac{|OA|}{|AB|}=\frac{|OA'|}{|A'B'|}
+  conditions: Te same założenia; A leży między O i B.
+  description: 'Powstaje z poprzedniej przez odjęcie: |AB| = |OB| − |OA|.'
+- name: Twierdzenie Talesa – wiązka prostych równoległych
+  latex_raw: \frac{|AB|}{|BC|}=\frac{|A'B'|}{|B'C'|}\qquad\text{oraz}\qquad \frac{|AB|}{|AC|}=\frac{|A'B'|}{|A'C'|}
+  conditions: Trzy proste równoległe przecinają dwie sieczne w punktach A, B, C oraz A′, B′, C′ (punkty
+    oznaczone tą samą literą leżą na tej samej równoległej).
+  description: Nie daje żadnej informacji o długościach odcinków |AA′|, |BB′|, |CC′| leżących na prostych
+    równoległych.
+- name: Proporcje w trójkącie (DE ∥ BC)
+  latex_raw: \frac{|AD|}{|AB|}=\frac{|AE|}{|AC|}=\frac{|DE|}{|BC|}
+  conditions: D ∈ AB, E ∈ AC, DE ∥ BC.
+  description: Trzeci człon (z |DE|) wynika z podobieństwa trójkątów ADE i ABC w skali k = |AD|/|AB|.
+- name: Proporcja części odciętych w trójkącie
+  latex_raw: \frac{|AD|}{|DB|}=\frac{|AE|}{|EC|}
+  conditions: D ∈ AB, E ∈ AC, DE ∥ BC.
+  description: 'Uwaga: ten stosunek NIE jest równy |DE|/|BC|.'
+- name: Twierdzenie odwrotne
+  latex_raw: \frac{|AD|}{|DB|}=\frac{|AE|}{|EC|}\ \Longrightarrow\ DE\parallel BC
+  conditions: D leży na boku AB, E leży na boku AC trójkąta ABC (po tej samej stronie wierzchołka A).
+- name: Linia środkowa trójkąta
+  latex_raw: '|DE|=\tfrac{1}{2}|BC|,\quad DE\parallel BC'
+  conditions: D — środek boku AB, E — środek boku AC.
+- name: Trapez z przekątnymi (konfiguracja motylka)
+  latex_raw: \frac{|AS|}{|SC|}=\frac{|BS|}{|SD|}=\frac{|AB|}{|CD|}
+  conditions: ABCD — trapez, AB ∥ CD, S — punkt przecięcia przekątnych AC i BD.
+- name: Podział odcinka w stosunku m:n
+  latex_raw: '|AP|=\frac{m}{m+n}|AB|,\qquad |PB|=\frac{n}{m+n}|AB|'
+  conditions: 'P leży wewnątrz odcinka AB i |AP| : |PB| = m : n.'
+- name: Mnożenie na krzyż
+  latex_raw: \frac{a}{b}=\frac{c}{d}\iff ad=bc
+  conditions: b ≠ 0, d ≠ 0 (długości odcinków są dodatnie, więc warunek jest spełniony automatycznie).
+methods:
+- name: Wyznaczanie nieznanej długości z twierdzenia Talesa
+  when_to_use: 'Gdy na rysunku są proste równoległe przecinające dwie sieczne (najczęściej: prosta równoległa
+    do boku trójkąta) i szukamy długości odcinka na jednej z siecznych.'
+  steps:
+  - Zaznacz na rysunku proste równoległe i sprawdź (lub odczytaj z treści), że rzeczywiście są równoległe.
+  - Wskaż dwie sieczne i punkt ich przecięcia (wierzchołek kąta) — to punkt odniesienia dla wszystkich
+    pomiarów.
+  - Wypisz obok rysunku znane długości; niewiadomą oznacz literą x i zapisz założenie x > 0.
+  - 'Zdecyduj, w jakiej wersji zapiszesz proporcję: część:część czy całość:całość — i trzymaj się jej
+    po obu stronach równości.'
+  - Zapisz proporcję, dbając, by odcinki z jednej siecznej były w jednym „piętrze” obu ułamków (lub konsekwentnie
+    po jednej stronie).
+  - Pomnóż na krzyż, rozwiąż powstałe równanie liniowe.
+  - 'Sprawdź sensowność wyniku (dodatni, zgodny z rysunkiem: krótszy odcinek odpowiada krótszemu) i podaj
+    odpowiedź z jednostką.'
+- name: Przechodzenie między proporcją „część:część” a „część:całość”
+  when_to_use: Gdy dane są podane w jednej konwencji (np. |AD| i |DB|), a potrzebna proporcja wymaga drugiej
+    (np. |AD| i |AB|), lub gdy dany jest stosunek w postaci m:n.
+  steps:
+  - 'Zapisz odcinek całkowity jako sumę części: |AB| = |AD| + |DB|.'
+  - Jeżeli dany jest stosunek |AD|:|DB| = m:n, wprowadź oznaczenia |AD| = m·t, |DB| = n·t, skąd |AB| =
+    (m+n)·t.
+  - Skróć wspólny czynnik t — otrzymasz |AD|:|AB| = m:(m+n).
+  - Podstaw uzyskany stosunek do właściwej proporcji Talesa.
+- name: Obliczanie długości odcinka równoległego do boku trójkąta
+  when_to_use: Gdy szukany odcinek leży na prostej równoległej (np. |DE| przy DE ∥ BC), a nie na siecznej.
+  steps:
+  - Uzasadnij podobieństwo trójkątów ADE i ABC (kąt A wspólny, kąty odpowiadające przy prostych równoległych
+    równe).
+  - Wyznacz skalę podobieństwa k = |AD|/|AB| (koniecznie stosunek CAŁYCH boków, nie części).
+  - Zastosuj |DE| = k·|BC| (analogicznie dla pozostałych odpowiadających elementów, np. obwodów).
+  - Jeżeli dane są tylko części (|AD| i |DB|), najpierw policz |AB| = |AD| + |DB|.
+- name: Sprawdzanie równoległości (twierdzenie odwrotne)
+  when_to_use: Gdy trzeba rozstrzygnąć lub uzasadnić, że dwie proste na rysunku są równoległe, mając dane
+    długości odcinków na dwóch siecznych.
+  steps:
+  - Upewnij się, że punkty leżą na ramionach tego samego kąta (na bokach trójkąta), po tej samej stronie
+    wierzchołka.
+  - Oblicz stosunek odcinków na pierwszej siecznej, np. |AD|/|DB|, i sprowadź go do najprostszej postaci
+    lub ułamka dziesiętnego.
+  - Oblicz odpowiadający stosunek na drugiej siecznej, np. |AE|/|EC|.
+  - 'Porównaj: jeżeli stosunki są równe — proste są równoległe (twierdzenie odwrotne); jeżeli różne —
+    nie są równoległe.'
+  - Zapisz wniosek pełnym zdaniem, powołując się na twierdzenie odwrotne do twierdzenia Talesa.
+- name: Trzy proste równoległe przecięte dwiema siecznymi
+  when_to_use: Gdy w zadaniu występuje wiązka prostych równoległych (np. linie na planie, słupki, drabina)
+    i sieczne nie przecinają się na rysunku.
+  steps:
+  - 'Oznacz punkty przecięcia: A, B, C na pierwszej siecznej i A′, B′, C′ na drugiej, tak by A i A′ leżały
+    na tej samej równoległej.'
+  - 'Ustal, które odcinki sobie odpowiadają: AB ↔ A′B′, BC ↔ B′C′, AC ↔ A′C′.'
+  - Zapisz proporcję |AB|/|BC| = |A′B′|/|B′C′| (lub z całościami) i wstaw dane.
+  - Rozwiąż równanie; pamiętaj, że długości odcinków leżących NA prostych równoległych nie da się z tego
+    twierdzenia wyznaczyć.
+- name: Konstrukcyjny podział odcinka na n równych części
+  when_to_use: Gdy trzeba podzielić dany odcinek AB na n równych części (lub w stosunku m:n) wyłącznie
+    cyrklem i linijką.
+  steps:
+  - Z końca A poprowadź dowolną półprostą, tworzącą z AB kąt ostry.
+  - Odłóż na niej cyrklem n równych odcinków, otrzymując punkty P₁, P₂, …, Pₙ.
+  - Połącz Pₙ z B.
+  - Przez punkty P₁, …, P_{n−1} poprowadź proste równoległe do PₙB; przecinają one AB w punktach dzielących
+    go na n równych części — zgodnie z twierdzeniem Talesa.
+  - Dla podziału w stosunku m:n odkładaj m+n równych odcinków i wybierz punkt odpowiadający P_m.
+examples:
+- statement: W trójkącie ABC punkt D leży na boku AB, a punkt E na boku AC, przy czym DE ∥ BC. Wiadomo,
+    że |AD| = 4 cm, |DB| = 6 cm oraz |AE| = 5 cm. Oblicz |EC|.
+  worked_solution: |-
+    Ponieważ DE ∥ BC, z twierdzenia Talesa odcinki odcięte na ramionach kąta BAC są proporcjonalne:
+    |AD|/|DB| = |AE|/|EC|.
+    Oznaczmy |EC| = x, x > 0. Podstawiamy dane:
+    4/6 = 5/x.
+    Mnożymy na krzyż: 4x = 30, zatem x = 7,5.
+    Sprawdzenie sensowności: 4 < 6 i 5 < 7,5 — punkt leży bliżej wierzchołka A na obu bokach, zgodnie z rysunkiem.
+    Odpowiedź: |EC| = 7,5 cm.
+  difficulty: 1
+- statement: 'Trzy proste równoległe k, l, m przecinają dwie sieczne. Pierwsza sieczna przecina je w punktach
+    A, B, C, a druga w punktach A′, B′, C′ (punkty o tych samych literach leżą na tej samej prostej równoległej).
+    Dane: |AB| = 3, |BC| = 5, |A′B′| = 4,2. Oblicz |B′C′| oraz |A′C′|.'
+  worked_solution: |-
+    Z twierdzenia Talesa dla wiązki prostych równoległych:
+    |AB|/|BC| = |A′B′|/|B′C′|.
+    Niech |B′C′| = x. Wtedy 3/5 = 4,2/x, czyli 3x = 21, więc x = 7.
+    Stąd |A′C′| = |A′B′| + |B′C′| = 4,2 + 7 = 11,2.
+    Kontrola drugą proporcją: |AB|/|AC| = 3/8 = 0,375 oraz |A′B′|/|A′C′| = 4,2/11,2 = 0,375 — zgadza się.
+    Odpowiedź: |B′C′| = 7, |A′C′| = 11,2.
+  difficulty: 2
+- statement: 'W trójkącie ABC punkt D leży na boku AB, punkt E na boku AC. Dane: |AD| = 3, |DB| = 4,5,
+    |AE| = 4, |EC| = 6. Czy proste DE i BC są równoległe? Uzasadnij. Jeżeli tak, oblicz |DE|, wiedząc,
+    że |BC| = 15.'
+  worked_solution: |-
+    Krok 1 (równoległość). Liczymy stosunki odcinków na obu bokach kąta BAC:
+    |AD|/|DB| = 3/4,5 = 2/3,
+    |AE|/|EC| = 4/6 = 2/3.
+    Stosunki są równe, punkty D i E leżą na bokach trójkąta po tej samej stronie wierzchołka A, więc na mocy twierdzenia odwrotnego do twierdzenia Talesa DE ∥ BC.
+    Krok 2 (długość DE). Skala podobieństwa trójkątów ADE i ABC to stosunek CAŁYCH boków:
+    |AB| = 3 + 4,5 = 7,5, k = |AD|/|AB| = 3/7,5 = 0,4 = 2/5.
+    Zatem |DE| = k·|BC| = (2/5)·15 = 6.
+    Odpowiedź: DE ∥ BC oraz |DE| = 6.
+    Uwaga: gdybyśmy błędnie użyli stosunku 2/3 (część do części), otrzymalibyśmy 10 — wynik fałszywy.
+  difficulty: 3
+- statement: W trójkącie ABC prosta równoległa do BC przecina bok AB w punkcie D, a bok AC w punkcie E.
+    Wiadomo, że |AD| = x, |DB| = x + 1, |AE| = 6, |EC| = 9. Oblicz x oraz długość boku AB.
+  worked_solution: |-
+    Z twierdzenia Talesa (DE ∥ BC):
+    |AD|/|DB| = |AE|/|EC|, czyli x/(x+1) = 6/9 = 2/3.
+    Zakładamy x > 0 (długość odcinka), więc mianowniki są dodatnie.
+    Mnożymy na krzyż: 3x = 2(x + 1), 3x = 2x + 2, x = 2.
+    Wtedy |AD| = 2, |DB| = 3, więc |AB| = 2 + 3 = 5.
+    Sprawdzenie: 2/3 = 6/9 ✓.
+    Odpowiedź: x = 2, |AB| = 5.
+  difficulty: 3
+- statement: W trapezie ABCD o podstawach AB i CD zachodzi |AB| = 12 cm, |CD| = 8 cm. Przekątne AC i BD
+    przecinają się w punkcie S. Oblicz |AS| i |SC|, wiedząc, że |AC| = 15 cm.
+  worked_solution: |-
+    Podstawy trapezu są równoległe: AB ∥ CD, a przekątne AC i BD są dwiema siecznymi przecinającymi się w S — mamy konfigurację „motylka”.
+    Trójkąty ABS i CDS są podobne: kąty ASB i CSD są wierzchołkowe (równe), a kąty BAS i DCS są naprzemianległe przy prostych równoległych AB i CD przeciętych sieczną AC (równe). Zatem z cechy kąt-kąt trójkąty są podobne, więc odpowiadające boki są proporcjonalne:
+    |AS|/|SC| = |AB|/|CD| = 12/8 = 3/2.
+    Punkt S dzieli przekątną AC w stosunku 3:2, więc
+    |AS| = 3/(3+2)·|AC| = (3/5)·15 = 9 cm,
+    |SC| = 2/5·15 = 6 cm.
+    Sprawdzenie: 9 + 6 = 15 ✓ oraz 9/6 = 3/2 ✓.
+    Odpowiedź: |AS| = 9 cm, |SC| = 6 cm.
+  difficulty: 4
+objectives:
+- statement: Sformułować twierdzenie Talesa i twierdzenie do niego odwrotne, wskazując wszystkie założenia
+    (równoległość, położenie punktów na ramionach kąta).
+  bloom_level: Zapamiętywanie
+- statement: 'Rozpoznać na rysunku konfigurację Talesa: sieczne, proste równoległe i odcinki odpowiadające
+    sobie.'
+  bloom_level: Rozumienie
+- statement: Zapisać poprawną proporcję dla danej konfiguracji, konsekwentnie w wersji część:część, całość:całość
+    lub część:całość.
+  bloom_level: Stosowanie
+- statement: Obliczyć nieznaną długość odcinka na siecznej, rozwiązując równanie powstałe z proporcji
+    (także gdy niewiadoma występuje w dwóch odcinkach).
+  bloom_level: Stosowanie
+- statement: Wyznaczyć długość odcinka równoległego do boku trójkąta, korzystając ze skali podobieństwa
+    trójkątów.
+  bloom_level: Stosowanie
+- statement: Uzasadnić równoległość dwóch prostych, powołując się na twierdzenie odwrotne do twierdzenia
+    Talesa.
+  bloom_level: Analiza
+- statement: Zastosować twierdzenie Talesa w wersji dla wiązki prostych równoległych przeciętych dwiema
+    siecznymi.
+  bloom_level: Stosowanie
+- statement: Rozwiązać zadanie z konfiguracją „motylka” (np. przekątne trapezu), uzasadniając podobieństwo
+    trójkątów.
+  bloom_level: Analiza
+- statement: Wykorzystać twierdzenie Talesa do podziału odcinka na n równych części lub w danym stosunku,
+    w tym w ujęciu konstrukcyjnym.
+  bloom_level: Stosowanie
+- statement: Ocenić poprawność cudzego rozwiązania zadania z Talesa, wskazując błąd w doborze odcinków
+    odpowiadających sobie.
+  bloom_level: Ocenianie
+- statement: Zastosować twierdzenie o linii środkowej trójkąta jako szczególny przypadek twierdzenia Talesa.
+  bloom_level: Stosowanie
+misconceptions:
+- name: Mieszanie części z całością w proporcji
+  incorrect_reasoning: Skoro DE ∥ BC, to |AD|/|DB| = |DE|/|BC| — np. przy |AD| = 3, |DB| = 4,5, |BC| =
+    15 uczeń liczy |DE| = (2/3)·15 = 10.
+  correct_reasoning: 'Stosunek |DE|/|BC| jest równy skali podobieństwa trójkątów ADE i ABC, czyli stosunkowi
+    CAŁYCH boków: |DE|/|BC| = |AD|/|AB| = 3/7,5 = 2/5, więc |DE| = 6. Stosunek |AD|/|DB| dotyczy tylko
+    odcinków na tej samej siecznej i odpowiada mu |AE|/|EC|.'
+  severity: 5
+- name: Wnioskowanie o odcinkach leżących na prostych równoległych
+  incorrect_reasoning: Skoro |AB|/|BC| = |A′B′|/|B′C′|, to również |AA′|/|BB′| = |AB|/|A′B′| — uczeń „wylicza”
+    odległości między siecznymi.
+  correct_reasoning: Twierdzenie Talesa mówi tylko o odcinkach wyznaczonych NA siecznych. Długości odcinków
+    leżących na prostych równoległych są wyznaczone dopiero w konfiguracji trójkątowej (gdy sieczne przecinają
+    się) i to na mocy podobieństwa trójkątów; przy dowolnej wiązce równoległych nie ma o nich żadnej informacji.
+  severity: 4
+- name: Stosowanie Talesa bez założenia o równoległości
+  incorrect_reasoning: Na rysunku proste „wyglądają na równoległe”, więc od razu piszę proporcję i liczę
+    x.
+  correct_reasoning: Równoległość musi być dana w treści, oznaczona na rysunku (strzałki) albo wcześniej
+    udowodniona (np. twierdzeniem odwrotnym, z równości kątów odpowiadających). Bez niej proporcje nie
+    zachodzą i cały rachunek jest bezwartościowy.
+  severity: 5
+- name: Odwrotna kolejność odcinków po jednej stronie proporcji
+  incorrect_reasoning: Zapis |AD|/|DB| = |EC|/|AE| — uczeń „przerzuca” jeden ułamek, bo na rysunku odcinki
+    są po przeciwnych stronach.
+  correct_reasoning: 'Odcinki muszą sobie odpowiadać: bliższy wierzchołka A do bliższego wierzchołka A,
+    dalszy do dalszego. Poprawnie |AD|/|DB| = |AE|/|EC|. Wolno natomiast odwrócić OBIE strony jednocześnie:
+    |DB|/|AD| = |EC|/|AE|.'
+  severity: 4
+- name: Zapominanie o dopełnieniu przy danych w postaci stosunku
+  incorrect_reasoning: 'Jeżeli |AD| : |DB| = 2 : 3, to |AD| = (2/3)·|AB|.'
+  correct_reasoning: Odcinek AB składa się z 2 + 3 = 5 równych części, więc |AD| = (2/5)·|AB|, a |DB|
+    = (3/5)·|AB|. Wygodnie przyjąć |AD| = 2t, |DB| = 3t.
+  severity: 3
+- name: Nieostrożne stosowanie twierdzenia odwrotnego
+  incorrect_reasoning: Stosunki wyszły równe, więc na pewno proste są równoległe — bez sprawdzenia położenia
+    punktów.
+  correct_reasoning: Twierdzenie odwrotne wymaga, aby punkty leżały na ramionach tego samego kąta po tej
+    samej stronie wierzchołka (np. na bokach trójkąta). Jeśli jeden z punktów leży na przedłużeniu boku,
+    równość stosunków nie gwarantuje równoległości w tej samej konfiguracji.
+  severity: 3
+- name: Błąd rachunkowy przy mnożeniu na krzyż
+  incorrect_reasoning: Z proporcji x/(x+1) = 2/3 uczeń pisze 3x = 2x + 1 albo 3x = 2x·1.
+  correct_reasoning: Mnożenie na krzyż daje 3·x = 2·(x + 1), czyli 3x = 2x + 2 — nawias trzeba rozdzielić
+    przez cały czynnik. Stąd x = 2.
+  severity: 3
+- name: Mylenie twierdzenia Talesa z twierdzeniem o kącie wpisanym opartym na średnicy
+  incorrect_reasoning: „Twierdzenie Talesa mówi, że kąt oparty na średnicy jest prosty” — uczeń stosuje
+    je do zadania z prostymi równoległymi.
+  correct_reasoning: To dwa różne fakty przypisywane Talesowi. W tym dziale chodzi wyłącznie o proporcjonalność
+    odcinków wyznaczonych przez proste równoległe na dwóch siecznych; fakt o kącie opartym na średnicy
+    należy do geometrii okręgu.
+  severity: 2

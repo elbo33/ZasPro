@@ -1,0 +1,348 @@
+section: proste-plaszczyzny-katy-w-przestrzeni
+name: Proste, płaszczyzny i kąty w przestrzeni
+scope: Relative position of lines in space, including skew perpendicular lines; angle between a line and
+  a plane; dihedral angle.
+requirements:
+- X.1
+- X.2
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:19:56.713031'
+  approved_at: '2026-08-28T18:28:20.581318'
+  approved_by: reviewer
+concepts:
+- name: Wzajemne położenie dwóch prostych w przestrzeni
+  description: 'Dwie różne proste w przestrzeni mogą być: przecinające się (mają dokładnie jeden punkt
+    wspólny i leżą w jednej płaszczyźnie), równoległe (leżą w jednej płaszczyźnie i nie mają punktów wspólnych)
+    albo skośne (nie leżą w żadnej wspólnej płaszczyźnie i nie mają punktów wspólnych).'
+  explanation: 'Kluczowe pytanie brzmi: czy istnieje płaszczyzna zawierająca obie proste? Jeśli tak –
+    proste są przecinające się lub równoległe (przypadek ''płaski''). Jeśli nie – są skośne. W bryłach
+    test praktyczny: spróbuj wskazać ścianę lub przekrój, w którym leżą obie proste; jeśli się nie da,
+    proste są skośne.'
+  difficulty: 2
+- name: Proste skośne
+  description: Proste, które nie mają punktu wspólnego i nie są równoległe, tzn. nie istnieje płaszczyzna
+    zawierająca je obie.
+  explanation: 'Sytuacja niemożliwa na płaszczyźnie, typowa dla przestrzeni: np. krawędź podstawy i ''niesąsiadująca''
+    krawędź boczna prostopadłościanu. Brak punktu wspólnego NIE oznacza równoległości.'
+  difficulty: 2
+- name: Kąt między prostymi skośnymi
+  description: Kąt między prostymi skośnymi k i l to kąt między prostymi k' i l' przecinającymi się w
+    dowolnie wybranym punkcie, przy czym k' ∥ k oraz l' ∥ l. Jest to kąt ostry lub prosty.
+  explanation: Przesuwamy jedną z prostych równolegle tak, aby przecięła drugą – zmierzony wtedy kąt nie
+    zależy od wyboru punktu. Dzięki temu ma sens mówienie o prostych skośnych prostopadłych.
+  difficulty: 3
+- name: Proste prostopadłe nieprzecinające się
+  description: Proste skośne, dla których kąt między nimi (po równoległym przesunięciu jednej z nich)
+    wynosi 90°.
+  explanation: 'To pojęcie z wymagania X.1. Przykład w sześcianie ABCDA''B''C''D'': proste AB i CC'' nie
+    mają punktu wspólnego i nie leżą w jednej płaszczyźnie, ale CC'' ∥ BB'', a AB ⊥ BB'', więc AB ⊥ CC''.
+    Prostopadłość w przestrzeni nie wymaga przecięcia.'
+  difficulty: 3
+- name: Wzajemne położenie prostej i płaszczyzny
+  description: 'Prosta może: leżeć w płaszczyźnie (wszystkie punkty wspólne), przecinać płaszczyznę w
+    dokładnie jednym punkcie, albo być do niej równoległa (brak punktów wspólnych).'
+  explanation: 'Wystarczy zbadać liczbę punktów wspólnych: nieskończenie wiele / jeden / zero. Prosta
+    jest równoległa do płaszczyzny, gdy w tej płaszczyźnie istnieje prosta do niej równoległa.'
+  difficulty: 2
+- name: Prosta prostopadła do płaszczyzny
+  description: Prosta k jest prostopadła do płaszczyzny π, gdy jest prostopadła do dwóch przecinających
+    się prostych leżących w π; wtedy jest prostopadła do każdej prostej zawartej w π.
+  explanation: Warunek 'dwóch przecinających się prostych' jest istotny – prostopadłość do jednej prostej
+    nie wystarcza. Stąd wysokość graniastosłupa prostego czy ostrosłupa jest prostopadła do wszystkich
+    prostych podstawy, także skośnych względem niej.
+  difficulty: 3
+- name: Wzajemne położenie dwóch płaszczyzn
+  description: Dwie różne płaszczyzny albo są równoległe (nie mają punktów wspólnych), albo przecinają
+    się wzdłuż prostej zwanej krawędzią.
+  explanation: W przestrzeni nie ma 'skośnych płaszczyzn' – dwie płaszczyzny nigdy nie przecinają się
+    w jednym punkcie.
+  difficulty: 1
+- name: Rzut prostokątny punktu na płaszczyznę
+  description: Rzutem prostokątnym punktu P na płaszczyznę π nazywamy punkt P' będący punktem przecięcia
+    π z prostą przechodzącą przez P i prostopadłą do π (spodek prostopadłej).
+  explanation: P' to 'cień' punktu P przy świetle padającym prostopadle na π. Jeśli P ∈ π, to P' = P.
+    Odcinek PP' jest najkrótszym odcinkiem łączącym P z płaszczyzną.
+  difficulty: 2
+- name: Rzut prostokątny prostej (odcinka) na płaszczyznę
+  description: Zbiór rzutów wszystkich punktów prostej; dla prostej nieprostopadłej do płaszczyzny jest
+    to prosta, dla prostej prostopadłej – punkt.
+  explanation: 'W zadaniach rzutujemy zwykle odcinek: np. rzutem krawędzi bocznej ostrosłupa prawidłowego
+    na podstawę jest odcinek łączący spodek wysokości (środek podstawy) z wierzchołkiem podstawy.'
+  difficulty: 2
+- name: Kąt między prostą a płaszczyzną
+  description: Jeżeli prosta k przecina płaszczyznę π i nie jest do niej prostopadła, to kątem między
+    k a π nazywamy kąt ostry między prostą k a jej rzutem prostokątnym k' na π. Gdy k ⊥ π, kąt wynosi
+    90°; gdy k ∥ π lub k ⊂ π, kąt wynosi 0°.
+  explanation: 'Jest to najmniejszy z kątów, jakie prosta k tworzy z prostymi leżącymi w π. Praktycznie:
+    znajdź punkt przebicia S, wybierz punkt P na prostej, opuść z P prostopadłą do π (spodek P''), a szukany
+    kąt to kąt PSP'' w trójkącie prostokątnym o kącie prostym przy P''.'
+  difficulty: 3
+- name: Twierdzenie o trzech prostych prostopadłych
+  description: Jeżeli prosta l leży w płaszczyźnie π i jest prostopadła do rzutu prostokątnego k' prostej
+    k na π, to l jest prostopadła do k (i odwrotnie).
+  explanation: Narzędzie do uzasadniania prostopadłości w bryłach, np. że apotema ostrosłupa prawidłowego
+    (wysokość ściany bocznej) jest prostopadła do krawędzi podstawy – bo jej rzut, promień okręgu wpisanego,
+    jest do tej krawędzi prostopadły.
+  difficulty: 4
+- name: Kąt dwuścienny
+  description: Figura utworzona przez dwie półpłaszczyzny o wspólnej krawędzi (prostej brzegowej) wraz
+    z częścią przestrzeni między nimi; półpłaszczyzny nazywamy ścianami, ich wspólną prostą – krawędzią
+    kąta dwuściennego.
+  explanation: 'Model: uchylone drzwi – framuga wyznacza krawędź, a skrzydło i ściana to półpłaszczyzny.
+    ''Rozwartość'' drzwi to miara kąta dwuściennego.'
+  difficulty: 2
+- name: Kąt liniowy (płaski) kąta dwuściennego
+  description: 'Kąt otrzymany przez przecięcie kąta dwuściennego płaszczyzną prostopadłą do jego krawędzi;
+    równoważnie: kąt między dwiema półprostymi wychodzącymi z jednego punktu krawędzi, zawartymi w ścianach
+    kąta i prostopadłymi do krawędzi. Jego miara jest miarą kąta dwuściennego.'
+  explanation: 'Najważniejsze słowo: PROSTOPADŁE DO KRAWĘDZI – obie półproste. Miara nie zależy od wyboru
+    punktu na krawędzi. Bez tego warunku otrzymamy przypadkowy kąt, nie miarę kąta dwuściennego.'
+  difficulty: 3
+- name: Kąt między płaszczyznami; płaszczyzny prostopadłe
+  description: Kątem między przecinającymi się płaszczyznami nazywamy kąt ostry lub prosty spośród czterech
+    kątów dwuściennych, jakie one tworzą. Płaszczyzny są prostopadłe, gdy ten kąt ma miarę 90°.
+  explanation: Dwie przecinające się płaszczyzny tworzą pary kątów dwuściennych o miarach α i 180° − α;
+    jako 'kąt między płaszczyznami' bierzemy mniejszy z nich.
+  difficulty: 2
+- name: Elementy ostrosłupa prawidłowego istotne dla kątów
+  description: W ostrosłupie prawidłowym spodkiem wysokości H jest środek podstawy; r – promień okręgu
+    wpisanego w podstawę (odległość środka od krawędzi podstawy), R – promień okręgu opisanego (odległość
+    środka od wierzchołka podstawy), m – apotema (wysokość ściany bocznej), b – krawędź boczna.
+  explanation: 'Powstają dwa podstawowe trójkąty prostokątne: (H, r, m) – daje kąt nachylenia ściany bocznej
+    do podstawy, oraz (H, R, b) – daje kąt nachylenia krawędzi bocznej do podstawy. Rozpoznanie, który
+    trójkąt jest potrzebny, to sedno takich zadań.'
+  difficulty: 3
+formulas:
+- name: Kąt między prostą a płaszczyzną w trójkącie prostokątnym
+  latex_raw: \sin\alpha=\frac{|PP'|}{|PS|},\qquad \cos\alpha=\frac{|SP'|}{|PS|},\qquad \operatorname{tg}\alpha=\frac{|PP'|}{|SP'|}
+  conditions: S – punkt przebicia płaszczyzny π przez prostą, P – punkt prostej, P' – rzut prostokątny
+    P na π; trójkąt PP'S ma kąt prosty przy P'.
+  description: '|PP''| to wysokość (odległość punktu od płaszczyzny), |SP''| to rzut odcinka SP na płaszczyznę.'
+- name: Długość rzutu odcinka na płaszczyznę
+  latex_raw: '|S P''| = |SP|\cos\alpha'
+  conditions: α – kąt nachylenia odcinka SP do płaszczyzny, S leży w płaszczyźnie.
+- name: Przekątne sześcianu o krawędzi a
+  latex_raw: d_{\text{ściany}}=a\sqrt{2},\qquad d_{\text{sześcianu}}=a\sqrt{3}
+  conditions: sześcian o krawędzi a.
+- name: Kąt przekątnej sześcianu z płaszczyzną ściany
+  latex_raw: \operatorname{tg}\alpha=\frac{a}{a\sqrt2}=\frac{\sqrt2}{2}\approx0{,}7071,\quad \alpha\approx35^\circ16'
+  conditions: sześcian o krawędzi a; rzutem przekątnej na ścianę jest przekątna tej ściany.
+- name: Kąt nachylenia krawędzi bocznej ostrosłupa prawidłowego do podstawy
+  latex_raw: \operatorname{tg}\alpha=\frac{H}{R},\qquad \cos\alpha=\frac{R}{b},\qquad \sin\alpha=\frac{H}{b}
+  conditions: ostrosłup prawidłowy, H – wysokość, R – promień okręgu opisanego na podstawie, b – krawędź
+    boczna; b²=H²+R².
+- name: Kąt dwuścienny między ścianą boczną a podstawą ostrosłupa prawidłowego
+  latex_raw: \operatorname{tg}\beta=\frac{H}{r},\qquad \cos\beta=\frac{r}{m},\qquad \sin\beta=\frac{H}{m}
+  conditions: ostrosłup prawidłowy, r – promień okręgu wpisanego w podstawę, m – apotema (wysokość ściany
+    bocznej poprowadzona do krawędzi podstawy); m²=H²+r².
+- name: Promienie dla typowych podstaw
+  latex_raw: \text{kwadrat } a:\ r=\frac a2,\ R=\frac{a\sqrt2}{2};\quad \text{trójkąt równoboczny } a:\
+    r=\frac{a\sqrt3}{6},\ R=\frac{a\sqrt3}{3};\quad \text{sześciokąt foremny } a:\ r=\frac{a\sqrt3}{2},\
+    R=a
+  conditions: a – długość boku wielokąta foremnego będącego podstawą.
+- name: Wysokość trójkąta równobocznego
+  latex_raw: h=\frac{a\sqrt3}{2}
+  conditions: trójkąt równoboczny o boku a; przydatna przy wyznaczaniu r i R oraz kątów liniowych.
+- name: Wartości kątów szczególnych
+  latex_raw: \operatorname{tg}30^\circ=\frac{\sqrt3}{3},\ \operatorname{tg}45^\circ=1,\ \operatorname{tg}60^\circ=\sqrt3
+  conditions: stosowane do rozpoznania miary kąta z obliczonej wartości funkcji trygonometrycznej.
+methods:
+- name: Rozpoznawanie wzajemnego położenia dwóch prostych w bryle
+  when_to_use: Gdy trzeba stwierdzić, czy proste wyznaczone przez krawędzie/przekątne bryły przecinają
+    się, są równoległe czy skośne (i czy są prostopadłe).
+  steps:
+  - Sprawdź, czy proste mają punkt wspólny (np. wspólny wierzchołek bryły) – jeśli tak, są przecinające
+    się.
+  - Jeśli nie, sprawdź, czy istnieje płaszczyzna (ściana, przekrój) zawierająca obie proste – jeśli tak
+    i nie mają punktu wspólnego, są równoległe.
+  - Jeśli nie da się wskazać takiej płaszczyzny, proste są skośne.
+  - Aby zbadać kąt między prostymi skośnymi, przesuń równolegle jedną z nich do punktu leżącego na drugiej
+    (zastąp ją równoległą krawędzią bryły).
+  - Zmierz/oblicz kąt w powstałej konfiguracji płaskiej; wynik 90° oznacza proste prostopadłe nieprzecinające
+    się.
+- name: Wyznaczanie kąta między prostą a płaszczyzną
+  when_to_use: Gdy pytamy o nachylenie krawędzi bocznej, przekątnej bryły lub innego odcinka do płaszczyzny
+    podstawy albo ściany.
+  steps:
+  - Znajdź punkt S przebicia prostej przez płaszczyznę (zwykle wierzchołek bryły leżący w tej płaszczyźnie).
+  - Wybierz na prostej drugi punkt P (drugi koniec odcinka) i wyznacz jego rzut prostokątny P' na płaszczyznę
+    (spodek wysokości).
+  - Narysuj trójkąt PP'S – ma on kąt prosty przy P'; szukany kąt α = ∠PSP'.
+  - Oblicz długości |PP'| (odległość P od płaszczyzny) i |SP'| (rzut) korzystając z własności bryły i
+    twierdzenia Pitagorasa.
+  - Wyznacz α z funkcji trygonometrycznej (najczęściej tangensa) i, jeśli to kąt szczególny, podaj jego
+    miarę.
+- name: Wyznaczanie miary kąta dwuściennego
+  when_to_use: Gdy zadanie mówi o kącie między dwiema ścianami (np. ścianą boczną a podstawą) lub o kącie
+    dwuściennym przy danej krawędzi.
+  steps:
+  - Wskaż krawędź kąta dwuściennego – prostą, wzdłuż której przecinają się obie półpłaszczyzny.
+  - Wybierz na krawędzi dogodny punkt (zwykle środek krawędzi lub punkt, w którym konstrukcja jest najprostsza).
+  - Z tego punktu poprowadź w każdej z półpłaszczyzn półprostą prostopadłą do krawędzi – powstaje kąt
+    liniowy.
+  - Uzasadnij prostopadłość (symetria bryły lub twierdzenie o trzech prostych prostopadłych).
+  - Umieść kąt liniowy w trójkącie prostokątnym (najczęściej z wysokością bryły) i oblicz jego miarę funkcją
+    trygonometryczną.
+- name: Schemat 'dwóch trójkątów' w ostrosłupie prawidłowym
+  when_to_use: Przy zadaniach o kątach nachylenia w ostrosłupie prawidłowym – aby nie pomylić kąta krawędzi
+    bocznej z kątem ściany bocznej.
+  steps:
+  - Zaznacz środek O podstawy – spodek wysokości H.
+  - 'Jeśli pytanie dotyczy krawędzi bocznej: użyj trójkąta (O, wierzchołek podstawy, wierzchołek ostrosłupa)
+    o przyprostokątnych H i R.'
+  - 'Jeśli pytanie dotyczy ściany bocznej (kąt dwuścienny przy krawędzi podstawy): użyj trójkąta (O, środek
+    krawędzi podstawy, wierzchołek ostrosłupa) o przyprostokątnych H i r oraz przeciwprostokątnej m.'
+  - Wyznacz r i R ze wzorów dla wielokąta foremnego w podstawie.
+  - 'Zastosuj tangens: tg α = H/R lub tg β = H/r.'
+- name: Uzasadnianie prostopadłości prostej do płaszczyzny
+  when_to_use: Gdy trzeba wykazać, że dany odcinek jest wysokością bryły lub że pewne proste skośne są
+    prostopadłe.
+  steps:
+  - Wskaż w płaszczyźnie dwie przecinające się proste.
+  - Wykaż, że badana prosta jest prostopadła do każdej z nich (z własności bryły, trójkątów prostokątnych
+    lub równoramiennych).
+  - Wywnioskuj prostopadłość prostej do całej płaszczyzny.
+  - Skorzystaj z tego, że jest ona wtedy prostopadła do każdej prostej tej płaszczyzny – także do prostych,
+    których nie przecina.
+examples:
+- statement: 'W sześcianie ABCDA''B''C''D'' określ wzajemne położenie par prostych: (a) AB i CC'', (b)
+    AB i C''D'', (c) AC i B''D'', (d) AB'' i BC''. W przypadku prostych skośnych sprawdź, czy są prostopadłe.'
+  worked_solution: |-
+    (a) Proste AB i CC' nie mają punktu wspólnego. Nie ma ściany ani płaszczyzny zawierającej obie (AB leży w dolnej podstawie, CC' jest pionowa i nie przecina prostej AB) – są więc skośne. Kąt: CC' ∥ BB', a BB' ⊥ AB (kąt ściany ABB'A'), zatem kąt między AB i CC' wynosi 90°. To przykład prostych prostopadłych nieprzecinających się.
+    (b) AB ∥ C'D', bo AB ∥ CD i CD ∥ C'D'; obie leżą w płaszczyźnie przekroju ABC'D' – proste równoległe.
+    (c) AC leży w dolnej podstawie, B'D' w górnej; nie mają punktu wspólnego i nie leżą w jednej płaszczyźnie – skośne. Przesuwamy B'D' równolegle do dolnej podstawy: B'D' ∥ BD, a AC ⊥ BD (przekątne kwadratu). Zatem AC ⊥ B'D' – kolejna para prostych prostopadłych nieprzecinających się.
+    (d) AB' i BC' nie mają punktu wspólnego (AB' leży w ścianie ABB'A', BC' w ścianie BCC'B'; wspólna jest tylko krawędź BB', do której żadna z nich nie należy w całości, a ich punkty wspólne z BB' to odpowiednio B' i B – różne punkty). Nie ma płaszczyzny zawierającej obie, więc są skośne. Przesuwamy: BC' ∥ AD', a trójkąt AB'D' jest równoboczny (boki to przekątne ścian, każdy równy a√2), więc kąt między AB' i AD' ma 60°. Kąt między prostymi skośnymi AB' i BC' wynosi 60°.
+  difficulty: 2
+- statement: Dany jest sześcian o krawędzi a = 4. Oblicz kąt, jaki przekątna sześcianu AC' tworzy z płaszczyzną
+    podstawy ABCD, oraz kąt, jaki krawędź AC' tworzy z płaszczyzną ściany BCC'B'.
+  worked_solution: |-
+    Kąt z podstawą: punkt przebicia to A. Rzutem punktu C' na płaszczyznę ABCD jest C (bo CC' ⊥ podstawa). Zatem rzutem odcinka AC' jest AC i szukany kąt to α = ∠C'AC w trójkącie prostokątnym ACC' (kąt prosty przy C).
+    |AC| = a√2 = 4√2, |CC'| = 4.
+    tg α = |CC'|/|AC| = 4/(4√2) = √2/2 ≈ 0,7071, więc α ≈ 35°16'.
+    Kąt ze ścianą BCC'B': prosta AC' przebija tę ścianę w punkcie C'. Rzutem punktu A na płaszczyznę BCC'B' jest B, bo AB ⊥ BC i AB ⊥ BB', czyli AB ⊥ płaszczyzna BCC'B'. Rzutem odcinka AC' jest więc BC', a szukany kąt to β = ∠AC'B w trójkącie prostokątnym ABC' (kąt prosty przy B).
+    |BC'| = a√2 = 4√2, |AB| = 4, więc tg β = 4/(4√2) = √2/2 i β ≈ 35°16'.
+    Wniosek: przekątna sześcianu tworzy z każdą ścianą ten sam kąt o mierze ok. 35°16' (bo tg = √2/2).
+  difficulty: 3
+- statement: 'W ostrosłupie prawidłowym czworokątnym krawędź podstawy ma długość 12, a wysokość ostrosłupa
+    wynosi 8. Oblicz: (a) kąt nachylenia ściany bocznej do płaszczyzny podstawy, (b) kąt nachylenia krawędzi
+    bocznej do płaszczyzny podstawy.'
+  worked_solution: |-
+    Oznaczmy podstawę ABCD (kwadrat o boku a = 12), wierzchołek S, środek podstawy O, H = |SO| = 8.
+    (a) Kąt dwuścienny między ścianą boczną SBC a podstawą ma krawędź BC. Niech M będzie środkiem BC. Wtedy OM ⊥ BC (OM jest równoległe do boku kwadratu prostopadłego do BC) oraz SM ⊥ BC (SM to wysokość trójkąta równoramiennego SBC poprowadzona do podstawy BC; wynika to też z twierdzenia o trzech prostych prostopadłych, bo rzutem SM jest OM ⊥ BC). Zatem ∠SMO jest kątem liniowym szukanego kąta dwuściennego β.
+    W trójkącie SOM: |OM| = r = a/2 = 6, |SO| = 8, kąt prosty przy O.
+    tg β = 8/6 = 4/3 ≈ 1,3333, więc β ≈ 53°8'.
+    (Apotema: m = √(64+36) = 10.)
+    (b) Rzutem krawędzi SB na podstawę jest OB, więc kąt nachylenia α = ∠SBO.
+    |OB| = R = a√2/2 = 6√2.
+    tg α = 8/(6√2) = 8√2/12 = (2√2)/3 ≈ 0,9428, więc α ≈ 43°19'.
+    Zauważ, że α < β – kąt krawędzi bocznej jest zawsze mniejszy od kąta ściany bocznej, bo R > r.
+  difficulty: 3
+- statement: W ostrosłupie prawidłowym trójkątnym krawędź podstawy ma długość 6, a ściana boczna jest
+    nachylona do podstawy pod kątem 60°. Oblicz wysokość ostrosłupa oraz kąt nachylenia krawędzi bocznej
+    do podstawy.
+  worked_solution: |-
+    Podstawa ABC – trójkąt równoboczny o boku a = 6, S – wierzchołek, O – środek podstawy (punkt przecięcia wysokości trójkąta).
+    Promień okręgu wpisanego: r = a√3/6 = 6√3/6 = √3.
+    Promień okręgu opisanego: R = a√3/3 = 6√3/3 = 2√3.
+    Kąt dwuścienny ściana–podstawa: niech M – środek krawędzi BC. Wtedy OM ⊥ BC oraz SM ⊥ BC, więc ∠SMO = 60° jest kątem liniowym.
+    W trójkącie prostokątnym SOM: |OM| = r = √3, więc H = |SO| = r·tg60° = √3·√3 = 3.
+    Kąt krawędzi bocznej z podstawą: rzutem SA na podstawę jest OA, |OA| = R = 2√3.
+    tg α = H/R = 3/(2√3) = (3√3)/6 = √3/2 ≈ 0,8660, zatem α ≈ 40°54'.
+    Sprawdzenie sensowności: α < 60°, zgodnie z regułą R > r.
+  difficulty: 4
+- statement: W graniastosłupie prawidłowym czworokątnym ABCDA'B'C'D' krawędź podstawy ma długość a = 6,
+    a wysokość h = 6√2. Oblicz kąt dwuścienny o krawędzi BD między półpłaszczyzną zawierającą trójkąt
+    BDA' a półpłaszczyzną podstawy zawierającą punkt A.
+  worked_solution: |-
+    Niech O będzie środkiem kwadratu ABCD, czyli środkiem przekątnej BD.
+    Krawędzią kąta dwuściennego jest BD. W płaszczyźnie podstawy półprosta OA jest prostopadła do BD (przekątne kwadratu są prostopadłe). W płaszczyźnie trójkąta BDA' odcinek A'O jest wysokością trójkąta równoramiennego BDA' (bo |A'B| = |A'D| jako przekątne przystających ścian bocznych), więc A'O ⊥ BD.
+    Zatem ∠A'OA jest kątem liniowym szukanego kąta dwuściennego.
+    Trójkąt A'AO ma kąt prosty przy A (bo AA' ⊥ płaszczyzna podstawy, a więc AA' ⊥ AO).
+    |AO| = (a√2)/2 = 3√2, |AA'| = 6√2.
+    tg∠A'OA = |AA'|/|AO| = 6√2/(3√2) = 2.
+    Zatem szukany kąt ma miarę arctg 2 ≈ 63°26'.
+    Uwaga metodyczna: gdybyśmy zamiast OA i OA' wzięli np. półproste BA i BA' (nieprostopadłe do BD), otrzymalibyśmy zupełnie inny kąt, niebędący miarą tego kąta dwuściennego.
+  difficulty: 5
+objectives:
+- statement: Wymienić i scharakteryzować możliwe wzajemne położenia dwóch prostych, prostej i płaszczyzny
+    oraz dwóch płaszczyzn w przestrzeni.
+  bloom_level: zapamiętywanie
+- statement: Rozpoznać w konkretnej bryle (sześcian, prostopadłościan, graniastosłup, ostrosłup) pary
+    prostych przecinających się, równoległych i skośnych oraz uzasadnić swoją klasyfikację.
+  bloom_level: rozumienie
+- statement: Wskazać i uzasadnić istnienie prostych prostopadłych nieprzecinających się, wyznaczając kąt
+    między prostymi skośnymi przez równoległe przesunięcie jednej z nich.
+  bloom_level: analiza
+- statement: Wyznaczyć rzut prostokątny punktu i odcinka na daną płaszczyznę w bryle.
+  bloom_level: zastosowanie
+- statement: Zaznaczyć na rysunku i obliczyć miarę kąta między prostą (krawędzią, przekątną) a płaszczyzną,
+    korzystając z odpowiedniego trójkąta prostokątnego i funkcji trygonometrycznych.
+  bloom_level: zastosowanie
+- statement: Zbudować kąt liniowy kąta dwuściennego, poprawnie wskazując krawędź i półproste do niej prostopadłe,
+    oraz obliczyć jego miarę.
+  bloom_level: zastosowanie
+- statement: Odróżnić kąt nachylenia krawędzi bocznej do podstawy od kąta dwuściennego między ścianą boczną
+    a podstawą i dobrać właściwe elementy bryły (r, R, m, b, H) do obliczeń.
+  bloom_level: analiza
+- statement: Uzasadnić prostopadłość prostej do płaszczyzny oraz zastosować twierdzenie o trzech prostych
+    prostopadłych do wykazania prostopadłości odcinków w bryle.
+  bloom_level: analiza
+- statement: Ocenić poprawność otrzymanego wyniku (np. czy kąt jest ostry, czy kąt krawędzi bocznej jest
+    mniejszy od kąta ściany bocznej) i wykryć błąd w cudzym rozumowaniu dotyczącym kątów w przestrzeni.
+  bloom_level: ocenianie
+misconceptions:
+- name: Proste bez punktu wspólnego są równoległe
+  incorrect_reasoning: '"AB i CC'' nie przecinają się, więc muszą być równoległe – tak jak na płaszczyźnie."'
+  correct_reasoning: W przestrzeni z braku punktu wspólnego wynika tylko tyle, że proste są równoległe
+    LUB skośne. Równoległość wymaga dodatkowo, aby proste leżały w jednej płaszczyźnie i miały ten sam
+    kierunek. AB i CC' leżą w różnych płaszczyznach – są skośne.
+  severity: 4
+- name: Proste prostopadłe muszą się przecinać
+  incorrect_reasoning: '"Skoro proste się nie przecinają, nie ma między nimi kąta, więc nie mogą być prostopadłe."'
+  correct_reasoning: Kąt między prostymi skośnymi definiuje się przez równoległe przesunięcie jednej z
+    nich do punktu drugiej. Jeśli tak otrzymany kąt ma 90°, proste są prostopadłe, choć nie mają punktu
+    wspólnego (np. AB i CC' w sześcianie).
+  severity: 4
+- name: Mierzenie kąta prostej z płaszczyzną od prostopadłej do płaszczyzny
+  incorrect_reasoning: '"Kąt nachylenia krawędzi bocznej do podstawy to kąt między tą krawędzią a wysokością
+    ostrosłupa."'
+  correct_reasoning: Kąt między prostą a płaszczyzną mierzymy między prostą a jej rzutem prostokątnym
+    na tę płaszczyznę, czyli między krawędzią boczną a odcinkiem OA leżącym w podstawie. Kąt z wysokością
+    jest dopełnieniem tego kąta do 90°.
+  severity: 4
+- name: Kąt liniowy budowany z półprostych nieprostopadłych do krawędzi
+  incorrect_reasoning: '"Kąt dwuścienny między ścianą boczną SBC a podstawą to kąt SBC lub kąt między
+    krawędzią SB a krawędzią BC."'
+  correct_reasoning: 'Obie półproste tworzące kąt liniowy muszą być prostopadłe do krawędzi kąta dwuściennego
+    (tu: do BC). Poprawnie bierzemy M – środek BC oraz półproste MS i MO, bo SM ⊥ BC i OM ⊥ BC. Kąt SBC
+    daje inną, błędną wartość.'
+  severity: 5
+- name: Mylenie apotemy z krawędzią boczną (oraz r z R)
+  incorrect_reasoning: '"W trójkącie z wysokością ostrosłupa przeciwprostokątną jest zawsze krawędź boczna,
+    a przyprostokątną a/2."'
+  correct_reasoning: 'Trzeba rozróżnić dwa trójkąty: (H, r, m) – dla kąta ściany bocznej z podstawą, oraz
+    (H, R, b) – dla kąta krawędzi bocznej z podstawą. Mieszanie r z R lub m z b prowadzi do sprzecznych
+    wyników; pamiętaj, że R > r, więc kąt krawędzi bocznej jest mniejszy niż kąt ściany bocznej.'
+  severity: 4
+- name: Stosowanie r = a/2 dla każdej podstawy
+  incorrect_reasoning: '"Odległość środka podstawy od krawędzi podstawy to zawsze połowa krawędzi."'
+  correct_reasoning: r = a/2 zachodzi tylko dla kwadratu. Dla trójkąta równobocznego r = a√3/6, a R =
+    a√3/3; dla sześciokąta foremnego r = a√3/2, R = a. Zawsze wyznaczaj r i R z geometrii konkretnego
+    wielokąta foremnego.
+  severity: 3
+- name: Rzut punktu utożsamiany z dowolnym punktem płaszczyzny
+  incorrect_reasoning: '"Rzutem wierzchołka ostrosłupa na podstawę może być dowolny wygodny punkt, np.
+    wierzchołek podstawy."'
+  correct_reasoning: Rzutem prostokątnym jest spodek prostopadłej opuszczonej na płaszczyznę. W ostrosłupie
+    prawidłowym jest nim środek podstawy (punkt równo odległy od wierzchołków), co wynika z równości krawędzi
+    bocznych.
+  severity: 3
+- name: Przekonanie, że kąt między prostą a płaszczyzną może być rozwarty
+  incorrect_reasoning: '"Wyszło mi 120°, więc taki jest kąt nachylenia prostej do płaszczyzny."'
+  correct_reasoning: Kąt między prostą a płaszczyzną należy do przedziału ⟨0°, 90°⟩. Analogicznie kąt
+    między dwiema prostymi oraz kąt między płaszczyznami jest ostry lub prosty. Jeśli w rachunkach wyjdzie
+    kąt rozwarty, należy wziąć jego dopełnienie do 180°.
+  severity: 3

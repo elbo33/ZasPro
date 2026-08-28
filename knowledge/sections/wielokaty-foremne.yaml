@@ -1,0 +1,333 @@
+section: wielokaty-foremne
+name: Wielokąty foremne
+scope: 'Regular polygons: interior and central angles, the circumscribed and inscribed circles, side and
+  apothem; using these to compute lengths and areas.'
+requirements:
+- VIII.3
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:26:25.730052'
+  approved_at: '2026-08-28T18:28:24.209692'
+  approved_by: reviewer
+concepts:
+- name: Wielokąt foremny
+  description: Wielokąt wypukły, który ma wszystkie boki równej długości i wszystkie kąty wewnętrzne równej
+    miary. Wielokąt foremny o n bokach nazywamy n-kątem foremnym.
+  explanation: 'Muszą zachodzić OBA warunki naraz. Romb ma równe boki, ale nie musi mieć równych kątów;
+    prostokąt ma równe kąty, ale nie musi mieć równych boków — żadna z tych figur (poza kwadratem) nie
+    jest foremna. Wyjątkiem jest trójkąt: dla trójkąta równość boków pociąga równość kątów, więc trójkąt
+    foremny to po prostu trójkąt równoboczny.'
+  difficulty: 1
+- name: Środek wielokąta foremnego
+  description: Punkt O jednakowo odległy od wszystkich wierzchołków i jednocześnie jednakowo odległy od
+    wszystkich boków; jest to wspólny środek okręgu opisanego i okręgu wpisanego.
+  explanation: Każdy wielokąt foremny ma taki punkt — to właśnie ta cecha odróżnia go od zwykłych wielokątów.
+    Wszystkie obliczenia (pola, długości) prowadzimy, rozcinając wielokąt promieniami wychodzącymi z O.
+  difficulty: 2
+- name: Okrąg opisany na wielokącie foremnym i promień R
+  description: Okrąg o środku O przechodzący przez wszystkie wierzchołki wielokąta; jego promień R to
+    odległość środka od wierzchołka.
+  explanation: Myśl o R jako o 'ramieniu' trójkąta równoramiennego, którego podstawą jest bok wielokąta.
+    Każdy wielokąt foremny da się wpisać w okrąg.
+  difficulty: 1
+- name: Okrąg wpisany w wielokąt foremny i promień r (apotema)
+  description: Okrąg o środku O styczny do wszystkich boków wielokąta; jego promień r, zwany apotemą,
+    to odległość środka od boku, czyli wysokość trójkąta środkowego opuszczona na bok.
+  explanation: Apotema pada zawsze w ŚRODEK boku (bo trójkąt środkowy jest równoramienny). Zawsze r <
+    R; oba promienie są równe tylko wtedy, gdyby wielokąt zdegenerował się do okręgu.
+  difficulty: 2
+- name: Kąt środkowy wielokąta foremnego
+  description: Kąt o wierzchołku w środku O, oparty na jednym boku wielokąta; ma miarę 360°/n.
+  explanation: Promienie poprowadzone do wszystkich wierzchołków dzielą pełny kąt na n równych części
+    — stąd 360°/n. To najważniejszy kąt w rachunkach trygonometrycznych.
+  difficulty: 1
+- name: Trójkąt środkowy (wycinek trójkątny)
+  description: Trójkąt równoramienny o wierzchołku O i podstawie równej bokowi wielokąta; jego ramiona
+    mają długość R, podstawa a, wysokość r, a kąt przy wierzchołku 360°/n.
+  explanation: n-kąt foremny to n przystających takich trójkątów. Cała teoria sprowadza się do rozwiązania
+    jednego trójkąta środkowego, a właściwie jego połowy — trójkąta prostokątnego o kącie ostrym 180°/n,
+    przyprostokątnych a/2 i r oraz przeciwprostokątnej R.
+  difficulty: 3
+- name: Kąt wewnętrzny wielokąta foremnego
+  description: Kąt między dwoma sąsiednimi bokami; w n-kącie foremnym ma miarę (n−2)·180°/n.
+  explanation: 'Wynika z podziału wielokąta na n−2 trójkąty przekątnymi z jednego wierzchołka: suma kątów
+    to (n−2)·180°, a wszystkie kąty są równe, więc dzielimy przez n. Wraz ze wzrostem n kąt rośnie i zbliża
+    się do 180°.'
+  difficulty: 2
+- name: Kąt zewnętrzny wielokąta foremnego
+  description: Kąt przyległy do kąta wewnętrznego, o mierze 360°/n; suma kątów zewnętrznych każdego wielokąta
+    wypukłego wynosi 360°.
+  explanation: 'Ciekawostka warta zapamiętania: kąt zewnętrzny ma tę samą miarę co kąt środkowy. Dzięki
+    temu z kąta wewnętrznego α liczymy szybko n = 360°/(180°−α).'
+  difficulty: 2
+- name: Symetrie wielokąta foremnego
+  description: n-kąt foremny ma n osi symetrii oraz środek symetrii obrotowej O; obrót o kąt 360°/k·...
+    — dokładniej obrót wokół O o wielokrotność 360°/n przeprowadza wielokąt na siebie.
+  explanation: Dla n parzystego osie przechodzą przez pary przeciwległych wierzchołków oraz pary środków
+    przeciwległych boków; dla n nieparzystego każda oś łączy wierzchołek ze środkiem przeciwległego boku.
+    Środek symetrii (punktowej) istnieje tylko dla n parzystego.
+  difficulty: 3
+- name: Przekątne wielokąta foremnego
+  description: Odcinki łączące niesąsiednie wierzchołki; w n-kącie jest ich n(n−3)/2.
+  explanation: Z każdego z n wierzchołków wychodzi n−3 przekątnych (odejmujemy wierzchołek i dwóch sąsiadów),
+    a każdą liczymy dwa razy. W wielokącie foremnym przekątne dzielą się na klasy jednakowej długości.
+  difficulty: 2
+- name: Trójkąt równoboczny jako wielokąt foremny
+  description: '3-kąt foremny: kąt wewnętrzny 60°, kąt środkowy 120°, wysokość h = a√3/2, R = a√3/3, r
+    = a√3/6.'
+  explanation: Środek O jest punktem przecięcia wysokości, które dzielą się w stosunku 2:1, stąd R = (2/3)h
+    i r = (1/3)h, czyli R = 2r. To najczęściej wykorzystywany fakt w zadaniach.
+  difficulty: 2
+- name: Kwadrat jako wielokąt foremny
+  description: '4-kąt foremny: kąt wewnętrzny 90°, kąt środkowy 90°, przekątna d = a√2, R = a√2/2 = d/2,
+    r = a/2.'
+  explanation: Okrąg opisany przechodzi przez wierzchołki (promień = połowa przekątnej), okrąg wpisany
+    dotyka boków (promień = połowa boku).
+  difficulty: 1
+- name: Sześciokąt foremny
+  description: '6-kąt foremny: kąt wewnętrzny 120°, kąt środkowy 60°, bok a = R, apotema r = a√3/2, pole
+    P = 3a²√3/2.'
+  explanation: Kąt środkowy 60° sprawia, że każdy trójkąt środkowy jest równoboczny — dlatego bok równa
+    się promieniowi okręgu opisanego, a sześciokąt to sześć trójkątów równobocznych. Krótsza przekątna
+    ma długość a√3, dłuższa 2a.
+  difficulty: 2
+- name: Ośmiokąt foremny
+  description: '8-kąt foremny: kąt wewnętrzny 135°, kąt środkowy 45°, a = 2R·sin22,5°, r = R·cos22,5°.'
+  explanation: 'W zadaniach maturalnych zwykle nie liczy się go z trygonometrii, lecz konstrukcyjnie:
+    ośmiokąt foremny powstaje z kwadratu przez odcięcie czterech przystających trójkątów prostokątnych
+    równoramiennych o przeciwprostokątnej a.'
+  difficulty: 3
+formulas:
+- name: Suma kątów wewnętrznych wielokąta
+  latex_raw: S = (n-2)\cdot 180^\circ
+  conditions: dowolny wielokąt wypukły o n bokach, n ≥ 3
+  description: Podział przekątnymi z jednego wierzchołka na n−2 trójkąty.
+- name: Kąt wewnętrzny wielokąta foremnego
+  latex_raw: \alpha = \frac{(n-2)\cdot 180^\circ}{n} = 180^\circ - \frac{360^\circ}{n}
+  conditions: n-kąt foremny
+- name: Kąt środkowy (i kąt zewnętrzny)
+  latex_raw: \beta = \frac{360^\circ}{n}
+  conditions: n-kąt foremny; β to kąt oparty na boku o wierzchołku w środku, równy też kątowi zewnętrznemu
+- name: Liczba boków z danego kąta wewnętrznego
+  latex_raw: n = \frac{360^\circ}{180^\circ-\alpha}
+  conditions: α — miara kąta wewnętrznego wielokąta foremnego; wynik musi być liczbą naturalną ≥ 3
+- name: Liczba przekątnych
+  latex_raw: d = \frac{n(n-3)}{2}
+  conditions: dowolny wielokąt o n bokach
+- name: Bok przez promień okręgu opisanego
+  latex_raw: a = 2R\sin\frac{180^\circ}{n}
+  conditions: n-kąt foremny; z połowy trójkąta środkowego
+- name: Apotema przez promień okręgu opisanego
+  latex_raw: r = R\cos\frac{180^\circ}{n}
+  conditions: n-kąt foremny
+- name: Apotema przez bok
+  latex_raw: r = \frac{a}{2}\cdot\operatorname{tg}\Big(90^\circ-\frac{180^\circ}{n}\Big)=\frac{a}{2\,\operatorname{tg}\frac{180^\circ}{n}}
+  conditions: n-kąt foremny
+- name: Związek Pitagorasa dla R, r, a
+  latex_raw: R^2 = r^2 + \left(\frac{a}{2}\right)^2
+  conditions: n-kąt foremny; z trójkąta prostokątnego o przyprostokątnych r i a/2
+- name: Obwód
+  latex_raw: L = n\cdot a
+  conditions: n-kąt foremny o boku a
+- name: Pole przez obwód i apotemę
+  latex_raw: P = \frac{1}{2}\,L\cdot r = \frac{1}{2}\,n\,a\,r
+  conditions: n-kąt foremny; suma pól n trójkątów środkowych o podstawie a i wysokości r
+- name: Pole przez promień okręgu opisanego
+  latex_raw: P = \frac{1}{2}nR^2\sin\frac{360^\circ}{n}
+  conditions: n-kąt foremny; wygodne dla n = 3, 4, 6, 8, 12
+- name: Trójkąt równoboczny
+  latex_raw: h=\frac{a\sqrt3}{2},\quad P=\frac{a^2\sqrt3}{4},\quad R=\frac{a\sqrt3}{3},\quad r=\frac{a\sqrt3}{6},\quad
+    R=2r
+  conditions: bok a
+- name: Kwadrat
+  latex_raw: d=a\sqrt2,\quad P=a^2,\quad R=\frac{a\sqrt2}{2},\quad r=\frac{a}{2}
+  conditions: bok a, przekątna d
+- name: Sześciokąt foremny
+  latex_raw: a=R,\quad r=\frac{a\sqrt3}{2},\quad P=\frac{3a^2\sqrt3}{2},\quad d_{kr}=a\sqrt3,\quad d_{dl}=2a
+  conditions: bok a
+- name: Stosunek promieni
+  latex_raw: \frac{r}{R}=\cos\frac{180^\circ}{n}
+  conditions: 'n-kąt foremny; np. dla n=3 wynosi 1/2, dla n=4: √2/2, dla n=6: √3/2'
+methods:
+- name: Wyznaczanie miar kątów n-kąta foremnego
+  when_to_use: Gdy dana jest liczba boków i pytamy o kąt wewnętrzny, środkowy lub zewnętrzny (albo odwrotnie).
+  steps:
+  - Zapisz n — liczbę boków.
+  - 'Kąt środkowy = kąt zewnętrzny: β = 360°/n.'
+  - 'Kąt wewnętrzny: α = 180° − β = (n−2)·180°/n.'
+  - Jeśli dany jest kąt wewnętrzny α, wyznacz n ze wzoru n = 360°/(180° − α) i sprawdź, czy wynik jest
+    liczbą naturalną ≥ 3.
+  - Jeśli dana jest suma kątów S, rozwiąż równanie (n−2)·180° = S.
+- name: Metoda trójkąta środkowego (rozcięcie wielokąta)
+  when_to_use: Gdy trzeba powiązać ze sobą a, r, R lub policzyć pole wielokąta foremnego.
+  steps:
+  - Zaznacz środek O i połącz go ze wszystkimi wierzchołkami — powstaje n przystających trójkątów równoramiennych
+    o ramionach R i podstawie a.
+  - Wybierz jeden trójkąt i poprowadź w nim wysokość r na podstawę; dzieli ona trójkąt na dwa przystające
+    trójkąty prostokątne.
+  - 'W trójkącie prostokątnym: przeciwprostokątna R, przyprostokątne a/2 oraz r, kąt przy O równy 180°/n.'
+  - 'Zastosuj twierdzenie Pitagorasa (R² = r² + (a/2)²) lub funkcje trygonometryczne: sin(180°/n) = (a/2)/R,
+    cos(180°/n) = r/R, tg(180°/n) = (a/2)/r.'
+  - 'Pole całego wielokąta: P = n · (1/2 · a · r) = 1/2 · L · r.'
+- name: Obliczanie pól trójkąta równobocznego, kwadratu i sześciokąta z pamięci
+  when_to_use: W typowych zadaniach, gdzie n = 3, 4 lub 6 — bez użycia trygonometrii.
+  steps:
+  - Rozpoznaj n i sprowadź wszystkie dane do długości boku a.
+  - 'Trójkąt równoboczny: h = a√3/2, P = a²√3/4, R = 2h/3 = a√3/3, r = h/3 = a√3/6.'
+  - 'Kwadrat: P = a², R = a√2/2, r = a/2.'
+  - 'Sześciokąt: a = R, r = a√3/2, P = 6 · a²√3/4 = 3a²√3/2.'
+  - Podstaw dane liczbowe i uprość wynik, usuwając niewymierność z mianownika.
+- name: Przejście między okręgiem a wielokątem
+  when_to_use: Gdy wielokąt foremny jest wpisany w okrąg lub opisany na okręgu i pytamy o pole/obwód jednej
+    z figur albo o pole obszaru między nimi.
+  steps:
+  - Ustal, czy dany promień okręgu to R (okrąg przechodzi przez wierzchołki) czy r (okrąg dotyka boków).
+  - 'Wyznacz brakujące wielkości: r = R·cos(180°/n), a = 2R·sin(180°/n) — albo skorzystaj z gotowych wzorów
+    dla n = 3, 4, 6.'
+  - Oblicz pole wielokąta i pole koła (πR² lub πr²).
+  - Pole obszaru między figurami = pole większej figury − pole mniejszej.
+- name: Rozpoznawanie wielokątów foremnych
+  when_to_use: Gdy trzeba ocenić prawdziwość zdania o figurze (np. czy dany czworokąt jest foremny).
+  steps:
+  - Sprawdź, czy wszystkie boki są równe.
+  - Sprawdź, czy wszystkie kąty wewnętrzne są równe.
+  - 'Jeśli spełniony jest tylko jeden warunek — figura nie jest foremna (romb: równe boki, prostokąt:
+    równe kąty).'
+  - 'Pamiętaj o wyjątku: w trójkącie równość boków jest równoważna równości kątów.'
+  - 'W razie potrzeby użyj własności: wielokąt foremny ma n osi symetrii oraz wspólny środek okręgu wpisanego
+    i opisanego.'
+examples:
+- statement: Oblicz miarę kąta wewnętrznego i kąta środkowego dwunastokąta foremnego. Ile przekątnych
+    ma ten wielokąt?
+  worked_solution: |-
+    Mamy n = 12.
+    Kąt środkowy: β = 360°/12 = 30°.
+    Kąt wewnętrzny: α = 180° − 30° = 150° (sprawdzenie wzorem: (12−2)·180°/12 = 1800°/12 = 150°).
+    Liczba przekątnych: d = n(n−3)/2 = 12·9/2 = 54.
+    Odpowiedź: kąt wewnętrzny 150°, kąt środkowy 30°, przekątnych jest 54.
+  difficulty: 1
+- statement: Kąt wewnętrzny pewnego wielokąta foremnego ma miarę 162°. Ile boków ma ten wielokąt i ile
+    wynosi suma jego kątów wewnętrznych?
+  worked_solution: |-
+    Kąt zewnętrzny: 180° − 162° = 18°. Ponieważ kąt zewnętrzny wielokąta foremnego wynosi 360°/n, mamy
+    360°/n = 18°  ⟹  n = 360°/18° = 20.
+    Sprawdzenie: (20−2)·180°/20 = 3240°/20 = 162°. ✓
+    Suma kątów wewnętrznych: S = (20−2)·180° = 18·180° = 3240°.
+    Odpowiedź: dwudziestokąt foremny, suma kątów 3240°.
+  difficulty: 2
+- statement: Sześciokąt foremny jest wpisany w okrąg o promieniu R = 6. Oblicz bok, apotemę, pole sześciokąta
+    oraz pole obszaru zawartego między okręgiem a sześciokątem.
+  worked_solution: |-
+    Kąt środkowy sześciokąta: 360°/6 = 60°. Trójkąt środkowy jest równoramienny z ramionami R i kątem 60° przy wierzchołku, więc jest równoboczny. Zatem a = R = 6.
+    Apotema to wysokość tego trójkąta równobocznego: r = a√3/2 = 6√3/2 = 3√3.
+    Pole sześciokąta: P = 6 · (a²√3/4) = 6 · (36√3/4) = 54√3.
+    (Kontrola wzorem P = ½·n·a·r = ½·6·6·3√3 = 54√3. ✓)
+    Pole koła: P_koła = πR² = 36π.
+    Pole obszaru między okręgiem a sześciokątem: 36π − 54√3 ≈ 113,10 − 93,53 ≈ 19,57.
+    Odpowiedź: a = 6, r = 3√3, P = 54√3, pole obszaru = 36π − 54√3.
+  difficulty: 2
+- statement: W okrąg o promieniu R wpisano trójkąt równoboczny. Oblicz stosunek pola tego trójkąta do
+    pola koła oraz stosunek promienia okręgu wpisanego w trójkąt do R.
+  worked_solution: |-
+    Dla trójkąta równobocznego o boku a: R = a√3/3, więc a = R√3.
+    Pole trójkąta: P = a²√3/4 = (R√3)²·√3/4 = 3R²·√3/4 = (3√3/4)R².
+    Pole koła: πR².
+    Stosunek: P/P_koła = (3√3/4)R² / (πR²) = 3√3/(4π) ≈ 5,196/12,566 ≈ 0,41.
+    Promień okręgu wpisanego: r = a√3/6 = R√3·√3/6 = 3R/6 = R/2, więc r/R = 1/2.
+    (Kontrola wzorem ogólnym: r/R = cos(180°/3) = cos60° = 1/2. ✓)
+    Odpowiedź: pole trójkąta stanowi 3√3/(4π) ≈ 41% pola koła; r = R/2.
+  difficulty: 3
+- statement: Ośmiokąt foremny powstał z kwadratu o boku 10 przez odcięcie czterech przystających trójkątów
+    prostokątnych równoramiennych. Oblicz długość boku ośmiokąta oraz jego pole.
+  worked_solution: |-
+    Niech x będzie długością przyprostokątnej odcinanego trójkąta. Odcinając trójkąty z obu końców boku kwadratu, otrzymujemy bok ośmiokąta leżący na boku kwadratu o długości 10 − 2x. Bok ośmiokąta powstały z przeciwprostokątnej ma długość x√2. Wszystkie boki ośmiokąta foremnego są równe:
+    10 − 2x = x√2  ⟹  10 = x(2 + √2)  ⟹  x = 10/(2+√2) = 10(2−√2)/((2+√2)(2−√2)) = 10(2−√2)/2 = 5(2−√2) = 10 − 5√2.
+    Bok ośmiokąta: a = x√2 = (10 − 5√2)√2 = 10√2 − 10 = 10(√2 − 1) ≈ 4,14.
+    Pole: od pola kwadratu odejmujemy pola czterech trójkątów o przyprostokątnych x:
+    P = 10² − 4·(x²/2) = 100 − 2x².
+    x² = (10 − 5√2)² = 100 − 100√2 + 50 = 150 − 100√2.
+    P = 100 − 2(150 − 100√2) = 100 − 300 + 200√2 = 200√2 − 200 = 200(√2 − 1) ≈ 82,84.
+    Sprawdzenie sensowności: kąt wewnętrzny ośmiokąta to 180° − 360°/8 = 135°, a po odcięciu narożnika kwadratu przy każdym wierzchołku ośmiokąta powstaje kąt 180° − 45° = 135°. ✓
+    Odpowiedź: a = 10(√2 − 1), P = 200(√2 − 1).
+  difficulty: 4
+objectives:
+- statement: Rozpoznać wielokąt foremny i uzasadnić, dlaczego dana figura (romb, prostokąt, kwadrat, trójkąt
+    równoboczny) jest lub nie jest foremna.
+  bloom_level: Rozumienie
+- statement: Obliczyć miarę kąta wewnętrznego, środkowego i zewnętrznego oraz sumę kątów n-kąta foremnego
+    dla danego n.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć liczbę boków wielokąta foremnego na podstawie miary jego kąta wewnętrznego, środkowego
+    lub sumy kątów, wraz ze sprawdzeniem, czy taki wielokąt istnieje.
+  bloom_level: Stosowanie
+- statement: Wskazać na rysunku środek, promień okręgu opisanego i wpisanego (apotemę) oraz opisać zależność
+    R² = r² + (a/2)².
+  bloom_level: Rozumienie
+- statement: Obliczać bok, apotemę, promień okręgu opisanego, obwód i pole wielokąta foremnego, korzystając
+    z trójkąta środkowego i funkcji trygonometrycznych kąta ostrego.
+  bloom_level: Stosowanie
+- statement: Odtworzyć z pamięci i sprawnie stosować zależności dla trójkąta równobocznego, kwadratu i
+    sześciokąta foremnego (h, P, R, r, przekątne).
+  bloom_level: Zapamiętanie / Stosowanie
+- statement: Rozwiązywać zadania łączące wielokąt foremny z okręgiem wpisanym lub opisanym, w tym obliczać
+    pola obszarów powstałych między tymi figurami i porównywać pola.
+  bloom_level: Analiza
+- statement: Wykorzystywać symetrie i podział wielokąta foremnego na przystające trójkąty do uzasadniania
+    równości odcinków i kątów.
+  bloom_level: Analiza
+misconceptions:
+- name: Wystarczy równość boków albo równość kątów
+  incorrect_reasoning: „Romb ma wszystkie boki równe, więc jest czworokątem foremnym”; „prostokąt ma wszystkie
+    kąty równe (90°), więc jest foremny”.
+  correct_reasoning: Wielokąt foremny musi mieć JEDNOCZEŚNIE równe wszystkie boki i wszystkie kąty. Jedynym
+    czworokątem foremnym jest kwadrat. Tylko dla trójkąta jeden z tych warunków pociąga drugi.
+  severity: 4
+- name: Mylenie R z r
+  incorrect_reasoning: Podstawianie promienia okręgu wpisanego do wzoru na bok a = 2R·sin(180°/n) albo
+    liczenie pola koła opisanego jako πr².
+  correct_reasoning: R sięga do wierzchołka (okrąg opisany), r sięga do środka boku (okrąg wpisany, apotema)
+    i zawsze r < R, przy czym r = R·cos(180°/n). Przed rachunkami warto narysować figurę i podpisać oba
+    odcinki.
+  severity: 4
+- name: Kąt środkowy utożsamiany z kątem wewnętrznym
+  incorrect_reasoning: „Skoro kąt wewnętrzny sześciokąta ma 120°, to trójkąt środkowy ma przy O kąt 120°”.
+  correct_reasoning: 'Kąt środkowy to 360°/n (dla n = 6 jest to 60°), a kąt wewnętrzny to 180° − 360°/n.
+    Promień z O dzieli kąt wewnętrzny na pół: przy podstawie trójkąta środkowego leżą kąty po (180° −
+    360°/n)/2.'
+  severity: 3
+- name: Błędny wzór na sumę kątów
+  incorrect_reasoning: Stosowanie S = n·180° albo (n−2)·360°, względnie dzielenie sumy przez n−2 zamiast
+    przez n.
+  correct_reasoning: S = (n−2)·180°, bo wielokąt dzieli się przekątnymi z jednego wierzchołka na n−2 trójkąty.
+    Kąt jednego wierzchołka wielokąta foremnego to S/n, czyli (n−2)·180°/n.
+  severity: 3
+- name: Środek trójkąta równobocznego dzieli wysokość na pół
+  incorrect_reasoning: „R = r = h/2, bo środek leży w połowie wysokości”.
+  correct_reasoning: 'Środek dzieli wysokość w stosunku 2:1 licząc od wierzchołka: R = (2/3)h = a√3/3,
+    r = (1/3)h = a√3/6, więc R = 2r. Nigdy nie są równe.'
+  severity: 4
+- name: Apotema sześciokąta równa bokowi
+  incorrect_reasoning: „W sześciokącie foremnym a = R, więc także r = a”.
+  correct_reasoning: 'Równość a = R dotyczy tylko promienia okręgu OPISANEGO (bo trójkąt środkowy jest
+    równoboczny). Apotema jest wysokością tego trójkąta: r = a√3/2 < a.'
+  severity: 3
+- name: Pole wielokąta foremnego jako n·a²
+  incorrect_reasoning: Traktowanie wielokąta jak zbioru n kwadratów o boku a lub mnożenie obwodu przez
+    apotemę bez dzielenia przez 2.
+  correct_reasoning: Wielokąt składa się z n trójkątów o podstawie a i wysokości r, więc P = n·(½·a·r)
+    = ½·L·r. Czynnik ½ pochodzi ze wzoru na pole trójkąta.
+  severity: 3
+- name: Każdy wielokąt ma okrąg wpisany i opisany o wspólnym środku
+  incorrect_reasoning: „Skoro w wielokąt foremny da się wpisać okrąg i opisać na nim okrąg, to tak jest
+    dla wszystkich wielokątów”.
+  correct_reasoning: To szczególna własność wielokątów foremnych (i niektórych innych figur). Np. na rombie
+    nie da się opisać okręgu, a w prostokąt nie da się wpisać okręgu stycznego do wszystkich boków.
+  severity: 2
+- name: Zaokrąglanie n do liczby całkowitej
+  incorrect_reasoning: Po obliczeniu n = 360°/(180° − α) uzyskanie wyniku niecałkowitego i zaokrąglenie
+    go, np. n ≈ 9,7 → 10.
+  correct_reasoning: Liczba boków musi być naturalna. Wynik niecałkowity oznacza, że wielokąt foremny
+    o takim kącie wewnętrznym NIE istnieje — trzeba to napisać jako odpowiedź.
+  severity: 3

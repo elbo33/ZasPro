@@ -1,0 +1,310 @@
+section: punkty-szczegolne-trojkata
+name: Punkty szczególne trójkąta
+scope: 'Incentre, circumcentre, orthocentre and centroid: definitions and how to locate them.'
+requirements:
+- VIII.10
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:55:26.672397'
+  approved_at: '2026-08-28T18:28:15.768651'
+  approved_by: reviewer
+concepts:
+- name: Punkt szczególny trójkąta
+  description: 'Punkt wyznaczony przez przecięcie się trzech odpowiednich prostych (cewian lub symetralnych)
+    związanych z trójkątem; podstawowe punkty szczególne to: środek okręgu wpisanego, środek okręgu opisanego,
+    ortocentrum i środek ciężkości.'
+  explanation: W każdym trójkącie trzy dwusieczne, trzy symetralne boków, trzy wysokości i trzy środkowe
+    przecinają się w jednym punkcie. To nie przypadek – każdy z tych punktów ma opis 'metryczny' (np.
+    jest jednakowo odległy od boków albo od wierzchołków), i właśnie ten opis warto pamiętać, bo z niego
+    wynikają wszystkie zastosowania.
+  difficulty: 1
+- name: Dwusieczna kąta trójkąta
+  description: Półprosta wychodząca z wierzchołka trójkąta i dzieląca kąt przy tym wierzchołku na dwa
+    kąty o równych miarach.
+  explanation: 'Kluczowa własność: punkt leży na dwusiecznej kąta wtedy i tylko wtedy, gdy jest jednakowo
+    odległy od obu ramion kąta (odległość mierzona po prostopadłej).'
+  difficulty: 1
+- name: Symetralna boku
+  description: Prosta prostopadła do boku i przechodząca przez jego środek.
+  explanation: 'Punkt leży na symetralnej odcinka dokładnie wtedy, gdy jest jednakowo odległy od jego
+    końców. Uwaga: symetralna to prosta prostopadła do boku, a nie prosta wychodząca z wierzchołka – nie
+    myl jej z dwusieczną ani ze środkową.'
+  difficulty: 1
+- name: Wysokość trójkąta
+  description: Odcinek poprowadzony z wierzchołka prostopadle do prostej zawierającej przeciwległy bok
+    (lub prosta zawierająca ten odcinek).
+  explanation: W trójkącie rozwartokątnym spodek wysokości może leżeć poza bokiem – dlatego mówimy o prostopadłości
+    do prostej zawierającej bok.
+  difficulty: 2
+- name: Środkowa trójkąta
+  description: Odcinek łączący wierzchołek trójkąta ze środkiem przeciwległego boku.
+  explanation: Każda środkowa dzieli trójkąt na dwa trójkąty o równych polach (mają równe podstawy i wspólną
+    wysokość).
+  difficulty: 1
+- name: Środek okręgu wpisanego (incentrum)
+  description: Punkt przecięcia dwusiecznych kątów wewnętrznych trójkąta; jest jednakowo odległy od wszystkich
+    trzech boków, a ta wspólna odległość to promień r okręgu wpisanego.
+  explanation: Oznaczamy zwykle literą I lub O_w. Zawsze leży wewnątrz trójkąta (bo leży wewnątrz każdego
+    kąta). Okrąg o środku I i promieniu r jest styczny do wszystkich trzech boków, więc odcinek od I do
+    punktu styczności jest prostopadły do boku.
+  difficulty: 2
+- name: Środek okręgu opisanego (circumcentrum)
+  description: Punkt przecięcia symetralnych boków trójkąta; jest jednakowo odległy od wszystkich trzech
+    wierzchołków, a ta odległość to promień R okręgu opisanego.
+  explanation: 'Oznaczamy O. Jego położenie zależy od rodzaju trójkąta: wewnątrz (trójkąt ostrokątny),
+    na środku przeciwprostokątnej (prostokątny), na zewnątrz (rozwartokątny). Trójkąty OAB, OBC, OCA są
+    równoramienne – to bardzo częsty klucz do zadań z kątami.'
+  difficulty: 2
+- name: Ortocentrum
+  description: Punkt przecięcia prostych zawierających wysokości trójkąta.
+  explanation: Oznaczamy H. Nie jest środkiem żadnego okręgu – to 'tylko' punkt wspólny wysokości. W trójkącie
+    ostrokątnym leży wewnątrz, w prostokątnym pokrywa się z wierzchołkiem kąta prostego (bo dwie wysokości
+    to przyprostokątne), w rozwartokątnym leży na zewnątrz trójkąta.
+  difficulty: 2
+- name: Środek ciężkości (barycentrum)
+  description: Punkt przecięcia środkowych trójkąta; dzieli każdą środkową w stosunku 2:1, licząc od wierzchołka.
+  explanation: 'Oznaczamy S. Zawsze leży wewnątrz trójkąta. Fizycznie: jednorodna trójkątna płytka podparta
+    w tym punkcie pozostaje w równowadze. Praktycznie zapamiętaj: odcinek od wierzchołka do S to 2/3 środkowej,
+    od S do środka boku – 1/3 środkowej.'
+  difficulty: 2
+- name: Okrąg wpisany w trójkąt
+  description: Okrąg styczny do wszystkich trzech boków trójkąta, o środku I i promieniu r.
+  explanation: Zawsze istnieje i jest jeden. Odcinki stycznych poprowadzonych z tego samego wierzchołka
+    do okręgu wpisanego są równe – stąd np. wzór r = (a+b−c)/2 w trójkącie prostokątnym.
+  difficulty: 2
+- name: Okrąg opisany na trójkącie
+  description: Okrąg przechodzący przez wszystkie trzy wierzchołki trójkąta, o środku O i promieniu R.
+  explanation: Zawsze istnieje i jest jeden. Kąt wpisany oparty na średnicy jest prosty – dlatego w trójkącie
+    prostokątnym środek okręgu opisanego leży dokładnie w środku przeciwprostokątnej.
+  difficulty: 2
+- name: Trójkąt równoboczny – zbieżność punktów szczególnych
+  description: W trójkącie równobocznym środek okręgu wpisanego, środek okręgu opisanego, ortocentrum
+    i środek ciężkości to ten sam punkt.
+  explanation: Bo każda wysokość jest jednocześnie środkową, dwusieczną i symetralną boku. Ten punkt dzieli
+    wysokość w stosunku 2:1, więc R = 2r.
+  difficulty: 2
+- name: Trójkąt równoramienny – oś symetrii
+  description: W trójkącie równoramiennym wysokość, środkowa, dwusieczna kąta między ramionami i symetralna
+    podstawy leżą na jednej prostej – osi symetrii trójkąta.
+  explanation: 'Dlatego wszystkie cztery punkty szczególne leżą na tej osi. To ogromne ułatwienie rachunkowe:
+    wystarczy policzyć położenie punktu wzdłuż jednej prostej.'
+  difficulty: 2
+- name: Prosta Eulera (uzupełnienie)
+  description: W trójkącie nierównobocznym punkty O, S i H leżą na jednej prostej, przy czym |HS| = 2|SO|.
+  explanation: 'Ciekawostka porządkująca wiedzę: środek ciężkości leży zawsze między ortocentrum a środkiem
+    okręgu opisanego i dzieli odcinek OH w stosunku 1:2 od strony O. Nie jest wymagana, ale pomaga zapamiętać
+    wzajemne położenie punktów.'
+  difficulty: 3
+formulas:
+- name: Promień okręgu wpisanego przez pole
+  latex_raw: r=\frac{P}{p},\qquad p=\frac{a+b+c}{2}
+  conditions: P – pole trójkąta, p – połowa obwodu (dowolny trójkąt)
+  description: Równoważnie P = p·r, bo trójkąt dzieli się na trzy trójkąty o wysokości r i podstawach
+    a, b, c.
+- name: Promień okręgu opisanego
+  latex_raw: R=\frac{abc}{4P}
+  conditions: a, b, c – długości boków, P – pole (dowolny trójkąt)
+- name: Trójkąt prostokątny – promienie
+  latex_raw: R=\frac{c}{2},\qquad r=\frac{a+b-c}{2}
+  conditions: a, b – przyprostokątne, c – przeciwprostokątna
+  description: R = c/2, bo przeciwprostokątna jest średnicą okręgu opisanego.
+- name: Trójkąt równoboczny – wysokość i promienie
+  latex_raw: h=\frac{a\sqrt3}{2},\qquad R=\frac{2}{3}h=\frac{a\sqrt3}{3},\qquad r=\frac{1}{3}h=\frac{a\sqrt3}{6}
+  conditions: a – długość boku trójkąta równobocznego
+  description: Zawsze R = 2r; wspólny środek dzieli wysokość w stosunku 2:1.
+- name: Podział środkowej przez środek ciężkości
+  latex_raw: '|AS|=\frac{2}{3}|AA''|,\qquad |SA''|=\frac{1}{3}|AA''|,\qquad \frac{|AS|}{|SA''|}=\frac{2}{1}'
+  conditions: A' – środek boku BC, S – środek ciężkości (dowolny trójkąt)
+- name: Współrzędne środka ciężkości
+  latex_raw: S=\left(\frac{x_A+x_B+x_C}{3},\ \frac{y_A+y_B+y_C}{3}\right)
+  conditions: trójkąt o wierzchołkach A, B, C w układzie współrzędnych
+- name: Kąt przy środku okręgu wpisanego
+  latex_raw: '|\sphericalangle BIC| = 90^\circ+\frac{\alpha}{2}'
+  conditions: I – środek okręgu wpisanego, α – kąt przy wierzchołku A
+  description: 'Wynika z sumy kątów w trójkącie BIC: 180° − β/2 − γ/2 = 180° − (180°−α)/2.'
+- name: Kąt środkowy a kąt wpisany (dla środka okręgu opisanego)
+  latex_raw: '|\sphericalangle BOC| = 2\alpha'
+  conditions: O – środek okręgu opisanego, α = |∢BAC| kąt ostry oparty na tym samym łuku BC
+- name: Odległość ortocentrum od wierzchołka (uzupełnienie)
+  latex_raw: '|OS|:|SH| = 1:2'
+  conditions: O, S, H na prostej Eulera, trójkąt nierównoboczny
+methods:
+- name: Wyznaczanie środka okręgu wpisanego
+  when_to_use: Gdy trzeba wskazać (skonstruować) punkt równo odległy od boków trójkąta lub narysować okrąg
+    wpisany.
+  steps:
+  - Skonstruuj dwusieczne dwóch dowolnych kątów wewnętrznych trójkąta (trzecia przejdzie przez ten sam
+    punkt – można ją zrobić dla sprawdzenia).
+  - Oznacz punkt ich przecięcia jako I – to środek okręgu wpisanego.
+  - Z punktu I opuść odcinek prostopadły na dowolny bok; jego długość to promień r.
+  - Zakreśl okrąg o środku I i promieniu r – powinien być styczny do wszystkich trzech boków.
+- name: Wyznaczanie środka okręgu opisanego
+  when_to_use: Gdy trzeba wskazać punkt równo odległy od wierzchołków lub narysować okrąg opisany.
+  steps:
+  - Skonstruuj symetralne dwóch boków (prostopadłe przechodzące przez środki boków).
+  - Punkt ich przecięcia oznacz O – to środek okręgu opisanego.
+  - Zmierz (lub oblicz) |OA| = R; ta sama wartość wyjdzie dla |OB| i |OC|.
+  - 'Sprawdź spójność z rodzajem trójkąta: ostrokątny → O wewnątrz, prostokątny → O w środku przeciwprostokątnej,
+    rozwartokątny → O na zewnątrz (po drugiej stronie najdłuższego boku niż wierzchołek kąta rozwartego).'
+- name: Wyznaczanie ortocentrum
+  when_to_use: Gdy w zadaniu pojawiają się wysokości trójkąta lub punkt ich przecięcia.
+  steps:
+  - Z wierzchołka A poprowadź prostą prostopadłą do prostej BC.
+  - Z wierzchołka B poprowadź prostą prostopadłą do prostej AC.
+  - Punkt przecięcia tych prostych to ortocentrum H (trzecia wysokość również przez niego przechodzi).
+  - Jeśli trójkąt jest rozwartokątny, pamiętaj o przedłużeniu boków – H wypadnie poza trójkątem; jeśli
+    prostokątny, H to wierzchołek kąta prostego.
+- name: Wykorzystanie podziału środkowej w stosunku 2:1
+  when_to_use: Gdy w zadaniu dana jest długość środkowej lub jej fragmentu i szukamy pozostałych odcinków
+    (albo położenia środka ciężkości).
+  steps:
+  - 'Zidentyfikuj środkową: sprawdź, że odcinek łączy wierzchołek ze ŚRODKIEM przeciwległego boku.'
+  - Oznacz całą środkową przez m; wtedy odcinek od wierzchołka do S ma długość (2/3)m, a od S do środka
+    boku (1/3)m.
+  - Ułóż proporcję lub równanie z danymi liczbami i wyznacz niewiadomą.
+  - W układzie współrzędnych zamiast tego użyj wzoru S = ((x_A+x_B+x_C)/3, (y_A+y_B+y_C)/3).
+- name: Obliczanie promieni r i R z danych o bokach
+  when_to_use: Gdy znane są długości boków (i/lub pole) trójkąta, a szukamy promienia okręgu wpisanego
+    lub opisanego.
+  steps:
+  - Oblicz pole P (ze wzoru 1/2·a·h, ze wzoru z sinusem lub przez twierdzenie Pitagorasa dla trójkąta
+    prostokątnego/równoramiennego).
+  - Oblicz połowę obwodu p = (a+b+c)/2.
+  - Podstaw r = P/p oraz R = abc/(4P).
+  - 'Jeśli trójkąt jest szczególny, skorzystaj ze skrótów: prostokątny R = c/2, r = (a+b−c)/2; równoboczny
+    R = a√3/3, r = a√3/6.'
+  - 'Sprawdź sensowność: zawsze r < R oraz 2r ≤ R.'
+- name: Rozwiązywanie zadań o kątach z punktami szczególnymi
+  when_to_use: Gdy dane są miary kątów trójkąta, a szukamy kąta pod jakim widać bok z punktu I, O lub
+    H.
+  steps:
+  - Narysuj trójkąt i zaznacz szukany punkt oraz odcinki łączące go z wierzchołkami.
+  - 'Dla I: połowy kątów przy wierzchołkach, potem suma kątów w trójkącie (lub wzór ∢BIC = 90° + α/2).'
+  - 'Dla O: trójkąty OAB, OBC, OCA są równoramienne (ramiona długości R) albo użyj ∢BOC = 2α.'
+  - 'Dla H: korzystaj z kątów prostych przy spodkach wysokości i z sumy kątów w powstałych trójkątach
+    lub czworokątach.'
+  - Zapisz rachunek na kątach i podaj wynik w stopniach.
+examples:
+- statement: W trójkącie ABC środkowa AD ma długość 15 cm, a S jest środkiem ciężkości. Oblicz |AS| i
+    |SD|. Ile wynosi |AS|, jeśli wiadomo, że |SD| = 4 cm?
+  worked_solution: |-
+    Środek ciężkości dzieli środkową w stosunku 2:1 licząc od wierzchołka, więc |AS| = (2/3)|AD| oraz |SD| = (1/3)|AD|.
+    |AS| = (2/3)·15 = 10 cm, |SD| = (1/3)·15 = 5 cm (sprawdzenie: 10 + 5 = 15 ✓).
+    Druga część: jeśli |SD| = 4 cm, to |SD| jest trzecią częścią środkowej, czyli |AD| = 3·4 = 12 cm, a |AS| = 2·|SD| = 8 cm.
+  difficulty: 1
+- statement: Dany jest trójkąt prostokątny o przyprostokątnych 6 i 8. Wskaż położenie ortocentrum i środka
+    okręgu opisanego oraz oblicz promienie R i r.
+  worked_solution: |-
+    Przeciwprostokątna: c = √(6² + 8²) = √100 = 10.
+    Ortocentrum: dwie wysokości tego trójkąta to same przyprostokątne (każda jest prostopadła do drugiej), więc przecinają się w wierzchołku kąta prostego. H = wierzchołek kąta prostego.
+    Środek okręgu opisanego: kąt prosty jest kątem wpisanym opartym na przeciwprostokątnej, więc przeciwprostokątna jest średnicą. O leży w środku przeciwprostokątnej, R = c/2 = 5.
+    Promień okręgu wpisanego: P = 1/2·6·8 = 24, p = (6+8+10)/2 = 12, więc r = P/p = 24/12 = 2.
+    Sprawdzenie skrótem: r = (a+b−c)/2 = (6+8−10)/2 = 2 ✓.
+  difficulty: 2
+- statement: W trójkącie równobocznym o boku 6 wyznacz promień okręgu wpisanego i opisanego oraz uzasadnij,
+    że wszystkie punkty szczególne pokrywają się.
+  worked_solution: |-
+    W trójkącie równobocznym każda wysokość jest jednocześnie środkową, dwusieczną kąta i symetralną boku (bo trójkąt jest symetryczny względem każdej z nich). Skoro te trzy proste przecinają się w jednym punkcie, to ten sam punkt jest ortocentrum, środkiem ciężkości, incentrum i circumcentrum.
+    Wysokość: h = a√3/2 = 6√3/2 = 3√3.
+    Punkt wspólny dzieli wysokość jak środek ciężkości, czyli w stosunku 2:1 od wierzchołka:
+    R = (2/3)h = (2/3)·3√3 = 2√3,
+    r = (1/3)h = √3.
+    Sprawdzenie wzorami: R = a√3/3 = 6√3/3 = 2√3 ✓, r = a√3/6 = √3 ✓. Zauważ, że R = 2r.
+  difficulty: 2
+- statement: W trójkącie równoramiennym o ramionach 5 i podstawie 6 oblicz r i R oraz podaj, w jakiej
+    odległości od podstawy leży środek okręgu opisanego.
+  worked_solution: |-
+    Wysokość opuszczona na podstawę dzieli ją na połowy: h = √(5² − 3²) = √16 = 4.
+    Pole: P = 1/2·6·4 = 12. Połowa obwodu: p = (5+5+6)/2 = 8.
+    r = P/p = 12/8 = 1,5.
+    R = abc/(4P) = (5·5·6)/(4·12) = 150/48 = 25/8 = 3,125.
+    Wszystkie punkty szczególne leżą na osi symetrii (wysokości poprowadzonej do podstawy). Środek O jest odległy o R od wierzchołka górnego, a wierzchołek ten leży 4 jednostki nad podstawą, więc odległość O od podstawy wynosi 4 − 25/8 = 32/8 − 25/8 = 7/8.
+    Sprawdzenie: odległość O od końca podstawy: √((7/8)² + 3²) = √(49/64 + 9) = √(625/64) = 25/8 = R ✓. Ponieważ 7/8 > 0, punkt O leży wewnątrz trójkąta – trójkąt jest ostrokątny.
+  difficulty: 3
+- statement: W trójkącie ABC kąt przy wierzchołku A ma miarę 50°, a kąt przy B ma miarę 60°. Punkt I jest
+    środkiem okręgu wpisanego, a O środkiem okręgu opisanego. Oblicz |∢BIC| i |∢BOC|.
+  worked_solution: |-
+    Kąt przy C: γ = 180° − 50° − 60° = 70°.
+    Kąt BIC: proste BI i CI to dwusieczne, więc w trójkącie BIC kąty przy B i C wynoszą 60°/2 = 30° i 70°/2 = 35°. Zatem |∢BIC| = 180° − 30° − 35° = 115°.
+    Sprawdzenie wzorem: 90° + α/2 = 90° + 25° = 115° ✓.
+    Kąt BOC: to kąt środkowy oparty na łuku BC, na którym oparty jest kąt wpisany BAC = 50°, więc |∢BOC| = 2·50° = 100°.
+    Sprawdzenie: trójkąt BOC jest równoramienny (|OB| = |OC| = R), kąty przy podstawie mają po (180° − 100°)/2 = 40°, co jest zgodne z tym, że np. |∢OBC| = 90° − α = 40°.
+  difficulty: 3
+objectives:
+- statement: Podać definicje czterech punktów szczególnych trójkąta (incentrum, circumcentrum, ortocentrum,
+    środek ciężkości) wraz z charakteryzującymi je własnościami odległościowymi.
+  bloom_level: zapamiętywanie
+- statement: Wskazać na rysunku i skonstruować każdy z punktów szczególnych, poprawnie rozróżniając dwusieczną,
+    symetralną, wysokość i środkową.
+  bloom_level: rozumienie
+- statement: Określić położenie środka okręgu opisanego i ortocentrum w zależności od rodzaju trójkąta
+    (ostrokątny, prostokątny, rozwartokątny).
+  bloom_level: rozumienie
+- statement: Wykorzystać własność podziału środkowej w stosunku 2:1 do obliczania długości odcinków oraz
+    wyznaczać współrzędne środka ciężkości.
+  bloom_level: stosowanie
+- statement: Obliczyć promień okręgu wpisanego i opisanego w trójkącie (w tym prostokątnym, równoramiennym
+    i równobocznym) korzystając ze wzorów r = P/p oraz R = abc/(4P) i ze wzorów szczególnych.
+  bloom_level: stosowanie
+- statement: Rozwiązywać zadania na kąty z użyciem własności trójkątów równoramiennych OAB, OBC, OCA oraz
+    zależności ∢BIC = 90° + α/2 i ∢BOC = 2α.
+  bloom_level: stosowanie
+- statement: Uzasadnić, że w trójkącie równobocznym wszystkie punkty szczególne pokrywają się, a w równoramiennym
+    leżą na osi symetrii, i wyciągnąć stąd wniosek R = 2r.
+  bloom_level: analiza
+- statement: Ocenić poprawność rozwiązania geometrycznego, sprawdzając zgodność wyniku z warunkami typu
+    r < R, położenie punktu wewnątrz/na zewnątrz trójkąta czy zgodność dwóch różnych wzorów.
+  bloom_level: ocenianie
+misconceptions:
+- name: Mylenie dwusiecznej z symetralną
+  incorrect_reasoning: Uczeń rysuje z wierzchołka prostą prostopadłą do przeciwległego boku i nazywa ją
+    symetralną, albo prostą przez środek boku i nazywa ją dwusieczną – w efekcie 'znajduje' środek okręgu
+    opisanego przecinając dwusieczne.
+  correct_reasoning: Dwusieczna wychodzi z wierzchołka i dzieli kąt na pół → daje środek okręgu WPISANEGO
+    (równa odległość od boków). Symetralna jest prostopadła do boku i przechodzi przez jego środek (na
+    ogół nie przez wierzchołek) → daje środek okręgu OPISANEGO (równa odległość od wierzchołków).
+  severity: 5
+- name: Odwrotny stosunek podziału środkowej
+  incorrect_reasoning: Uczeń przyjmuje, że środek ciężkości dzieli środkową w stosunku 1:2 licząc od wierzchołka,
+    czyli |AS| = (1/3)|AD|.
+  correct_reasoning: 'Dłuższa część jest przy wierzchołku: |AS| : |SD| = 2 : 1, czyli |AS| = (2/3)|AD|,
+    |SD| = (1/3)|AD|. Warto to sprawdzić rysunkiem – S leży wyraźnie bliżej boku niż wierzchołka.'
+  severity: 4
+- name: Środek ciężkości jako środek okręgu
+  incorrect_reasoning: Uczeń zakłada, że środek ciężkości jest jednakowo odległy od wierzchołków (lub
+    od boków) i utożsamia go ze środkiem okręgu opisanego bądź wpisanego.
+  correct_reasoning: Środek ciężkości na ogół NIE jest równo odległy ani od wierzchołków, ani od boków.
+    Równe odległości od wierzchołków ma tylko O, równe odległości od boków tylko I. Wszystkie te punkty
+    pokrywają się jedynie w trójkącie równobocznym.
+  severity: 4
+- name: Przekonanie, że każdy punkt szczególny leży wewnątrz trójkąta
+  incorrect_reasoning: Uczeń rysuje ortocentrum lub środek okręgu opisanego zawsze wewnątrz trójkąta,
+    także w trójkącie rozwartokątnym.
+  correct_reasoning: Wewnątrz zawsze leżą tylko I i S. W trójkącie rozwartokątnym O i H leżą na zewnątrz,
+    a w prostokątnym O jest w środku przeciwprostokątnej, zaś H w wierzchołku kąta prostego.
+  severity: 3
+- name: Utożsamianie wysokości ze środkową
+  incorrect_reasoning: Uczeń traktuje wysokość jako odcinek dzielący bok na połowy (albo dwusieczną jako
+    wysokość) i miesza ortocentrum ze środkiem ciężkości.
+  correct_reasoning: Wysokość, środkowa i dwusieczna wychodzące z tego samego wierzchołka pokrywają się
+    tylko wtedy, gdy trójkąt jest równoramienny względem tego wierzchołka (w szczególności równoboczny).
+    W dowolnym trójkącie są to trzy różne odcinki.
+  severity: 4
+- name: Błędne p we wzorze r = P/p
+  incorrect_reasoning: Uczeń podstawia do wzoru r = P/p cały obwód zamiast jego połowy i otrzymuje dwukrotnie
+    za mały promień.
+  correct_reasoning: 'We wzorze P = p·r litera p oznacza POŁOWĘ obwodu: p = (a+b+c)/2. Kontrola: dla trójkąta
+    o bokach 6, 8, 10 wychodzi r = 24/12 = 2, co zgadza się ze wzorem r = (a+b−c)/2.'
+  severity: 3
+- name: Przypisywanie ortocentrum okręgu
+  incorrect_reasoning: Uczeń mówi o 'okręgu o środku w ortocentrum' opisanym lub wpisanym w trójkąt.
+  correct_reasoning: Ortocentrum nie jest środkiem okręgu wpisanego ani opisanego – to wyłącznie punkt
+    przecięcia wysokości. Okrąg wpisany ma środek w I, opisany w O.
+  severity: 3
+- name: Mylenie kąta środkowego z kątem przy incentrum
+  incorrect_reasoning: Uczeń liczy |∢BIC| = 2α, tak jak dla kąta środkowego.
+  correct_reasoning: Wzór ∢BOC = 2α dotyczy środka okręgu OPISANEGO (kąt środkowy). Dla środka okręgu
+    wpisanego ∢BIC = 90° + α/2 – wynika z podzielenia na pół kątów β i γ i sumy kątów w trójkącie BIC.
+  severity: 3

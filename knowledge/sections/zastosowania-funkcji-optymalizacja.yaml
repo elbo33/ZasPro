@@ -1,0 +1,395 @@
+section: zastosowania-funkcji-optymalizacja
+name: Zastosowania funkcji liniowej i kwadratowej; optymalizacja
+scope: Using linear and quadratic functions to interpret geometric, physical and everyday problems; optimisation
+  reducible to a quadratic - expressing the quantity as a quadratic function of one variable under constraints
+  and reading the extremum.
+requirements:
+- V.11
+- XIII.1
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:51:09.957817'
+  approved_at: '2026-08-28T18:28:05.124099'
+  approved_by: reviewer
+concepts:
+- name: Model matematyczny sytuacji
+  description: 'Opis zagadnienia praktycznego, geometrycznego lub fizycznego za pomocą funkcji: wybieramy
+    zmienną niezależną x (wielkość, którą możemy zmieniać), zapisujemy badaną wielkość jako f(x) i ustalamy
+    dziedzinę wynikającą z warunków zadania.'
+  explanation: 'Modelowanie to tłumaczenie tekstu na język funkcji. Zawsze zaczynaj od zdania: ''niech
+    x oznacza ...'' wraz z jednostką. Bez tego dalsze rachunki są nieczytelne i łatwo pomylić wielkości.'
+  difficulty: 2
+- name: Dziedzina wynikająca z kontekstu
+  description: Zbiór tych wartości zmiennej, dla których sytuacja opisana w zadaniu ma sens (np. długość
+    > 0, czas ≥ 0, liczba sztuk jest liczbą naturalną, druga strona prostokąta też musi być dodatnia).
+  explanation: Wzór funkcji jest zwykle określony dla wszystkich liczb rzeczywistych, ale zadanie nie.
+    Dziedzina to zestaw wszystkich nierówności z treści zadania rozwiązanych jednocześnie – to ona decyduje,
+    czy wierzchołek paraboli jest dopuszczalny.
+  difficulty: 3
+- name: Funkcja liniowa jako model stałego tempa zmian
+  description: f(x) = ax + b, gdzie b to wartość początkowa (opłata stała, położenie początkowe, stan
+    konta w chwili 0), a a to stałe tempo zmian (koszt jednostkowy, prędkość, przyrost na jednostkę).
+  explanation: Jeśli w treści pada 'za każdą kolejną ... dopłacamy tyle samo' albo 'porusza się ruchem
+    jednostajnym', model jest liniowy. Znak a mówi, czy wielkość rośnie, czy maleje; |a| mówi, jak szybko.
+  difficulty: 1
+- name: Interpretacja współczynników a i b
+  description: 'W modelu f(x)=ax+b: a = przyrost wartości funkcji przy wzroście argumentu o 1 (jednostka:
+    [jednostka f]/[jednostka x]), b = f(0).'
+  explanation: Pytanie 'o ile zmieni się koszt, gdy przejedziemy 1 km więcej?' to pytanie o a. Pytanie
+    'ile zapłacimy, nie przejeżdżając ani kilometra?' to pytanie o b.
+  difficulty: 2
+- name: Porównywanie dwóch modeli liniowych
+  description: Sytuacja, w której dwie oferty/dwa ruchy opisują funkcje f(x)=a₁x+b₁ i g(x)=a₂x+b₂; punkt
+    zrównania to rozwiązanie równania f(x)=g(x), a odpowiedź 'kiedy taniej/wcześniej' to rozwiązanie nierówności
+    f(x)<g(x).
+  explanation: 'Graficznie: dwie proste przecinają się w jednym punkcie (gdy a₁≠a₂) i po jego jednej stronie
+    jedna prosta leży niżej. Zawsze podaj odpowiedź jako przedział wartości zmiennej z jednostką.'
+  difficulty: 2
+- name: Funkcja kwadratowa jako model
+  description: f(x)=ax²+bx+c, a≠0; pojawia się tam, gdzie mnożymy przez siebie dwie wielkości zależne
+    liniowo od x (pole = bok · bok, przychód = cena · liczba sztuk) albo gdzie występuje ruch jednostajnie
+    zmienny.
+  explanation: 'Sygnał ostrzegawczy: ''iloczyn dwóch wielkości, z których obie zmieniają się liniowo''
+    – to zawsze daje parabolę. Znak a rozpoznasz po współczynniku przy x² po wymnożeniu.'
+  difficulty: 2
+- name: Wierzchołek paraboli jako ekstremum
+  description: Punkt W=(p,q), p=-b/(2a), q=f(p)=-Δ/(4a). Dla a<0 funkcja przyjmuje w p wartość największą
+    q, dla a>0 – wartość najmniejszą q.
+  explanation: p odpowiada na pytanie 'DLA JAKIEJ wartości zmiennej', a q na pytanie 'ILE WYNOSI' szukana
+    wielkość. Mylenie tych dwóch liczb to najczęstszy błąd w zadaniach optymalizacyjnych.
+  difficulty: 2
+- name: Postać kanoniczna jako narzędzie optymalizacji
+  description: f(x)=a(x-p)²+q. Ponieważ (x-p)² ≥ 0, dla a<0 mamy f(x) ≤ q, a dla a>0 mamy f(x) ≥ q, przy
+    czym równość zachodzi tylko dla x=p.
+  explanation: To uzasadnienie 'bez pochodnych', dlaczego wierzchołek daje ekstremum – warto umieć je
+    napisać jednym zdaniem jako komentarz do rozwiązania.
+  difficulty: 3
+- name: Warunek wiążący (ograniczenie)
+  description: Równanie łączące dwie zmienne występujące w zadaniu (np. 2x+2y=40, x+y=10, y=6-¾x z podobieństwa
+    trójkątów), pozwalające wyrazić jedną zmienną przez drugą.
+  explanation: 'Optymalizacja na poziomie podstawowym zawsze wygląda tak: jedna wielkość do zoptymalizowania
+    + jedno ograniczenie. Ograniczenie służy do wyeliminowania drugiej zmiennej, żeby zostać z funkcją
+    jednej zmiennej.'
+  difficulty: 3
+- name: Redukcja do funkcji jednej zmiennej
+  description: 'Procedura: z warunku wiążącego wyznacz y = (wyrażenie z x) i wstaw do wzoru na optymalizowaną
+    wielkość, otrzymując funkcję f(x) jednej zmiennej.'
+  explanation: Dopóki we wzorze są dwie litery, nie da się liczyć wierzchołka. Wybieraj tę zmienną, której
+    wyznaczenie z ograniczenia jest najprostsze (bez ułamków, bez pierwiastków).
+  difficulty: 3
+- name: Ekstremum funkcji kwadratowej na przedziale
+  description: Na przedziale domkniętym [m,n] wartość największa i najmniejsza funkcji kwadratowej są
+    przyjmowane w wierzchołku (jeśli p∈[m,n]) lub na końcach przedziału.
+  explanation: 'Gdy p leży poza dziedziną, korzystamy z monotoniczności: parabola jest po jednej stronie
+    wierzchołka rosnąca, po drugiej malejąca, więc ekstremum wypada na tym końcu przedziału, który jest
+    bliżej (lub dalej) od p.'
+  difficulty: 4
+- name: Dziedzina dyskretna (liczby całkowite)
+  description: Sytuacja, gdy zmienna z natury rzeczy przyjmuje tylko wartości całkowite (liczba podwyżek
+    ceny, liczba sztuk, liczba osób).
+  explanation: Liczymy p jak zwykle; jeśli p jest całkowite – gotowe. Jeśli nie, sprawdzamy dwie najbliższe
+    liczby całkowite i porównujemy wartości funkcji.
+  difficulty: 3
+- name: Rzut pionowy i ruch jednostajnie zmienny
+  description: 'Wysokość ciała rzuconego pionowo w górę: h(t) = -½gt² + v₀t + h₀; jest to funkcja kwadratowa
+    czasu o ujemnym współczynniku przy t².'
+  explanation: Wierzchołek to moment i wysokość maksymalna, miejsce zerowe dodatnie to moment upadku,
+    nierówność h(t) ≥ H opisuje przedział czasu, w którym ciało jest wyżej niż H. Przy g≈10 m/s² rachunki
+    są 'ładne'.
+  difficulty: 3
+- name: 'Modele ekonomiczne: koszt, przychód, zysk'
+  description: 'Koszt K(x) często liniowy: K(x)=k·x+K₀; przychód P(x)=cena(x)·liczba(x) – przy liniowej
+    zależności ceny i popytu jest funkcją kwadratową; zysk Z(x)=P(x)-K(x).'
+  explanation: 'Typowy schemat: ''każda podwyżka o d zł zmniejsza sprzedaż o s sztuk''. Wtedy przy x podwyżkach
+    cena = c₀+d·x, sprzedaż = n₀-s·x, a przychód to iloczyn tych dwóch wyrażeń.'
+  difficulty: 3
+- name: Twierdzenie o stałej sumie i największym iloczynie
+  description: Jeśli x+y=S (S>0, x,y>0), to iloczyn xy jest największy dla x=y=S/2 i wynosi S²/4.
+  explanation: 'To zdanie w wersji geometrycznej brzmi: spośród prostokątów o danym obwodzie największe
+    pole ma kwadrat. Warto je znać, ale na maturze i tak trzeba pokazać rachunek z wierzchołkiem.'
+  difficulty: 3
+- name: Interpretacja jednostek i sensowność wyniku
+  description: Kontrola, czy otrzymana liczba ma właściwą jednostkę (m, m², zł, s) i czy mieści się w
+    dziedzinie oraz zdrowym rozsądku.
+  explanation: Ujemna długość boku, czas -3 s czy cena biletu 4000 zł to sygnał, że gdzieś jest błąd lub
+    że trzeba odrzucić jedno z dwóch rozwiązań równania kwadratowego.
+  difficulty: 2
+formulas:
+- name: Funkcja liniowa – model
+  latex_raw: f(x)=ax+b
+  conditions: a – stałe tempo zmian, b – wartość początkowa f(0)
+  description: Dla a=0 funkcja jest stała (opłata ryczałtowa).
+- name: Współczynnik kierunkowy z dwóch danych
+  latex_raw: a=\frac{y_2-y_1}{x_2-x_1}
+  conditions: x_1 \neq x_2; (x_1,y_1),(x_2,y_2) – dwie pary danych z treści zadania
+- name: Punkt zrównania dwóch modeli liniowych
+  latex_raw: a_1x+b_1=a_2x+b_2 \Rightarrow x=\frac{b_2-b_1}{a_1-a_2}
+  conditions: a_1 \neq a_2
+- name: Postać ogólna i kanoniczna funkcji kwadratowej
+  latex_raw: f(x)=ax^2+bx+c=a(x-p)^2+q
+  conditions: a \neq 0
+- name: Współrzędne wierzchołka
+  latex_raw: p=-\frac{b}{2a},\qquad q=f(p)=-\frac{\Delta}{4a},\quad \Delta=b^2-4ac
+  conditions: a \neq 0
+- name: Wierzchołek z miejsc zerowych
+  latex_raw: p=\frac{x_1+x_2}{2}
+  conditions: gdy funkcja ma miejsca zerowe x_1, x_2 (Δ ≥ 0); szczególnie wygodne dla f(x)=a(x-x_1)(x-x_2)
+- name: Wartość ekstremalna
+  latex_raw: a<0:\; f_{\max}=q \text{ dla } x=p;\qquad a>0:\; f_{\min}=q \text{ dla } x=p
+  conditions: gdy p należy do dziedziny wynikającej z zadania
+- name: Stała suma – największy iloczyn
+  latex_raw: x+y=S,\; x,y>0 \Rightarrow (xy)_{\max}=\frac{S^2}{4} \text{ dla } x=y=\frac{S}{2}
+  conditions: S>0
+- name: Pole i obwód prostokąta
+  latex_raw: Obw=2(x+y),\qquad P=xy
+  conditions: x,y>0; po podstawieniu y z warunku obwodu otrzymujemy P(x)=x\left(\frac{Obw}{2}-x\right)
+- name: Wysokość w rzucie pionowym
+  latex_raw: h(t)=-\tfrac{1}{2}gt^2+v_0t+h_0
+  conditions: t ≥ 0, g ≈ 10 \frac{m}{s^2}; wysokość maksymalna dla t=\frac{v_0}{g}
+- name: Droga w ruchu jednostajnym
+  latex_raw: s(t)=s_0+vt
+  conditions: 'v – stała prędkość; spotkanie dwóch ciał: s_1(t)=s_2(t)'
+- name: Przychód przy liniowym popycie
+  latex_raw: P(x)=(c_0+dx)(n_0-sx)
+  conditions: x – liczba podwyżek o d zł, n_0 - sx > 0; P jest funkcją kwadratową o współczynniku -ds<0
+- name: Zysk
+  latex_raw: Z(x)=P(x)-K(x)
+  conditions: P – przychód, K – koszt; próg rentowności to Z(x)=0
+- name: Pole trójkąta i twierdzenie Pitagorasa (w modelach geometrycznych)
+  latex_raw: P=\tfrac{1}{2}ab,\qquad a^2+b^2=c^2
+  conditions: a,b – przyprostokątne trójkąta prostokątnego, c – przeciwprostokątna
+methods:
+- name: Budowa modelu liniowego z opisu słownego
+  when_to_use: Gdy w treści występuje opłata stała plus opłata za jednostkę, ruch jednostajny albo zależność
+    'o tyle samo na każdą jednostkę'.
+  steps:
+  - 'Wprowadź zmienną: ''niech x oznacza ... (jednostka)''.'
+  - Odczytaj wartość początkową b (co płacimy/gdzie jesteśmy dla x=0).
+  - 'Odczytaj tempo zmian a wraz ze znakiem (wzrost: a>0, spadek: a<0).'
+  - Zapisz f(x)=ax+b i podaj dziedzinę wynikającą z treści (np. x ≥ 0).
+  - 'Odpowiedz na pytanie zadania: wartość f dla danego x, równanie f(x)=c lub nierówność f(x)<g(x).'
+  - Sformułuj odpowiedź słowną z jednostką.
+- name: Porównanie dwóch ofert / spotkanie dwóch ciał
+  when_to_use: Gdy zadanie pyta 'przy jakiej liczbie ... oferty kosztują tyle samo' lub 'kiedy pierwsza
+    jest korzystniejsza'.
+  steps:
+  - Zapisz obie funkcje liniowe f(x) i g(x) tą samą zmienną.
+  - Rozwiąż równanie f(x)=g(x) – to punkt zrównania x₀.
+  - Rozwiąż nierówność f(x)<g(x) (albo sprawdź jedną wartość testową po każdej stronie x₀).
+  - Przetnij otrzymany zbiór z dziedziną z treści zadania.
+  - 'Zinterpretuj: ''oferta A jest tańsza dla ... ''.'
+- name: Uniwersalny schemat zadania optymalizacyjnego
+  when_to_use: 'Gdy pytanie brzmi: ''dla jakich wymiarów pole jest największe'', ''jaka cena daje największy
+    przychód'', ''kiedy suma/iloczyn jest najmniejszy''.'
+  steps:
+  - Oznacz zmienną x i drugą wielkość y, opisz je słownie z jednostkami.
+  - Zapisz warunek wiążący x i y (obwód, długość materiału, podobieństwo trójkątów, zależność popytu od
+    ceny).
+  - Zapisz wzór na wielkość optymalizowaną W = wyrażenie z x i y.
+  - Z warunku wiążącego wyznacz y i wstaw do W – otrzymasz funkcję f(x).
+  - Doprowadź f do postaci ax²+bx+c i wyznacz dziedzinę D z warunków zadania (wszystkie wielkości dodatnie
+    itd.).
+  - Oblicz p=-b/(2a); sprawdź, czy p ∈ D.
+  - Jeśli tak, oblicz q=f(p); znak a rozstrzyga, czy to maksimum (a<0), czy minimum (a>0).
+  - 'Wróć do pytania: podaj wymiary/cenę (czyli p oraz y odpowiadające p) ORAZ wartość ekstremalną (czyli
+    q), z jednostkami.'
+- name: Ekstremum, gdy wierzchołek leży poza dziedziną
+  when_to_use: Gdy dziedzina jest ograniczonym przedziałem (np. bok musi mieć co najmniej 14 m, cena nie
+    może przekroczyć 60 zł) i p do niego nie należy.
+  steps:
+  - Wyznacz p i porównaj z końcami przedziału [m,n].
+  - 'Ustal monotoniczność: dla a<0 funkcja rośnie na (-∞,p], maleje na [p,∞); dla a>0 – odwrotnie.'
+  - 'Jeśli p<m: na [m,n] funkcja jest monotoniczna – ekstremum na końcu m lub n zgodnie z monotonicznością;
+    analogicznie dla p>n.'
+  - Oblicz wartości funkcji na obu końcach i wybierz większą (lub mniejszą).
+  - Zapisz odpowiedź, pamiętając, że dla przedziału otwartego wartość może nie być osiągana.
+- name: Optymalizacja przy dziedzinie całkowitoliczbowej
+  when_to_use: Gdy zmienna oznacza liczbę podwyżek, sztuk, osób – wartości niecałkowite nie mają sensu.
+  steps:
+  - Zbuduj funkcję kwadratową jak zwykle i oblicz p.
+  - Jeśli p jest liczbą całkowitą z dziedziny – to jest odpowiedź.
+  - Jeśli nie, oblicz f w dwóch najbliższych liczbach całkowitych ⌊p⌋ i ⌈p⌉ (o ile należą do dziedziny).
+  - Porównaj obie wartości i wybierz odpowiednią; przy równości podaj obie możliwości.
+  - Przelicz odpowiedź na wielkość z treści (cena, liczba sztuk) i podaj wartość ekstremalną.
+- name: Analiza rzutu pionowego
+  when_to_use: Gdy dana jest zależność wysokości od czasu h(t)=at²+bt+c z a<0.
+  steps:
+  - Odczytaj h₀=h(0) – wysokość początkowa, oraz v₀ – prędkość początkowa (współczynnik przy t).
+  - 'Największa wysokość: oblicz p=-b/(2a) (moment) i q=h(p) (wysokość).'
+  - 'Moment upadku: rozwiąż h(t)=0 i odrzuć rozwiązanie ujemne.'
+  - 'Czas przebywania powyżej poziomu H: rozwiąż nierówność h(t) ≥ H i podaj długość otrzymanego przedziału.'
+  - 'Zawsze dopisz jednostki: sekundy dla t, metry dla h.'
+- name: Modele geometryczne z jedną zmienną
+  when_to_use: Gdy figura ma zmienny wymiar x (prostokąt wpisany w trójkąt, punkt dzielący odcinek, ramka
+    o zmiennej szerokości) i pytamy o pole/obwód/sumę pól.
+  steps:
+  - Zrób rysunek i oznacz x na rysunku.
+  - Pozostałe odcinki wyraź przez x, korzystając z podobieństwa trójkątów, twierdzenia Pitagorasa lub
+    prostego odejmowania.
+  - Zapisz szukaną wielkość jako funkcję x i wymnóż nawiasy.
+  - Ustal dziedzinę z warunku, że wszystkie odcinki są dodatnie (i mieszczą się w figurze).
+  - Znajdź wierzchołek i zinterpretuj wynik geometrycznie.
+examples:
+- statement: Firma A wypożycza rower za 20 zł opłaty startowej i 0,30 zł za minutę jazdy. Firma B nie
+    pobiera opłaty startowej, ale liczy 0,50 zł za minutę. (a) Zapisz koszt jazdy w obu firmach jako funkcję
+    czasu t (w minutach). (b) Przy jakim czasie jazdy koszt jest taki sam? (c) Dla jakich czasów jazdy
+    korzystniejsza jest firma A?
+  worked_solution: |-
+    (a) Niech t – czas jazdy w minutach, t ≥ 0. Koszt w firmie A: K_A(t)=0{,}3t+20, w firmie B: K_B(t)=0{,}5t. Obie funkcje są liniowe: 20 zł to opłata stała (wartość dla t=0), a współczynniki 0,3 i 0,5 to koszt jednej minuty.
+    (b) Rozwiązujemy 0,3t+20=0,5t ⇒ 20=0,2t ⇒ t=100. Po 100 minutach obie firmy kosztują tyle samo: K=0,5·100=50 zł.
+    (c) Firma A jest tańsza, gdy K_A(t)<K_B(t): 0,3t+20<0,5t ⇒ 20<0,2t ⇒ t>100. Uwzględniając dziedzinę t ≥ 0, otrzymujemy t ∈ (100, ∞).
+    Odpowiedź: koszty są równe po 100 minutach (50 zł), a dla jazd dłuższych niż 100 minut tańsza jest firma A (dla krótszych – firma B).
+  difficulty: 2
+- statement: Z drutu o długości 40 cm zginamy ramkę w kształcie prostokąta. Jakie powinny być wymiary
+    prostokąta, aby jego pole było największe? Ile wynosi to największe pole?
+  worked_solution: |-
+    Niech x (cm) – jeden bok prostokąta. Warunek wiążący: obwód wynosi 40 cm, czyli 2x+2y=40, skąd y=20-x.
+    Dziedzina: x>0 i y=20-x>0, czyli x ∈ (0,20).
+    Pole: P(x)=x(20-x)=-x²+20x. Jest to funkcja kwadratowa o a=-1<0, więc ma wartość największą w wierzchołku.
+    p = -b/(2a) = -20/(2·(-1)) = 10 ∈ (0,20).
+    q = P(10) = -100+200 = 100.
+    Dla x=10 drugi bok y=20-10=10.
+    Odpowiedź: największe pole ma kwadrat o boku 10 cm, a pole to wynosi 100 cm². (Zgodnie z regułą: przy stałej sumie boków iloczyn jest największy, gdy boki są równe.)
+  difficulty: 2
+- statement: Piłkę wyrzucono pionowo w górę z wysokości 1 m z prędkością 20 m/s. Jej wysokość (w metrach)
+    po t sekundach opisuje wzór h(t) = -5t² + 20t + 1. (a) Po jakim czasie piłka osiągnie największą wysokość
+    i ile ona wynosi? (b) Przez jaki czas piłka znajduje się na wysokości co najmniej 16 m?
+  worked_solution: |-
+    (a) h jest funkcją kwadratową o a=-5<0, więc ma maksimum w wierzchołku.
+    p = -b/(2a) = -20/(2·(-5)) = 2 (s).
+    q = h(2) = -5·4 + 40 + 1 = -20+41 = 21 (m).
+    Piłka osiąga największą wysokość 21 m po 2 sekundach.
+    (b) Rozwiązujemy nierówność h(t) ≥ 16:
+    -5t² + 20t + 1 ≥ 16 ⇒ -5t² + 20t - 15 ≥ 0 ⇒ (dzielimy przez -5, zmieniamy znak) t² - 4t + 3 ≤ 0.
+    Δ = 16-12 = 4, √Δ = 2, t₁ = (4-2)/2 = 1, t₂ = (4+2)/2 = 3.
+    Parabola t²-4t+3 ma ramiona w górę, więc nierówność ≤ 0 zachodzi dla t ∈ [1,3]. Oba końce mieszczą się w dziedzinie t ≥ 0.
+    Długość przedziału: 3-1 = 2.
+    Odpowiedź: piłka jest na wysokości co najmniej 16 m przez 2 sekundy (od 1. do 3. sekundy lotu).
+  difficulty: 3
+- statement: Przy cenie biletu 40 zł na koncert przychodzi 300 osób. Organizatorzy oszacowali, że każda
+    podwyżka ceny o 2 zł zmniejsza liczbę widzów o 10 osób. Jaką cenę biletu należy ustalić, aby przychód
+    ze sprzedaży biletów był największy? Ile wyniesie ten przychód?
+  worked_solution: |-
+    Niech x – liczba podwyżek o 2 zł, x ∈ {0,1,2,...}.
+    Cena biletu: c(x) = 40 + 2x (zł). Liczba widzów: n(x) = 300 - 10x (osób).
+    Dziedzina: n(x) > 0 ⇒ 300-10x > 0 ⇒ x < 30, więc x ∈ {0,1,...,29}.
+    Przychód: P(x) = (40+2x)(300-10x) = 12000 - 400x + 600x - 20x² = -20x² + 200x + 12000.
+    a = -20 < 0, więc jest maksimum w wierzchołku:
+    p = -200/(2·(-20)) = 5 – liczba całkowita należąca do dziedziny.
+    q = P(5) = -20·25 + 1000 + 12000 = -500 + 13000 = 12500.
+    Sprawdzenie interpretacji: cena = 40 + 2·5 = 50 zł, liczba widzów = 300 - 50 = 250, przychód = 50·250 = 12500 zł (zgadza się).
+    Odpowiedź: bilet powinien kosztować 50 zł; przy 250 widzach przychód wyniesie 12 500 zł (o 500 zł więcej niż przy cenie 40 zł).
+  difficulty: 3
+- statement: Rolnik ma 24 m siatki i chce ogrodzić prostokątny wybieg przylegający jednym bokiem do prostej
+    ściany stodoły (przy ścianie siatki nie stawia). Ze względu na wejście do stodoły bok przylegający
+    do ściany musi mieć długość co najmniej 14 m. Jakie wymiary powinien mieć wybieg o największym polu?
+  worked_solution: "Niech x (m) – długość boku przylegającego do ściany, y (m) – długość boku prostopadłego\
+    \ do ściany.\nWarunek wiążący (siatka): x + 2y = 24 ⇒ y = (24-x)/2 = 12 - x/2.\nDziedzina: y > 0 ⇒\
+    \ x < 24 oraz warunek z treści x ≥ 14. Zatem x ∈ [14, 24).\nPole: P(x) = x(12 - x/2) = -½x² + 12x.\n\
+    Wierzchołek: p = -12/(2·(-½)) = 12. Ale 12 ∉ [14,24) – wierzchołek leży POZA dziedziną!\nPonieważ\
+    \ a = -½ < 0, funkcja maleje na przedziale [12, ∞), a więc maleje na całym [14,24). Największą wartość\
+    \ przyjmuje w lewym końcu, czyli dla x = 14.\nP(14) = -½·196 + 168 = -98 + 168 = 70. Wtedy y = 12\
+    \ - 7 = 5.\nSprawdzenie: 14 + 2·5 = 24 m siatki, pole 14·5 = 70 m². \nOdpowiedź: wybieg powinien mieć\
+    \ wymiary 14 m (przy ścianie) × 5 m, a jego największe możliwe pole to 70 m². (Bez dodatkowego warunku\
+    \ optymalne byłoby 12 m × 6 m i pole 72 m², ale takie wymiary są niedopuszczalne.)"
+  difficulty: 4
+objectives:
+- statement: Zbudować model liniowy sytuacji praktycznej (opłaty, ruch jednostajny) i zinterpretować współczynniki
+    a i b wraz z jednostkami.
+  bloom_level: zastosowanie
+- statement: 'Porównać dwa modele liniowe: wyznaczyć punkt zrównania oraz rozwiązać nierówność opisującą,
+    która oferta jest korzystniejsza, i podać odpowiedź w kontekście zadania.'
+  bloom_level: zastosowanie
+- statement: Rozpoznać sytuacje prowadzące do funkcji kwadratowej (iloczyn dwóch wielkości liniowo zależnych
+    od zmiennej, ruch jednostajnie zmienny) i zapisać odpowiedni wzór.
+  bloom_level: zrozumienie
+- statement: Wyznaczyć dziedzinę modelu wynikającą z warunków zadania, uwzględniając dodatniość wszystkich
+    wielkości, ograniczenia z treści i ewentualną całkowitoliczbowość.
+  bloom_level: analiza
+- statement: Wyeliminować drugą zmienną za pomocą warunku wiążącego i sprowadzić zagadnienie optymalizacyjne
+    do badania funkcji kwadratowej jednej zmiennej.
+  bloom_level: analiza
+- statement: Wyznaczyć wartość największą lub najmniejszą funkcji kwadratowej (wierzchołek, postać kanoniczna)
+    i poprawnie zinterpretować p oraz q w kontekście zadania.
+  bloom_level: zastosowanie
+- statement: Wyznaczyć ekstremum funkcji kwadratowej na przedziale, gdy wierzchołek nie należy do dziedziny,
+    korzystając z monotoniczności i wartości na końcach przedziału.
+  bloom_level: analiza
+- statement: 'Rozwiązywać zagadnienia fizyczne opisane funkcją kwadratową: wysokość maksymalna, moment
+    upadku, przedział czasu, w którym wysokość przekracza zadany poziom.'
+  bloom_level: zastosowanie
+- statement: Rozwiązywać zadania geometryczne z jedną zmienną (pole prostokąta o danym obwodzie, prostokąt
+    wpisany w trójkąt, suma pól figur) prowadzące do funkcji kwadratowej.
+  bloom_level: zastosowanie
+- statement: Rozwiązywać zadania ekonomiczne dotyczące ceny, sprzedaży, przychodu i zysku, w tym optymalizację
+    ceny przy liniowo malejącym popycie.
+  bloom_level: zastosowanie
+- statement: Ocenić sensowność otrzymanego wyniku (jednostki, przynależność do dziedziny, zgodność z warunkami
+    zadania) i sformułować pełną odpowiedź słowną.
+  bloom_level: ocena
+- statement: Uzasadnić, dlaczego znaleziona wartość jest największa (najmniejsza), powołując się na znak
+    współczynnika a i postać kanoniczną lub na monotoniczność funkcji.
+  bloom_level: ocena
+misconceptions:
+- name: Podanie p zamiast q jako wartości ekstremalnej
+  incorrect_reasoning: '''Największe pole prostokąta o obwodzie 40 wynosi 10, bo p = 10.'''
+  correct_reasoning: p to argument, dla którego ekstremum jest przyjmowane (długość boku), a wartość ekstremalna
+    to q = f(p) = 100 cm². Zawsze po obliczeniu p trzeba podstawić je do wzoru funkcji i sprawdzić, o
+    którą z tych liczb pyta zadanie.
+  severity: 5
+- name: Ignorowanie dziedziny wynikającej z treści
+  incorrect_reasoning: '''Liczę wierzchołek i to jest odpowiedź'' – nawet gdy p jest ujemne, gdy oznacza
+    ujemną długość, ujemny czas albo leży poza narzuconym przedziałem.'
+  correct_reasoning: Model ma sens tylko na dziedzinie wyznaczonej przez warunki zadania. Trzeba sprawdzić,
+    czy p ∈ D; jeśli nie, ekstremum wypada na końcu przedziału i wyznacza się je z monotoniczności funkcji
+    kwadratowej.
+  severity: 5
+- name: Zostawienie dwóch zmiennych we wzorze
+  incorrect_reasoning: '''Pole to P = xy, więc szukam wierzchołka funkcji P(x)=xy.'''
+  correct_reasoning: Wyrażenie xy nie jest funkcją jednej zmiennej. Najpierw trzeba użyć warunku wiążącego
+    (np. 2x+2y=40 ⇒ y=20-x) i dopiero funkcja P(x)=x(20-x) pozwala liczyć wierzchołek.
+  severity: 5
+- name: Mylenie maksimum z minimum przez znak a
+  incorrect_reasoning: '''Wierzchołek zawsze daje wartość największą.'''
+  correct_reasoning: Wierzchołek daje maksimum tylko dla a<0 (ramiona w dół). Dla a>0 daje wartość najmniejszą.
+    Znak a należy odczytać po wymnożeniu nawiasów, np. w P(x)=(40+2x)(300-10x) mamy a=-20<0.
+  severity: 4
+- name: Odrzucanie ujemnego a bez sprawdzenia sensu fizycznego rozwiązania równania
+  incorrect_reasoning: '''Równanie h(t)=0 ma dwa rozwiązania, więc piłka spada dwa razy'' albo przeciwnie:
+    ''biorę pierwsze rozwiązanie, jakie wyszło''.'
+  correct_reasoning: Dziedzina to t ≥ 0; ujemne rozwiązanie odrzucamy jako niezgodne z sytuacją, a spośród
+    dodatnich wybieramy to, które odpowiada opisowi (moment upadku to większe z nich, gdy start jest powyżej
+    ziemi).
+  severity: 3
+- name: Zapominanie o całkowitoliczbowej dziedzinie
+  incorrect_reasoning: '''p = 4,5, więc trzeba zrobić 4,5 podwyżki ceny o 2 zł.'''
+  correct_reasoning: 'Gdy zmienna oznacza liczbę podwyżek/sztuk, wynik musi być całkowity: obliczamy f(4)
+    i f(5) i wybieramy większą (mniejszą) wartość, a odpowiedź podajemy w postaci konkretnej ceny.'
+  severity: 3
+- name: Nieprawidłowa interpretacja zmiennej pomocniczej
+  incorrect_reasoning: '''Wyszło p = 5, więc cena biletu to 5 zł.'''
+  correct_reasoning: 'x oznaczało liczbę podwyżek, a nie cenę. Po wyznaczeniu p trzeba wrócić do oznaczeń:
+    cena = 40 + 2·5 = 50 zł. Dlatego oznaczenia zmiennych zapisujemy słownie na początku rozwiązania.'
+  severity: 4
+- name: Błędna dziedzina przy ogrodzeniu przy ścianie
+  incorrect_reasoning: '''Skoro mam 24 m siatki na prostokąt, to 2x+2y=24.'''
+  correct_reasoning: Bok przylegający do ściany nie jest grodzony, więc warunek to x+2y=24. Zawsze warto
+    zrobić rysunek i policzyć, ile odcinków siatki faktycznie stawiamy.
+  severity: 4
+- name: Mylenie osi w interpretacji wykresu
+  incorrect_reasoning: '''Wierzchołek to (2,21), więc piłka wznosi się na 2 m przez 21 sekund.'''
+  correct_reasoning: 'Na osi poziomej jest czas, na pionowej wysokość: p=2 s to moment, q=21 m to wysokość.
+    Pomaga konsekwentne dopisywanie jednostek do obu współrzędnych wierzchołka.'
+  severity: 3
+- name: Uznanie, że bez pochodnej nie da się optymalizować
+  incorrect_reasoning: '''Zadania na wartość największą wymagają pochodnej, więc nie umiem tego zrobić.'''
+  correct_reasoning: 'Dla funkcji kwadratowej wystarczy postać kanoniczna: f(x)=a(x-p)²+q, a ponieważ
+    (x-p)² ≥ 0, przy a<0 zawsze f(x) ≤ q. To pełne i poprawne uzasadnienie ekstremum na poziomie podstawowym.'
+  severity: 2
+- name: Pominięcie warunku, że druga wielkość też musi być dodatnia
+  incorrect_reasoning: '''x jest długością, więc dziedziną jest x>0.'''
+  correct_reasoning: 'Jeśli y=20-x również jest długością, to musi być y>0, czyli x<20. Dziedzina to część
+    wspólna wszystkich warunków: x ∈ (0,20).'
+  severity: 3

@@ -1,0 +1,317 @@
+section: rownanie-okregu
+name: Równanie okręgu
+scope: Circle equation in canonical form; centre, radius and checking whether a point lies on the circle.
+requirements:
+- IX.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T16:14:08.589572'
+  approved_at: '2026-08-28T18:28:20.199189'
+  approved_by: reviewer
+concepts:
+- name: Okrąg jako zbiór punktów
+  description: Okrąg o środku S i promieniu r>0 to zbiór wszystkich punktów płaszczyzny, których odległość
+    od punktu S jest równa r.
+  explanation: To definicja 'odległościowa' — cała teoria równania okręgu wynika z niej. Punkt należy
+    do okręgu dokładnie wtedy, gdy jego odległość od środka wynosi dokładnie r (nie mniej, nie więcej).
+    Okrąg to sama 'linia', bez wnętrza.
+  difficulty: 1
+- name: Koło a okrąg
+  description: Koło o środku S i promieniu r to zbiór punktów, których odległość od S jest nie większa
+    niż r (linia wraz z wnętrzem); okrąg to tylko brzeg tego koła.
+  explanation: 'W języku równań: okrąg opisuje RÓWNANIE (x−a)²+(y−b)²=r², a koło NIERÓWNOŚĆ (x−a)²+(y−b)²≤r².
+    Mylenie tych pojęć zmienia sens całego zadania.'
+  difficulty: 2
+- name: Odległość dwóch punktów w układzie współrzędnych
+  description: Dla A=(x_A,y_A), B=(x_B,y_B) odległość |AB| = √((x_B−x_A)²+(y_B−y_A)²).
+  explanation: To twierdzenie Pitagorasa dla trójkąta o przyprostokątnych równoległych do osi. Kolejność
+    odejmowania nie ma znaczenia, bo różnice są podnoszone do kwadratu. Ten wzór jest 'silnikiem' równania
+    okręgu.
+  difficulty: 1
+- name: Postać kanoniczna równania okręgu
+  description: Równanie (x−a)²+(y−b)²=r², gdzie S=(a,b) jest środkiem, a r>0 promieniem okręgu.
+  explanation: 'Czyta się je wprost: to zapis warunku |PS|=r po podniesieniu obu stron do kwadratu. Współrzędne
+    środka odczytujemy ze ZMIENIONYM znakiem tego, co stoi w nawiasie, a promień jako pierwiastek z prawej
+    strony.'
+  difficulty: 2
+- name: Okrąg o środku w początku układu współrzędnych
+  description: 'Szczególny przypadek postaci kanonicznej dla S=(0,0): x²+y²=r².'
+  explanation: Gdy a=0 i b=0, nawiasy 'znikają'. Warto rozpoznawać ten zapis natychmiast, np. x²+y²=25
+    to okrąg o środku (0,0) i promieniu 5.
+  difficulty: 1
+- name: Odczytywanie środka i promienia
+  description: W równaniu (x−a)²+(y−b)²=r² liczba a to pierwsza współrzędna środka, b — druga, a r=√(prawa
+    strona).
+  explanation: 'Zapis (x+3)² trzeba w myśli przekształcić na (x−(−3))², więc a=−3. Prawa strona to r²,
+    a nie r: z (x−1)²+(y−2)²=20 mamy r=√20=2√5.'
+  difficulty: 2
+- name: Warunek istnienia okręgu
+  description: Równanie (x−a)²+(y−b)²=k opisuje okrąg tylko wtedy, gdy k>0; dla k=0 zbiorem rozwiązań
+    jest jeden punkt (a,b), a dla k<0 zbiór pusty.
+  explanation: Lewa strona jest sumą kwadratów, więc nigdy nie jest ujemna. Ta uwaga jest kluczowa w zadaniach
+    z parametrem po prawej stronie.
+  difficulty: 3
+- name: Wzajemne położenie punktu i okręgu
+  description: 'Dla P=(x_0,y_0) i okręgu o środku S=(a,b), promieniu r: P leży na okręgu, gdy |PS|=r;
+    wewnątrz, gdy |PS|<r; na zewnątrz, gdy |PS|>r.'
+  explanation: 'Praktycznie: wstawiamy współrzędne punktu do lewej strony równania i porównujemy otrzymaną
+    liczbę z r². Równość — punkt na okręgu, mniej — wewnątrz, więcej — na zewnątrz. Nie trzeba liczyć
+    pierwiastków.'
+  difficulty: 2
+- name: Środek odcinka
+  description: Środek odcinka o końcach A=(x_A,y_A), B=(x_B,y_B) ma współrzędne ((x_A+x_B)/2, (y_A+y_B)/2).
+  explanation: 'Potrzebny, gdy okrąg jest zadany średnicą: środek średnicy jest środkiem okręgu, a promień
+    to połowa jej długości (albo odległość środka od któregoś końca).'
+  difficulty: 1
+- name: Promień jako odległość środka od punktu okręgu
+  description: Jeśli okrąg o środku S przechodzi przez punkt P, to r=|SP|, a więc r²=(x_P−a)²+(y_P−b)².
+  explanation: Bardzo często wygodniej jest liczyć od razu r² — omijamy pierwiastkowanie i późniejsze
+    ponowne podnoszenie do kwadratu.
+  difficulty: 2
+- name: Styczność okręgu do osi układu współrzędnych
+  description: Okrąg o środku S=(a,b) jest styczny do osi Ox, gdy r=|b|, i styczny do osi Oy, gdy r=|a|.
+  explanation: Odległość punktu (a,b) od osi Ox to |b| (pionowo w dół/górę), a od osi Oy to |a|. Styczność
+    oznacza, że ta odległość równa się promieniowi.
+  difficulty: 3
+- name: Symetria okręgu w układzie współrzędnych
+  description: Okrąg jest figurą symetryczną względem każdej prostej przechodzącej przez jego środek;
+    w szczególności skrajne punkty okręgu to (a±r,b) i (a,b±r).
+  explanation: 'Pozwala szybko szkicować okrąg: zaznaczamy środek i odkładamy promień w czterech kierunkach
+    wzdłuż osi. Przydaje się też do odczytania równania z rysunku.'
+  difficulty: 2
+formulas:
+- name: Odległość dwóch punktów
+  latex_raw: '|AB|=\sqrt{(x_B-x_A)^2+(y_B-y_A)^2}'
+  conditions: A=(x_A,y_A), B=(x_B,y_B) — dowolne punkty płaszczyzny
+  description: Kolejność odejmowania dowolna.
+- name: Równanie okręgu w postaci kanonicznej
+  latex_raw: (x-a)^2+(y-b)^2=r^2
+  conditions: S=(a,b) — środek, r>0 — promień
+  description: Prawa strona to KWADRAT promienia.
+- name: Okrąg o środku w (0,0)
+  latex_raw: x^2+y^2=r^2
+  conditions: r>0
+- name: Nierówność opisująca koło
+  latex_raw: (x-a)^2+(y-b)^2\le r^2
+  conditions: koło domknięte o środku (a,b) i promieniu r>0
+  description: Ostra nierówność '<' opisuje wnętrze okręgu (koło otwarte).
+- name: 'Warunek: punkt należy do okręgu'
+  latex_raw: (x_0-a)^2+(y_0-b)^2=r^2
+  conditions: P=(x_0,y_0) leży na okręgu o środku (a,b) i promieniu r
+- name: Punkt wewnątrz / na zewnątrz okręgu
+  latex_raw: (x_0-a)^2+(y_0-b)^2<r^2 \ \Leftrightarrow\ P\ \text{wewnątrz},\qquad (x_0-a)^2+(y_0-b)^2>r^2
+    \ \Leftrightarrow\ P\ \text{na zewnątrz}
+  conditions: okrąg o środku (a,b), promieniu r>0
+- name: Promień okręgu o środku S przechodzącego przez P
+  latex_raw: r=|SP|=\sqrt{(x_P-a)^2+(y_P-b)^2}
+  conditions: P leży na okręgu o środku S
+- name: Środek odcinka (średnicy)
+  latex_raw: S=\left(\frac{x_A+x_B}{2},\ \frac{y_A+y_B}{2}\right)
+  conditions: AB — średnica okręgu; wtedy S jest środkiem okręgu
+- name: Promień z długości średnicy
+  latex_raw: r=\tfrac{1}{2}|AB|
+  conditions: AB — średnica okręgu
+- name: Warunek styczności do osi
+  latex_raw: r=|b|\ \text{(styczność do } Ox),\qquad r=|a|\ \text{(styczność do } Oy)
+  conditions: okrąg o środku S=(a,b), promieniu r>0
+- name: Warunek, by równanie opisywało okrąg
+  latex_raw: (x-a)^2+(y-b)^2=k \ \text{jest okręgiem} \iff k>0
+  conditions: k — liczba (często zależna od parametru)
+  description: Wtedy r=\sqrt{k}.
+methods:
+- name: Odczytanie środka i promienia z postaci kanonicznej
+  when_to_use: Gdy dane jest równanie typu (x−a)²+(y−b)²=k i trzeba podać środek, promień, narysować okrąg
+    lub porównać z innym okręgiem.
+  steps:
+  - Sprawdź, czy obie zmienne występują w kwadratach nawiasów, a prawa strona jest liczbą dodatnią.
+  - Zapisz każdy nawias w postaci (x−a)² i (y−b)², zamieniając np. (x+3)² na (x−(−3))².
+  - Odczytaj środek S=(a,b) — bierzesz liczby przeciwne do tych, które stoją w nawiasach po znaku '+'.
+  - Oblicz promień r=√k i w razie potrzeby wyłącz czynnik przed pierwiastek (np. √20=2√5).
+  - 'Ewentualnie naszkicuj okrąg: zaznacz S i odłóż r w czterech kierunkach.'
+- name: Ułożenie równania okręgu z danego środka i promienia
+  when_to_use: Gdy w treści podano wprost środek i promień (lub średnicę, z której liczysz promień).
+  steps:
+  - Zapisz szablon (x−a)²+(y−b)²=r².
+  - 'Wstaw współrzędne środka ZE ZMIENIONYM znakiem: dla S=(−2,5) piszesz (x+2)²+(y−5)².'
+  - Podnieś promień do kwadratu i wpisz po prawej stronie.
+  - Sprawdź poprawność, wstawiając jakiś oczywisty punkt okręgu, np. (a+r,b).
+- name: Sprawdzanie położenia punktu względem okręgu
+  when_to_use: 'Gdy pytanie brzmi: czy punkt leży na okręgu / wewnątrz / na zewnątrz, albo gdy trzeba
+    wybrać punkt należący do okręgu.'
+  steps:
+  - 'Zapisz lewą stronę równania okręgu: L=(x_0−a)²+(y_0−b)².'
+  - 'Podstaw współrzędne punktu i oblicz wartość liczbową L (uwaga na znaki: minus i minus daje plus).'
+  - Porównaj L z prawą stroną r².
+  - 'Wnioskuj: L=r² — punkt na okręgu; L<r² — wewnątrz; L>r² — na zewnątrz.'
+  - Nie licz pierwiastków — porównanie kwadratów daje ten sam wynik, bo obie wielkości są nieujemne.
+- name: Okrąg o danym środku przechodzący przez dany punkt
+  when_to_use: Gdy znany jest środek S i jeden punkt P okręgu, a szukane jest równanie okręgu.
+  steps:
+  - Oblicz r²=(x_P−a)²+(y_P−b)² (bez wyciągania pierwiastka).
+  - Wstaw a, b i obliczone r² do postaci kanonicznej.
+  - Jeśli zadanie pyta o promień, dopiero teraz oblicz r=√(r²) i uprość.
+- name: Okrąg zadany średnicą
+  when_to_use: Gdy dane są końce średnicy A i B.
+  steps:
+  - 'Wyznacz środek S jako środek odcinka AB: S=((x_A+x_B)/2,(y_A+y_B)/2).'
+  - 'Oblicz promień: r=|AB|/2 albo prościej r²=|SA|²=(x_A−a)²+(y_A−b)².'
+  - Zapisz równanie (x−a)²+(y−b)²=r².
+  - 'Kontrola: drugi koniec średnicy też musi spełniać równanie.'
+- name: Zadania z parametrem w równaniu okręgu
+  when_to_use: Gdy w równaniu występuje litera (np. m) i pytamy, kiedy jest to okrąg, albo kiedy okrąg
+    ma dany promień/przechodzi przez dany punkt.
+  steps:
+  - 'Jeśli parametr jest po prawej stronie: zapisz warunek k(m)>0 i rozwiąż nierówność — to warunek istnienia
+    okręgu.'
+  - 'Jeśli podany jest promień: rozwiąż równanie k(m)=r².'
+  - 'Jeśli dany punkt ma leżeć na okręgu: podstaw jego współrzędne do równania i rozwiąż otrzymane równanie
+    z parametrem.'
+  - Sprawdź, czy otrzymane wartości parametru spełniają warunek k>0; odrzuć te, które go łamią.
+- name: Zapisanie równania okręgu stycznego do osi układu
+  when_to_use: Gdy w treści pojawia się styczność do osi Ox lub Oy (lub okrąg wpisany w kąt osi).
+  steps:
+  - Zaznacz środek S=(a,b) i zauważ, że odległość od Ox to |b|, a od Oy to |a|.
+  - Z warunku styczności przyjmij r=|b| (do Ox) lub r=|a| (do Oy).
+  - Wstaw a, b, r² do postaci kanonicznej.
+  - 'Sprawdź na szkicu, czy okrąg rzeczywiście dotyka osi w jednym punkcie: (a,0) lub (0,b).'
+examples:
+- statement: a) Zapisz równanie okręgu o środku S=(−2,5) i promieniu r=3. b) Podaj środek i promień okręgu
+    o równaniu (x−4)²+(y+1)²=20.
+  worked_solution: |-
+    a) Szablon: (x−a)²+(y−b)²=r². Tu a=−2, b=5, r=3.
+    (x−(−2))²+(y−5)²=3², czyli (x+2)²+(y−5)²=9.
+    Kontrola: punkt (a+r,b)=(1,5) powinien leżeć na okręgu: (1+2)²+(5−5)²=9+0=9 ✓.
+
+    b) Przepisujemy nawiasy w postaci z minusem: (x−4)²+(y−(−1))²=20.
+    Zatem środek S=(4,−1). Prawa strona to r², więc r=√20=√(4·5)=2√5.
+    Odpowiedź: S=(4,−1), r=2√5 (≈4,47).
+  difficulty: 1
+- statement: Dany jest okrąg o równaniu (x+1)²+(y−3)²=25. Sprawdź, które z punktów A=(3,6), B=(2,1), C=(5,4)
+    leżą na tym okręgu, a które wewnątrz lub na zewnątrz.
+  worked_solution: |-
+    Środek S=(−1,3), r²=25 (r=5). Liczymy L=(x_0+1)²+(y_0−3)² dla każdego punktu.
+    A=(3,6): L=(3+1)²+(6−3)²=16+9=25. L=r², więc A leży NA okręgu.
+    B=(2,1): L=(2+1)²+(1−3)²=9+4=13. 13<25, więc B leży WEWNĄTRZ okręgu.
+    C=(5,4): L=(5+1)²+(4−3)²=36+1=37. 37>25, więc C leży NA ZEWNĄTRZ okręgu.
+    Zauważ, że nigdzie nie było potrzeby liczenia pierwiastków — wystarczyło porównać z r²=25.
+  difficulty: 2
+- statement: Okrąg o środku S=(1,−2) przechodzi przez punkt P=(4,2). Wyznacz jego promień i równanie.
+    Następnie sprawdź, czy punkt Q=(1,3) należy do tego okręgu.
+  worked_solution: |-
+    Promień to odległość środka od punktu okręgu:
+    r²=(4−1)²+(2−(−2))²=3²+4²=9+16=25, więc r=5.
+    Równanie: (x−1)²+(y+2)²=25.
+    Sprawdzenie Q=(1,3): L=(1−1)²+(3+2)²=0+25=25=r², więc Q również leży na okręgu.
+    (Sensowne: Q jest 'najwyższym' punktem okręgu, bo Q=(a,b+r)=(1,−2+5)=(1,3).)
+  difficulty: 2
+- statement: Punkty A=(−3,1) i B=(5,7) są końcami średnicy okręgu. Wyznacz równanie tego okręgu i sprawdź,
+    czy leży na nim punkt M=(−3,7).
+  worked_solution: |-
+    Środek okręgu = środek odcinka AB:
+    S=((−3+5)/2,(1+7)/2)=(1,4).
+    Promień: r²=|SA|²=(−3−1)²+(1−4)²=16+9=25, więc r=5.
+    (Sprawdzenie inną drogą: |AB|=√((5+3)²+(7−1)²)=√(64+36)=√100=10, więc r=10/2=5 ✓.)
+    Równanie: (x−1)²+(y−4)²=25.
+    Punkt M=(−3,7): L=(−3−1)²+(7−4)²=16+9=25=r², więc M leży na okręgu.
+    (Dodatkowo: kąt AMB jest wtedy prosty — to twierdzenie o kącie wpisanym opartym na średnicy.)
+  difficulty: 3
+- statement: Dane jest równanie (x−2)²+(y+3)²=m−4 z parametrem m. a) Dla jakich m opisuje ono okrąg? b)
+    Dla jakiego m promień tego okręgu wynosi 3? c) Dla jakiego m okrąg ten jest styczny do osi Ox?
+  worked_solution: |-
+    a) Lewa strona jest sumą kwadratów, więc równanie opisuje okrąg dokładnie wtedy, gdy prawa strona jest dodatnia:
+    m−4>0 ⟺ m>4.
+    (Dla m=4 zbiorem rozwiązań jest tylko punkt (2,−3), dla m<4 zbiór pusty.)
+
+    b) r=3 oznacza r²=9, czyli m−4=9, stąd m=13. Warunek m>4 jest spełniony ✓.
+
+    c) Środek to S=(2,−3). Odległość środka od osi Ox wynosi |−3|=3, więc styczność zachodzi, gdy r=3, czyli m−4=9, m=13.
+    Zatem tym samym okręgiem jest (x−2)²+(y+3)²=9 — dotyka on osi Ox w punkcie (2,0).
+  difficulty: 4
+objectives:
+- statement: Podać definicję okręgu jako zbioru punktów równo odległych od środka i wskazać związek tej
+    definicji ze wzorem na odległość punktów.
+  bloom_level: Rozumienie
+- statement: Odczytać środek i promień okręgu z równania w postaci kanonicznej, w tym gdy w nawiasach
+    występują znaki '+' i gdy promień jest liczbą niewymierną.
+  bloom_level: Zastosowanie
+- statement: Zapisać równanie okręgu o danym środku i promieniu (także dla środka w początku układu współrzędnych).
+  bloom_level: Zastosowanie
+- statement: Sprawdzić rachunkowo, czy dany punkt leży na okręgu, wewnątrz niego, czy na zewnątrz.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć równanie okręgu o danym środku przechodzącego przez dany punkt.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć równanie okręgu, gdy dane są końce jego średnicy.
+  bloom_level: Zastosowanie
+- statement: Rozstrzygnąć, dla jakich wartości parametru dane równanie opisuje okrąg oraz dobrać parametr
+    tak, by okrąg miał zadany promień lub przechodził przez zadany punkt.
+  bloom_level: Analiza
+- statement: Odróżnić opis okręgu (równanie) od opisu koła (nierówność) i poprawnie zinterpretować wynik
+    podstawienia punktu.
+  bloom_level: Rozumienie
+- statement: Naszkicować okrąg na podstawie jego równania i odwrotnie — zapisać równanie okręgu narysowanego
+    w układzie współrzędnych.
+  bloom_level: Zastosowanie
+- statement: Wykorzystać warunek styczności okręgu do osi układu współrzędnych (r=|a| lub r=|b|) w prostych
+    zadaniach.
+  bloom_level: Analiza
+misconceptions:
+- name: Zły znak współrzędnych środka
+  incorrect_reasoning: W równaniu (x+2)²+(y−5)²=9 uczeń odczytuje środek jako S=(2,−5), przepisując liczby
+    z nawiasów bez zmiany znaku.
+  correct_reasoning: 'Wzorzec to (x−a)²+(y−b)². Zapisujemy (x+2)²=(x−(−2))², więc a=−2, oraz (y−5)², więc
+    b=5. Środek to S=(−2,5). Zasada: bierzemy liczby PRZECIWNE do widocznych w nawiasach.'
+  severity: 5
+- name: Mylenie r z r²
+  incorrect_reasoning: Z równania (x−1)²+(y−2)²=16 uczeń odczytuje promień r=16, albo mając r=5 pisze
+    równanie (x−1)²+(y−2)²=5.
+  correct_reasoning: Po prawej stronie zawsze stoi KWADRAT promienia. Z 16 wynika r=√16=4; mając r=5 piszemy
+    prawą stronę 5²=25.
+  severity: 5
+- name: Nieuproszczony lub źle wyciągnięty pierwiastek
+  incorrect_reasoning: Z prawej strony równej 20 uczeń pisze r=10 (dzieli przez 2) lub zostawia r=√20
+    jako 'ostateczny' wynik bez uproszczenia.
+  correct_reasoning: r=√20=√4·√5=2√5. Pierwiastka nie 'dzieli się przez 2'; wyłączamy przed pierwiastek
+    największy kwadrat będący dzielnikiem liczby.
+  severity: 3
+- name: Mylenie okręgu z kołem
+  incorrect_reasoning: Uczeń odpowiada, że punkt wewnątrz koła 'należy do okręgu', albo opisuje koło równaniem
+    zamiast nierównością.
+  correct_reasoning: 'Okrąg to sam brzeg — opis: (x−a)²+(y−b)²=r². Koło to brzeg z wnętrzem — opis: (x−a)²+(y−b)²≤r².
+    Punkt spełniający ostrą nierówność ''<'' leży wewnątrz, ale NIE należy do okręgu.'
+  severity: 3
+- name: Podnoszenie do kwadratu 'po składnikach'
+  incorrect_reasoning: Uczeń liczy (x_0−a)² jako x_0²−a², np. (3−(−1))² traktuje jako 9−1=8.
+  correct_reasoning: 'Najpierw wykonujemy odejmowanie w nawiasie, potem podnosimy do kwadratu: (3−(−1))²=(3+1)²=16.
+    Kwadrat różnicy nie jest różnicą kwadratów.'
+  severity: 4
+- name: Błąd znaku przy podstawianiu ujemnych współrzędnych
+  incorrect_reasoning: Sprawdzając punkt P=(2,−4) w równaniu (x−1)²+(y+3)²=r², uczeń pisze (2−1)²+(−4+3)²
+    jako 1+(−1)=0, gubiąc kwadrat, albo (−4−3)².
+  correct_reasoning: 'Podstawiamy dokładnie to, co jest w nawiasie: y+3 dla y=−4 daje −1, a (−1)²=1. Suma
+    wynosi 1+1=2. Kwadrat liczby ujemnej jest dodatni.'
+  severity: 4
+- name: Ignorowanie warunku dodatniości prawej strony
+  incorrect_reasoning: Uczeń twierdzi, że (x−1)²+(y+2)²=−9 to okrąg o promieniu −3 lub 3.
+  correct_reasoning: Suma kwadratów nie może być ujemna, więc równanie nie ma rozwiązań — nie opisuje
+    żadnej figury. Okrąg istnieje tylko dla dodatniej prawej strony, a promień jest zawsze dodatni.
+  severity: 4
+- name: Przyjmowanie, że środek średnicy to 'pierwszy z punktów'
+  incorrect_reasoning: Mając końce średnicy A i B, uczeń bierze A za środek okręgu, a |AB| za promień.
+  correct_reasoning: 'Środkiem okręgu jest środek odcinka AB: S=((x_A+x_B)/2,(y_A+y_B)/2), a promień to
+    POŁOWA długości średnicy: r=|AB|/2.'
+  severity: 4
+- name: Błędna zamiana kolejności zmiennych
+  incorrect_reasoning: Dla środka S=(−2,5) uczeń pisze (x−5)²+(y+2)²=r², myląc, która współrzędna odpowiada
+    x, a która y.
+  correct_reasoning: 'Pierwsza współrzędna środka zawsze towarzyszy zmiennej x, druga — zmiennej y: (x+2)²+(y−5)²=r².
+    Szybka kontrola: punkt (a,b+r) musi spełniać równanie.'
+  severity: 3
+- name: Porównywanie odległości z r² zamiast r
+  incorrect_reasoning: Uczeń liczy |PS|=√13 i porównuje √13 z r²=25, wnioskując, że punkt leży wewnątrz
+    'bo 3,6<25'.
+  correct_reasoning: 'Porównujemy wielkości tego samego typu: albo |PS| z r, albo |PS|² z r². Tu |PS|²=13
+    i r²=25, więc 13<25 — punkt leży wewnątrz. Wniosek przypadkiem ten sam, ale rozumowanie błędne i przy
+    innych liczbach prowadzi do złej odpowiedzi.'
+  severity: 3

@@ -1,0 +1,329 @@
+section: cechy-podobienstwa-trojkatow
+name: Cechy podobieństwa trójkątów
+scope: The similarity criteria for triangles (AA, SSS, SAS); identifying similar triangles and using the
+  ratio of similarity to find lengths.
+requirements:
+- VIII.8
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:32:04.243366'
+  approved_at: '2026-08-28T18:28:24.806889'
+  approved_by: reviewer
+concepts:
+- name: Trójkąty podobne
+  description: 'Dwa trójkąty są podobne, jeżeli kąty jednego są równe odpowiednim kątom drugiego, a długości
+    odpowiednich boków są proporcjonalne. Zapis: △ABC ∼ △A''B''C''.'
+  explanation: 'Podobieństwo to "ten sam kształt, inna wielkość" — jeden trójkąt jest wiernie powiększoną
+    lub pomniejszoną kopią drugiego. Kolejność liter w zapisie jest istotna: A odpowiada A'', B odpowiada
+    B'', C odpowiada C''. Z tego zapisu od razu odczytujemy, które kąty są równe i które boki sobie odpowiadają.'
+  difficulty: 1
+- name: Odpowiadające sobie boki i kąty
+  description: W trójkątach podobnych bokom odpowiadają boki leżące naprzeciw równych kątów, a kątom —
+    kąty równe.
+  explanation: 'To najważniejsza umiejętność techniczna w całym dziale: zanim ułożysz proporcję, musisz
+    wiedzieć, co czemu odpowiada. Praktyczna reguła: naprzeciw największego kąta leży najdłuższy bok,
+    więc w obu trójkątach uporządkuj boki od najkrótszego do najdłuższego albo przypisz je do równych
+    kątów.'
+  difficulty: 2
+- name: Skala podobieństwa k
+  description: 'Liczba dodatnia k, będąca wspólnym stosunkiem długości odpowiadających sobie boków: k
+    = A''B''/AB = B''C''/BC = A''C''/AC.'
+  explanation: 'k mówi, ile razy drugi trójkąt jest większy od pierwszego. k > 1 — powiększenie, k < 1
+    — pomniejszenie, k = 1 — trójkąty przystające. Uwaga na kierunek: skala podobieństwa △A''B''C'' do
+    △ABC wynosi k, a △ABC do △A''B''C'' wynosi 1/k.'
+  difficulty: 2
+- name: Cecha kąt–kąt (kkk / AA)
+  description: Jeżeli dwa kąty jednego trójkąta są równe dwóm kątom drugiego trójkąta, to trójkąty są
+    podobne.
+  explanation: Najczęściej używana cecha. Wystarczą dwa kąty, bo trzeci wychodzi automatycznie z sumy
+    kątów równej 180°. Bardzo często jedna para równych kątów bierze się z kątów wierzchołkowych, kątów
+    naprzemianległych przy prostych równoległych albo ze wspólnego kąta obu trójkątów.
+  difficulty: 2
+- name: Cecha bok–bok–bok (bbb / SSS)
+  description: Jeżeli długości boków jednego trójkąta są proporcjonalne do długości odpowiednich boków
+    drugiego trójkąta, to trójkąty są podobne.
+  explanation: 'Sprawdzasz trzy ilorazy: najkrótszy do najkrótszego, średni do średniego, najdłuższy do
+    najdłuższego. Jeśli wszystkie trzy dają tę samą liczbę — trójkąty są podobne, a ta liczba to skala
+    podobieństwa.'
+  difficulty: 2
+- name: Cecha bok–kąt–bok (bkb / SAS)
+  description: Jeżeli dwa boki jednego trójkąta są proporcjonalne do dwóch boków drugiego trójkąta, a
+    kąty zawarte między tymi bokami są równe, to trójkąty są podobne.
+  explanation: Kąt musi leżeć MIĘDZY tymi dwoma bokami — to warunek konieczny. Ta cecha jest naturalna
+    w zadaniach, gdzie z jednego wierzchołka odkładamy odcinki w danym stosunku (wspólny kąt przy tym
+    wierzchołku).
+  difficulty: 3
+- name: Podobieństwo a przystawanie
+  description: Trójkąty przystające to trójkąty podobne w skali k = 1; mają równe kąty i równe (nie tylko
+    proporcjonalne) boki.
+  explanation: Przystawanie jest szczególnym przypadkiem podobieństwa. Cechy przystawania (bbb, bkb, kbk)
+    wyglądają podobnie, ale dotyczą równości boków, a nie ich proporcji. Nie myl warunku "a/a' = b/b'
+    = c/c'" z "a = a', b = b', c = c'".
+  difficulty: 2
+- name: Stosunek obwodów trójkątów podobnych
+  description: Jeśli trójkąty są podobne w skali k, to stosunek ich obwodów jest równy k.
+  explanation: 'Obwód jest sumą długości, a każda długość mnoży się przez k, więc suma też mnoży się przez
+    k. Tak samo zachowują się wszystkie odcinki związane z trójkątem: wysokości, środkowe, dwusieczne,
+    promienie okręgu wpisanego i opisanego.'
+  difficulty: 2
+- name: Stosunek pól trójkątów podobnych
+  description: Jeśli trójkąty są podobne w skali k, to stosunek ich pól jest równy k².
+  explanation: 'Pole zależy od iloczynu dwóch wymiarów (½·a·h), a oba mnożą się przez k, więc pole mnoży
+    się przez k². Stąd: jeśli boki rosną dwukrotnie, pole rośnie czterokrotnie. W drugą stronę: znając
+    stosunek pól, skalę otrzymujesz jako pierwiastek z tego stosunku.'
+  difficulty: 3
+- name: Trójkąt odcięty prostą równoległą do boku
+  description: Prosta równoległa do jednego z boków trójkąta, przecinająca dwa pozostałe boki (lub ich
+    przedłużenia), odcina trójkąt podobny do danego.
+  explanation: To najczęstsza konfiguracja w zadaniach. Równoległość daje równe kąty odpowiadające, więc
+    z cechy kkk mamy podobieństwo. Konfiguracja "daszek" (trójkąt w trójkącie) i "kokardka" (trójkąty
+    po dwóch stronach punktu przecięcia, z kątami wierzchołkowymi) to dwa jej warianty.
+  difficulty: 3
+- name: Podobieństwo w trójkącie prostokątnym z wysokością
+  description: Wysokość poprowadzona z wierzchołka kąta prostego dzieli trójkąt prostokątny na dwa trójkąty
+    podobne do siebie i do trójkąta wyjściowego.
+  explanation: 'Wszystkie trzy trójkąty mają kąt prosty i wspólny kąt ostry, więc podobieństwo wynika
+    z cechy kkk. Z proporcji dostajemy klasyczne zależności: h² = p·q oraz a² = c·p, gdzie p, q to rzuty
+    przyprostokątnych na przeciwprostokątną.'
+  difficulty: 4
+- name: Figury podobne w ogólności
+  description: Dwie figury są podobne, gdy jedną można otrzymać z drugiej przez podobieństwo (przekształcenie
+    zmieniające wszystkie odległości w tej samej skali k).
+  explanation: 'Trójkąty są wyjątkowe: dla nich wystarczy sprawdzić jedną z cech kkk, bbb, bkb. Dla innych
+    wielokątów sama równość kątów lub sama proporcjonalność boków nie wystarcza (kwadrat i prostokąt mają
+    równe kąty, romb i kwadrat mają proporcjonalne boki, a nie są podobne). Wszystkie koła są podobne,
+    wszystkie trójkąty równoboczne są podobne, wszystkie kwadraty są podobne.'
+  difficulty: 3
+formulas:
+- name: Definicja podobieństwa trójkątów
+  latex_raw: \triangle ABC \sim \triangle A'B'C' \iff \left( \angle A=\angle A',\ \angle B=\angle B',\
+    \angle C=\angle C' \ \wedge\ \frac{A'B'}{AB}=\frac{B'C'}{BC}=\frac{A'C'}{AC} \right)
+  conditions: Wierzchołki wypisane w kolejności odpowiadania sobie.
+- name: Skala podobieństwa
+  latex_raw: k=\frac{A'B'}{AB}=\frac{B'C'}{BC}=\frac{A'C'}{AC}>0
+  conditions: △ABC ∼ △A'B'C'; k to skala podobieństwa trójkąta A'B'C' do trójkąta ABC.
+- name: Cecha kkk (AA)
+  latex_raw: \angle A=\angle A' \ \wedge\ \angle B=\angle B' \ \Rightarrow\ \triangle ABC \sim \triangle
+    A'B'C'
+  conditions: Wystarczą dwie pary równych kątów; trzecia para jest wtedy automatycznie równa.
+  description: Najszybsza cecha — szukaj kątów wierzchołkowych, wspólnych i kątów przy prostych równoległych.
+- name: Cecha bbb (SSS)
+  latex_raw: \frac{a'}{a}=\frac{b'}{b}=\frac{c'}{c} \ \Rightarrow\ \triangle ABC \sim \triangle A'B'C'
+  conditions: a, b, c i a', b', c' to długości odpowiadających sobie boków (uporządkowane np. rosnąco).
+- name: Cecha bkb (SAS)
+  latex_raw: \frac{a'}{a}=\frac{b'}{b} \ \wedge\ \angle(a',b')=\angle(a,b) \ \Rightarrow\ \triangle ABC
+    \sim \triangle A'B'C'
+  conditions: Równe kąty muszą być zawarte między parami proporcjonalnych boków.
+- name: Stosunek obwodów
+  latex_raw: \frac{Obw(\triangle A'B'C')}{Obw(\triangle ABC)}=k
+  conditions: Trójkąty podobne w skali k.
+- name: Stosunek odcinków charakterystycznych
+  latex_raw: \frac{h'}{h}=\frac{m'}{m}=\frac{r'}{r}=\frac{R'}{R}=k
+  conditions: h — odpowiadające wysokości, m — środkowe, r, R — promienie okręgów wpisanego i opisanego;
+    trójkąty podobne w skali k.
+- name: Stosunek pól
+  latex_raw: \frac{P'}{P}=k^{2} \quad\Longleftrightarrow\quad k=\sqrt{\frac{P'}{P}}
+  conditions: Trójkąty (lub dowolne figury) podobne w skali k.
+- name: Proporcja z prostej równoległej do boku (Tales)
+  latex_raw: DE \parallel BC \ \Rightarrow\ \frac{AD}{AB}=\frac{AE}{AC}=\frac{DE}{BC}
+  conditions: D ∈ AB, E ∈ AC, DE ∥ BC; wtedy △ADE ∼ △ABC.
+- name: Zależności w trójkącie prostokątnym z wysokością
+  latex_raw: h^{2}=p\cdot q,\qquad a^{2}=c\cdot p,\qquad b^{2}=c\cdot q
+  conditions: Trójkąt prostokątny o przyprostokątnych a, b i przeciwprostokątnej c; h — wysokość z kąta
+    prostego, p i q — rzuty przyprostokątnych a i b na przeciwprostokątną, p + q = c.
+methods:
+- name: Rozpoznawanie podobieństwa trójkątów
+  when_to_use: Gdy trzeba uzasadnić lub sprawdzić, że dwa trójkąty są podobne.
+  steps:
+  - 'Zapisz, jakie dane masz o każdym trójkącie: kąty, boki, czy jedno i drugie.'
+  - Jeśli znasz po dwa kąty w każdym trójkącie (lub potrafisz je dopełnić do 180°) — użyj cechy kkk.
+  - Jeśli znasz wszystkie trzy boki w obu trójkątach — uporządkuj je rosnąco i sprawdź trzy ilorazy (cecha
+    bbb).
+  - Jeśli znasz po dwa boki i kąt między nimi — sprawdź proporcję dwóch par boków i równość kątów zawartych
+    (cecha bkb).
+  - 'Sformułuj wniosek, wypisując wierzchołki w kolejności odpowiadania sobie: △ABC ∼ △A''B''C''.'
+- name: Wyznaczanie brakującej długości z podobieństwa
+  when_to_use: Gdy trójkąty są (lub okazują się) podobne i trzeba obliczyć długość odcinka.
+  steps:
+  - Uzasadnij podobieństwo jedną z cech i zapisz je z zachowaniem kolejności wierzchołków.
+  - Wypisz pary odpowiadających sobie boków (bok naprzeciw kąta ↔ bok naprzeciw równego kąta).
+  - Ułóż proporcję zawierającą trzy znane długości i jedną niewiadomą, np. x/b = a'/a.
+  - Rozwiąż proporcję przez mnożenie na krzyż.
+  - 'Sprawdź sensowność: w większym trójkącie odcinki muszą wyjść dłuższe, w mniejszym krótsze.'
+- name: Praca z konfiguracją prostych równoległych (daszek i kokardka)
+  when_to_use: Gdy na rysunku występuje prosta równoległa do boku trójkąta albo dwa odcinki równoległe
+    przecinające się w punkcie.
+  steps:
+  - 'Zaznacz równe kąty: odpowiadające (daszek) lub naprzemianległe wraz z wierzchołkowymi (kokardka).'
+  - Z cechy kkk stwierdź podobieństwo i zapisz je w prawidłowej kolejności wierzchołków.
+  - Uważaj, czy w proporcji występuje cały bok (AB), czy jego część (DB) — jeśli trzeba, zapisz AB = AD
+    + DB.
+  - Ułóż i rozwiąż proporcję.
+- name: Wykorzystanie stosunku pól i obwodów
+  when_to_use: Gdy dane lub szukane dotyczą pól albo obwodów trójkątów podobnych.
+  steps:
+  - Wyznacz skalę k z pary odpowiadających sobie długości albo ze stosunku obwodów (k = Obw'/Obw).
+  - Jeśli dany jest stosunek pól, oblicz k = √(P'/P).
+  - Do przeliczania długości (boki, wysokości, obwody) używaj mnożnika k, do przeliczania pól — mnożnika
+    k².
+  - Podstaw i oblicz szukaną wielkość, pamiętając o jednostkach (cm dla długości, cm² dla pól).
+- name: Rozwiązywanie trójkąta prostokątnego z wysokością z kąta prostego
+  when_to_use: Gdy w trójkącie prostokątnym poprowadzono wysokość na przeciwprostokątną.
+  steps:
+  - 'Zaznacz trzy trójkąty: duży i dwa małe; wskaż w każdym kąt prosty i wspólny kąt ostry.'
+  - Z cechy kkk zapisz podobieństwo wszystkich trzech trójkątów, dobierając wierzchołki tak, by kąty proste
+    odpowiadały kątom prostym.
+  - Ułóż proporcję odpowiadających boków, np. h/p = q/h, i otrzymaj h² = p·q lub a² = c·p.
+  - Rozwiąż równanie i wybierz dodatnie rozwiązanie.
+- name: Modelowanie sytuacji praktycznej trójkątami podobnymi
+  when_to_use: Zadania o cieniu, tyczce mierniczej, lustrze, mapie, rzucie na ekran.
+  steps:
+  - 'Narysuj model: dwa trójkąty prostokątne o wspólnym kącie ostrym (promienie słońca, linia wzroku).'
+  - 'Uzasadnij podobieństwo (kkk: kąt prosty + wspólny kąt).'
+  - Zapisz proporcję wysokość/podstawa dla obu trójkątów.
+  - Rozwiąż i zinterpretuj wynik w kontekście zadania, sprawdzając jednostki.
+examples:
+- statement: W trójkącie ABC kąt A ma miarę 40°, a kąt B — 75°. W trójkącie KLM kąt L ma miarę 75°, a
+    kąt M — 65°. Wykaż, że trójkąty są podobne i wskaż odpowiadające sobie wierzchołki. Następnie oblicz
+    długość boku KL, wiedząc, że AB = 6 cm, BC = 9 cm oraz LM = 12 cm.
+  worked_solution: |-
+    Kąty trójkąta ABC: ∠A = 40°, ∠B = 75°, ∠C = 180° − 40° − 75° = 65°.
+    Kąty trójkąta KLM: ∠L = 75°, ∠M = 65°, ∠K = 180° − 75° − 65° = 40°.
+    Zatem ∠A = ∠K = 40°, ∠B = ∠L = 75°, ∠C = ∠M = 65°, więc na mocy cechy kkk: △ABC ∼ △KLM (w tej właśnie kolejności wierzchołków).
+    Odpowiadające sobie boki: AB ↔ KL, BC ↔ LM, AC ↔ KM.
+    Skala: k = LM/BC = 12/9 = 4/3.
+    Stąd KL = k · AB = (4/3) · 6 = 8 cm.
+    Sprawdzenie sensowności: trójkąt KLM jest większy (k > 1), więc KL > AB — zgadza się.
+  difficulty: 2
+- statement: 'Boki trójkąta mają długości 6 cm, 9 cm i 12 cm, a boki drugiego trójkąta: 8 cm, 16 cm i
+    12 cm. Sprawdź, czy trójkąty są podobne. Jeśli tak, oblicz stosunek ich obwodów i stosunek ich pól.'
+  worked_solution: |-
+    Porządkujemy boki rosnąco.
+    Pierwszy trójkąt: 6, 9, 12. Drugi trójkąt: 8, 12, 16.
+    Sprawdzamy ilorazy odpowiadających boków:
+    8/6 = 4/3,  12/9 = 4/3,  16/12 = 4/3.
+    Wszystkie trzy ilorazy są równe, więc z cechy bbb trójkąty są podobne, a skala podobieństwa drugiego do pierwszego wynosi k = 4/3.
+    Obwody: Obw₁ = 6 + 9 + 12 = 27 cm, Obw₂ = 8 + 12 + 16 = 36 cm.
+    Stosunek obwodów: 36/27 = 4/3 = k — zgodnie z regułą.
+    Stosunek pól: P₂/P₁ = k² = (4/3)² = 16/9.
+    Uwaga: gdybyśmy porównali boki bez uporządkowania (np. 8/6, 16/9, 12/12), ilorazy byłyby różne i błędnie uznalibyśmy trójkąty za niepodobne.
+  difficulty: 2
+- statement: 'W trójkącie ABC punkt D leży na boku AB, a punkt E na boku AC, przy czym DE ∥ BC. Dane:
+    AD = 4 cm, DB = 6 cm, DE = 5 cm. Oblicz długość boku BC oraz stosunek pola trójkąta ADE do pola trapezu
+    DBCE.'
+  worked_solution: |-
+    Ponieważ DE ∥ BC, kąt ADE = kąt ABC (kąty odpowiadające) oraz kąt A jest wspólny. Z cechy kkk: △ADE ∼ △ABC.
+    Odpowiadające sobie boki: AD ↔ AB, AE ↔ AC, DE ↔ BC.
+    AB = AD + DB = 4 + 6 = 10 cm, więc skala △ABC do △ADE wynosi k = AB/AD = 10/4 = 5/2.
+    Stąd BC = k · DE = (5/2) · 5 = 12,5 cm.
+    Pola: P(ABC)/P(ADE) = k² = 25/4, czyli P(ABC) = (25/4)·P(ADE).
+    Pole trapezu: P(DBCE) = P(ABC) − P(ADE) = (25/4)P(ADE) − P(ADE) = (21/4)P(ADE).
+    Zatem P(ADE) : P(DBCE) = 1 : 21/4 = 4 : 21.
+  difficulty: 3
+- statement: W trójkącie prostokątnym ABC kąt przy wierzchołku C jest prosty, a przeciwprostokątna AB
+    ma długość 25 cm. Wysokość CD poprowadzona z wierzchołka C dzieli przeciwprostokątną na odcinki AD
+    = 9 cm i DB = 16 cm. Oblicz długość wysokości CD oraz długości obu przyprostokątnych.
+  worked_solution: |-
+    Trójkąty ACD i CBD są prostokątne (kąt przy D prosty). W trójkącie ACD kąt przy A jest równy kątowi przy A w trójkącie ABC, a kąt przy D jest prosty jak kąt przy C — więc △ACD ∼ △ABC. Analogicznie △CBD ∼ △ABC, a stąd △ACD ∼ △CBD.
+    Z podobieństwa △ACD ∼ △CBD (kąt prosty ↔ kąt prosty, ∠ACD ↔ ∠CBD) otrzymujemy proporcję odpowiadających boków:
+    AD/CD = CD/DB, czyli CD² = AD · DB = 9 · 16 = 144, więc CD = 12 cm.
+    Z podobieństwa △ACD ∼ △ABC: AC/AB = AD/AC, czyli AC² = AB · AD = 25 · 9 = 225, więc AC = 15 cm.
+    Analogicznie BC² = AB · DB = 25 · 16 = 400, więc BC = 20 cm.
+    Sprawdzenie: 15² + 20² = 225 + 400 = 625 = 25² — twierdzenie Pitagorasa spełnione.
+  difficulty: 4
+- statement: Pionowa tyczka o wysokości 1,8 m rzuca cień długości 1,2 m. W tym samym czasie cień drzewa
+    rosnącego obok ma długość 8,4 m. Oblicz wysokość drzewa. Następnie ustal, ile razy większe jest pole
+    trójkąta wyznaczonego przez drzewo, jego cień i promień słoneczny od pola analogicznego trójkąta dla
+    tyczki.
+  worked_solution: |-
+    Modelujemy sytuację dwoma trójkątami prostokątnymi: przyprostokątne to wysokość obiektu i długość cienia, przeciwprostokątna to promień słoneczny.
+    Oba trójkąty mają kąt prosty (obiekty stoją pionowo na poziomym gruncie) oraz równe kąty padania promieni słonecznych (promienie są równoległe). Z cechy kkk trójkąty są podobne.
+    Skala: k = 8,4 / 1,2 = 7.
+    Wysokość drzewa: h = k · 1,8 = 7 · 1,8 = 12,6 m.
+    Można też ułożyć proporcję bezpośrednio: h/8,4 = 1,8/1,2, skąd h = 8,4 · 1,5 = 12,6 m.
+    Stosunek pól: P_drzewa / P_tyczki = k² = 7² = 49, czyli pole jest 49 razy większe.
+    Sprawdzenie: P_tyczki = ½·1,8·1,2 = 1,08 m², P_drzewa = ½·12,6·8,4 = 52,92 m², a 52,92 : 1,08 = 49.
+  difficulty: 3
+objectives:
+- statement: Podać definicję trójkątów podobnych i skali podobieństwa oraz poprawnie zapisać podobieństwo
+    z zachowaniem kolejności odpowiadających sobie wierzchołków.
+  bloom_level: Zapamiętywanie
+- statement: Wyjaśnić treść cech podobieństwa kkk, bbb i bkb oraz opisać różnicę między podobieństwem
+    a przystawaniem trójkątów.
+  bloom_level: Rozumienie
+- statement: Rozstrzygnąć, czy dane dwa trójkąty są podobne, i wskazać cechę, na której opiera się uzasadnienie.
+  bloom_level: Analizowanie
+- statement: Wyznaczyć skalę podobieństwa na podstawie pary odpowiadających sobie boków, stosunku obwodów
+    lub stosunku pól.
+  bloom_level: Stosowanie
+- statement: Obliczyć brakujące długości boków, wysokości i obwody trójkątów podobnych, układając i rozwiązując
+    odpowiednią proporcję.
+  bloom_level: Stosowanie
+- statement: Zastosować zależności Obw'/Obw = k oraz P'/P = k² do obliczania obwodów i pól figur podobnych,
+    także w kierunku odwrotnym (od pól do skali).
+  bloom_level: Stosowanie
+- statement: 'Rozpoznać podobieństwo w typowych konfiguracjach geometrycznych: prosta równoległa do boku
+    trójkąta (daszek), kąty wierzchołkowe (kokardka), wysokość z kąta prostego w trójkącie prostokątnym.'
+  bloom_level: Analizowanie
+- statement: Wyprowadzić z podobieństwa trójkątów zależności h² = p·q oraz a² = c·p w trójkącie prostokątnym
+    i wykorzystać je do obliczeń.
+  bloom_level: Analizowanie
+- statement: Zbudować model geometryczny sytuacji praktycznej (cień, tyczka miernicza, plan, mapa) oparty
+    na trójkątach podobnych i obliczyć szukaną wielkość rzeczywistą.
+  bloom_level: Tworzenie
+- statement: Ocenić poprawność cudzego rozumowania dotyczącego podobieństwa i wskazać błąd w doborze odpowiadających
+    boków lub w skalowaniu pól.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Mylenie podobieństwa z przystawaniem
+  incorrect_reasoning: '"Trójkąty mają te same kąty, więc są takie same — mają też te same boki."'
+  correct_reasoning: Równość kątów gwarantuje tylko podobieństwo (ten sam kształt), a nie równość boków.
+    Trójkąty równoboczne o bokach 2 cm i 200 cm mają identyczne kąty (60°), lecz są zupełnie różnej wielkości.
+    Przystawanie to podobieństwo w szczególnej skali k = 1.
+  severity: 4
+- name: Układanie proporcji z boków, które sobie nie odpowiadają
+  incorrect_reasoning: '"Wypiszę boki w kolejności, w jakiej są podane w treści, i podzielę pierwszy przez
+    pierwszy, drugi przez drugi."'
+  correct_reasoning: 'Odpowiadają sobie boki leżące naprzeciw równych kątów. Trzeba najpierw ustalić przyporządkowanie
+    wierzchołków (np. uporządkować boki rosnąco albo przypisać je do równych kątów), a dopiero potem układać
+    proporcję. Zapis △ABC ∼ △KLM sam w sobie mówi: AB ↔ KL, BC ↔ LM, AC ↔ KM.'
+  severity: 5
+- name: Skalowanie pola tą samą liczbą co długości
+  incorrect_reasoning: '"Boki są 3 razy większe, więc pole też jest 3 razy większe."'
+  correct_reasoning: Pole skaluje się przez k², więc przy k = 3 pole rośnie 9 razy. Wynika to z wzoru
+    P = ½·a·h, w którym obie długości mnożą się przez k. Obwód natomiast skaluje się przez k, bo jest
+    sumą długości.
+  severity: 4
+- name: Odwrotne użycie skali przy wyznaczaniu długości
+  incorrect_reasoning: '"Skala wynosi 5/2, więc każdą długość mnożę przez 5/2 — niezależnie od tego, który
+    trójkąt jest większy."'
+  correct_reasoning: 'Skala ma kierunek. Jeśli k jest skalą trójkąta drugiego do pierwszego, to długości
+    pierwszego mnożymy przez k, a długości drugiego przez 1/k. Zawsze warto sprawdzić wynik: bok większego
+    trójkąta musi wyjść dłuższy.'
+  severity: 3
+- name: Uznawanie kąta niezawartego między bokami za wystarczający (fałszywa cecha „bbk”)
+  incorrect_reasoning: '"Dwa boki są proporcjonalne i jest jeszcze jeden równy kąt — czyli trójkąty są
+    podobne."'
+  correct_reasoning: Cecha bkb wymaga, by równe kąty leżały MIĘDZY parami proporcjonalnych boków. Kąt
+    leżący naprzeciw jednego z boków nie wystarcza — istnieją pary trójkątów spełniających taki warunek,
+    które nie są podobne (analogicznie do niejednoznaczności bbk przy przystawaniu).
+  severity: 4
+- name: Przenoszenie cech trójkątów na dowolne wielokąty
+  incorrect_reasoning: '"Wszystkie kąty tych czworokątów są równe, więc czworokąty są podobne."'
+  correct_reasoning: Cechy kkk, bbb i bkb dotyczą wyłącznie trójkątów. Kwadrat 2×2 i prostokąt 2×5 mają
+    wszystkie kąty proste, a nie są podobne; romb i kwadrat mają proporcjonalne boki, a nie są podobne.
+    Dla wielokątów o więcej niż trzech bokach trzeba sprawdzić i kąty, i proporcje boków.
+  severity: 3
+- name: Mylenie części boku z całym bokiem w konfiguracji z równoległą
+  incorrect_reasoning: '"DE ∥ BC, więc AD/DB = DE/BC."'
+  correct_reasoning: Trójkąt ADE jest podobny do trójkąta ABE... nie — do trójkąta ABC, więc odpowiadającym
+    AD bokiem jest CAŁY bok AB, nie jego część DB. Poprawna proporcja to AD/AB = AE/AC = DE/BC, przy czym
+    AB = AD + DB.
+  severity: 5
+- name: Zakładanie podobieństwa na podstawie wyglądu rysunku
+  incorrect_reasoning: '"Na rysunku te trójkąty wyglądają podobnie, więc mogę od razu układać proporcję."'
+  correct_reasoning: Podobieństwo trzeba za każdym razem uzasadnić jedną z trzech cech, wskazując konkretne
+    równe kąty lub proporcjonalne boki. Rysunek bywa nie w skali i sam w sobie niczego nie dowodzi.
+  severity: 3

@@ -1,0 +1,321 @@
+section: funkcja-liniowa
+name: 'Funkcja liniowa: współczynniki i wyznaczanie wzoru'
+scope: Meaning of a and b in y = ax + b; finding the formula from a graph or from stated properties; parallel
+  and perpendicular lines via slope.
+requirements:
+- V.5
+- V.6
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:42:32.063068'
+  approved_at: '2026-08-28T18:28:04.742631'
+  approved_by: reviewer
+concepts:
+- name: Funkcja liniowa
+  description: Funkcja określona dla wszystkich liczb rzeczywistych wzorem f(x) = ax + b, gdzie a i b
+    są ustalonymi liczbami rzeczywistymi (a nazywamy współczynnikiem kierunkowym, b — wyrazem wolnym).
+  explanation: 'Każdemu x przyporządkowujemy wynik: pomnóż przez a, dodaj b. Wykresem jest zawsze prosta
+    (nigdy pionowa). Uwaga: a może być równe 0 — funkcja stała f(x) = b też jest funkcją liniową.'
+  difficulty: 1
+- name: Współczynnik kierunkowy a
+  description: Liczba a we wzorze f(x) = ax + b; opisuje, o ile zmienia się wartość funkcji, gdy argument
+    wzrośnie o 1.
+  explanation: To „stromość i kierunek” prostej. Idąc po wykresie o 1 w prawo, przesuwamy się o a w górę
+    (gdy a > 0) albo o |a| w dół (gdy a < 0). Im większe |a|, tym prosta bardziej stroma.
+  difficulty: 2
+- name: Wyraz wolny b
+  description: 'Liczba b we wzorze f(x) = ax + b; jest wartością funkcji dla x = 0, czyli rzędną punktu
+    przecięcia wykresu z osią OY: (0, b).'
+  explanation: Najłatwiejszy do odczytania z wykresu parametr — patrzymy, na jakiej wysokości prosta przecina
+    oś pionową. Zmiana b przesuwa prostą pionowo, nie zmieniając jej nachylenia.
+  difficulty: 1
+- name: Monotoniczność funkcji liniowej
+  description: Funkcja f(x) = ax + b jest rosnąca, gdy a > 0; malejąca, gdy a < 0; stała, gdy a = 0.
+  explanation: Znak a decyduje o „kierunku wędrówki” wykresu przy ruchu w prawo. To najczęstszy sposób,
+    w jaki zadanie ukrywa informację o znaku a (np. „funkcja jest malejąca” ⟺ a < 0).
+  difficulty: 2
+- name: Miejsce zerowe funkcji liniowej
+  description: Argument x₀, dla którego f(x₀) = 0; gdy a ≠ 0, jest to x₀ = −b/a — odcięta punktu przecięcia
+    wykresu z osią OX.
+  explanation: Znaleźć miejsce zerowe = rozwiązać równanie ax + b = 0. Gdy a = 0 i b ≠ 0, miejsc zerowych
+    nie ma; gdy a = 0 i b = 0, każda liczba jest miejscem zerowym.
+  difficulty: 2
+- name: Punkt należący do wykresu
+  description: Punkt P = (x₀, y₀) leży na wykresie funkcji f wtedy i tylko wtedy, gdy y₀ = f(x₀), czyli
+    po podstawieniu współrzędnych otrzymujemy prawdziwą równość.
+  explanation: 'To podstawowe narzędzie w zadaniach o wyznaczaniu wzoru: każdy punkt wykresu daje jedno
+    równanie z niewiadomymi a i b.'
+  difficulty: 1
+- name: Interpretacja a jako ilorazu przyrostów
+  description: Dla dwóch różnych punktów prostej (x₁, y₁), (x₂, y₂) zachodzi a = (y₂ − y₁)/(x₂ − x₁),
+    czyli a to przyrost wartości podzielony przez przyrost argumentu.
+  explanation: 'Na wykresie: „ile w górę na ile w prawo”. Iloraz nie zależy od wyboru punktów — to właśnie
+    czyni wykres prostą.'
+  difficulty: 3
+- name: Kąt nachylenia prostej do osi OX
+  description: Kąt α ∈ [0°, 180°), jaki prosta tworzy z dodatnią półosią OX; zachodzi a = tg α (przy jednakowych
+    jednostkach na obu osiach).
+  explanation: Dla α = 45° mamy a = 1, dla α = 135° mamy a = −1, dla α = 0° mamy a = 0. Kąt ostry ⟺ funkcja
+    rosnąca, kąt rozwarty ⟺ malejąca.
+  difficulty: 3
+- name: Proporcjonalność prosta
+  description: 'Szczególny przypadek funkcji liniowej: f(x) = ax (czyli b = 0), której wykres przechodzi
+    przez początek układu współrzędnych.'
+  explanation: Warunek „wykres przechodzi przez punkt (0,0)” to dokładnie warunek b = 0.
+  difficulty: 2
+- name: Proste równoległe
+  description: Dwie proste o równaniach y = a₁x + b₁ i y = a₂x + b₂ są równoległe wtedy i tylko wtedy,
+    gdy a₁ = a₂; są równoległe i różne, gdy dodatkowo b₁ ≠ b₂.
+  explanation: Równoległość to „to samo nachylenie”. Jeśli a₁ = a₂ i b₁ = b₂, to mamy jedną i tę samą
+    prostą (proste pokrywają się).
+  difficulty: 2
+- name: Proste prostopadłe
+  description: Proste y = a₁x + b₁ i y = a₂x + b₂ są prostopadłe wtedy i tylko wtedy, gdy a₁ · a₂ = −1,
+    czyli a₂ = −1/a₁.
+  explanation: 'Współczynnik prostopadłej to odwrotność ze zmienionym znakiem: dla a₁ = 2/3 mamy a₂ =
+    −3/2. Warunek wymaga a₁ ≠ 0 i a₂ ≠ 0 — prostą poziomą y = c i pionową x = c trzeba traktować osobno.'
+  difficulty: 3
+- name: Punkt przecięcia dwóch prostych
+  description: 'Punkt wspólny wykresów dwóch funkcji liniowych; jego współrzędne spełniają oba równania
+    jednocześnie (rozwiązuje się układ równań lub porównuje wzory: a₁x + b₁ = a₂x + b₂).'
+  explanation: Gdy a₁ ≠ a₂ — dokładnie jeden punkt wspólny; gdy a₁ = a₂ i b₁ ≠ b₂ — brak; gdy wzory identyczne
+    — nieskończenie wiele.
+  difficulty: 3
+- name: Postać kierunkowa a postać ogólna prostej
+  description: 'Postać kierunkowa: y = ax + b; postać ogólna: Ax + By + C = 0. Gdy B ≠ 0, z postaci ogólnej
+    otrzymujemy a = −A/B, b = −C/B.'
+  explanation: Aby porównać nachylenia prostych podanych w postaci ogólnej, najpierw wyznacz z każdej
+    z nich y (przenieś wyrazy i podziel przez współczynnik przy y).
+  difficulty: 3
+formulas:
+- name: Wzór funkcji liniowej (postać kierunkowa)
+  latex_raw: f(x) = ax + b,\quad a, b \in \mathbb{R}
+  conditions: 'dziedzina: zbiór liczb rzeczywistych (o ile zadanie nie zawęża jej celowo)'
+  description: a — współczynnik kierunkowy, b — wyraz wolny
+- name: Współczynnik kierunkowy z dwóch punktów
+  latex_raw: a = \frac{y_2 - y_1}{x_2 - x_1}
+  conditions: punkty A=(x_1,y_1), B=(x_2,y_2) należą do wykresu i x_1 \neq x_2
+  description: kolejność punktów jest dowolna, ale w liczniku i mianowniku musi być ta sama
+- name: Równanie prostej o danym współczynniku przechodzącej przez punkt
+  latex_raw: y - y_0 = a(x - x_0)
+  conditions: prosta o współczynniku kierunkowym a przechodząca przez P=(x_0,y_0)
+  description: po uporządkowaniu daje postać y = ax + (y_0 - a x_0)
+- name: Wyraz wolny z punktu i współczynnika
+  latex_raw: b = y_0 - a x_0
+  conditions: P=(x_0,y_0) należy do wykresu funkcji f(x)=ax+b
+- name: Miejsce zerowe
+  latex_raw: x_0 = -\frac{b}{a}
+  conditions: a \neq 0
+  description: 'dla a = 0: brak miejsc zerowych (b ≠ 0) lub wszystkie liczby rzeczywiste (b = 0)'
+- name: Punkt przecięcia z osią OY
+  latex_raw: (0,\; b)
+  conditions: zawsze, dla dowolnej funkcji liniowej
+- name: Warunek równoległości
+  latex_raw: a_1 = a_2
+  conditions: proste dane w postaci kierunkowej y = a_1x+b_1, y = a_2x+b_2
+  description: 'proste równoległe i różne: dodatkowo b_1 \neq b_2'
+- name: Warunek prostopadłości
+  latex_raw: a_1 \cdot a_2 = -1 \iff a_2 = -\frac{1}{a_1}
+  conditions: a_1 \neq 0 oraz a_2 \neq 0 (żadna z prostych nie jest pozioma ani pionowa)
+- name: Nachylenie a kąt
+  latex_raw: a = \operatorname{tg}\alpha
+  conditions: α — kąt nachylenia prostej do dodatniej półosi OX, α ∈ [0°,180°), α ≠ 90°; jednakowe jednostki
+    na osiach
+- name: Prosta przez dwa punkty (postać gotowa)
+  latex_raw: y = \frac{y_2-y_1}{x_2-x_1}\,(x - x_1) + y_1
+  conditions: x_1 \neq x_2
+- name: Z postaci ogólnej do kierunkowej
+  latex_raw: Ax + By + C = 0 \;\Rightarrow\; y = -\frac{A}{B}x - \frac{C}{B}
+  conditions: B \neq 0
+  description: gdy B = 0 prosta jest pionowa (x = −C/A) i nie jest wykresem funkcji
+methods:
+- name: Odczytanie wzoru funkcji z wykresu
+  when_to_use: Gdy dany jest narysowany wykres prostej i mamy podać jej wzór.
+  steps:
+  - Odczytaj punkt przecięcia wykresu z osią OY — jego rzędna to b.
+  - Wskaż na wykresie drugi punkt o współrzędnych całkowitych (najlepiej „w kratce”).
+  - 'Oblicz a jako iloraz przyrostów: (różnica rzędnych)/(różnica odciętych) tych dwóch punktów, albo
+    odczytaj: idąc o 1 w prawo, o ile idziemy w górę/dół.'
+  - Zapisz wzór f(x) = ax + b.
+  - Sprawdź wynik, podstawiając współrzędne trzeciego punktu z wykresu.
+- name: Wyznaczanie wzoru z dwóch punktów
+  when_to_use: Gdy znamy dwa punkty należące do wykresu (o różnych odciętych).
+  steps:
+  - Oznacz punkty A=(x₁,y₁), B=(x₂,y₂).
+  - Oblicz a = (y₂ − y₁)/(x₂ − x₁).
+  - Wyznacz b, podstawiając a i współrzędne jednego z punktów do równania y = ax + b (b = y₁ − a·x₁).
+  - Zapisz wzór i zweryfikuj go na drugim punkcie.
+- name: Wyznaczanie wzoru z własności funkcji (układ równań)
+  when_to_use: 'Gdy zadanie podaje słownie warunki: wartości funkcji, miejsce zerowe, przechodzenie przez
+    punkty, przecięcie osi.'
+  steps:
+  - 'Zamień każdą informację na punkt wykresu lub równanie: „f(2) = 5” → punkt (2,5); „miejsce zerowe
+    równe 3” → punkt (3,0); „przecina oś OY w −1” → b = −1; „przechodzi przez początek układu” → b = 0.'
+  - Podstaw te dane do wzoru y = ax + b, otrzymując równania z niewiadomymi a i b.
+  - Rozwiąż układ dwóch równań liniowych (metodą podstawiania lub przeciwnych współczynników).
+  - Zapisz wzór funkcji i sprawdź wszystkie warunki z treści zadania.
+- name: Wyznaczanie prostej równoległej lub prostopadłej przechodzącej przez dany punkt
+  when_to_use: Gdy dana jest prosta (lub funkcja) i punkt, a szukamy wzoru prostej równoległej albo prostopadłej
+    do niej.
+  steps:
+  - Doprowadź daną prostą do postaci y = a₁x + b₁ i odczytaj a₁.
+  - Dla równoległej przyjmij a = a₁; dla prostopadłej przyjmij a = −1/a₁.
+  - Podstaw współrzędne danego punktu P=(x₀,y₀) do y = ax + b i wyznacz b = y₀ − a·x₀ (albo użyj y − y₀
+    = a(x − x₀)).
+  - Zapisz wzór; przy równoległej sprawdź, czy b różni się od b₁ (inaczej to ta sama prosta).
+- name: Badanie wzajemnego położenia dwóch prostych
+  when_to_use: Gdy trzeba stwierdzić, czy proste są równoległe, prostopadłe, pokrywają się lub przecinają
+    się, także gdy w równaniu występuje parametr m.
+  steps:
+  - Zapisz obie proste w postaci kierunkowej y = ax + b (jeśli trzeba, wyznacz y z postaci ogólnej).
+  - 'Porównaj współczynniki kierunkowe: a₁ = a₂ → równoległe (pokrywają się, gdy też b₁ = b₂); a₁·a₂ =
+    −1 → prostopadłe; w pozostałych przypadkach przecinają się w jednym punkcie.'
+  - Jeśli występuje parametr, ułóż z warunku równanie na parametr i rozwiąż je.
+  - Jeśli trzeba, sprawdź warunek dodatkowy (np. b₁ ≠ b₂) i odrzuć wartości parametru, które go łamią.
+- name: Interpretacja znaku i wartości współczynników
+  when_to_use: Gdy zadanie pyta o monotoniczność, o znak a i b na podstawie rysunku, albo o dopasowanie
+    wzoru do wykresu.
+  steps:
+  - 'Ustal znak a: prosta „idzie w górę” w prawo → a > 0; „w dół” → a < 0; pozioma → a = 0.'
+  - 'Ustal znak b: prosta przecina oś OY powyżej zera → b > 0; poniżej → b < 0; przez początek układu
+    → b = 0.'
+  - Jeśli potrzeba, oszacuj |a| ze stromości (|a| > 1 — stroma, |a| < 1 — łagodna) lub oblicz a z dwóch
+    punktów.
+  - Wyklucz wzory niezgodne ze znakami a i b.
+examples:
+- statement: Na rysunku wykres funkcji liniowej przecina oś OY w punkcie (0, −1) i przechodzi przez punkt
+    (3, 1). Wyznacz wzór tej funkcji, jej miejsce zerowe oraz określ monotoniczność.
+  worked_solution: |-
+    Z punktu przecięcia z osią OY odczytujemy b = −1.
+    Współczynnik kierunkowy: a = (1 − (−1))/(3 − 0) = 2/3.
+    Zatem f(x) = (2/3)x − 1.
+    Miejsce zerowe: (2/3)x − 1 = 0 ⟹ (2/3)x = 1 ⟹ x = 3/2.
+    Ponieważ a = 2/3 > 0, funkcja jest rosnąca.
+    Sprawdzenie: f(3) = 2 − 1 = 1 ✓.
+  difficulty: 1
+- statement: 'Funkcja liniowa f spełnia warunki: f(−2) = 7 oraz f(4) = −5. Wyznacz jej wzór i sprawdź,
+    czy punkt P = (10, −18) należy do jej wykresu.'
+  worked_solution: |-
+    Warunki oznaczają, że do wykresu należą punkty A = (−2, 7) i B = (4, −5).
+    a = (−5 − 7)/(4 − (−2)) = (−12)/6 = −2.
+    b = y_A − a·x_A = 7 − (−2)·(−2) = 7 − 4 = 3.
+    Zatem f(x) = −2x + 3 (funkcja malejąca, bo a = −2 < 0).
+    Sprawdzenie punktu P: f(10) = −20 + 3 = −17 ≠ −18, więc punkt P NIE należy do wykresu.
+  difficulty: 2
+- statement: Wyznacz wzór funkcji liniowej, której wykres jest prostopadły do prostej o równaniu 3x +
+    2y − 6 = 0 i przechodzi przez punkt przecięcia tej prostej z osią OX.
+  worked_solution: |-
+    Krok 1. Postać kierunkowa danej prostej: 2y = −3x + 6 ⟹ y = −(3/2)x + 3, więc a₁ = −3/2.
+    Krok 2. Punkt przecięcia z osią OX: 0 = −(3/2)x + 3 ⟹ (3/2)x = 3 ⟹ x = 2. Punkt: P = (2, 0).
+    Krok 3. Współczynnik prostopadłej: a = −1/a₁ = −1/(−3/2) = 2/3.
+    Krok 4. b = 0 − (2/3)·2 = −4/3.
+    Odpowiedź: y = (2/3)x − 4/3.
+    Sprawdzenie: a₁·a = (−3/2)·(2/3) = −1 ✓, oraz dla x = 2: y = 4/3 − 4/3 = 0 ✓.
+  difficulty: 3
+- statement: 'Dane są proste: k: y = (m − 1)x + 4 oraz l: y = (3m + 5)x − 2. Dla jakiej wartości m proste
+    te są (a) równoległe, (b) prostopadłe?'
+  worked_solution: |-
+    (a) Równoległość: m − 1 = 3m + 5 ⟹ −6 = 2m ⟹ m = −3.
+    Sprawdzenie: dla m = −3 mamy k: y = −4x + 4, l: y = −4x − 2. Współczynniki kierunkowe równe, wyrazy wolne różne (4 ≠ −2), więc proste są równoległe i różne. ✓
+    (b) Prostopadłość: (m − 1)(3m + 5) = −1 ⟹ 3m² + 5m − 3m − 5 = −1 ⟹ 3m² + 2m − 4 = 0.
+    Δ = 4 + 48 = 52, √Δ = 2√13, m = (−2 ± 2√13)/6 = (−1 ± √13)/3.
+    Oba rozwiązania są dopuszczalne, bo dla żadnego z nich m − 1 = 0 ani 3m + 5 = 0 (sprawdzenie: gdyby m = 1, iloczyn wyniósłby 0 ≠ −1).
+    Odpowiedź: (a) m = −3; (b) m = (−1 − √13)/3 lub m = (−1 + √13)/3.
+  difficulty: 4
+- statement: Wykres funkcji liniowej f przecina osie układu współrzędnych w punktach A = (6, 0) i B =
+    (0, −4). Wyznacz wzór funkcji f, wzór funkcji g, której wykres jest równoległy do wykresu f i przechodzi
+    przez punkt (3, 1), oraz oblicz pole trójkąta OAB.
+  worked_solution: |-
+    Wzór f: z punktu B odczytujemy b = −4; a = (0 − (−4))/(6 − 0) = 4/6 = 2/3. Zatem f(x) = (2/3)x − 4.
+    Wzór g: równoległość ⟹ a_g = 2/3; b_g = 1 − (2/3)·3 = 1 − 2 = −1, czyli g(x) = (2/3)x − 1. Wyrazy wolne są różne (−1 ≠ −4), więc proste są równoległe i różne.
+    Pole trójkąta OAB: trójkąt ma wierzchołek w początku układu, przyprostokątne leżą na osiach i mają długości |OA| = 6 oraz |OB| = |−4| = 4.
+    P = ½·6·4 = 12.
+  difficulty: 3
+objectives:
+- statement: Wskazać we wzorze funkcji liniowej współczynnik kierunkowy i wyraz wolny oraz podać ich geometryczne
+    znaczenie (nachylenie i punkt przecięcia z osią OY).
+  bloom_level: Rozumienie
+- statement: Określić monotoniczność funkcji liniowej na podstawie znaku współczynnika a oraz odwrotnie
+    — wnioskować o znaku a z informacji o monotoniczności lub z rysunku wykresu.
+  bloom_level: Rozumienie
+- statement: Obliczyć współczynnik kierunkowy prostej na podstawie współrzędnych dwóch jej punktów lub
+    odczytać go z wykresu jako iloraz przyrostów.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć wzór funkcji liniowej na podstawie wykresu (odczyt b i drugiego punktu).
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć wzór funkcji liniowej z podanych własności (wartości funkcji, miejsce zerowe, punkty
+    przecięcia z osiami, przechodzenie przez dany punkt), układając i rozwiązując odpowiedni układ równań.
+  bloom_level: Zastosowanie
+- statement: Sprawdzić, czy dany punkt należy do wykresu funkcji liniowej, oraz obliczyć brakującą współrzędną
+    punktu leżącego na wykresie.
+  bloom_level: Zastosowanie
+- statement: Zapisać równanie prostej równoległej lub prostopadłej do danej prostej i przechodzącej przez
+    wskazany punkt.
+  bloom_level: Zastosowanie
+- statement: Zbadać wzajemne położenie dwóch prostych (równoległe, prostopadłe, pokrywające się, przecinające
+    się), także gdy w równaniach występuje parametr, i wyznaczyć wartość parametru spełniającą zadany
+    warunek.
+  bloom_level: Analiza
+- statement: Przekształcić równanie prostej z postaci ogólnej do kierunkowej i z powrotem oraz rozpoznać
+    sytuację, w której prosta nie jest wykresem funkcji.
+  bloom_level: Zastosowanie
+- statement: Ocenić poprawność podanego wzoru funkcji liniowej lub dopasować wzór do wykresu na podstawie
+    znaków i wielkości współczynników a i b.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Mylenie wyrazu wolnego z miejscem zerowym
+  incorrect_reasoning: „We wzorze f(x) = 2x − 6 liczba −6 to miejsce zerowe, więc funkcja przecina oś
+    OX w punkcie (−6, 0).”
+  correct_reasoning: 'b = −6 to rzędna punktu przecięcia z osią OY: (0, −6). Miejsce zerowe liczymy z
+    równania 2x − 6 = 0, czyli x = 3, i punktem przecięcia z OX jest (3, 0).'
+  severity: 4
+- name: Odwrotny iloraz przy liczeniu a
+  incorrect_reasoning: „a = (x₂ − x₁)/(y₂ − y₁)” — czyli „w prawo na w górę”.
+  correct_reasoning: 'a = (y₂ − y₁)/(x₂ − x₁): przyrost wartości (pionowy) dzielimy przez przyrost argumentu
+    (poziomy). Kontrola: dla punktów (0,0) i (1,2) prosta jest stroma, więc a = 2, a nie 1/2.'
+  severity: 4
+- name: Niekonsekwentna kolejność punktów
+  incorrect_reasoning: „a = (y₂ − y₁)/(x₁ − x₂)” — licznik liczony od punktu B do A, mianownik od A do
+    B.
+  correct_reasoning: W liczniku i mianowniku trzeba odejmować w tej samej kolejności; zamiana kolejności
+    w jednym miejscu zmienia znak a na przeciwny (np. daje funkcję malejącą zamiast rosnącej).
+  severity: 3
+- name: Warunek prostopadłości jako a₂ = 1/a₁ lub a₂ = −a₁
+  incorrect_reasoning: „Prosta prostopadła do y = 2x + 1 to y = −2x + 1 (zmieniam znak) albo y = (1/2)x
+    + 1 (odwracam).”
+  correct_reasoning: 'Trzeba zrobić obie rzeczy naraz: a₂ = −1/a₁, czyli a₂ = −1/2. Weryfikacja: a₁·a₂
+    = 2·(−1/2) = −1 ✓.'
+  severity: 5
+- name: Stosowanie a₁·a₂ = −1 do prostej poziomej
+  incorrect_reasoning: „Prosta prostopadła do y = 3 ma współczynnik a = −1/0, więc nie istnieje.”
+  correct_reasoning: Dla a₁ = 0 wzór nie działa. Prostopadła do prostej poziomej y = 3 jest prosta pionowa
+    x = c, która nie jest wykresem funkcji i nie ma postaci y = ax + b.
+  severity: 3
+- name: „Równoległe” bez sprawdzenia, czy proste są różne
+  incorrect_reasoning: „a₁ = a₂, więc na pewno proste są równoległe.” (przy zadaniu z parametrem podaje
+    się wartość, dla której proste się pokrywają)
+  correct_reasoning: Gdy a₁ = a₂ i b₁ = b₂, proste pokrywają się — to jedna prosta. Jeśli zadanie żąda
+    prostych równoległych i różnych, wartość parametru dającą b₁ = b₂ należy odrzucić.
+  severity: 3
+- name: Przekonanie, że funkcja liniowa musi być rosnąca lub malejąca
+  incorrect_reasoning: „Skoro to funkcja liniowa, to a ≠ 0 i funkcja jest monotoniczna (rosnąca albo malejąca).”
+  correct_reasoning: Dla a = 0 wzór f(x) = b także określa funkcję liniową (stałą), której wykresem jest
+    prosta pozioma. Warunek a ≠ 0 dotyczy dopiero istnienia dokładnie jednego miejsca zerowego.
+  severity: 3
+- name: Uznanie prostej pionowej za wykres funkcji liniowej
+  incorrect_reasoning: „Prosta x = 4 to też funkcja liniowa, bo jest prosta.”
+  correct_reasoning: Wykres funkcji nie może zawierać dwóch punktów o tej samej odciętej. Prosta pionowa
+    x = 4 nie jest wykresem żadnej funkcji i nie da się jej zapisać w postaci y = ax + b.
+  severity: 3
+- name: Nieprzekształcenie postaci ogólnej przed porównaniem nachyleń
+  incorrect_reasoning: „W równaniu 3x + 2y − 6 = 0 współczynnik kierunkowy to 3 (liczba przy x).”
+  correct_reasoning: 'Najpierw wyznaczamy y: 2y = −3x + 6, y = −(3/2)x + 3, więc a = −3/2. Ogólnie z Ax
+    + By + C = 0 (B ≠ 0) mamy a = −A/B.'
+  severity: 4
+- name: Podstawianie punktu do wzoru „na odwrót”
+  incorrect_reasoning: „Punkt (2, 5) daje równanie 2 = a·5 + b.”
+  correct_reasoning: 'Pierwsza współrzędna to argument x, druga to wartość y, więc równanie ma postać
+    5 = a·2 + b. Kontrola: warunek f(2) = 5 zapisujemy jako 2a + b = 5.'
+  severity: 4

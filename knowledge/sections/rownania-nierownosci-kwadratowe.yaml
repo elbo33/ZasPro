@@ -1,0 +1,392 @@
+section: rownania-nierownosci-kwadratowe
+name: Równania i nierówności kwadratowe
+scope: Solving quadratic equations (factoring, discriminant, Vieta); solving quadratic inequalities from
+  the sign of the parabola.
+requirements:
+- III.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:33:02.637912'
+  approved_at: '2026-08-28T18:28:03.741703'
+  approved_by: reviewer
+concepts:
+- name: Równanie kwadratowe (postać ogólna)
+  description: Równanie postaci ax² + bx + c = 0, gdzie a, b, c są liczbami rzeczywistymi i a ≠ 0.
+  explanation: 'Warunek a ≠ 0 jest istotny: gdy a = 0, równanie przestaje być kwadratowe i staje się liniowe.
+    Zanim zastosujesz jakikolwiek wzór, doprowadź równanie do postaci ogólnej — wszystko na lewą stronę,
+    po prawej zero, wyrazy podobne zredukowane. Dopiero wtedy odczytujesz a, b, c razem ze znakami.'
+  difficulty: 1
+- name: Wyróżnik (delta) trójmianu kwadratowego
+  description: Liczba Δ = b² − 4ac przypisana trójmianowi ax² + bx + c.
+  explanation: 'Delta jest ''testerem'' liczby rozwiązań: Δ > 0 — dwa różne pierwiastki, Δ = 0 — jeden
+    pierwiastek (podwójny), Δ < 0 — brak pierwiastków rzeczywistych. Geometrycznie mówi, ile razy parabola
+    przecina oś OX. Uwaga na znaki: w b² potęgujemy całe b (zawsze wynik nieujemny), a −4ac może być dodatnie
+    lub ujemne.'
+  difficulty: 2
+- name: Pierwiastki (miejsca zerowe) trójmianu
+  description: Liczby x, dla których ax² + bx + c = 0; są to zarazem odcięte punktów przecięcia paraboli
+    y = ax² + bx + c z osią OX.
+  explanation: Rozwiązywanie równania kwadratowego i szukanie miejsc zerowych funkcji kwadratowej to to
+    samo zadanie ubrane w dwa różne języki. Miejsca zerowe dzielą oś liczbową na przedziały, w których
+    trójmian ma stały znak — to podstawa rozwiązywania nierówności.
+  difficulty: 1
+- name: Równanie kwadratowe niezupełne
+  description: Równanie kwadratowe, w którym b = 0 (postać ax² + c = 0) lub c = 0 (postać ax² + bx = 0).
+  explanation: 'Takich równań nie opłaca się liczyć deltą. Gdy c = 0, wyłączamy x przed nawias: x(ax +
+    b) = 0. Gdy b = 0, przenosimy c i pierwiastkujemy: x² = −c/a (rozwiązania istnieją tylko gdy −c/a
+    ≥ 0). To najszybsze metody i najczęstsze źródło oszczędności czasu.'
+  difficulty: 2
+- name: Postać iloczynowa trójmianu
+  description: Zapis a(x − x₁)(x − x₂), gdy Δ > 0, lub a(x − x₀)², gdy Δ = 0; przy Δ < 0 postać iloczynowa
+    nie istnieje.
+  explanation: 'Postać iloczynowa jest ''jawnym'' zapisem pierwiastków. Działa też w drugą stronę: jeśli
+    potrafisz rozłożyć wyrażenie na czynniki (np. wzorem skróconego mnożenia albo przez wyłączenie), masz
+    pierwiastki bez liczenia delty. Pamiętaj o współczynniku a z przodu.'
+  difficulty: 3
+- name: Postać kanoniczna i wierzchołek paraboli
+  description: Zapis a(x − p)² + q, gdzie p = −b/(2a), q = −Δ/(4a); punkt W = (p, q) to wierzchołek paraboli.
+  explanation: 'Postać kanoniczna pokazuje, jak wykres powstaje z paraboli y = ax² przez przesunięcie.
+    Dla równań i nierówności przydaje się głównie jako kontrola: jeśli a > 0 i q > 0, parabola leży całkowicie
+    nad osią, więc równanie nie ma rozwiązań, a nierówność ''> 0'' jest spełniona dla każdego x.'
+  difficulty: 3
+- name: Znak współczynnika a a kształt paraboli
+  description: Gdy a > 0, ramiona paraboli skierowane są w górę; gdy a < 0 — w dół.
+  explanation: To decyduje, gdzie trójmian jest dodatni, a gdzie ujemny. Przy a > 0 wartości dodatnie
+    są 'na zewnątrz' pierwiastków, a ujemne 'w środku'; przy a < 0 jest dokładnie odwrotnie. Zamiast uczyć
+    się tego na pamięć, rysuj szkic paraboli — trzy sekundy rysunku zastępują cztery reguły.
+  difficulty: 2
+- name: Nierówność kwadratowa
+  description: Nierówność postaci ax² + bx + c > 0 (albo <, ≥, ≤) z a ≠ 0; jej rozwiązaniem jest zbiór
+    (najczęściej suma lub pojedynczy przedział) liczb rzeczywistych.
+  explanation: 'Rozwiązanie nierówności kwadratowej to zawsze zbiór, a nie pojedyncza liczba — zapisujemy
+    go w postaci przedziałów. Kluczowa idea: nierówność pyta ''kiedy parabola jest nad osią (pod osią)'',
+    a odpowiedź odczytujemy ze szkicu wykresu.'
+  difficulty: 2
+- name: Wzory Viète'a
+  description: Jeśli x₁, x₂ są pierwiastkami równania ax² + bx + c = 0 (Δ ≥ 0), to x₁ + x₂ = −b/a oraz
+    x₁ · x₂ = c/a.
+  explanation: 'Pozwalają badać pierwiastki bez ich obliczania: znak iloczynu mówi, czy pierwiastki mają
+    jednakowe znaki, znak sumy — jakie to znaki. Bardzo wygodne w zadaniach z parametrem oraz przy obliczaniu
+    wyrażeń symetrycznych typu x₁² + x₂² czy 1/x₁ + 1/x₂.'
+  difficulty: 3
+- name: Wyrażenia symetryczne pierwiastków
+  description: Wyrażenia niezmieniające się przy zamianie x₁ z x₂, np. x₁² + x₂², 1/x₁ + 1/x₂, (x₁ − x₂)².
+  explanation: 'Każde takie wyrażenie da się zapisać przez sumę S = x₁ + x₂ i iloczyn P = x₁x₂: x₁² +
+    x₂² = S² − 2P, 1/x₁ + 1/x₂ = S/P, (x₁ − x₂)² = S² − 4P. To standardowy trik oszczędzający liczenie
+    pierwiastków z Δ.'
+  difficulty: 4
+- name: Równanie dwukwadratowe
+  description: Równanie postaci ax⁴ + bx² + c = 0, sprowadzalne do kwadratowego podstawieniem t = x²,
+    t ≥ 0.
+  explanation: 'Rozwiązujemy równanie kwadratowe względem t, a potem wracamy: każde t > 0 daje dwa x (±√t),
+    t = 0 daje jedno x, a t < 0 odrzucamy. Nie wolno zapomnieć o warunku t ≥ 0 ani o powrocie do zmiennej
+    x.'
+  difficulty: 4
+- name: Zbiór rozwiązań i zapis przedziałowy
+  description: Zapis odpowiedzi w postaci przedziałów, np. x ∈ (−∞, 2) ∪ (5, +∞), x ∈ ⟨−1, 3⟩, x ∈ ℝ,
+    x ∈ ∅.
+  explanation: Nierówność ostra (<, >) daje nawiasy okrągłe (końce wykluczone), nieostra (≤, ≥) — nawiasy
+    kwadratowe. Przy nieskończoności zawsze nawias okrągły. Suma przedziałów (∪) pojawia się, gdy rozwiązania
+    są 'na zewnątrz' pierwiastków.
+  difficulty: 2
+formulas:
+- name: Wyróżnik trójmianu kwadratowego
+  latex_raw: \Delta = b^2 - 4ac
+  conditions: dla trójmianu ax^2+bx+c, a \neq 0
+  description: Liczymy dopiero po sprowadzeniu równania do postaci ogólnej.
+- name: Pierwiastki równania kwadratowego
+  latex_raw: x_1 = \frac{-b-\sqrt{\Delta}}{2a}, \qquad x_2 = \frac{-b+\sqrt{\Delta}}{2a}
+  conditions: gdy \Delta > 0
+  description: Mianownik to 2a (nie 2), a licznik zaczyna się od −b.
+- name: Pierwiastek podwójny
+  latex_raw: x_0 = \frac{-b}{2a}
+  conditions: gdy \Delta = 0
+  description: To jednocześnie odcięta wierzchołka paraboli.
+- name: Brak rozwiązań
+  latex_raw: \Delta < 0 \;\Rightarrow\; ax^2+bx+c=0 \text{ nie ma rozwiązań rzeczywistych}
+  conditions: a \neq 0
+  description: Wtedy cała parabola leży po jednej stronie osi OX — po stronie zgodnej ze znakiem a.
+- name: Postać iloczynowa
+  latex_raw: ax^2+bx+c = a(x-x_1)(x-x_2) \quad (\Delta>0), \qquad ax^2+bx+c = a(x-x_0)^2 \quad (\Delta=0)
+  conditions: \Delta \ge 0
+  description: Dla \Delta<0 postać iloczynowa nie istnieje.
+- name: Postać kanoniczna
+  latex_raw: ax^2+bx+c = a(x-p)^2+q, \quad p=\frac{-b}{2a}, \quad q=\frac{-\Delta}{4a}
+  conditions: a \neq 0
+  description: W = (p,q) to wierzchołek paraboli.
+- name: Wzory Viète'a
+  latex_raw: x_1+x_2 = -\frac{b}{a}, \qquad x_1\cdot x_2 = \frac{c}{a}
+  conditions: gdy \Delta \ge 0 (pierwiastki istnieją)
+  description: Przy \Delta=0 przyjmujemy x_1=x_2.
+- name: Suma kwadratów pierwiastków
+  latex_raw: x_1^2+x_2^2 = (x_1+x_2)^2 - 2x_1x_2
+  conditions: \Delta \ge 0
+  description: Standardowe przekształcenie do wzorów Viète'a.
+- name: Suma odwrotności pierwiastków
+  latex_raw: \frac{1}{x_1}+\frac{1}{x_2} = \frac{x_1+x_2}{x_1x_2}
+  conditions: \Delta \ge 0 oraz x_1 \neq 0, x_2 \neq 0 (czyli c \neq 0)
+- name: Kwadrat różnicy pierwiastków
+  latex_raw: (x_1-x_2)^2 = (x_1+x_2)^2 - 4x_1x_2 = \frac{\Delta}{a^2}
+  conditions: \Delta \ge 0
+- name: Równanie niezupełne z c = 0
+  latex_raw: ax^2+bx=0 \iff x(ax+b)=0 \iff x=0 \;\lor\; x=-\frac{b}{a}
+  conditions: a \neq 0
+- name: Równanie niezupełne z b = 0
+  latex_raw: ax^2+c=0 \iff x^2=-\frac{c}{a}
+  conditions: rozwiązania x=\pm\sqrt{-c/a} istnieją tylko gdy -c/a \ge 0
+- name: Warunki na znaki pierwiastków (Viète)
+  latex_raw: \text{oba dodatnie} \iff \Delta\ge 0 \wedge \tfrac{c}{a}>0 \wedge -\tfrac{b}{a}>0; \quad
+    \text{różnych znaków} \iff \tfrac{c}{a}<0
+  conditions: a \neq 0
+  description: Gdy c/a < 0, warunek Δ > 0 jest spełniony automatycznie.
+methods:
+- name: Rozwiązywanie równania kwadratowego za pomocą delty
+  when_to_use: Uniwersalna metoda dla dowolnego równania kwadratowego, zwłaszcza gdy współczynniki nie
+    są 'ładne' i nie widać rozkładu na czynniki.
+  steps:
+  - Doprowadź równanie do postaci ogólnej ax² + bx + c = 0 (wszystko na lewą stronę, redukcja wyrazów
+    podobnych).
+  - Sprawdź, że a ≠ 0, i wypisz a, b, c wraz ze znakami.
+  - Oblicz Δ = b² − 4ac.
+  - 'Jeśli Δ < 0 — zapisz: równanie nie ma rozwiązań rzeczywistych i zakończ.'
+  - Jeśli Δ = 0 — oblicz x₀ = −b/(2a); jedno rozwiązanie (podwójne).
+  - Jeśli Δ > 0 — oblicz √Δ, a następnie x₁ = (−b − √Δ)/(2a) oraz x₂ = (−b + √Δ)/(2a).
+  - 'Skróć ułamki, zapisz odpowiedź i (opcjonalnie) sprawdź wynik wzorami Viète''a: x₁+x₂ = −b/a, x₁x₂
+    = c/a.'
+- name: Rozwiązywanie równania przez rozkład na czynniki
+  when_to_use: Gdy c = 0, gdy b = 0, gdy widać wzór skróconego mnożenia, albo gdy równanie jest już zapisane
+    jako iloczyn równy zeru.
+  steps:
+  - Przenieś wszystko na jedną stronę tak, by po drugiej było 0.
+  - 'Rozłóż lewą stronę: wyłącz wspólny czynnik (np. x lub liczbę) albo zastosuj wzór (x±k)² lub x² −
+    k² = (x−k)(x+k).'
+  - 'Skorzystaj z warunku: iloczyn = 0 wtedy i tylko wtedy, gdy któryś czynnik = 0.'
+  - Rozwiąż powstałe równania liniowe.
+  - 'Zapisz wszystkie otrzymane rozwiązania (uwaga: przy wyłączaniu x nie wolno ''skrócić'' x — traci
+    się rozwiązanie x = 0).'
+- name: Rozwiązywanie nierówności kwadratowej
+  when_to_use: Zawsze, gdy trzeba rozwiązać nierówność zawierającą x² (po uporządkowaniu do postaci ogólnej).
+  steps:
+  - Przekształć nierówność do postaci ax² + bx + c > 0 (lub <, ≥, ≤) — zero po jednej stronie.
+  - Zapamiętaj znak a (jeśli mnożysz obie strony przez liczbę ujemną, odwróć znak nierówności).
+  - 'Rozwiąż równanie ax² + bx + c = 0: policz Δ i pierwiastki (lub rozłóż na czynniki).'
+  - 'Naszkicuj parabolę: ramiona w górę gdy a > 0, w dół gdy a < 0, przecinającą oś OX w znalezionych
+    pierwiastkach (przy Δ = 0 — styczną do osi, przy Δ < 0 — bez punktów wspólnych z osią).'
+  - Zaznacz na rysunku fragmenty wykresu spełniające warunek (nad osią dla > 0, pod osią dla < 0) i odczytaj
+    odpowiadające im wartości x.
+  - 'Zapisz zbiór rozwiązań w postaci przedziałów: nawiasy okrągłe dla nierówności ostrej, kwadratowe
+    (domknięte) dla nieostrej; pamiętaj o ∪ przy dwóch przedziałach.'
+- name: Nierówność kwadratowa w przypadkach brzegowych (Δ ≤ 0)
+  when_to_use: Gdy po obliczeniu delty wyjdzie Δ < 0 lub Δ = 0 — wtedy odpowiedzią bywa ℝ, ℝ bez jednego
+    punktu, jeden punkt albo zbiór pusty.
+  steps:
+  - Ustal znak a i wartość Δ.
+  - 'Δ < 0, a > 0: trójmian jest dodatni dla każdego x — nierówności > 0 i ≥ 0 dają ℝ, a < 0 i ≤ 0 dają
+    ∅.'
+  - 'Δ < 0, a < 0: trójmian jest ujemny dla każdego x — odwrotnie niż wyżej.'
+  - 'Δ = 0, a > 0: trójmian jest nieujemny, zeruje się w x₀. Wtedy: ≥ 0 → ℝ; > 0 → ℝ \ {x₀}; ≤ 0 → {x₀};
+    < 0 → ∅.'
+  - 'Δ = 0, a < 0: analogicznie, z zamianą ról znaków.'
+  - Zawsze zilustruj wynik szkicem paraboli — chroni przed pomyleniem przypadków.
+- name: Wykorzystanie wzorów Viète'a
+  when_to_use: Gdy pytanie dotyczy sumy, iloczynu, znaków lub wyrażenia symetrycznego pierwiastków, albo
+    gdy występuje parametr, a pierwiastków nie trzeba wyznaczać jawnie.
+  steps:
+  - Zapisz równanie w postaci ogólnej i odczytaj a, b, c (mogą zależeć od parametru).
+  - 'Zapewnij istnienie pierwiastków: nałóż warunek Δ ≥ 0 (lub Δ > 0, gdy pierwiastki mają być różne)
+    i a ≠ 0.'
+  - Zapisz S = x₁ + x₂ = −b/a oraz P = x₁x₂ = c/a.
+  - Przekształć badane wyrażenie tak, by zawierało tylko S i P (np. x₁²+x₂² = S² − 2P).
+  - Podstaw i rozwiąż otrzymane równanie lub nierówność względem parametru.
+  - Sprawdź, czy uzyskane wartości spełniają warunki z kroku 2 — odrzuć te, które ich nie spełniają.
+- name: Równanie dwukwadratowe przez podstawienie
+  when_to_use: Dla równań postaci ax⁴ + bx² + c = 0 (lub innych sprowadzalnych podstawieniem do kwadratowych).
+  steps:
+  - Podstaw t = x² i zaznacz warunek t ≥ 0.
+  - Rozwiąż równanie at² + bt + c = 0 (delta lub rozkład).
+  - Odrzuć rozwiązania t < 0.
+  - 'Dla każdego pozostałego t wróć do x: z t > 0 otrzymujesz x = ±√t, z t = 0 tylko x = 0.'
+  - Zbierz wszystkie rozwiązania i zapisz odpowiedź.
+examples:
+- statement: 'Rozwiąż równania: a) 2x² − 8x = 0, b) 3x² − 27 = 0, c) x² + 6x + 9 = 0.'
+  worked_solution: |-
+    a) Równanie niezupełne (c = 0). Wyłączamy wspólny czynnik: 2x(x − 4) = 0. Iloczyn jest zerem, gdy 2x = 0 lub x − 4 = 0, czyli x = 0 lub x = 4.
+    (Nie wolno dzielić obu stron przez x — zgubilibyśmy rozwiązanie x = 0.)
+
+    b) Równanie niezupełne (b = 0): 3x² = 27, czyli x² = 9, zatem x = 3 lub x = −3.
+    (Sam zapis x = √9 = 3 pomija rozwiązanie ujemne.)
+
+    c) Lewa strona to wzór skróconego mnożenia: x² + 6x + 9 = (x + 3)². Równanie (x + 3)² = 0 daje x = −3 (pierwiastek podwójny).
+    Sprawdzenie deltą: Δ = 6² − 4·1·9 = 36 − 36 = 0, x₀ = −6/2 = −3. Zgadza się.
+  difficulty: 1
+- statement: Rozwiąż równanie 2x² + x = 6 i sprawdź wynik wzorami Viète'a.
+  worked_solution: |-
+    Sprowadzamy do postaci ogólnej: 2x² + x − 6 = 0, więc a = 2, b = 1, c = −6.
+    Δ = b² − 4ac = 1² − 4·2·(−6) = 1 + 48 = 49 > 0, √Δ = 7.
+    x₁ = (−1 − 7)/(2·2) = −8/4 = −2,
+    x₂ = (−1 + 7)/4 = 6/4 = 3/2.
+    Sprawdzenie: x₁ + x₂ = −2 + 1,5 = −0,5 oraz −b/a = −1/2 = −0,5 ✓;
+    x₁·x₂ = −2 · 1,5 = −3 oraz c/a = −6/2 = −3 ✓.
+    Odpowiedź: x = −2 lub x = 3/2.
+  difficulty: 2
+- statement: Rozwiąż nierówność −x² + 4x + 5 ≥ 0.
+  worked_solution: |-
+    Współczynniki: a = −1, b = 4, c = 5 (a < 0, ramiona paraboli w dół).
+    Miejsca zerowe: Δ = 4² − 4·(−1)·5 = 16 + 20 = 36, √Δ = 6.
+    x₁ = (−4 − 6)/(2·(−1)) = (−10)/(−2) = 5,
+    x₂ = (−4 + 6)/(−2) = 2/(−2) = −1.
+    Zatem miejsca zerowe to −1 i 5 (kolejność rosnąca: −1 < 5).
+    Szkic: parabola ramionami w dół, przecina oś OX w −1 i 5, więc jest nad osią (wartości ≥ 0) między pierwiastkami.
+    Ponieważ nierówność jest nieostra, końce należą do zbioru rozwiązań.
+    Odpowiedź: x ∈ ⟨−1, 5⟩.
+    (Alternatywnie można pomnożyć obie strony przez −1, otrzymując x² − 4x − 5 ≤ 0 — znak nierówności się odwraca — i rozwiązać dla paraboli o ramionach w górę; wynik ten sam.)
+  difficulty: 3
+- statement: 'Rozwiąż nierówności: a) x² − 6x + 9 > 0, b) x² − 6x + 9 ≤ 0, c) 2x² − x + 3 < 0, d) 2x²
+    − x + 3 > 0.'
+  worked_solution: |-
+    a) i b): a = 1, b = −6, c = 9, Δ = 36 − 36 = 0, pierwiastek podwójny x₀ = 6/2 = 3. Parabola ma ramiona w górę i jest styczna do osi OX w punkcie x = 3; wszędzie poza tym punktem leży nad osią (bo x² − 6x + 9 = (x − 3)²).
+    a) (x − 3)² > 0 dla wszystkich x oprócz x = 3, więc x ∈ (−∞, 3) ∪ (3, +∞), czyli ℝ \ {3}.
+    b) (x − 3)² ≤ 0 tylko wtedy, gdy (x − 3)² = 0, więc x = 3; zbiór rozwiązań: {3}.
+
+    c) i d): a = 2, b = −1, c = 3, Δ = (−1)² − 4·2·3 = 1 − 24 = −23 < 0. Brak miejsc zerowych, a > 0, więc cała parabola leży nad osią OX — trójmian jest dodatni dla każdego x.
+    c) 2x² − x + 3 < 0 nie jest spełniona dla żadnego x: zbiór rozwiązań to ∅.
+    d) 2x² − x + 3 > 0 jest spełniona zawsze: x ∈ ℝ.
+  difficulty: 3
+- statement: Dane jest równanie x² − 4x + m = 0 z parametrem m. Wyznacz wszystkie wartości m, dla których
+    równanie ma dwa różne pierwiastki x₁, x₂ spełniające warunek x₁² + x₂² = 10.
+  worked_solution: |-
+    Tu a = 1, b = −4, c = m.
+    Krok 1 (istnienie dwóch różnych pierwiastków): Δ = (−4)² − 4·1·m = 16 − 4m > 0 ⟺ 4m < 16 ⟺ m < 4.
+    Krok 2 (wzory Viète'a): S = x₁ + x₂ = −b/a = 4, P = x₁x₂ = c/a = m.
+    Krok 3 (przekształcenie warunku): x₁² + x₂² = S² − 2P = 16 − 2m.
+    Zatem 16 − 2m = 10, skąd 2m = 6, czyli m = 3.
+    Krok 4 (sprawdzenie warunku z kroku 1): m = 3 < 4 ✓.
+    Odpowiedź: m = 3.
+    Kontrola: dla m = 3 równanie x² − 4x + 3 = 0 ma pierwiastki 1 i 3, a 1² + 3² = 10 ✓.
+  difficulty: 4
+- statement: Rozwiąż równanie x⁴ − 13x² + 36 = 0, a następnie nierówność x⁴ − 13x² + 36 < 0.
+  worked_solution: |-
+    Podstawiamy t = x², gdzie t ≥ 0. Otrzymujemy t² − 13t + 36 = 0.
+    Δ = 169 − 144 = 25, √Δ = 5, więc t₁ = (13 − 5)/2 = 4, t₂ = (13 + 5)/2 = 9. Oba spełniają t ≥ 0.
+    Powrót do x: x² = 4 daje x = ±2; x² = 9 daje x = ±3.
+    Rozwiązania równania: x ∈ {−3, −2, 2, 3}.
+
+    Nierówność: w zmiennej t mamy t² − 13t + 36 < 0, czyli (parabola ramionami w górę) 4 < t < 9, a więc 4 < x² < 9.
+    Warunek x² > 4 oznacza x < −2 lub x > 2; warunek x² < 9 oznacza −3 < x < 3. Bierzemy część wspólną:
+    x ∈ (−3, −2) ∪ (2, 3).
+  difficulty: 5
+objectives:
+- statement: Rozpoznać równanie kwadratowe i sprowadzić je do postaci ogólnej ax² + bx + c = 0, poprawnie
+    odczytując współczynniki a, b, c wraz ze znakami.
+  bloom_level: Zrozumienie
+- statement: Obliczyć wyróżnik Δ i na jego podstawie określić liczbę rozwiązań równania kwadratowego oraz
+    liczbę punktów wspólnych paraboli z osią OX.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać dowolne równanie kwadratowe wzorami na pierwiastki, podając odpowiedź w postaci
+    uproszczonej.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać równanie niezupełne (ax² + bx = 0, ax² + c = 0) oraz równanie sprowadzalne do postaci
+    iloczynowej metodą rozkładu na czynniki, bez korzystania z delty.
+  bloom_level: Zastosowanie
+- statement: Dobrać najefektywniejszą metodę rozwiązania danego równania kwadratowego (rozkład na czynniki,
+    wzór skróconego mnożenia, delta) i uzasadnić wybór.
+  bloom_level: Analiza
+- statement: Zapisać trójmian w postaci iloczynowej i kanonicznej oraz odczytać z nich pierwiastki i wierzchołek
+    paraboli.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać nierówność kwadratową, wykorzystując szkic paraboli i znak współczynnika a, i zapisać
+    zbiór rozwiązań w poprawnej notacji przedziałowej.
+  bloom_level: Zastosowanie
+- statement: Rozstrzygnąć przypadki brzegowe nierówności kwadratowej (Δ = 0 oraz Δ < 0), podając odpowiedzi
+    typu ℝ, ℝ \ {x₀}, {x₀} lub ∅.
+  bloom_level: Analiza
+- statement: Zastosować wzory Viète'a do obliczania sumy, iloczynu i wyrażeń symetrycznych pierwiastków
+    bez wyznaczania samych pierwiastków.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć wartości parametru, dla których równanie kwadratowe ma pierwiastki o zadanych własnościach,
+    uwzględniając warunek Δ ≥ 0 (lub Δ > 0).
+  bloom_level: Analiza
+- statement: Rozwiązać równanie dwukwadratowe metodą podstawienia t = x², kontrolując warunek t ≥ 0 i
+    powrót do zmiennej x.
+  bloom_level: Zastosowanie
+- statement: Zweryfikować poprawność otrzymanych pierwiastków przez podstawienie do równania lub przy
+    pomocy wzorów Viète'a i wykryć typowe błędy rachunkowe.
+  bloom_level: Ocena
+misconceptions:
+- name: Liczenie delty przed uporządkowaniem równania
+  incorrect_reasoning: Dla równania 2x² + x = 6 uczeń odczytuje a = 2, b = 1, c = 6 i liczy Δ = 1 − 48
+    = −47, stwierdzając brak rozwiązań.
+  correct_reasoning: 'Wzory na Δ i pierwiastki obowiązują wyłącznie dla postaci ogólnej ax² + bx + c =
+    0 z zerem po prawej stronie. Najpierw: 2x² + x − 6 = 0, więc c = −6 i Δ = 1 + 48 = 49.'
+  severity: 5
+- name: Skracanie przez x i utrata rozwiązania x = 0
+  incorrect_reasoning: Z równania 2x² = 8x uczeń dzieli obie strony przez x i otrzymuje 2x = 8, czyli
+    tylko x = 4.
+  correct_reasoning: 'Dzielenie przez x jest dozwolone tylko przy założeniu x ≠ 0, które trzeba by rozpatrzyć
+    osobno. Poprawnie: 2x² − 8x = 0, 2x(x − 4) = 0, więc x = 0 lub x = 4 — dwa rozwiązania.'
+  severity: 4
+- name: Pierwiastkowanie x² = k tylko z plusem
+  incorrect_reasoning: Z x² = 9 uczeń wnioskuje x = 3, pomijając x = −3.
+  correct_reasoning: 'Równanie x² = k dla k > 0 ma dwa rozwiązania: x = √k oraz x = −√k. Dla k = 0 jedno
+    (x = 0), dla k < 0 żadnego.'
+  severity: 4
+- name: Błędy znaków w b² i w −b
+  incorrect_reasoning: Dla b = −5 uczeń pisze b² = −25 albo w liczniku wzoru na pierwiastki zostawia −b
+    = −5 zamiast +5.
+  correct_reasoning: 'Kwadrat dowolnej liczby jest nieujemny: (−5)² = 25. Licznik to −b, więc dla b =
+    −5 wynosi on −(−5) = 5. Warto podstawiać b w nawiasie: (−5)² − 4ac.'
+  severity: 5
+- name: Dzielenie przez 2 zamiast przez 2a
+  incorrect_reasoning: Przy a = 3 uczeń liczy x = (−b ± √Δ)/2, ignorując współczynnik a w mianowniku.
+  correct_reasoning: Mianownik we wzorze to 2a. Szybkie sprawdzenie wzorami Viète'a (x₁ + x₂ = −b/a) natychmiast
+    ujawnia ten błąd.
+  severity: 4
+- name: Δ < 0 utożsamiane z brakiem rozwiązań nierówności
+  incorrect_reasoning: Dla nierówności x² + x + 1 > 0 uczeń liczy Δ = −3 < 0 i pisze 'brak rozwiązań'.
+  correct_reasoning: 'Δ < 0 oznacza brak miejsc zerowych, a nie brak rozwiązań nierówności. Parabola leży
+    wtedy w całości po jednej stronie osi: przy a > 0 jest zawsze dodatnia, więc x² + x + 1 > 0 dla każdego
+    x, czyli x ∈ ℝ (a nierówność < 0 daje ∅).'
+  severity: 5
+- name: Zły przedział przy ramionach w dół
+  incorrect_reasoning: Uczeń zapamiętał regułę 'dla ≥ 0 bierzemy zewnętrze przedziałów' i stosuje ją także
+    wtedy, gdy a < 0, otrzymując dla −x² + 4x + 5 ≥ 0 odpowiedź (−∞, −1⟩ ∪ ⟨5, +∞).
+  correct_reasoning: Reguła 'na zewnątrz/w środku' zależy od znaku a. Przy a < 0 parabola jest nad osią
+    między pierwiastkami, więc odpowiedź to ⟨−1, 5⟩. Najbezpieczniej za każdym razem naszkicować parabolę.
+  severity: 5
+- name: Brak odwrócenia nierówności przy mnożeniu przez liczbę ujemną
+  incorrect_reasoning: Z −x² + 4x + 5 ≥ 0 uczeń otrzymuje x² − 4x − 5 ≥ 0, zachowując kierunek nierówności.
+  correct_reasoning: 'Mnożenie (lub dzielenie) obu stron nierówności przez liczbę ujemną odwraca jej znak:
+    −x² + 4x + 5 ≥ 0 ⟺ x² − 4x − 5 ≤ 0.'
+  severity: 4
+- name: Mylenie ∪ z ∩ i zapis 'sklejonych' przedziałów
+  incorrect_reasoning: Rozwiązanie x < −1 lub x > 5 uczeń zapisuje jako 5 < x < −1 albo (−∞, −1) ∩ (5,
+    +∞).
+  correct_reasoning: 'Dwa rozłączne przedziały łączymy sumą: x ∈ (−∞, −1) ∪ (5, +∞). Iloczyn tych zbiorów
+    jest pusty, a zapis 5 < x < −1 jest sprzeczny (podwójna nierówność wymaga lewej strony mniejszej od
+    prawej).'
+  severity: 4
+- name: Zły typ nawiasu przy nierówności nieostrej
+  incorrect_reasoning: Dla x² − 4x − 5 ≤ 0 uczeń pisze x ∈ (−1, 5) albo dopuszcza ⟨−∞, 5⟩.
+  correct_reasoning: 'Przy ≤ i ≥ końce (miejsca zerowe) należą do rozwiązania — nawias domknięty: ⟨−1,
+    5⟩. Przy ±∞ nawias zawsze pozostaje otwarty: (−∞, 5⟩.'
+  severity: 3
+- name: Pominięcie warunku Δ ≥ 0 w zadaniach z Viète'em
+  incorrect_reasoning: Uczeń przyrównuje wyrażenie z S i P do zadanej wartości, znajduje parametr i podaje
+    go jako odpowiedź bez sprawdzania, czy pierwiastki w ogóle istnieją.
+  correct_reasoning: Wzory Viète'a mają sens tylko wtedy, gdy pierwiastki istnieją. Zawsze najpierw nakładamy
+    warunek Δ ≥ 0 (lub Δ > 0 dla dwóch różnych pierwiastków), a na końcu konfrontujemy z nim otrzymane
+    wartości parametru.
+  severity: 5
+- name: Pominięcie warunku t ≥ 0 w równaniu dwukwadratowym
+  incorrect_reasoning: Po podstawieniu t = x² uczeń otrzymuje t = −4 i pisze x = ±√(−4) lub x = ±2.
+  correct_reasoning: Skoro t = x², to t nie może być ujemne — takie rozwiązanie odrzucamy. Ponadto po
+    znalezieniu dopuszczalnych t trzeba wrócić do zmiennej x, a nie podawać t jako odpowiedzi.
+  severity: 4
+- name: Mylenie postaci iloczynowej ze znakami pierwiastków
+  incorrect_reasoning: Mając pierwiastki −1 i 5, uczeń pisze postać iloczynową jako (x + 1)(x + 5) lub
+    pomija współczynnik a.
+  correct_reasoning: 'Postać iloczynowa to a(x − x₁)(x − x₂), czyli dla a = 1 i pierwiastków −1, 5: (x
+    + 1)(x − 5). Przy a ≠ 1 współczynnik trzeba zapisać, np. 2(x + 1)(x − 5).'
+  severity: 3

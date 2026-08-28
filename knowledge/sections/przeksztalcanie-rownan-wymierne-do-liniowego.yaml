@@ -1,0 +1,365 @@
+section: przeksztalcanie-rownan-wymierne-do-liniowego
+name: Przekształcanie równań i nierówności; równania wymierne prowadzące do liniowego
+scope: Equivalent transformations of equations and inequalities; solving rational equations that reduce
+  to a linear one, with the domain condition.
+requirements:
+- III.1
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:24:07.436276'
+  approved_at: '2026-08-28T18:28:03.101824'
+  approved_by: reviewer
+concepts:
+- name: Równanie z jedną niewiadomą i jego rozwiązanie
+  description: Równanie to równość dwóch wyrażeń, w których występuje niewiadoma (np. x). Rozwiązaniem
+    (pierwiastkiem) równania nazywamy każdą liczbę z dziedziny, która po podstawieniu w miejsce niewiadomej
+    daje równość prawdziwą.
+  explanation: 'Myśl o równaniu jak o pytaniu: „dla jakich x lewa strona równa się prawej?”. Odpowiedzią
+    jest ZBIÓR liczb – może on być jednoelementowy, pusty albo nieskończony. Sprawdzenie rozwiązania to
+    zawsze podstawienie do równania WYJŚCIOWEGO.'
+  difficulty: 1
+- name: Dziedzina równania (nierówności)
+  description: Zbiór wszystkich liczb rzeczywistych, dla których obie strony równania (nierówności) mają
+    sens liczbowy. Dla wyrażeń wymiernych wykluczamy liczby zerujące jakikolwiek mianownik.
+  explanation: Dziedzinę ustalamy PRZED przekształceniami i zapisujemy w postaci założeń, np. „x ≠ 2”.
+    Wszystko, co policzymy dalej, ma sens tylko w tej dziedzinie – liczba spoza dziedziny nigdy nie jest
+    rozwiązaniem, nawet jeśli „wyszła” z rachunków.
+  difficulty: 2
+- name: Równania równoważne
+  description: Dwa równania są równoważne, jeśli mają dokładnie ten sam zbiór rozwiązań (w tej samej dziedzinie).
+    Zapisujemy to symbolem ⟺.
+  explanation: 'Rozwiązywanie równania to łańcuch równoważności: zamieniamy równanie na prostsze, ale
+    o tym samym zbiorze rozwiązań, aż dojdziemy do postaci x = a. Jeżeli któryś krok nie jest równoważnością,
+    zbiór rozwiązań może się zmienić i trzeba to naprawić sprawdzeniem.'
+  difficulty: 2
+- name: Przekształcenia równoważne równania
+  description: 'Operacje niezmieniające zbioru rozwiązań: (1) dodanie/odjęcie tej samej liczby lub tego
+    samego wyrażenia określonego w całej dziedzinie do obu stron, (2) pomnożenie/podzielenie obu stron
+    przez tę samą liczbę różną od zera (lub wyrażenie różne od zera w dziedzinie), (3) uproszczenie każdej
+    ze stron (redukcja wyrazów podobnych, wymnożenie nawiasów), (4) zamiana stron miejscami.'
+  explanation: „Co robisz jednej stronie, zrób drugiej” – ale mnożyć wolno tylko przez coś, o czym WIESZ,
+    że nie jest zerem. To jedyny warunek, o którym uczniowie zapominają, a on decyduje o poprawności całego
+    rozwiązania.
+  difficulty: 2
+- name: Przekształcenia równoważne nierówności
+  description: Do obu stron nierówności można dodać (odjąć) to samo wyrażenie bez zmiany znaku; można
+    obie strony pomnożyć (podzielić) przez tę samą liczbę dodatnią bez zmiany znaku; przy mnożeniu (dzieleniu)
+    przez liczbę ujemną zwrot nierówności zmienia się na przeciwny.
+  explanation: Nierówność „pamięta” kierunek. Mnożenie przez liczbę ujemną odbija oś liczbową, więc „<”
+    staje się „>”. Przez wyrażenie z niewiadomą (np. x−2) na poziomie podstawowym nie mnożymy nierówności,
+    bo nie znamy jego znaku.
+  difficulty: 2
+- name: Równanie sprzeczne i równanie tożsamościowe
+  description: Równanie sprzeczne to równanie bez rozwiązań (sprowadza się do fałszywej równości, np.
+    0 = 5). Równanie tożsamościowe to równanie spełnione przez każdą liczbę z dziedziny (sprowadza się
+    do równości prawdziwej, np. 0 = 0).
+  explanation: 'Gdy w trakcie przekształceń zniknie niewiadoma, nie ma błędu – jest odpowiedź. Zostaje
+    zdanie fałszywe → brak rozwiązań; zdanie prawdziwe → rozwiązaniem jest cała dziedzina (uwaga: przy
+    równaniach wymiernych cała dziedzina, a nie cały zbiór R).'
+  difficulty: 3
+- name: Wyrażenie wymierne
+  description: Iloraz dwóch wielomianów, np. (2x+1)/(x−3). Jest określone tylko dla tych x, dla których
+    mianownik jest różny od zera.
+  explanation: 'Ułamek algebraiczny zachowuje się jak zwykły ułamek: aby dodać dwa takie ułamki, sprowadzamy
+    je do wspólnego mianownika; skracać wolno tylko czynniki różne od zera.'
+  difficulty: 2
+- name: Równanie wymierne prowadzące do równania liniowego
+  description: Równanie, w którym niewiadoma występuje w mianowniku, a po ustaleniu dziedziny i pomnożeniu
+    przez wspólny mianownik wyrazy stopnia drugiego i wyższego redukują się i otrzymujemy równanie postaci
+    ax = b.
+  explanation: 'Schemat jest zawsze ten sam: dziedzina → wspólny mianownik → równanie wielomianowe → rozwiązanie
+    → konfrontacja z dziedziną. Ostatni krok jest częścią rozwiązania, nie „sprawdzeniem dla chętnych”.'
+  difficulty: 3
+- name: Rozwiązanie obce (pierwiastek obcy)
+  description: Liczba otrzymana w wyniku przekształceń nierównoważnych (najczęściej mnożenia przez wyrażenie
+    mogące być zerem), która nie należy do dziedziny lub nie spełnia równania wyjściowego.
+  explanation: Mnożenie obu stron przez (x−2) jest równoważne tylko przy założeniu x ≠ 2. Jeśli pominiemy
+    założenie, „zyskujemy” liczbę x = 2, która w wyjściowym równaniu w ogóle nie ma sensu – trzeba ją
+    odrzucić.
+  difficulty: 3
+- name: Proporcja i mnożenie „na krzyż”
+  description: Równość dwóch ułamków a/b = c/d, przy b ≠ 0 i d ≠ 0, jest równoważna równości iloczynów
+    ad = bc.
+  explanation: To skrót do mnożenia przez wspólny mianownik, przydatny, gdy po obu stronach stoi dokładnie
+    jeden ułamek. Warunek b ≠ 0, d ≠ 0 to właśnie dziedzina – bez niego reguła nie działa.
+  difficulty: 2
+- name: Warunek zerowania się ułamka
+  description: Ułamek a/b jest równy zeru wtedy i tylko wtedy, gdy licznik a = 0 oraz mianownik b ≠ 0.
+  explanation: Ułamek zeruje licznik, ale mianownik ma prawo weta. Dlatego równanie (x−3)/(x−3) = 0 nie
+    ma rozwiązań, choć licznik zeruje się dla x = 3.
+  difficulty: 3
+- name: Zbiór rozwiązań nierówności i jego zapis
+  description: Rozwiązaniem nierówności liniowej jest przedział (lub cała prosta, lub zbiór pusty). Zapisujemy
+    go np. x ∈ ⟨3, +∞) albo x ∈ (−∞, 2).
+  explanation: Nawias ostry ⟨ ⟩ (domknięty) odpowiada znakom ≤, ≥; nawias okrągły – znakom <, >. Przy
+    nieskończonościach zawsze nawias okrągły. Warto zaznaczyć zbiór na osi liczbowej – to najlepsza kontrola
+    poprawności.
+  difficulty: 2
+- name: Przekształcanie wzorów (wyznaczanie zmiennej)
+  description: Traktowanie wybranej litery jako niewiadomej, a pozostałych jako danych, i stosowanie przekształceń
+    równoważnych, aby wyrazić tę literę przez pozostałe.
+  explanation: 'To ta sama technika co przy równaniach liczbowych, tylko z literami. Trzeba jednak pilnować,
+    przez co dzielimy: dzielenie przez literę wymaga założenia, że jest ona różna od zera.'
+  difficulty: 3
+formulas:
+- name: Przekształcenia równoważne równania
+  latex_raw: a=b \iff a+c=b+c \qquad a=b \iff a\cdot c=b\cdot c
+  conditions: c – wyrażenie określone w całej dziedzinie; w drugiej równoważności dodatkowo c ≠ 0
+  description: Mnożenie przez c = 0 daje zawsze prawdziwą równość 0 = 0 i gubi informację o x.
+- name: Przekształcenia równoważne nierówności
+  latex_raw: a<b \iff a+c<b+c;\quad a<b \iff ac<bc \ (c>0);\quad a<b \iff ac>bc \ (c<0)
+  conditions: analogicznie dla ≤, >, ≥
+  description: Mnożenie/dzielenie przez liczbę ujemną odwraca zwrot nierówności.
+- name: Rozwiązanie równania liniowego ax = b
+  latex_raw: ax=b \iff \begin{cases} x=\dfrac{b}{a}, & a\neq 0\\ x\in\mathbb{R}, & a=0,\ b=0\\ \text{brak
+    rozwiązań}, & a=0,\ b\neq 0\end{cases}
+  conditions: a, b – liczby rzeczywiste
+- name: Rozwiązanie nierówności liniowej
+  latex_raw: ax>b \iff x>\dfrac{b}{a}\ (a>0);\qquad ax>b \iff x<\dfrac{b}{a}\ (a<0)
+  conditions: a ≠ 0
+- name: Proporcja (mnożenie na krzyż)
+  latex_raw: \frac{a}{b}=\frac{c}{d} \iff ad=bc
+  conditions: b ≠ 0 i d ≠ 0
+- name: Warunek zerowania się ułamka
+  latex_raw: \frac{a}{b}=0 \iff a=0 \ \wedge\ b\neq 0
+  conditions: b – wyrażenie z niewiadomą lub liczba
+- name: Dziedzina wyrażenia wymiernego
+  latex_raw: D=\{x\in\mathbb{R}:\ M(x)\neq 0\}
+  conditions: M(x) – mianownik (każdy mianownik występujący w równaniu)
+- name: Dodawanie ułamków algebraicznych
+  latex_raw: \frac{A}{P}+\frac{B}{Q}=\frac{AQ+BP}{PQ}
+  conditions: P ≠ 0, Q ≠ 0
+- name: Skracanie ułamka algebraicznego
+  latex_raw: \frac{A\cdot C}{B\cdot C}=\frac{A}{B}
+  conditions: B ≠ 0 i C ≠ 0
+methods:
+- name: Rozwiązywanie równania liniowego (z ułamkami liczbowymi)
+  when_to_use: Gdy niewiadoma występuje tylko w licznikach, a mianowniki są liczbami.
+  steps:
+  - 'Usuń ułamki: pomnóż obie strony przez NWW mianowników liczbowych (liczba dodatnia, więc przekształcenie
+    jest równoważne).'
+  - Wymnóż nawiasy, pamiętając o znaku minus przed nawiasem.
+  - Przenieś wyrazy z niewiadomą na jedną stronę, a liczby na drugą (zmieniając znaki).
+  - Zredukuj wyrazy podobne do postaci ax = b.
+  - 'Jeśli a ≠ 0, podziel obie strony przez a; jeśli a = 0, rozstrzygnij: równanie tożsamościowe czy sprzeczne.'
+  - Zapisz odpowiedź i sprawdź, podstawiając wynik do równania wyjściowego.
+- name: Rozwiązywanie nierówności liniowej
+  when_to_use: Gdy po uporządkowaniu otrzymujemy nierówność postaci ax < b (lub ≤, >, ≥).
+  steps:
+  - Usuń ułamki, mnożąc przez dodatnie NWW mianowników (znak bez zmian).
+  - Wymnóż nawiasy i zredukuj wyrazy podobne.
+  - Zgromadź wyrazy z x po jednej stronie, liczby po drugiej.
+  - Podziel obie strony przez współczynnik przy x; jeśli jest ujemny, ODWRÓĆ zwrot nierówności.
+  - Zapisz zbiór rozwiązań jako przedział i zaznacz go na osi liczbowej.
+  - Sprawdź jedną liczbą z wnętrza przedziału i jedną spoza niego.
+- name: Rozwiązywanie równania wymiernego prowadzącego do liniowego
+  when_to_use: Gdy niewiadoma występuje w mianowniku co najmniej jednego ułamka.
+  steps:
+  - 'Rozłóż mianowniki na czynniki (jeśli się da) i wyznacz dziedzinę: każdy mianownik ≠ 0; zapisz założenia.'
+  - Wyznacz wspólny mianownik wszystkich ułamków.
+  - Pomnóż obie strony równania przez ten wspólny mianownik (w dziedzinie jest on różny od zera, więc
+    krok jest równoważny) i skróć ułamki.
+  - Uporządkuj otrzymane równanie wielomianowe; wyrazy z x² powinny się zredukować – zostaje ax = b.
+  - Rozwiąż równanie liniowe.
+  - 'Porównaj otrzymane liczby z dziedziną: te spoza dziedziny odrzuć jako rozwiązania obce.'
+  - 'Zapisz odpowiedź (ewentualnie: równanie nie ma rozwiązań) i sprawdź podstawieniem.'
+- name: Metoda proporcji (na krzyż)
+  when_to_use: Gdy równanie ma postać jeden ułamek = jeden ułamek (liczbę można zapisać jako ułamek o
+    mianowniku 1).
+  steps:
+  - 'Wyznacz dziedzinę: oba mianowniki różne od zera.'
+  - Zastosuj równoważność a/b = c/d ⟺ ad = bc.
+  - Wymnóż nawiasy i zredukuj; jeśli wyrazy kwadratowe się skracają, zostaje równanie liniowe.
+  - Rozwiąż i sprawdź przynależność wyniku do dziedziny.
+- name: Sprawdzanie równoważności przekształcenia
+  when_to_use: Zawsze, gdy mnożymy lub dzielimy obie strony przez wyrażenie zawierające niewiadomą, albo
+    skracamy ułamek.
+  steps:
+  - Nazwij czynnik, przez który mnożysz/dzielisz, np. W(x).
+  - Ustal, dla jakich x zachodzi W(x) = 0.
+  - Jeśli te x należą do dziedziny, rozważ je osobno (podstaw do równania wyjściowego), a dopiero potem
+    dziel przez W(x) przy założeniu W(x) ≠ 0.
+  - Po rozwiązaniu skonfrontuj wszystkie otrzymane liczby z dziedziną i z równaniem wyjściowym.
+- name: Wyznaczanie zmiennej ze wzoru
+  when_to_use: Gdy trzeba przekształcić wzór (fizyczny, geometryczny) tak, by wskazana litera stała się
+    przedmiotem wzoru.
+  steps:
+  - Zaznacz, która litera jest niewiadomą; pozostałe traktuj jak liczby.
+  - Jeśli szukana litera jest w mianowniku, zapisz założenia i pomnóż obie strony przez ten mianownik.
+  - Zgromadź wszystkie składniki z szukaną literą po jednej stronie.
+  - Wyłącz szukaną literę przed nawias i podziel przez otrzymany czynnik, zapisując założenie, że jest
+    on różny od zera.
+  - Zapisz wynik i sprawdź go, podstawiając przykładowe liczby do wzoru wyjściowego.
+examples:
+- statement: 'Rozwiąż równanie: (2x − 1)/3 − (x + 2)/4 = 1.'
+  worked_solution: |-
+    Mianowniki są liczbowe, więc dziedziną jest R.
+    NWW(3, 4) = 12. Mnożymy obie strony przez 12 (liczba różna od zera – przekształcenie równoważne):
+    12·(2x − 1)/3 − 12·(x + 2)/4 = 12·1
+    4(2x − 1) − 3(x + 2) = 12.
+    Wymnażamy nawiasy (uwaga na minus przed drugim nawiasem):
+    8x − 4 − 3x − 6 = 12
+    5x − 10 = 12
+    5x = 22
+    x = 22/5.
+    Sprawdzenie: L = (2·22/5 − 1)/3 − (22/5 + 2)/4 = (39/5)/3 − (32/5)/4 = 13/5 − 8/5 = 5/5 = 1 = P.
+    Odpowiedź: x = 22/5.
+  difficulty: 1
+- statement: 'Rozwiąż nierówność: 3 − 2(x − 1) ≥ 5x + 12 i zapisz zbiór rozwiązań w postaci przedziału.'
+  worked_solution: |-
+    Wymnażamy nawias:
+    3 − 2x + 2 ≥ 5x + 12
+    5 − 2x ≥ 5x + 12.
+    Przenosimy wyrazy z x na lewą stronę, liczby na prawą:
+    −2x − 5x ≥ 12 − 5
+    −7x ≥ 7.
+    Dzielimy obie strony przez −7 – liczba ujemna, więc ZMIENIAMY zwrot nierówności:
+    x ≤ −1.
+    Zbiór rozwiązań: x ∈ (−∞, −1⟩.
+    Kontrola: dla x = −1: L = 3 − 2(−2) = 7, P = −5 + 12 = 7, więc 7 ≥ 7 – prawda. Dla x = 0: L = 1, P = 12 – nierówność fałszywa, zgodnie z wynikiem.
+  difficulty: 2
+- statement: 'Rozwiąż równanie: (x + 3)/(x − 2) = 4.'
+  worked_solution: |-
+    Dziedzina: x − 2 ≠ 0, czyli x ≠ 2, D = R \ {2}.
+    W dziedzinie mnożymy obie strony przez (x − 2) ≠ 0 (równoważnie: proporcja (x+3)/(x−2) = 4/1):
+    x + 3 = 4(x − 2)
+    x + 3 = 4x − 8
+    3 + 8 = 4x − x
+    11 = 3x
+    x = 11/3.
+    Sprawdzamy dziedzinę: 11/3 ≈ 3,67 ≠ 2, więc liczba należy do D.
+    Sprawdzenie: (11/3 + 3)/(11/3 − 2) = (20/3)/(5/3) = 4. ✓
+    Odpowiedź: x = 11/3.
+  difficulty: 2
+- statement: 'Rozwiąż równanie: 2x/(x − 4) = 8/(x − 4) + 1.'
+  worked_solution: |-
+    Dziedzina: x − 4 ≠ 0, czyli x ≠ 4, D = R \ {4}.
+    Mnożymy obie strony przez (x − 4), które w dziedzinie jest różne od zera:
+    2x = 8 + (x − 4)
+    2x = x + 4
+    x = 4.
+    Otrzymana liczba NIE należy do dziedziny (x ≠ 4), jest to rozwiązanie obce – powstało dlatego, że mnożenie przez (x − 4) jest równoważne tylko przy założeniu x ≠ 4.
+    Odpowiedź: równanie nie ma rozwiązań (jest sprzeczne w swojej dziedzinie).
+  difficulty: 3
+- statement: 'Rozwiąż równanie: (x + 1)/(x − 2) = (x + 3)/(x + 1).'
+  worked_solution: |-
+    Dziedzina: x − 2 ≠ 0 i x + 1 ≠ 0, czyli x ≠ 2 i x ≠ −1, D = R \ {−1, 2}.
+    Stosujemy proporcję (oba mianowniki w dziedzinie są różne od zera):
+    (x + 1)(x + 1) = (x + 3)(x − 2)
+    x² + 2x + 1 = x² + x − 6.
+    Wyrazy x² redukują się po obu stronach – zostaje równanie liniowe:
+    2x + 1 = x − 6
+    2x − x = −6 − 1
+    x = −7.
+    Sprawdzamy dziedzinę: −7 ≠ 2 i −7 ≠ −1, więc liczba jest dopuszczalna.
+    Sprawdzenie: L = (−7 + 1)/(−7 − 2) = (−6)/(−9) = 2/3; P = (−7 + 3)/(−7 + 1) = (−4)/(−6) = 2/3. ✓
+    Odpowiedź: x = −7.
+  difficulty: 3
+- statement: 'Rozwiąż równanie: 3/(x − 1) − 2/x = 1/(x(x − 1)).'
+  worked_solution: |-
+    Dziedzina: x − 1 ≠ 0 i x ≠ 0, czyli x ≠ 1 i x ≠ 0, D = R \ {0, 1}.
+    Wspólny mianownik: x(x − 1). Mnożymy obie strony przez x(x − 1) ≠ 0:
+    3x − 2(x − 1) = 1
+    3x − 2x + 2 = 1
+    x + 2 = 1
+    x = −1.
+    Liczba −1 należy do dziedziny (−1 ≠ 0 i −1 ≠ 1).
+    Sprawdzenie: L = 3/(−2) − 2/(−1) = −1,5 + 2 = 0,5; P = 1/((−1)·(−2)) = 1/2 = 0,5. ✓
+    Odpowiedź: x = −1.
+  difficulty: 4
+objectives:
+- statement: Wskazać i nazwać przekształcenia równoważne równania i nierówności oraz podać warunki, przy
+    których są one równoważne.
+  bloom_level: Rozumienie
+- statement: Rozwiązać równanie liniowe z nawiasami i ułamkami liczbowymi, stosując wyłącznie przekształcenia
+    równoważne.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać nierówność liniową, poprawnie zmieniając zwrot przy mnożeniu/dzieleniu przez liczbę
+    ujemną, i zapisać zbiór rozwiązań w postaci przedziału oraz zaznaczyć go na osi liczbowej.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć dziedzinę równania wymiernego i zapisać odpowiednie założenia przed rozpoczęciem
+    przekształceń.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać równanie wymierne sprowadzające się do równania liniowego (przez wspólny mianownik
+    lub proporcję) i skonfrontować wynik z dziedziną.
+  bloom_level: Zastosowanie
+- statement: Rozpoznać rozwiązanie obce i uzasadnić jego odrzucenie, wskazując krok nierównoważny, który
+    je wygenerował.
+  bloom_level: Analiza
+- statement: Rozstrzygnąć, czy równanie jest sprzeczne, tożsamościowe, czy ma dokładnie jedno rozwiązanie,
+    na podstawie postaci ax = b i dziedziny.
+  bloom_level: Analiza
+- statement: Sprawdzić poprawność otrzymanego rozwiązania przez podstawienie do równania wyjściowego i
+    ocenić poprawność cudzego rozwiązania, wskazując błędne przekształcenie.
+  bloom_level: Ocenianie
+- statement: Przekształcić wzór, wyznaczając z niego wskazaną zmienną (także występującą w mianowniku),
+    z podaniem koniecznych założeń.
+  bloom_level: Zastosowanie
+- statement: Zapisać krótką sytuację praktyczną jako równanie (w tym wymierne) prowadzące do równania
+    liniowego i rozwiązać je, interpretując wynik w kontekście zadania.
+  bloom_level: Tworzenie
+misconceptions:
+- name: Brak zmiany zwrotu nierówności przy dzieleniu przez liczbę ujemną
+  incorrect_reasoning: Z nierówności −7x ≥ 7 uczeń pisze x ≥ −1, bo „dzielimy obie strony przez −7 i nic
+    więcej się nie dzieje”.
+  correct_reasoning: 'Mnożenie i dzielenie przez liczbę ujemną odwraca porządek liczb, więc −7x ≥ 7 ⟺
+    x ≤ −1. Kontrola: x = 0 nie spełnia wyjściowej nierówności (0 ≥ 7 fałsz), więc zbiór nie może zawierać
+    zera.'
+  severity: 5
+- name: Pominięcie dziedziny w równaniu wymiernym
+  incorrect_reasoning: Uczeń od razu mnoży przez mianowniki, otrzymuje x = 4 i podaje to jako odpowiedź,
+    mimo że w równaniu występuje ułamek 8/(x − 4).
+  correct_reasoning: 'Dziedzinę ustalamy przed przekształceniami: x ≠ 4. Liczba 4 nie należy do dziedziny,
+    więc jest rozwiązaniem obcym i należy ją odrzucić – równanie nie ma rozwiązań.'
+  severity: 5
+- name: Skracanie czynnika z niewiadomą bez założenia
+  incorrect_reasoning: Z równania x(x − 3) = 5(x − 3) uczeń dzieli obie strony przez (x − 3) i otrzymuje
+    tylko x = 5, gubiąc rozwiązanie x = 3.
+  correct_reasoning: 'Dzielić wolno tylko przez wyrażenie różne od zera. Rozważamy osobno przypadek x
+    − 3 = 0 (x = 3 spełnia równanie) i przypadek x ≠ 3, w którym po podzieleniu otrzymujemy x = 5. Rozwiązania:
+    x = 3 i x = 5.'
+  severity: 4
+- name: Mnożenie nierówności przez wyrażenie z niewiadomą
+  incorrect_reasoning: Uczeń „rozwiązuje” nierówność 1/(x − 2) > 3, mnożąc obie strony przez (x − 2) i
+    pisząc 1 > 3(x − 2) bez żadnych zastrzeżeń.
+  correct_reasoning: Znak wyrażenia x − 2 zależy od x, więc nie wiadomo, czy zwrot nierówności ma się
+    zmienić. Takie przekształcenie nie jest równoważne; na poziomie podstawowym mnożymy nierówności wyłącznie
+    przez konkretne liczby o znanym znaku.
+  severity: 4
+- name: Ułamek równy zeru – zapominanie o mianowniku
+  incorrect_reasoning: Z równania (x − 3)/(x − 3) = 0 uczeń wnioskuje x = 3, bo „licznik ma być zerem”.
+  correct_reasoning: a/b = 0 ⟺ a = 0 i b ≠ 0. Dla x = 3 mianownik też się zeruje, więc liczba ta nie należy
+    do dziedziny – równanie nie ma rozwiązań.
+  severity: 4
+- name: Błędne „skracanie” składników w ułamku algebraicznym
+  incorrect_reasoning: Uczeń zapisuje (x + 3)/(x + 5) = 3/5, „skracając x-y”.
+  correct_reasoning: Skracać wolno tylko wspólne CZYNNIKI całego licznika i mianownika, nie składniki
+    sumy. Poprawnie postępujemy przez sprowadzenie do wspólnego mianownika albo przez proporcję.
+  severity: 4
+- name: Zgubienie znaku przy przenoszeniu wyrazów lub przy minusie przed nawiasem
+  incorrect_reasoning: Z równania 4(2x − 1) − 3(x + 2) = 12 uczeń pisze 8x − 4 − 3x + 6 = 12, bo mnoży
+    minus tylko przez pierwszy wyraz nawiasu.
+  correct_reasoning: 'Minus przed nawiasem mnoży każdy składnik: −3(x + 2) = −3x − 6. Analogicznie przy
+    przenoszeniu wyrazu na drugą stronę zmieniamy jego znak – to skrót od dodania liczby przeciwnej do
+    obu stron.'
+  severity: 3
+- name: Traktowanie każdego przekształcenia jako równoważnego
+  incorrect_reasoning: „Skoro coś zrobiłem obu stronom, to zbiór rozwiązań się nie zmienia” – uczeń mnoży
+    przez wyrażenie mogące być zerem albo podnosi obie strony do kwadratu i nie sprawdza wyniku.
+  correct_reasoning: 'Równoważne są tylko: dodawanie/odejmowanie wyrażeń określonych w dziedzinie oraz
+    mnożenie/dzielenie przez wyrażenie różne od zera. Inne operacje wymagają założeń lub końcowego sprawdzenia
+    w równaniu wyjściowym.'
+  severity: 4
+- name: Błędna interpretacja zniknięcia niewiadomej
+  incorrect_reasoning: Po redukcji uczeń otrzymuje 0 = 5 albo 0 = 0 i pisze „x = 0” lub „błąd w zadaniu”.
+  correct_reasoning: '0 = 5 to zdanie fałszywe – równanie jest sprzeczne, brak rozwiązań. 0 = 0 to zdanie
+    prawdziwe – rozwiązaniem jest każda liczba z dziedziny (przy równaniu wymiernym: dziedzina, a nie
+    całe R).'
+  severity: 3
+- name: Zapisanie odpowiedzi nierówności jednym punktem
+  incorrect_reasoning: Po otrzymaniu x ≤ −1 uczeń pisze odpowiedź „x = −1”.
+  correct_reasoning: Rozwiązaniem nierówności jest zbiór liczb; zapisujemy go jako przedział x ∈ (−∞,
+    −1⟩ (nawias ostry, bo −1 spełnia nierówność), ewentualnie ilustrujemy na osi.
+  severity: 3

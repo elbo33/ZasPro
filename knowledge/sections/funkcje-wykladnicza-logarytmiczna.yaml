@@ -1,0 +1,376 @@
+section: funkcje-wykladnicza-logarytmiczna
+name: Funkcje wykładnicza i logarytmiczna
+scope: The exponential and logarithmic functions and their graphs; using them to describe and interpret
+  growth, decay and scales.
+requirements:
+- V.14
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:00:49.513720'
+  approved_at: '2026-08-28T18:28:05.397699'
+  approved_by: reviewer
+concepts:
+- name: Funkcja wykładnicza
+  description: Funkcja postaci f(x) = a^x, gdzie a > 0 i a ≠ 1, określona dla każdej liczby rzeczywistej
+    x.
+  explanation: 'Myśl o niej tak: zmienna siedzi w wykładniku, a podstawa a jest ustalonym ''mnożnikiem
+    na krok''. Zwiększenie x o 1 mnoży wartość funkcji przez a (a nie dodaje stałą, jak w funkcji liniowej).
+    Podstawa a = 1 jest wykluczona, bo 1^x = 1 dawałoby funkcję stałą; podstawy ujemne wykluczamy, bo
+    np. (−4)^{1/2} nie istnieje w liczbach rzeczywistych.'
+  difficulty: 2
+- name: Własności funkcji wykładniczej
+  description: 'Dla f(x) = a^x: dziedzina D = R, zbiór wartości ZW = (0, +∞), f(0) = 1, funkcja jest rosnąca
+    dla a > 1 i malejąca dla 0 < a < 1, jest różnowartościowa, nie ma miejsc zerowych, oś OX (prosta y
+    = 0) jest asymptotą poziomą.'
+  explanation: Wszystkie wykresy funkcji wykładniczych przechodzą przez punkt (0, 1) i leżą nad osią OX
+    — potęga liczby dodatniej nigdy nie jest zerem ani liczbą ujemną. Wykres 'przykleja się' do osi OX
+    z jednej strony, a z drugiej strzela w górę coraz szybciej.
+  difficulty: 2
+- name: Wzrost wykładniczy a wzrost liniowy
+  description: 'Wzrost liniowy: do wielkości dodajemy w każdym kroku tę samą liczbę. Wzrost wykładniczy:
+    w każdym kroku mnożymy wielkość przez tę samą liczbę (o ten sam procent).'
+  explanation: 'Klucz do zadań praktycznych: jeśli w treści pojawia się ''o p% rocznie'', ''podwaja się
+    co T godzin'', ''maleje o połowę co T lat'' — to model wykładniczy. Jeśli ''o 200 sztuk rocznie''
+    — model liniowy. Wzrost wykładniczy zawsze w końcu przegoni dowolny wzrost liniowy.'
+  difficulty: 2
+- name: Logarytm
+  description: 'Dla a > 0, a ≠ 1 i b > 0: log_a b = c wtedy i tylko wtedy, gdy a^c = b. Liczbę a nazywamy
+    podstawą, b — liczbą logarytmowaną.'
+  explanation: 'Logarytm odpowiada na pytanie: ''do której potęgi podnieść a, aby otrzymać b?''. Stąd
+    wynika, że logarytmować można tylko liczby dodatnie — potęga liczby dodatniej jest dodatnia.'
+  difficulty: 2
+- name: Funkcja logarytmiczna
+  description: Funkcja postaci f(x) = log_a x, gdzie a > 0 i a ≠ 1, określona dla x > 0.
+  explanation: 'To funkcja odwrotna do wykładniczej o tej samej podstawie: wykładnicza zamienia wykładnik
+    na wartość, logarytmiczna wartość na wykładnik. Rośnie bardzo wolno — aby log_2 x wzrósł o 1, argument
+    musi się podwoić.'
+  difficulty: 3
+- name: Własności funkcji logarytmicznej
+  description: 'Dla f(x) = log_a x: dziedzina D = (0, +∞), zbiór wartości ZW = R, f(1) = 0, funkcja jest
+    rosnąca dla a > 1 i malejąca dla 0 < a < 1, jest różnowartościowa, prosta x = 0 (oś OY) jest asymptotą
+    pionową.'
+  explanation: Wykres każdej funkcji logarytmicznej przechodzi przez (1, 0) i leży na prawo od osi OY.
+    Dziedzina i zbiór wartości są dokładnie zamienione miejscami w stosunku do funkcji wykładniczej.
+  difficulty: 3
+- name: Wzajemna odwrotność funkcji a^x i log_a x
+  description: Zachodzą tożsamości log_a(a^x) = x dla x ∈ R oraz a^{log_a x} = x dla x > 0. Wykresy y
+    = a^x i y = log_a x są symetryczne względem prostej y = x.
+  explanation: 'Jedna funkcja ''odkręca'' drugą. Praktycznie: aby wyznaczyć niewiadomą z wykładnika, logarytmujemy;
+    aby wyznaczyć niewiadomą spod logarytmu, potęgujemy.'
+  difficulty: 3
+- name: Logarytm dziesiętny i naturalny
+  description: log x = log_10 x (logarytm dziesiętny), ln x = log_e x, gdzie e ≈ 2,718 (logarytm naturalny).
+  explanation: Logarytm dziesiętny jest podstawą skal technicznych (pH, decybele, skala Richtera), bo
+    mierzy 'liczbę zer' — ile razy po dziesięć. Logarytm naturalny i liczba e pojawiają się w modelach
+    ciągłego wzrostu; na kalkulatorze obie funkcje mają osobne klawisze.
+  difficulty: 2
+- name: Model wykładniczy N(t) = N₀·q^t
+  description: 'Wielkość zmieniająca się wykładniczo w czasie: N(t) = N₀ · q^t, gdzie N₀ to wartość początkowa
+    (dla t = 0), a q > 0 to współczynnik zmiany w jednostce czasu.'
+  explanation: 'q > 1 oznacza wzrost, 0 < q < 1 — zanik. Jeśli wielkość rośnie o p% na jednostkę czasu,
+    to q = 1 + p/100; jeśli maleje o p%, to q = 1 − p/100. Uwaga: wykładnik musi być wyrażony w tych samych
+    jednostkach czasu co q.'
+  difficulty: 3
+- name: Procent składany
+  description: 'Kapitalizacja odsetek, przy której odsetki dopisane do kapitału same procentują: K_n =
+    K₀·(1 + r)^n po n okresach o stopie r.'
+  explanation: To najczęstsze 'życiowe' wcielenie funkcji wykładniczej. Nie wolno mnożyć procentu przez
+    liczbę lat — 4% przez 10 lat to nie 40%, tylko mnożnik 1,04^10 ≈ 1,48, czyli około 48%.
+  difficulty: 3
+- name: Czas połowicznego rozpadu (okres półtrwania)
+  description: 'Czas T, po którym ilość substancji maleje do połowy: N(t) = N₀·(1/2)^{t/T}.'
+  explanation: 'Wykładnik t/T mówi, ile razy ''zmieściło się'' połowienie. Po każdym kolejnym okresie
+    T zostaje połowa tego, co było — nigdy zero. Analogicznie buduje się model podwajania: N(t) = N₀·2^{t/T}.'
+  difficulty: 3
+- name: Skala logarytmiczna
+  description: Sposób przedstawiania wielkości o bardzo dużej rozpiętości, w którym równym odstępom na
+    skali odpowiadają równe krotności (mnożenie), a nie równe różnice.
+  explanation: 'Przykłady: pH, decybele, skala Richtera, osie logarytmiczne na wykresach. Wzrost wartości
+    na skali o 1 jednostkę oznacza pomnożenie wielkości fizycznej przez stały czynnik (np. 10 dla pH).
+    Dlatego różnica 2 jednostek to czynnik 100, a nie 2.'
+  difficulty: 3
+- name: Przekształcenia wykresów funkcji wykładniczej i logarytmicznej
+  description: Wykres y = f(x) + q to przesunięcie o q w pionie, y = f(x − p) — o p w poziomie, y = −f(x)
+    — odbicie w osi OX, y = f(−x) — odbicie w osi OY.
+  explanation: Dla y = a^x + q asymptota przesuwa się z y = 0 na y = q; dla y = log_a(x − p) asymptota
+    pionowa przesuwa się z x = 0 na x = p, a dziedziną jest (p, +∞). Zawsze najpierw ustalamy asymptotę
+    i punkt charakterystyczny, potem rysujemy resztę.
+  difficulty: 3
+- name: Rozwiązywanie prostych równań i nierówności wykładniczych
+  description: Równanie a^{f(x)} = a^{g(x)} jest równoważne f(x) = g(x); nierówność a^{f(x)} > a^{g(x)}
+    daje f(x) > g(x) dla a > 1 oraz f(x) < g(x) dla 0 < a < 1.
+  explanation: Podstawa to sprowadzenie obu stron do tej samej podstawy i skorzystanie z różnowartościowości.
+    Przy nierównościach monotoniczność decyduje o tym, czy znak się odwraca.
+  difficulty: 3
+formulas:
+- name: Definicja logarytmu
+  latex_raw: \log_a b = c \iff a^c = b
+  conditions: a > 0, a \neq 1, b > 0
+  description: Główne narzędzie 'przechodzenia' między postacią wykładniczą a logarytmiczną.
+- name: Logarytmy szczególne
+  latex_raw: \log_a 1 = 0,\qquad \log_a a = 1,\qquad \log_a a^k = k,\qquad a^{\log_a x}=x
+  conditions: a>0,\ a\neq 1,\ x>0,\ k\in\mathbb{R}
+- name: Logarytm iloczynu, ilorazu i potęgi
+  latex_raw: \log_a(xy)=\log_a x+\log_a y,\quad \log_a\frac{x}{y}=\log_a x-\log_a y,\quad \log_a x^{k}=k\log_a
+    x
+  conditions: a>0, a\neq1, x>0, y>0, k\in\mathbb{R}
+- name: Działania na potęgach
+  latex_raw: a^{x}\cdot a^{y}=a^{x+y},\quad \frac{a^{x}}{a^{y}}=a^{x-y},\quad (a^{x})^{y}=a^{xy},\quad
+    a^{-x}=\frac{1}{a^{x}}
+  conditions: a>0
+- name: Model wykładniczy (ogólny)
+  latex_raw: N(t)=N_0\cdot q^{\,t}
+  conditions: N_0>0, q>0; t w tych samych jednostkach, dla których podano q
+  description: q>1 — wzrost, 0<q<1 — zanik.
+- name: Zmiana o p procent w każdym okresie
+  latex_raw: N(t)=N_0\Big(1\pm\frac{p}{100}\Big)^{t}
+  conditions: znak + przy wzroście o p%, znak − przy spadku o p% w każdym okresie
+- name: Procent składany
+  latex_raw: K_n=K_0\Big(1+\frac{r}{100}\Big)^{n}
+  conditions: K_0 — kapitał początkowy, r — oprocentowanie w okresie kapitalizacji (w %), n — liczba okresów
+    kapitalizacji
+  description: 'Przy kapitalizacji m razy w roku i rocznej stopie r: K = K_0(1+\frac{r}{100m})^{mn}.'
+- name: Rozpad promieniotwórczy (okres półtrwania)
+  latex_raw: N(t)=N_0\left(\tfrac{1}{2}\right)^{t/T}
+  conditions: T — czas połowicznego rozpadu, t i T w tych samych jednostkach
+- name: Podwajanie
+  latex_raw: N(t)=N_0\cdot 2^{\,t/T}
+  conditions: T — czas podwojenia
+- name: Czas osiągnięcia zadanej wartości
+  latex_raw: t=\log_{q}\frac{N}{N_0}
+  conditions: N_0>0, N>0, q>0, q\neq1; wynik z równania N_0q^t=N
+  description: Praktycznie liczymy t = \frac{\log(N/N_0)}{\log q} kalkulatorem.
+- name: Skala pH
+  latex_raw: \mathrm{pH}=-\log[\mathrm{H}^{+}]
+  conditions: '[H⁺] — stężenie jonów wodorowych w mol/dm³'
+  description: Równoważnie [H⁺] = 10^{−pH}; różnica 1 w pH to 10-krotna zmiana stężenia.
+- name: Poziom natężenia dźwięku (decybele)
+  latex_raw: L=10\log\frac{I}{I_0}
+  conditions: I — natężenie dźwięku, I_0 = 10^{-12} W/m² — próg słyszalności
+  description: Wzrost o 10 dB oznacza 10-krotny wzrost natężenia.
+- name: Zmiana podstawy logarytmu
+  latex_raw: \log_a b=\frac{\log b}{\log a}
+  conditions: a>0, a\neq1, b>0
+  description: Wzór pomocniczy — pozwala obliczyć dowolny logarytm kalkulatorem mającym tylko log i ln.
+methods:
+- name: Szkicowanie wykresu funkcji wykładniczej y = a^x
+  when_to_use: Gdy trzeba narysować lub rozpoznać wykres funkcji wykładniczej i odczytać jej własności.
+  steps:
+  - 'Sprawdź podstawę: a > 1 → funkcja rosnąca, 0 < a < 1 → malejąca.'
+  - 'Zaznacz punkty kontrolne: (−1, 1/a), (0, 1), (1, a), (2, a²).'
+  - Narysuj asymptotę poziomą y = 0 (oś OX) i pamiętaj, że wykres jej nie przecina.
+  - 'Połącz punkty gładką krzywą: dla a > 1 z lewej strony wykres zbliża się do osi OX, z prawej rośnie
+    coraz szybciej; dla 0 < a < 1 — odwrotnie.'
+  - 'Odczytaj własności: D = R, ZW = (0, +∞), brak miejsc zerowych, monotoniczność.'
+- name: Szkicowanie wykresu funkcji logarytmicznej y = log_a x
+  when_to_use: Gdy trzeba narysować wykres logarytmu lub porównać go z wykresem funkcji wykładniczej.
+  steps:
+  - Ustal dziedzinę (0, +∞) i narysuj asymptotę pionową x = 0.
+  - 'Zaznacz punkty: (1/a, −1), (1, 0), (a, 1), (a², 2).'
+  - Dla a > 1 rysuj krzywą rosnącą, dla 0 < a < 1 malejącą.
+  - Ewentualnie sprawdź poprawność, odbijając wykres y = a^x względem prostej y = x.
+- name: Rysowanie wykresu przekształconego (np. y = a^{x} + q, y = log_a(x − p))
+  when_to_use: Gdy funkcja w zadaniu powstała z podstawowej przez przesunięcie lub odbicie.
+  steps:
+  - Rozpoznaj funkcję bazową (a^x lub log_a x).
+  - 'Zidentyfikuj przekształcenia w kolejności: przesunięcie poziome o p, odbicia, przesunięcie pionowe
+    o q.'
+  - 'Przesuń asymptotę: dla wykładniczej y = 0 → y = q; dla logarytmicznej x = 0 → x = p.'
+  - Wyznacz nową dziedzinę i zbiór wartości.
+  - Przesuń punkty kontrolne i naszkicuj krzywą; wyznacz miejsce zerowe, rozwiązując równanie f(x) = 0.
+- name: Rozwiązywanie prostego równania wykładniczego
+  when_to_use: Gdy niewiadoma występuje w wykładniku, a obie strony da się zapisać w tej samej podstawie
+    (np. 2^x = 32, (1/2)^{t/8} = 1/8).
+  steps:
+  - Zapisz obie strony jako potęgi tej samej podstawy a (korzystając z a^{-x} = 1/a^x i (a^m)^n = a^{mn}).
+  - 'Skorzystaj z różnowartościowości: przyrównaj wykładniki.'
+  - Rozwiąż powstałe równanie (zwykle liniowe).
+  - Sprawdź sensowność wyniku w kontekście zadania (np. czas nieujemny).
+- name: Wyznaczanie czasu w modelu wykładniczym przy pomocy logarytmu
+  when_to_use: Gdy pytamy 'po ilu latach/godzinach wielkość osiągnie daną wartość', a podstaw nie da się
+    dopasować.
+  steps:
+  - Zapisz model N(t) = N₀·q^t i podstaw żądaną wartość N.
+  - Podziel obie strony przez N₀, otrzymując q^t = N/N₀.
+  - 'Zlogarytmuj obie strony (log lub ln): t·log q = log(N/N₀).'
+  - Wyznacz t = log(N/N₀) / log q i oblicz kalkulatorem.
+  - Zaokrąglij zgodnie z sensem zadania (np. w górę do pełnego roku, gdy warunek ma być spełniony) i sprawdź,
+    podstawiając do modelu.
+- name: Budowanie modelu wykładniczego z danych
+  when_to_use: Gdy w treści (lub na wykresie) podano wartość początkową i jeden dodatkowy pomiar albo
+    tempo zmiany.
+  steps:
+  - Ustal N₀ jako wartość dla t = 0 (odczyt punktu przecięcia wykresu z osią OY).
+  - Ustal jednostkę czasu.
+  - 'Jeśli dane jest tempo procentowe: q = 1 + p/100 lub q = 1 − p/100.'
+  - 'Jeśli dany jest drugi pomiar N(t₁): rozwiąż q^{t₁} = N(t₁)/N₀, czyli q = (N(t₁)/N₀)^{1/t₁}, albo
+    rozpoznaj krotność jako potęgę (np. 8-krotny wzrost w 9 h = trzy podwojenia, więc podwojenie co 3
+    h).'
+  - Zapisz wzór N(t) = N₀·q^t i zweryfikuj go na danych z zadania.
+- name: Praca ze skalą logarytmiczną
+  when_to_use: W zadaniach o pH, decybelach, skali Richtera lub o osiach logarytmicznych.
+  steps:
+  - Zapisz wzór definiujący skalę, np. L = 10·log(I/I₀) lub pH = −log[H⁺].
+  - 'Jeśli szukasz wartości na skali: podstaw wielkość fizyczną i policz logarytm.'
+  - 'Jeśli szukasz wielkości fizycznej: przekształć wzór do postaci wykładniczej (np. I = I₀·10^{L/10},
+    [H⁺] = 10^{−pH}).'
+  - 'Przy porównaniach dwóch obiektów licz iloraz wielkości fizycznych: różnica d jednostek skali odpowiada
+    krotności 10^{d} (pH) albo 10^{d/10} (dB).'
+  - Interpretuj wynik słownie („x razy większe”, a nie „o x większe”).
+- name: Porównywanie wartości i rozwiązywanie nierówności wykładniczych/logarytmicznych z użyciem monotoniczności
+  when_to_use: Gdy trzeba ustalić, która z liczb postaci a^x jest większa, albo rozwiązać prostą nierówność.
+  steps:
+  - Sprowadź obie strony do tej samej podstawy a.
+  - Sprawdź, czy a > 1 (funkcja rosnąca), czy 0 < a < 1 (funkcja malejąca).
+  - Dla a > 1 nierówność między wartościami przenosi się na wykładniki bez zmiany znaku; dla 0 < a < 1
+    znak nierówności odwraca się.
+  - Dla logarytmów najpierw wypisz założenia (liczba logarytmowana dodatnia), potem postępuj analogicznie.
+examples:
+- statement: Dana jest funkcja f(x) = 2^x oraz g(x) = (1/2)^x. a) Naszkicuj oba wykresy w jednym układzie
+    współrzędnych. b) Podaj dziedzinę, zbiór wartości i monotoniczność każdej z nich. c) Odczytaj z wykresu
+    (lub oblicz) rozwiązanie równania 2^x = 8 oraz nierówności (1/2)^x > 4.
+  worked_solution: |-
+    a) Punkty kontrolne dla f: (−2; 0,25), (−1; 0,5), (0; 1), (1; 2), (2; 4), (3; 8). Dla g: (−2; 4), (−1; 2), (0; 1), (1; 0,5), (2; 0,25). Oba wykresy leżą nad osią OX, przechodzą przez (0, 1) i mają asymptotę poziomą y = 0. Ponieważ g(x) = (1/2)^x = 2^{−x}, wykres g jest odbiciem wykresu f względem osi OY.
+    b) Dla obu: D = R, ZW = (0, +∞). f jest rosnąca (podstawa 2 > 1), g jest malejąca (podstawa 1/2 ∈ (0,1)). Żadna nie ma miejsc zerowych.
+    c) 2^x = 8 = 2³, więc z różnowartościowości x = 3 (na wykresie: punkt (3, 8)).
+    (1/2)^x > 4 zapisujemy jako (1/2)^x > (1/2)^{−2}. Podstawa 1/2 ∈ (0,1), więc funkcja jest malejąca i znak nierówności się odwraca: x < −2. Odpowiedź: x ∈ (−∞, −2).
+  difficulty: 2
+- statement: Do banku wpłacono 5000 zł na lokatę oprocentowaną 4% w skali roku, z roczną kapitalizacją
+    odsetek. a) Zapisz wzór na wartość kapitału po n latach. b) Ile wyniesie kapitał po 3 latach? c) Po
+    ilu pełnych latach kapitał przekroczy 7000 zł?
+  worked_solution: |-
+    a) Każdy rok mnoży kapitał przez 1,04, więc K(n) = 5000·1,04^n (n — liczba lat).
+    b) K(3) = 5000·1,04³ = 5000·1,124864 = 5624,32 zł.
+    c) Szukamy najmniejszego n, dla którego 5000·1,04^n > 7000, czyli 1,04^n > 1,4.
+    Logarytmujemy: n·log 1,04 > log 1,4, więc n > log 1,4 / log 1,04 ≈ 0,14613 / 0,01703 ≈ 8,58.
+    Najmniejsza liczba naturalna spełniająca warunek to n = 9.
+    Sprawdzenie: 1,04^8 ≈ 1,3686 → 6843 zł (za mało), 1,04^9 ≈ 1,4233 → 7116,60 zł (wystarczy).
+    Odpowiedź: po 9 latach.
+  difficulty: 3
+- statement: Izotop jodu-131 ma czas połowicznego rozpadu T = 8 dni. W próbce jest początkowo 200 mg tego
+    izotopu. a) Zapisz wzór na masę izotopu po t dniach. b) Ile miligramów pozostanie po 32 dniach? c)
+    Po ilu dniach zostanie 25 mg? d) Czy po 100 dniach izotop zniknie całkowicie?
+  worked_solution: |-
+    a) m(t) = 200·(1/2)^{t/8} [mg], t w dniach.
+    b) m(32) = 200·(1/2)^{32/8} = 200·(1/2)^4 = 200/16 = 12,5 mg.
+    c) Rozwiązujemy 200·(1/2)^{t/8} = 25, czyli (1/2)^{t/8} = 25/200 = 1/8 = (1/2)³.
+    Z różnowartościowości: t/8 = 3, więc t = 24 dni.
+    d) Nie. m(100) = 200·(1/2)^{12,5} ≈ 200·0,000173 ≈ 0,035 mg. Funkcja wykładnicza przyjmuje tylko wartości dodatnie — masa maleje do zera, ale nigdy zera nie osiąga (y = 0 jest asymptotą).
+  difficulty: 3
+- statement: Liczebność kolonii bakterii rośnie wykładniczo. W chwili t = 0 było 500 bakterii, a po 9
+    godzinach — 4000. a) Wyznacz czas podwojenia i wzór N(t). b) Ile bakterii będzie po 15 godzinach?
+    c) Po ilu godzinach (z dokładnością do 0,1 h) liczebność przekroczy 10 000?
+  worked_solution: |-
+    a) Krotność wzrostu: 4000/500 = 8 = 2³, czyli w ciągu 9 godzin nastąpiły trzy podwojenia. Zatem czas podwojenia T = 9/3 = 3 h, a model to N(t) = 500·2^{t/3}.
+    Sprawdzenie: N(9) = 500·2³ = 4000. ✓
+    b) N(15) = 500·2^{15/3} = 500·2⁵ = 500·32 = 16 000 bakterii.
+    c) 500·2^{t/3} > 10000 ⟺ 2^{t/3} > 20.
+    Logarytmujemy: (t/3)·log 2 > log 20, czyli t > 3·log 20/log 2 = 3·(1,30103/0,30103) ≈ 3·4,3219 ≈ 12,97.
+    Odpowiedź: po około 13,0 godziny (dokładniej: po 12,97 h liczebność przekracza 10 000).
+  difficulty: 4
+- statement: a) Roztwór A ma stężenie jonów wodorowych [H⁺] = 10⁻⁵ mol/dm³. Oblicz jego pH. b) Roztwór
+    B ma pH = 2,5. Oblicz jego stężenie [H⁺]. c) Ile razy stężenie jonów wodorowych w roztworze B jest
+    większe niż w roztworze A? d) O ile decybeli wzrośnie poziom natężenia dźwięku, jeśli natężenie fali
+    wzrośnie 1000-krotnie?
+  worked_solution: |-
+    a) pH = −log(10⁻⁵) = −(−5) = 5.
+    b) Z pH = −log[H⁺] mamy log[H⁺] = −2,5, więc [H⁺] = 10^{−2,5} = 10^{−3}·10^{0,5} ≈ 0,00316 mol/dm³ ≈ 3,16·10⁻³ mol/dm³.
+    c) Iloraz stężeń: 10^{−2,5}/10^{−5} = 10^{2,5} ≈ 316. Stężenie w B jest około 316 razy większe (różnica 2,5 jednostki pH to czynnik 10^{2,5}, a nie 2,5).
+    d) L = 10·log(I/I₀). Po zmianie natężenia na 1000I mamy L' = 10·log(1000I/I₀) = 10·(log 1000 + log(I/I₀)) = 10·3 + L = L + 30.
+    Odpowiedź: poziom wzrośnie o 30 dB.
+  difficulty: 4
+objectives:
+- statement: 'Podać definicję funkcji wykładniczej i logarytmicznej oraz wymienić ich własności: dziedzinę,
+    zbiór wartości, monotoniczność w zależności od podstawy, punkty charakterystyczne i asymptoty.'
+  bloom_level: zapamiętywanie
+- statement: Wyjaśnić związek między funkcją wykładniczą a logarytmiczną o tej samej podstawie (odwrotność,
+    symetria wykresów względem prostej y = x) oraz zinterpretować logarytm jako 'szukany wykładnik'.
+  bloom_level: rozumienie
+- statement: Szkicować wykresy funkcji y = a^x i y = log_a x oraz ich prostych przekształceń (przesunięcia,
+    odbicia), wskazując asymptoty, dziedzinę i zbiór wartości.
+  bloom_level: stosowanie
+- statement: Odczytywać z wykresu funkcji wykładniczej lub logarytmicznej wartości funkcji, argumenty,
+    monotoniczność oraz rozwiązania prostych równań i nierówności.
+  bloom_level: stosowanie
+- statement: Rozwiązywać proste równania i nierówności wykładnicze przez sprowadzenie do wspólnej podstawy
+    oraz stosować własności logarytmów do obliczania wartości wyrażeń.
+  bloom_level: stosowanie
+- statement: Zbudować model wykładniczy N(t) = N₀·q^t na podstawie danych z treści zadania lub z wykresu
+    (wartość początkowa, tempo procentowe, czas podwojenia lub połowicznego rozpadu).
+  bloom_level: stosowanie
+- statement: Obliczać wartości w zagadnieniach procentu składanego, wzrostu populacji i rozpadu promieniotwórczego,
+    w tym wyznaczać czas przy pomocy logarytmu.
+  bloom_level: stosowanie
+- statement: Wykonywać obliczenia i porównania w skalach logarytmicznych (pH, decybele, skala Richtera),
+    przechodząc między postacią logarytmiczną a wykładniczą wzoru.
+  bloom_level: stosowanie
+- statement: 'Interpretować parametry i kształt wykresu w kontekście praktycznym: co oznacza N₀, q > 1
+    lub q < 1, asymptota pozioma, tempo zmian.'
+  bloom_level: analiza
+- statement: Ocenić, czy dana sytuacja praktyczna opisana jest modelem liniowym czy wykładniczym, oraz
+    krytycznie ocenić sensowność otrzymanego wyniku (zaokrąglenie, zakres stosowalności modelu).
+  bloom_level: ocenianie
+misconceptions:
+- name: Mylenie wzrostu wykładniczego z liniowym
+  incorrect_reasoning: '„Skoro po 1 roku kapitał wzrósł o 200 zł, to po 5 latach wzrośnie o 1000 zł.”
+    Albo: „Bakterie podwoiły się w 3 h, więc w 9 h będzie 3 razy więcej.”'
+  correct_reasoning: 'W modelu wykładniczym w każdym okresie MNOŻYMY przez stały czynnik. Po 9 h przy
+    podwajaniu co 3 h jest 2³ = 8 razy więcej, a odsetki naliczają się także od odsetek: K = K₀·q^n.'
+  severity: 5
+- name: Mnożenie procentu przez liczbę okresów
+  incorrect_reasoning: „4% rocznie przez 10 lat to 40% wzrostu, więc 5000 zł urośnie do 7000 zł.”
+  correct_reasoning: Przy procencie składanym mnożnik to 1,04^10 ≈ 1,4802, czyli wzrost o około 48%, a
+    kapitał wyniesie ok. 7401 zł. Procenty się nie dodają, tylko mnożą mnożniki.
+  severity: 4
+- name: Przekonanie, że a^x może być zerem lub liczbą ujemną
+  incorrect_reasoning: „Dla bardzo dużych ujemnych x funkcja 2^x osiąga zero”, albo „2^x = −8 dla pewnego
+    x”.
+  correct_reasoning: Zbiór wartości funkcji wykładniczej to (0, +∞). Wartości maleją do zera, ale nigdy
+    go nie osiągają — y = 0 jest asymptotą poziomą. Równanie a^x = 0 i a^x = liczba ujemna nie mają rozwiązań.
+  severity: 3
+- name: Logarytmowanie liczby niedodatniej
+  incorrect_reasoning: „log₂(−8) = −3, bo 2·(−3) coś tam...” albo obliczanie log 0.
+  correct_reasoning: Z definicji log_a b istnieje tylko dla b > 0 (i a > 0, a ≠ 1). W zadaniach z funkcją
+    logarytmiczną trzeba najpierw wyznaczyć dziedzinę, np. dla log₂(x − 1) jest to x > 1.
+  severity: 4
+- name: Fałszywe „wzory” na logarytmy
+  incorrect_reasoning: log(x + y) = log x + log y, log(xy) = log x · log y, log(x/y) = log x / log y.
+  correct_reasoning: 'Poprawne wzory: log(xy) = log x + log y, log(x/y) = log x − log y, log x^k = k·log
+    x. Logarytm sumy nie upraszcza się w żaden sposób.'
+  severity: 5
+- name: Nieodwracanie znaku nierówności przy podstawie z przedziału (0,1)
+  incorrect_reasoning: „(1/2)^x > (1/2)^{-2}, więc x > −2.”
+  correct_reasoning: 'Dla 0 < a < 1 funkcja a^x jest malejąca, więc większej wartości odpowiada mniejszy
+    wykładnik: x < −2. Znak nierówności odwracamy tylko w tym przypadku (dla a > 1 pozostaje bez zmian).'
+  severity: 4
+- name: Błędne rozumienie skali logarytmicznej
+  incorrect_reasoning: „Roztwór o pH 3 ma stężenie jonów o 2 większe niż roztwór o pH 5” lub „hałas 60
+    dB jest dwa razy głośniejszy niż 30 dB pod względem natężenia”.
+  correct_reasoning: Różnica 1 jednostki pH to 10-krotna zmiana stężenia, więc różnica 2 jednostek to
+    100 razy. Różnica 30 dB to 10³ = 1000-krotny wzrost natężenia. Na skali logarytmicznej różnicom odpowiadają
+    krotności.
+  severity: 4
+- name: Błędne stosowanie okresu półtrwania
+  incorrect_reasoning: „Po dwóch okresach półtrwania nie zostanie nic, bo 50% + 50% = 100%.”
+  correct_reasoning: 'Po każdym okresie zostaje połowa AKTUALNEJ ilości: po dwóch okresach 1/4, po trzech
+    1/8. Formalnie N(t) = N₀(1/2)^{t/T} > 0 dla każdego t.'
+  severity: 4
+- name: Pominięcie dzielenia czasu przez okres w wykładniku
+  incorrect_reasoning: Przy T = 8 dni i t = 32 dni licząc N = N₀·(1/2)^{32}.
+  correct_reasoning: 'Wykładnik zlicza liczbę okresów: t/T = 32/8 = 4, więc N = N₀·(1/2)⁴. Zawsze sprawdzaj
+    jednostki: wykładnik musi być liczbą okresów, nie liczbą dni.'
+  severity: 4
+- name: Mylenie wykresu funkcji wykładniczej z logarytmiczną (i ich asymptot)
+  incorrect_reasoning: „Funkcja log₂x ma dziedzinę R i asymptotę poziomą”, albo rysowanie wykresu logarytmu
+    przecinającego oś OY.
+  correct_reasoning: 'Funkcje te są wzajemnie odwrotne, więc mają zamienione dziedzinę i zbiór wartości:
+    log_a x ma D = (0, +∞), ZW = R i asymptotę PIONOWĄ x = 0; a^x ma D = R, ZW = (0, +∞) i asymptotę POZIOMĄ
+    y = 0. Wykres logarytmu nigdy nie przecina osi OY.'
+  severity: 3
+- name: Błąd przy potęgowaniu sum wykładników
+  incorrect_reasoning: 2^{x+3} = 2^x + 2³.
+  correct_reasoning: 2^{x+3} = 2^x·2³ = 8·2^x. Dodawanie w wykładniku odpowiada mnożeniu potęg, a nie
+    ich dodawaniu.
+  severity: 4

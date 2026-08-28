@@ -1,0 +1,364 @@
+section: funkcja-odwrotnie-proporcjonalna
+name: Funkcja odwrotnie proporcjonalna
+scope: 'The inversely-proportional function y = a/x: its hyperbola, domain and asymptotic behaviour; using
+  it to model and interpret inversely-proportional quantities.'
+requirements:
+- V.13
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:09:40.100700'
+  approved_at: '2026-08-28T18:28:22.615824'
+  approved_by: reviewer
+concepts:
+- name: Wielkości odwrotnie proporcjonalne
+  description: 'Dwie dodatnie (lub niezerowe) wielkości x i y są odwrotnie proporcjonalne, jeżeli ich
+    iloczyn jest stały: x·y = a, gdzie a ≠ 0 jest ustaloną liczbą.'
+  explanation: 'Myśl o tym tak: to, co jedna wielkość zyskuje, druga traci w tej samej proporcji. Jeśli
+    x wzrośnie 3 razy, to y zmaleje 3 razy, bo iloczyn musi pozostać ten sam. Klasyczne pary: prędkość
+    i czas przy stałej drodze, liczba pracowników i czas wykonania tej samej pracy, długość i szerokość
+    prostokąta o ustalonym polu.'
+  difficulty: 1
+- name: Współczynnik proporcjonalności a
+  description: Stała a = x·y występująca we wzorze y = a/x; jest to jedyny parametr funkcji odwrotnie
+    proporcjonalnej.
+  explanation: 'a ma zwykle sens fizyczny: przy s = v·t stałą jest droga, przy P = x·y stałą jest pole.
+    Wystarczy znać JEDNĄ parę odpowiadających sobie wartości (x₀, y₀), by wyznaczyć a = x₀·y₀, a więc
+    całą funkcję.'
+  difficulty: 1
+- name: Funkcja odwrotnie proporcjonalna
+  description: Funkcja dana wzorem f(x) = a/x, gdzie a ≠ 0 jest liczbą rzeczywistą, określona dla x ≠
+    0.
+  explanation: 'To zapis zależności x·y = a rozwiązany względem y. Warunek a ≠ 0 jest istotny: dla a =
+    0 dostalibyśmy funkcję stale równą 0, która nie opisuje żadnej proporcjonalności odwrotnej.'
+  difficulty: 1
+- name: Dziedzina funkcji f(x) = a/x
+  description: Zbiór D = R \ {0}, czyli wszystkie liczby rzeczywiste poza zerem (nie dzielimy przez zero).
+  explanation: 'W zadaniach z treścią dziedzina bywa jeszcze węższa: jeśli x oznacza prędkość, liczbę
+    maszyn czy długość boku, to sensowne są tylko x > 0 (czasem tylko liczby naturalne). Zawsze pytaj:
+    jakie wartości x mają sens w tej sytuacji?'
+  difficulty: 1
+- name: Zbiór wartości funkcji f(x) = a/x
+  description: 'ZW = R \ {0}: funkcja przyjmuje każdą wartość różną od zera i nigdy nie przyjmuje wartości
+    0.'
+  explanation: Równanie a/x = 0 nie ma rozwiązań, bo ułamek jest zerem tylko wtedy, gdy licznik jest zerem,
+    a a ≠ 0. Stąd wykres nigdy nie dotyka osi OX. Każdą inną wartość y ≠ 0 osiąga dokładnie raz, dla x
+    = a/y.
+  difficulty: 2
+- name: Hiperbola
+  description: Krzywa będąca wykresem funkcji f(x) = a/x; składa się z dwóch oddzielnych, symetrycznych
+    względem początku układu części zwanych gałęziami.
+  explanation: Hiperbola nie jest jedną ciągłą linią — dwóch gałęzi nie wolno łączyć, bo w x = 0 funkcja
+    nie istnieje. Im większa jest |a|, tym gałęzie leżą dalej od osi układu współrzędnych.
+  difficulty: 2
+- name: Położenie gałęzi a znak a
+  description: Dla a > 0 gałęzie leżą w I i III ćwiartce, dla a < 0 — w II i IV ćwiartce.
+  explanation: 'Wynika to wprost ze znaku ilorazu: dla a > 0 wartość a/x ma ten sam znak co x, dla a <
+    0 — znak przeciwny. To najszybszy sposób rozstrzygnięcia, czy a jest dodatnie, czy ujemne, patrząc
+    na rysunek.'
+  difficulty: 2
+- name: Asymptota pionowa x = 0
+  description: Prosta o równaniu x = 0 (oś OY), do której wykres zbliża się dowolnie blisko, gdy x dąży
+    do zera, nigdy jej nie przecinając.
+  explanation: Gdy x jest bardzo małe co do wartości bezwzględnej (np. 0,001), |a/x| staje się ogromne.
+    Dlatego gałęzie "uciekają" w górę i w dół wzdłuż osi OY.
+  difficulty: 3
+- name: Asymptota pozioma y = 0
+  description: Prosta o równaniu y = 0 (oś OX), do której wykres zbliża się dowolnie blisko, gdy |x| rośnie
+    nieograniczenie.
+  explanation: 'Dla ogromnych x wartość a/x jest bliska zeru, ale nigdy nie jest zerem. Interpretacja:
+    przy bardzo dużej prędkości czas przejazdu jest bardzo krótki, ale nigdy zerowy.'
+  difficulty: 3
+- name: Monotoniczność funkcji odwrotnie proporcjonalnej
+  description: Dla a > 0 funkcja jest malejąca w przedziale (−∞, 0) i malejąca w przedziale (0, +∞); dla
+    a < 0 jest rosnąca w każdym z tych przedziałów. Nie jest monotoniczna w całej dziedzinie.
+  explanation: 'Monotoniczność orzeka się osobno na każdej gałęzi. Kontrprzykład dla a = 1: f(−1) = −1,
+    f(1) = 1, więc mimo że −1 < 1, wartość wzrosła — funkcja nie jest malejąca na całym R \ {0}.'
+  difficulty: 3
+- name: Symetria wykresu hiperboli
+  description: 'Wykres f(x) = a/x ma środek symetrii w punkcie (0, 0) oraz osie symetrii y = x i y = −x;
+    funkcja jest nieparzysta: f(−x) = −f(x).'
+  explanation: Nieparzystość pozwala rysować tylko jedną gałąź, a drugą otrzymać przez obrót o 180° wokół
+    początku układu. Jeśli punkt (2, 3) leży na wykresie, to leży na nim także (−2, −3) i (3, 2).
+  difficulty: 3
+- name: Brak miejsc zerowych
+  description: Funkcja f(x) = a/x nie ma miejsc zerowych i nie przecina żadnej z osi układu współrzędnych.
+  explanation: Osi OY nie przecina, bo x = 0 nie należy do dziedziny; osi OX nie przecina, bo a/x ≠ 0
+    dla a ≠ 0.
+  difficulty: 2
+- name: Znak funkcji
+  description: 'Dla a > 0: f(x) > 0 dla x > 0 i f(x) < 0 dla x < 0. Dla a < 0 zachodzi sytuacja odwrotna.'
+  explanation: Iloraz jest dodatni, gdy licznik i mianownik mają ten sam znak. To wystarczy, by natychmiast
+    odczytać, dla jakich x wykres leży nad osią OX.
+  difficulty: 2
+- name: Proporcja odwrotna
+  description: Dla dwóch par odpowiadających sobie wartości zachodzi x₁·y₁ = x₂·y₂, czyli x₁/x₂ = y₂/y₁.
+  explanation: To narzędzie do zadań "ilu robotników — ile czasu". Zapisujemy równość iloczynów (a nie
+    równość ilorazów, jak przy proporcjonalności prostej) i wyliczamy niewiadomą.
+  difficulty: 2
+- name: Porównanie z proporcjonalnością prostą
+  description: 'Proporcjonalność prosta: y = a·x, stały iloraz y/x, wykresem jest prosta przez (0,0).
+    Proporcjonalność odwrotna: y = a/x, stały iloczyn x·y, wykresem jest hiperbola.'
+  explanation: 'Test rozpoznawczy z tabeli: policz y/x — jeśli stałe, to proporcjonalność prosta; policz
+    x·y — jeśli stałe, to odwrotna. Jeśli żadne, zależność jest inna.'
+  difficulty: 2
+- name: Typowe modele odwrotnie proporcjonalne
+  description: s = v·t (droga stała), W = w·t (praca stała, w — wydajność), P = a·b (pole prostokąta stałe),
+    koszt całkowity = cena jednostkowa · liczba sztuk, m = d·V (masa stała).
+  explanation: W każdym z nich jedna wielkość jest ustalona i pełni rolę współczynnika a; pozostałe dwie
+    są odwrotnie proporcjonalne. Rozpoznanie modelu to zwykle najtrudniejszy krok zadania tekstowego.
+  difficulty: 2
+- name: Odczyt informacji z wykresu hiperboli
+  description: Wyznaczanie a, wartości funkcji, argumentów oraz rozwiązań nierówności na podstawie narysowanej
+    hiperboli.
+  explanation: 'Wystarczy jeden wyraźnie zaznaczony punkt kratowy (x₀, y₀): a = x₀·y₀. Dalej wszystko
+    liczymy ze wzoru albo odczytujemy: f(x) > c to te x, dla których hiperbola leży powyżej prostej poziomej
+    y = c.'
+  difficulty: 3
+formulas:
+- name: Wzór funkcji odwrotnie proporcjonalnej
+  latex_raw: f(x)=\dfrac{a}{x}
+  conditions: a \neq 0, \; x \neq 0
+  description: 'Równoważnie: y·x = a. Dla a = 0 nie mówimy o proporcjonalności odwrotnej.'
+- name: Warunek proporcjonalności odwrotnej
+  latex_raw: x\cdot y = a = \text{const}
+  conditions: dla wszystkich rozważanych par (x, y), a ≠ 0
+  description: 'Praktyczny test: iloczyn odpowiadających sobie wartości musi być zawsze taki sam.'
+- name: Wyznaczenie współczynnika z punktu wykresu
+  latex_raw: a = x_0\cdot y_0
+  conditions: punkt (x_0, y_0) należy do wykresu, x_0 ≠ 0
+  description: Jeden punkt wyznacza całą funkcję.
+- name: Proporcja odwrotna
+  latex_raw: x_1 y_1 = x_2 y_2 \quad\Longleftrightarrow\quad y_2 = \dfrac{x_1 y_1}{x_2}
+  conditions: x_1, x_2 ≠ 0; wielkości odwrotnie proporcjonalne
+  description: 'Uwaga: to równość iloczynów, nie ilorazów.'
+- name: Dziedzina i zbiór wartości
+  latex_raw: D = \mathbb{R}\setminus\{0\},\qquad ZW = \mathbb{R}\setminus\{0\}
+  conditions: f(x) = a/x, a ≠ 0, bez dodatkowych ograniczeń kontekstowych
+- name: Nieparzystość
+  latex_raw: f(-x) = \dfrac{a}{-x} = -\dfrac{a}{x} = -f(x)
+  conditions: x ≠ 0
+  description: Stąd symetria wykresu względem punktu (0, 0).
+- name: Asymptoty hiperboli
+  latex_raw: x = 0 \;(\text{pionowa}),\qquad y = 0 \;(\text{pozioma})
+  conditions: f(x) = a/x, a ≠ 0
+  description: Wykres nigdy nie ma punktów wspólnych z asymptotami.
+- name: Wyznaczanie argumentu dla danej wartości
+  latex_raw: \dfrac{a}{x} = c \;\Longrightarrow\; x = \dfrac{a}{c}
+  conditions: c ≠ 0; dla c = 0 równanie jest sprzeczne
+- name: Zależność droga–prędkość–czas
+  latex_raw: t = \dfrac{s}{v}
+  conditions: s ustalone, v > 0
+  description: Czas jest odwrotnie proporcjonalny do prędkości.
+- name: Zależność praca–wydajność–czas
+  latex_raw: t = \dfrac{W}{w}
+  conditions: W (praca do wykonania) ustalone, w > 0
+  description: 'Przy jednakowej wydajności pracowników: liczba pracowników · czas = const.'
+- name: Bok prostokąta o stałym polu
+  latex_raw: b = \dfrac{P}{a}
+  conditions: P > 0 ustalone, a > 0
+  description: Wykresem jest tylko prawa gałąź hiperboli.
+methods:
+- name: Sprawdzanie, czy wielkości są odwrotnie proporcjonalne (z tabeli lub opisu)
+  when_to_use: Gdy dana jest tabela par (x, y) albo opis sytuacji i trzeba rozstrzygnąć rodzaj zależności.
+  steps:
+  - Dla każdej pary oblicz iloczyn x·y.
+  - Jeśli wszystkie iloczyny są równe tej samej liczbie a ≠ 0 — wielkości są odwrotnie proporcjonalne,
+    a wzór to y = a/x.
+  - Jeśli iloczyny się różnią, sprawdź ilorazy y/x — stały iloraz oznacza proporcjonalność prostą.
+  - Jeśli ani iloczyny, ani ilorazy nie są stałe, zależność nie jest żadną z tych proporcjonalności.
+  - Sformułuj wniosek i (jeśli trzeba) uzupełnij brakujące pola tabeli ze wzoru y = a/x.
+- name: Wyznaczanie wzoru funkcji odwrotnie proporcjonalnej
+  when_to_use: Gdy znany jest jeden punkt wykresu lub jedna para odpowiadających sobie wartości.
+  steps:
+  - Zapisz wzór ogólny f(x) = a/x.
+  - 'Podstaw współrzędne danego punktu: y₀ = a/x₀.'
+  - Wyznacz a = x₀·y₀.
+  - Zapisz wzór f(x) = (x₀y₀)/x i podaj dziedzinę R \ {0} (lub węższą, wynikającą z treści zadania).
+  - Sprawdź wynik, podstawiając dany punkt do otrzymanego wzoru.
+- name: Szkicowanie wykresu funkcji f(x) = a/x
+  when_to_use: Gdy trzeba narysować hiperbolę lub zilustrować zależność odwrotnie proporcjonalną.
+  steps:
+  - 'Ustal znak a i zdecyduj, w których ćwiartkach leżą gałęzie (a > 0: I i III; a < 0: II i IV).'
+  - Zbuduj tabelkę wartości dla dodatnich x będących dzielnikami |a|, np. x = 1, 2, 3, 6 (oraz x = 1/2
+    dla dokładniejszego przebiegu przy osi OY).
+  - Zaznacz te punkty i połącz gładką krzywą, zbliżającą się do osi OX i OY, ale ich nie dotykającą.
+  - 'Drugą gałąź otrzymaj z symetrii środkowej względem (0, 0): każdemu punktowi (x, y) odpowiada (−x,
+    −y).'
+  - Zaznacz przerywanymi liniami asymptoty x = 0 i y = 0; pamiętaj, by nie łączyć gałęzi.
+- name: Odczytywanie własności funkcji z wykresu hiperboli
+  when_to_use: Gdy w zadaniu dany jest rysunek hiperboli i pytanie o a, wartości, monotoniczność, znak
+    lub rozwiązanie nierówności.
+  steps:
+  - Znajdź na wykresie punkt o całkowitych współrzędnych i oblicz a = x₀·y₀; zapisz wzór funkcji.
+  - Wartość f(x₁) odczytaj jako rzędną punktu wykresu o odciętej x₁ (lub policz ze wzoru).
+  - Do rozwiązania nierówności f(x) > c narysuj prostą poziomą y = c i odczytaj te x, dla których hiperbola
+    leży powyżej prostej; pamiętaj o wykluczeniu x = 0.
+  - Monotoniczność podaj osobno dla przedziałów (−∞, 0) i (0, +∞).
+  - Znak funkcji odczytaj z położenia gałęzi względem osi OX.
+- name: Rozwiązywanie zadań tekstowych o proporcjonalności odwrotnej
+  when_to_use: 'Zadania typu: pracownicy–czas, prędkość–czas, cena–liczba sztuk, bok–bok prostokąta.'
+  steps:
+  - Nazwij wielkości zmienne (x, y) i wskaż wielkość stałą (praca, droga, pole, koszt) — to będzie a.
+  - Uzasadnij, że iloczyn x·y jest stały; oblicz a z danych początkowych.
+  - Zapisz model y = a/x wraz z dziedziną wynikającą z kontekstu (np. x > 0, x ∈ N).
+  - 'Podstaw dane pytanie: znaną wartość x wstaw do wzoru albo z równania a/x = y wyznacz x.'
+  - 'Sprawdź sensowność wyniku (jednostki, zaokrąglenie do liczby całkowitej, monotoniczność: więcej maszyn
+    → krócej) i zapisz odpowiedź zdaniem.'
+- name: Rozwiązywanie prostego równania i nierówności typu a/x = c, a/x ≥ c
+  when_to_use: Gdy pytamy, dla jakiego argumentu funkcja przyjmuje daną wartość lub kiedy przekracza dany
+    poziom.
+  steps:
+  - Zaznacz założenie x ≠ 0.
+  - 'Dla równania: pomnóż obustronnie przez x, otrzymując a = c·x, i wyznacz x = a/c (dla c = 0 równanie
+    sprzeczne).'
+  - Dla nierówności NIE mnóż przez x bez zastanowienia — rozważ osobno przypadek x > 0 (znak nierówności
+    zostaje) i x < 0 (znak się odwraca).
+  - 'Alternatywnie rozwiąż graficznie: porównaj położenie hiperboli i prostej y = c.'
+  - Zapisz odpowiedź jako sumę przedziałów, wykluczając 0.
+examples:
+- statement: Funkcja odwrotnie proporcjonalna f ma tę własność, że jej wykres przechodzi przez punkt A
+    = (−3, 4). Wyznacz wzór funkcji, podaj jej dziedzinę i zbiór wartości, oblicz f(6) i sprawdź, czy
+    punkt B = (2, 6) należy do wykresu. W jakich ćwiartkach leżą gałęzie hiperboli?
+  worked_solution: |-
+    Wzór ogólny: f(x) = a/x. Podstawiamy współrzędne A: 4 = a/(−3), stąd a = −3 · 4 = −12.
+    Zatem f(x) = −12/x, D = R \ {0}, ZW = R \ {0}.
+    f(6) = −12/6 = −2.
+    Sprawdzenie punktu B: f(2) = −12/2 = −6 ≠ 6, więc B nie należy do wykresu. (Można też szybciej: dla B iloczyn x·y = 2·6 = 12 ≠ −12.)
+    Ponieważ a = −12 < 0, gałęzie leżą w II i IV ćwiartce: dla x < 0 wartości są dodatnie, dla x > 0 — ujemne.
+  difficulty: 1
+- statement: 'W tabeli podano zależność między liczbą x jednakowych pomp a czasem y (w godzinach) opróżniania
+    tego samego zbiornika: (2; 18), (3; 12), (6; 6), (9; ?). Uzasadnij, że wielkości są odwrotnie proporcjonalne,
+    wyznacz wzór y(x) i uzupełnij tabelę. Ile pomp trzeba, aby zbiornik opróżnić w 4 godziny?'
+  worked_solution: |-
+    Liczymy iloczyny: 2·18 = 36, 3·12 = 36, 6·6 = 36. Iloczyny są stałe i równe 36, więc x i y są odwrotnie proporcjonalne, a współczynnikiem jest a = 36 (to łączna praca w "pompogodzinach").
+    Wzór: y = 36/x, przy czym w kontekście zadania x jest dodatnią liczbą naturalną.
+    Dla x = 9: y = 36/9 = 4 godziny.
+    Szukamy x, dla którego y = 4: 36/x = 4, czyli x = 36/4 = 9 pomp.
+    Odpowiedź: brakująca wartość to 4 h; zbiornik opróżni w 4 godziny 9 pomp. Zgodnie z modelem im więcej pomp, tym krócej — funkcja jest malejąca dla x > 0.
+  difficulty: 2
+- statement: Na rysunku przedstawiono fragment hiperboli będącej wykresem funkcji f(x) = a/x; wiadomo,
+    że przechodzi ona przez punkt P = (2, 3). a) Wyznacz a. b) Podaj równania asymptot i opisz monotoniczność
+    f. c) Rozwiąż nierówność f(x) ≥ 2. d) Wskaż inny punkt kratowy wykresu leżący w III ćwiartce.
+  worked_solution: |-
+    a) a = 2·3 = 6, więc f(x) = 6/x.
+    b) Asymptoty: pionowa x = 0, pozioma y = 0. Ponieważ a = 6 > 0, funkcja jest malejąca w przedziale (−∞, 0) i malejąca w przedziale (0, +∞) — ale nie jest malejąca w całej dziedzinie (np. f(−1) = −6 < f(1) = 6).
+    c) Nierówność 6/x ≥ 2, x ≠ 0. Przypadek x > 0: mnożymy przez x (dodatnie), 6 ≥ 2x, czyli x ≤ 3; z warunkiem x > 0 dostajemy 0 < x ≤ 3. Przypadek x < 0: wtedy 6/x < 0 < 2, więc nierówność nie jest spełniona. Odpowiedź: x ∈ (0, 3]. (Graficznie: hiperbola leży nad prostą y = 2 dokładnie dla 0 < x ≤ 3.)
+    d) Z nieparzystości: skoro (2, 3) należy do wykresu, to należy również (−2, −3) — punkt w III ćwiartce.
+  difficulty: 3
+- statement: Trasę o długości 360 km samochód pokonuje ze stałą prędkością v (w km/h). a) Zapisz czas
+    przejazdu t jako funkcję v i podaj dziedzinę wynikającą z treści zadania. b) Oblicz t dla v = 90 km/h
+    oraz v dla t = 4 h 30 min. c) O ile procent skróci się czas przejazdu, jeśli prędkość wzrośnie z 60
+    km/h do 80 km/h? d) Wyjaśnij, dlaczego czas przejazdu nigdy nie będzie równy zeru.
+  worked_solution: |-
+    a) Droga jest stała: v·t = 360, więc t(v) = 360/v. Dziedziną w sensie matematycznym byłoby R \ {0}, ale w kontekście zadania v > 0 (rozsądnie: v ∈ (0, 200]). Wykresem jest tylko prawa gałąź hiperboli.
+    b) t(90) = 360/90 = 4 h. Dla t = 4,5 h: 360/v = 4,5, stąd v = 360/4,5 = 80 km/h.
+    c) t(60) = 360/60 = 6 h, t(80) = 360/80 = 4,5 h. Skrócenie: 6 − 4,5 = 1,5 h, co stanowi 1,5/6 = 0,25 = 25% czasu początkowego. Zauważmy, że prędkość wzrosła o 33⅓%, a czas zmalał o 25% — spadek procentowy nie jest równy wzrostowi procentowemu, bo zależność jest odwrotnie proporcjonalna, a nie liniowa.
+    d) Równanie 360/v = 0 nie ma rozwiązań, bo licznik 360 ≠ 0. Wartość t maleje do zera, ale go nie osiąga — prosta t = 0 jest asymptotą poziomą wykresu.
+  difficulty: 3
+- statement: Prostokąt ma pole równe 24. Oznaczmy przez x długość jednego boku, a przez y długość boku
+    sąsiedniego. a) Zapisz y jako funkcję x i naszkicuj jej wykres w dziedzinie wynikającej z warunków
+    zadania. b) Oblicz obwód prostokąta dla x = 4 oraz dla x = 12 i porównaj wyniki. c) Dla jakiej wartości
+    x prostokąt jest kwadratem? d) Uzasadnij, że nie istnieje prostokąt o polu 24 i boku x = 24 oraz y
+    = 1.
+  worked_solution: |-
+    a) Pole prostokąta: x·y = 24, więc y = 24/x. Ponieważ długości boków są dodatnie, dziedziną jest przedział (0, +∞). Wykresem jest wyłącznie prawa gałąź hiperboli (I ćwiartka), przechodząca m.in. przez punkty (2, 12), (3, 8), (4, 6), (6, 4), (8, 3), (12, 2), zbliżająca się do obu osi, ale ich nieprzecinająca.
+    b) Dla x = 4: y = 24/4 = 6, obwód L = 2(4 + 6) = 20. Dla x = 12: y = 24/12 = 2, obwód L = 2(12 + 2) = 28. Prostokąty mają to samo pole, ale różne obwody — im bardziej "wydłużony" prostokąt, tym większy obwód.
+    c) Kwadrat: x = y, czyli x = 24/x, stąd x² = 24 i x = √24 = 2√6 ≈ 4,9 (bierzemy tylko pierwiastek dodatni, bo x > 0). To punkt przecięcia hiperboli z prostą y = x.
+    d) Gdyby x = 24 i y = 1, to pole wynosiłoby 24·1 = 24 — pole się zgadza, więc taki prostokąt ISTNIEJE; punkt (24, 1) leży na wykresie. Sprzeczność pojawiłaby się dopiero dla pary o innym iloczynie, np. (24, 2), bo 24·2 = 48 ≠ 24. Wniosek: przynależność punktu do wykresu sprawdzamy zawsze przez iloczyn współrzędnych.
+  difficulty: 4
+objectives:
+- statement: Podać definicję wielkości odwrotnie proporcjonalnych oraz wzór funkcji f(x) = a/x wraz z
+    warunkiem a ≠ 0.
+  bloom_level: zapamiętywanie
+- statement: Wyznaczyć dziedzinę, zbiór wartości, znak, monotoniczność (w przedziałach) i asymptoty funkcji
+    f(x) = a/x oraz uzasadnić brak miejsc zerowych.
+  bloom_level: rozumienie
+- statement: Wyznaczyć współczynnik a i wzór funkcji odwrotnie proporcjonalnej na podstawie jednego punktu
+    wykresu, tabeli wartości lub opisu sytuacji.
+  bloom_level: stosowanie
+- statement: Naszkicować wykres funkcji f(x) = a/x dla dodatniego i ujemnego a, poprawnie zaznaczając
+    obie gałęzie i asymptoty.
+  bloom_level: stosowanie
+- statement: Sprawdzić, czy dany punkt należy do wykresu funkcji odwrotnie proporcjonalnej, i wykorzystać
+    nieparzystość do wskazywania punktów symetrycznych.
+  bloom_level: stosowanie
+- statement: Rozwiązać proste równania i nierówności postaci a/x = c oraz a/x ≥ c metodą algebraiczną
+    lub graficzną, z uwzględnieniem znaku x.
+  bloom_level: stosowanie
+- statement: Zbudować model odwrotnie proporcjonalny dla sytuacji praktycznej (droga–prędkość–czas, praca–wydajność–czas,
+    pole prostokąta, koszty) i wyznaczyć z niego szukane wielkości.
+  bloom_level: stosowanie
+- statement: Odczytać z wykresu hiperboli wartości funkcji, argumenty, przedziały monotoniczności oraz
+    rozwiązania nierówności i zinterpretować je w kontekście zadania.
+  bloom_level: analiza
+- statement: Rozróżnić, na podstawie tabeli lub opisu, proporcjonalność prostą, odwrotną i zależność,
+    która nie jest żadną z nich, i uzasadnić wybór.
+  bloom_level: analiza
+- statement: Ocenić sensowność otrzymanego wyniku w zadaniu tekstowym (jednostki, dziedzina kontekstowa,
+    kierunek zmiany wielkości) i wykryć typowy błąd polegający na użyciu proporcji prostej.
+  bloom_level: ocena
+misconceptions:
+- name: '"Funkcja f(x) = a/x dla a > 0 jest malejąca w całej dziedzinie"'
+  incorrect_reasoning: 'Uczeń widzi obie gałęzie opadające i pisze: "funkcja jest malejąca w zbiorze R
+    \ {0}".'
+  correct_reasoning: 'Monotoniczność orzeka się na przedziale. Dla f(x) = 1/x mamy −1 < 1, ale f(−1) =
+    −1 < f(1) = 1, więc wartość wzrosła. Poprawnie: funkcja jest malejąca w (−∞, 0) i malejąca w (0, +∞),
+    a nie w sumie tych przedziałów.'
+  severity: 4
+- name: Łączenie dwóch gałęzi hiperboli
+  incorrect_reasoning: Uczeń rysuje ciągłą krzywą przechodzącą przez okolice punktu (0, 0) lub przecinającą
+    oś OY, traktując wykres jak jedną linię.
+  correct_reasoning: Dla x = 0 funkcja nie jest określona, więc wykres nie ma żadnego punktu na osi OY.
+    Gałęzie są rozłączne i tylko zbliżają się do asymptot x = 0 i y = 0.
+  severity: 4
+- name: Szukanie miejsca zerowego lub punktu przecięcia z osią OY
+  incorrect_reasoning: '"Obliczam f(0) = a/0 = 0" albo "rozwiązuję a/x = 0 i dostaję x = 0".'
+  correct_reasoning: Dzielenie przez zero jest niewykonalne, więc f(0) nie istnieje. Równanie a/x = 0
+    jest sprzeczne, bo ułamek jest zerem tylko przy zerowym liczniku, a a ≠ 0. Funkcja odwrotnie proporcjonalna
+    nie ma miejsc zerowych.
+  severity: 3
+- name: Mylenie proporcjonalności odwrotnej z odejmowaniem/zmianą o stałą
+  incorrect_reasoning: '"x wzrosło 2 razy, więc y zmalało o 2" albo "x wzrosło o 3, więc y zmalało o 3".'
+  correct_reasoning: 'Przy proporcjonalności odwrotnej stały jest iloczyn: jeśli x wzrasta k razy, to
+    y maleje k razy (dzieli się przez k). Zmiany addytywne (o tyle samo) opisują funkcję liniową, a nie
+    hiperbolę.'
+  severity: 4
+- name: Stosowanie proporcji prostej w zadaniu o proporcjonalności odwrotnej
+  incorrect_reasoning: 'Zadanie: 6 pomp opróżnia zbiornik w 15 h, ile czasu zajmie to 9 pompom? Uczeń
+    pisze 6/15 = 9/x i otrzymuje x = 22,5 h — czyli więcej pomp pracuje dłużej.'
+  correct_reasoning: 'Należy przyrównać iloczyny: 6·15 = 9·x, stąd x = 90/9 = 10 h. Zawsze sprawdzaj sens
+    odpowiedzi: więcej pomp musi oznaczać krótszy czas.'
+  severity: 5
+- name: Dopuszczanie a = 0
+  incorrect_reasoning: '"Funkcja f(x) = 0/x też jest odwrotnie proporcjonalna, po prostu z a = 0."'
+  correct_reasoning: W definicji wymagamy a ≠ 0. Dla a = 0 funkcja jest stale równa 0 (poza x = 0), jej
+    wykresem nie jest hiperbola i nie opisuje żadnej zależności odwrotnie proporcjonalnej.
+  severity: 2
+- name: Mnożenie nierówności przez x bez rozważenia znaku
+  incorrect_reasoning: Z nierówności 6/x ≥ 2 uczeń mnoży obie strony przez x i pisze 6 ≥ 2x, czyli x ≤
+    3, a w odpowiedzi podaje (−∞, 0) ∪ (0, 3].
+  correct_reasoning: 'Mnożenie przez x zmienia kierunek nierówności, gdy x < 0. Trzeba rozpatrzyć oba
+    przypadki: dla x > 0 wychodzi 0 < x ≤ 3, dla x < 0 lewa strona jest ujemna, więc nierówność nie zachodzi.
+    Odpowiedź: (0, 3].'
+  severity: 4
+- name: Ignorowanie dziedziny wynikającej z kontekstu
+  incorrect_reasoning: W zadaniu o prędkości lub liczbie pracowników uczeń rysuje obie gałęzie hiperboli
+    i dopuszcza ujemne (albo ułamkowe) wartości x.
+  correct_reasoning: Prędkość, liczba maszyn czy długość boku są dodatnie, a liczba pracowników dodatkowo
+    naturalna. W modelu rysujemy tylko odpowiedni fragment gałęzi w I ćwiartce i odrzucamy rozwiązania
+    niespełniające warunków zadania.
+  severity: 3
+- name: '"Wykres w końcu dotknie osi OX (albo ją przetnie)"'
+  incorrect_reasoning: '"Dla bardzo dużych x wartość a/x staje się zerem, więc hiperbola dochodzi do osi
+    OX."'
+  correct_reasoning: Wartość a/x jest coraz bliższa zeru, ale zawsze różna od zera — oś OX jest asymptotą,
+    czyli krzywa zbliża się do niej dowolnie blisko, nigdy jej nie osiągając. Zbiór wartości to R \ {0}.
+  severity: 3
+- name: Błędne wyznaczanie a z wykresu (odczyt zamiast iloczynu)
+  incorrect_reasoning: Uczeń patrzy na punkt (2, 3) i twierdzi, że a = 3 ("bo tyle wynosi y") albo a =
+    3/2.
+  correct_reasoning: 'Z równania y = a/x wynika a = x·y, więc a = 2·3 = 6. Warto od razu zweryfikować:
+    f(2) = 6/2 = 3 — zgadza się z rysunkiem.'
+  severity: 3

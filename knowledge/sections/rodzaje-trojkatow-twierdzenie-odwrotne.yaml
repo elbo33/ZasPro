@@ -1,0 +1,316 @@
+section: rodzaje-trojkatow-twierdzenie-odwrotne
+name: Rodzaje trójkątów; twierdzenie odwrotne do twierdzenia Pitagorasa
+scope: Classifying a triangle as acute, right or obtuse from its side lengths, using the converse of the
+  Pythagorean theorem.
+requirements:
+- VIII.2
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:31:58.990381'
+  approved_at: '2026-08-28T18:28:07.397145'
+  approved_by: reviewer
+concepts:
+- name: Podział trójkątów ze względu na kąty
+  description: Trójkąt jest ostrokątny, gdy wszystkie jego kąty wewnętrzne są ostre (mniejsze od 90°);
+    prostokątny, gdy jeden kąt ma miarę 90°; rozwartokątny, gdy jeden kąt jest rozwarty (większy od 90°
+    i mniejszy od 180°).
+  explanation: Ponieważ suma kątów trójkąta wynosi 180°, kąt prosty lub rozwarty może wystąpić najwyżej
+    jeden raz. Dlatego o typie trójkąta decyduje wyłącznie jego NAJWIĘKSZY kąt — wystarczy zbadać ten
+    jeden kąt, żeby zaklasyfikować cały trójkąt.
+  difficulty: 1
+- name: Podział trójkątów ze względu na boki
+  description: Trójkąt równoboczny ma trzy boki równe, równoramienny — co najmniej dwa boki równe, różnoboczny
+    — wszystkie boki różnej długości.
+  explanation: 'Ten podział jest niezależny od podziału ze względu na kąty: istnieje np. trójkąt równoramienny
+    ostrokątny (5, 5, 6), prostokątny (1, 1, √2) i rozwartokątny (5, 5, 9). Jedynym wyjątkiem jest trójkąt
+    równoboczny — zawsze ma kąty 60°, więc zawsze jest ostrokątny.'
+  difficulty: 2
+- name: Warunek istnienia trójkąta (nierówność trójkąta)
+  description: 'Z odcinków o długościach a, b, c można zbudować trójkąt wtedy i tylko wtedy, gdy każda
+    z sum dwóch długości jest większa od trzeciej: a + b > c, a + c > b, b + c > a.'
+  explanation: 'Praktycznie: wystarczy sprawdzić jedną nierówność — sumę dwóch krótszych boków porównać
+    z najdłuższym. Jeśli ta zachodzi, pozostałe dwie są automatycznie spełnione. Zanim zaczniemy klasyfikować
+    trójkąt, warto upewnić się, że on w ogóle istnieje.'
+  difficulty: 2
+- name: Przeciwprostokątna i przyprostokątne
+  description: W trójkącie prostokątnym bok leżący naprzeciw kąta prostego nazywamy przeciwprostokątną,
+    a dwa pozostałe boki — przyprostokątnymi.
+  explanation: Przeciwprostokątna jest zawsze najdłuższym bokiem trójkąta prostokątnego (leży naprzeciw
+    największego kąta). To spostrzeżenie mówi nam, którą liczbę w trójce (a, b, c) trzeba podnieść do
+    kwadratu po prawej stronie równości.
+  difficulty: 1
+- name: Twierdzenie Pitagorasa
+  description: Jeżeli trójkąt o bokach a, b, c jest prostokątny i c jest przeciwprostokątną, to a² + b²
+    = c².
+  explanation: 'To implikacja w jedną stronę: z prostokątności wynika równość kwadratów. Służy do obliczania
+    długości boków, gdy już wiemy, że kąt jest prosty.'
+  difficulty: 1
+- name: Twierdzenie odwrotne do twierdzenia Pitagorasa
+  description: Jeżeli w trójkącie o bokach a, b, c zachodzi równość a² + b² = c², to trójkąt ten jest
+    prostokątny, a kąt prosty leży naprzeciw boku c.
+  explanation: 'To narzędzie działa w drugą stronę niż samo twierdzenie Pitagorasa: z liczb wnioskujemy
+    o kształcie. Nie musimy nic rysować ani mierzyć — wystarczy porównać a² + b² z c², gdzie c jest najdłuższym
+    bokiem.'
+  difficulty: 2
+- name: Kryterium ostrokątności i rozwartokątności
+  description: 'Niech c będzie najdłuższym bokiem trójkąta o bokach a, b, c. Wtedy: a² + b² > c² ⟺ trójkąt
+    ostrokątny; a² + b² = c² ⟺ trójkąt prostokątny; a² + b² < c² ⟺ trójkąt rozwartokątny.'
+  explanation: 'Myśl o tym jak o „zaginaniu" kąta między bokami a i b: im większy ten kąt, tym dłuższy
+    bok c naprzeciwko. Gdy c jest za krótki na kąt prosty — kąt jest ostry; gdy za długi — rozwarty. Kluczowy
+    warunek: c musi być NAJDŁUŻSZYM bokiem, inaczej test nic nie mówi.'
+  difficulty: 3
+- name: 'Twierdzenie: naprzeciw większego kąta leży dłuższy bok'
+  description: 'W dowolnym trójkącie naprzeciw większego kąta wewnętrznego leży dłuższy bok i odwrotnie:
+    naprzeciw dłuższego boku leży większy kąt. W szczególności boki równe leżą naprzeciw kątów równych.'
+  explanation: 'Dzięki temu porządek długości boków przenosi się jeden do jednego na porządek miar kątów:
+    jeśli a < b < c, to α < β < γ. To właśnie uzasadnia, dlaczego badamy tylko najdłuższy bok — naprzeciw
+    niego leży największy kąt, który decyduje o typie trójkąta.'
+  difficulty: 2
+- name: Twierdzenie cosinusów
+  description: W dowolnym trójkącie o bokach a, b, c i kącie γ leżącym naprzeciw boku c zachodzi c² =
+    a² + b² − 2ab·cos γ.
+  explanation: 'To uogólnienie twierdzenia Pitagorasa: gdy γ = 90°, cos γ = 0 i wzór redukuje się do c²
+    = a² + b². Przekształcone do postaci cos γ = (a² + b² − c²)/(2ab) pozwala nie tylko rozstrzygnąć,
+    czy kąt jest ostry (cos γ > 0), prosty (cos γ = 0) czy rozwarty (cos γ < 0), ale i wyznaczyć jego
+    miarę.'
+  difficulty: 3
+- name: Trójki pitagorejskie
+  description: Trójka liczb naturalnych (a, b, c) spełniająca a² + b² = c², np. (3, 4, 5), (5, 12, 13),
+    (8, 15, 17), (7, 24, 25), (9, 40, 41), (20, 21, 29).
+  explanation: Warto znać je na pamięć — pozwalają rozpoznać trójkąt prostokątny „na oko". Każda wielokrotność
+    trójki pitagorejskiej też jest trójką pitagorejską, bo pomnożenie wszystkich boków przez k mnoży obie
+    strony równości przez k² (np. 6, 8, 10 lub 15, 36, 39).
+  difficulty: 2
+- name: Podobieństwo skali a typ trójkąta
+  description: Pomnożenie wszystkich boków trójkąta przez tę samą dodatnią liczbę k nie zmienia miar jego
+    kątów, więc nie zmienia typu trójkąta.
+  explanation: 'Jeśli (a, b, c) daje trójkąt rozwartokątny, to (ka, kb, kc) też. Formalnie: (ka)² + (kb)²
+    = k²(a² + b²) i (kc)² = k²c², więc znak porównania się nie zmienia. Stąd 3, 4, 5 i 30, 40, 50 to ten
+    sam kształt.'
+  difficulty: 3
+formulas:
+- name: Suma kątów w trójkącie
+  latex_raw: \alpha + \beta + \gamma = 180^\circ
+  conditions: dowolny trójkąt
+  description: Wynika stąd, że najwyżej jeden kąt trójkąta może być prosty lub rozwarty.
+- name: Nierówność trójkąta
+  latex_raw: a + b > c \ \wedge\ b + c > a \ \wedge\ a + c > b
+  conditions: a, b, c > 0; warunek konieczny i wystarczający istnienia trójkąta o takich bokach
+  description: Wystarczy sprawdzić nierówność dla najdłuższego boku.
+- name: Twierdzenie Pitagorasa
+  latex_raw: a^2 + b^2 = c^2
+  conditions: trójkąt prostokątny, c — przeciwprostokątna, a, b — przyprostokątne
+- name: Twierdzenie odwrotne do twierdzenia Pitagorasa
+  latex_raw: a^2 + b^2 = c^2 \implies \gamma = 90^\circ
+  conditions: a, b, c — długości boków trójkąta, γ — kąt leżący naprzeciw boku c
+  description: Automatycznie c okazuje się wtedy najdłuższym bokiem.
+- name: Kryterium trójkąta ostrokątnego
+  latex_raw: a^2 + b^2 > c^2 \iff \gamma < 90^\circ
+  conditions: c = max(a, b, c), czyli c jest najdłuższym bokiem trójkąta
+- name: Kryterium trójkąta rozwartokątnego
+  latex_raw: a^2 + b^2 < c^2 \iff \gamma > 90^\circ
+  conditions: c = max(a, b, c); wtedy dodatkowo musi zachodzić a + b > c, by trójkąt istniał
+- name: Twierdzenie cosinusów
+  latex_raw: c^2 = a^2 + b^2 - 2ab\cos\gamma
+  conditions: dowolny trójkąt, γ — kąt między bokami a i b
+- name: Cosinus kąta z trzech boków
+  latex_raw: \cos\gamma = \frac{a^2 + b^2 - c^2}{2ab}
+  conditions: dowolny trójkąt; znak licznika decyduje o rodzaju kąta γ
+  description: cos γ > 0 ⇒ kąt ostry, cos γ = 0 ⇒ prosty, cos γ < 0 ⇒ rozwarty.
+- name: Zależność między porządkiem boków i kątów
+  latex_raw: a < b < c \iff \alpha < \beta < \gamma
+  conditions: w dowolnym trójkącie, gdzie α, β, γ leżą naprzeciw boków a, b, c
+- name: Skalowanie boków
+  latex_raw: (ka)^2 + (kb)^2 - (kc)^2 = k^2\big(a^2 + b^2 - c^2\big)
+  conditions: k > 0
+  description: Znak wyrażenia się nie zmienia, więc typ trójkąta jest zachowany.
+methods:
+- name: Klasyfikacja trójkąta na podstawie długości boków
+  when_to_use: Gdy dane są trzy długości boków i trzeba rozstrzygnąć, czy trójkąt jest ostrokątny, prostokątny
+    czy rozwartokątny.
+  steps:
+  - 'Sprawdź warunek istnienia trójkąta: suma dwóch krótszych boków musi być większa od najdłuższego.
+    Jeśli nie jest — trójkąt nie istnieje i klasyfikacja nie ma sensu.'
+  - Uporządkuj długości rosnąco i oznacz najdłuższy bok przez c, a pozostałe przez a i b.
+  - Oblicz osobno a² + b² oraz c².
+  - 'Porównaj: jeśli a² + b² = c² — trójkąt prostokątny (kąt prosty naprzeciw c); jeśli a² + b² > c² —
+    ostrokątny; jeśli a² + b² < c² — rozwartokątny.'
+  - Zapisz wniosek, wskazując, przy którym wierzchołku leży kąt prosty lub rozwarty (naprzeciw boku c).
+- name: Wyznaczenie miary kąta z twierdzenia cosinusów
+  when_to_use: Gdy trzeba nie tylko rozpoznać rodzaj kąta, ale podać jego miarę, albo gdy chcemy uzasadnić
+    klasyfikację rachunkiem na cosinusie.
+  steps:
+  - Oznacz bok, naprzeciw którego leży szukany kąt γ, przez c; pozostałe boki to a i b.
+  - Podstaw do wzoru cos γ = (a² + b² − c²)/(2ab).
+  - Oblicz licznik i mianownik, skróć ułamek.
+  - 'Odczytaj znak: dodatni ⇒ kąt ostry, zero ⇒ kąt prosty, ujemny ⇒ kąt rozwarty.'
+  - Jeśli otrzymana wartość to jedna z wartości tablicowych (±1/2, ±√2/2, ±√3/2), podaj miarę kąta (30°,
+    45°, 60°, 120°, 135°, 150°).
+- name: Uporządkowanie kątów trójkąta bez ich obliczania
+  when_to_use: Gdy pytanie dotyczy tego, który kąt jest największy/najmniejszy, lub gdy trzeba porównać
+    kąty dwóch trójkątów o znanych bokach.
+  steps:
+  - Uporządkuj długości boków rosnąco.
+  - Przypisz każdemu bokowi kąt leżący naprzeciw niego (naprzeciw boku a leży kąt A itd.).
+  - 'Zastosuj twierdzenie: dłuższemu bokowi odpowiada większy kąt — porządek kątów jest taki sam jak porządek
+    boków.'
+  - Jeśli dwa boki są równe, odpowiadające im kąty są równe (trójkąt równoramienny).
+- name: Wyznaczanie brakującej długości boku tak, by trójkąt był prostokątny
+  when_to_use: Gdy dane są dwa boki, a trzeci jest niewiadomą x, i trzeba znaleźć wszystkie x, dla których
+    trójkąt jest prostokątny.
+  steps:
+  - 'Rozważ przypadek 1: x jest przeciwprostokątną, czyli x² = a² + b²; wyznacz x = √(a² + b²).'
+  - 'Rozważ przypadek 2: x jest przyprostokątną, a dłuższy z danych boków jest przeciwprostokątną, czyli
+    x² + a² = b² (gdzie b > a); wyznacz x = √(b² − a²), o ile b > a.'
+  - Odrzuć rozwiązania niedodatnie i sprawdź nierówność trójkąta dla każdego otrzymanego x.
+  - Podaj wszystkie znalezione wartości (zwykle są dwie).
+- name: Badanie typu trójkąta zależnego od parametru
+  when_to_use: Gdy boki wyrażone są przez parametr (np. x, x+1, x+2) i pytamy, dla jakich wartości trójkąt
+    jest ostrokątny/prostokątny/rozwartokątny.
+  steps:
+  - Ustal, który bok jest najdłuższy dla rozważanych wartości parametru (często wynika to wprost z zapisu).
+  - Zapisz warunek istnienia trójkąta jako nierówność z parametrem i rozwiąż ją.
+  - 'Zapisz odpowiedni warunek: a² + b² = c², a² + b² > c² lub a² + b² < c².'
+  - Rozwiąż otrzymane równanie/nierówność (zwykle kwadratową).
+  - Wynik przetnij z warunkiem istnienia trójkąta i z dziedziną (długości boków są dodatnie).
+examples:
+- statement: 'Rozstrzygnij, jakiego rodzaju są trójkąty o bokach: a) 6, 8, 10; b) 5, 6, 7; c) 4, 5, 8.'
+  worked_solution: |-
+    a) Najdłuższy bok: c = 10. Sprawdzamy istnienie: 6 + 8 = 14 > 10 ✔. Liczymy 6² + 8² = 36 + 64 = 100 oraz 10² = 100. Ponieważ 100 = 100, z twierdzenia odwrotnego do twierdzenia Pitagorasa trójkąt jest PROSTOKĄTNY (to trójka 3, 4, 5 pomnożona przez 2).
+    b) Najdłuższy bok: c = 7. Istnienie: 5 + 6 = 11 > 7 ✔. Liczymy 5² + 6² = 25 + 36 = 61 oraz 7² = 49. Ponieważ 61 > 49, trójkąt jest OSTROKĄTNY.
+    c) Najdłuższy bok: c = 8. Istnienie: 4 + 5 = 9 > 8 ✔. Liczymy 4² + 5² = 16 + 25 = 41 oraz 8² = 64. Ponieważ 41 < 64, trójkąt jest ROZWARTOKĄTNY; kąt rozwarty leży naprzeciw boku długości 8.
+  difficulty: 1
+- statement: Czy z odcinków o długościach 3, 4, 9 można zbudować trójkąt? A z odcinków 6, 6, 9 — jaki
+    to trójkąt?
+  worked_solution: |-
+    Pierwszy zestaw: najdłuższy bok to 9, a suma dwóch krótszych wynosi 3 + 4 = 7 < 9. Nierówność trójkąta nie jest spełniona, więc taki trójkąt NIE ISTNIEJE. (Zauważ, że gdyby ktoś bezmyślnie policzył 3² + 4² = 25 < 81 i napisał „rozwartokątny", popełniłby błąd — nie ma czego klasyfikować.)
+    Drugi zestaw: 6 + 6 = 12 > 9 ✔, trójkąt istnieje i jest równoramienny. Najdłuższy bok c = 9, więc porównujemy 6² + 6² = 36 + 36 = 72 z 9² = 81. Ponieważ 72 < 81, trójkąt jest ROZWARTOKĄTNY (i równoramienny). Kąt rozwarty leży naprzeciw podstawy długości 9, czyli między ramionami.
+  difficulty: 2
+- statement: W trójkącie ABC mamy |AB| = 11, |BC| = 7, |CA| = 9. Uporządkuj kąty tego trójkąta od najmniejszego
+    do największego i określ rodzaj trójkąta.
+  worked_solution: |-
+    Naprzeciw boku AB (długość 11) leży kąt C, naprzeciw BC (7) leży kąt A, naprzeciw CA (9) leży kąt B.
+    Porządek boków: 7 < 9 < 11, czyli |BC| < |CA| < |AB|.
+    Z twierdzenia „naprzeciw dłuższego boku leży większy kąt" otrzymujemy ten sam porządek kątów: ∡A < ∡B < ∡C.
+    Rodzaj trójkąta zależy od największego kąta, czyli od kąta C leżącego naprzeciw boku 11. Sprawdzamy: 7² + 9² = 49 + 81 = 130, a 11² = 121. Ponieważ 130 > 121, kąt C jest ostry, a skoro jest największy — wszystkie kąty są ostre. Trójkąt jest OSTROKĄTNY.
+  difficulty: 2
+- statement: 'Dane są dwa boki trójkąta: 5 i 12. Dla jakich długości x trzeciego boku trójkąt jest prostokątny?'
+  worked_solution: |-
+    Przypadek 1: x jest przeciwprostokątną (najdłuższym bokiem). Wtedy x² = 5² + 12² = 25 + 144 = 169, czyli x = 13. Sprawdzenie nierówności trójkąta: 5 + 12 = 17 > 13 ✔. To znana trójka pitagorejska (5, 12, 13).
+    Przypadek 2: przeciwprostokątną jest bok długości 12 (dłuższy z danych), a x jest przyprostokątną. Wtedy x² + 5² = 12², czyli x² = 144 − 25 = 119, więc x = √119 ≈ 10,9. Sprawdzenie: 5 + √119 > 12, bo √119 > 7 (gdyż 119 > 49) ✔.
+    Przypadek „12 i x to przyprostokątne, a 5 przeciwprostokątna" jest niemożliwy, bo przeciwprostokątna musi być najdłuższa.
+    Odpowiedź: x = 13 lub x = √119.
+  difficulty: 3
+- statement: Boki trójkąta mają długości 3, 5 i 7. Wykaż, że trójkąt jest rozwartokątny, i wyznacz miarę
+    jego największego kąta.
+  worked_solution: |-
+    Istnienie: 3 + 5 = 8 > 7 ✔.
+    Najdłuższy bok: c = 7, więc największy kąt γ leży naprzeciw niego. Test: 3² + 5² = 9 + 25 = 34, a 7² = 49. Ponieważ 34 < 49, trójkąt jest ROZWARTOKĄTNY.
+    Miara kąta z twierdzenia cosinusów: cos γ = (a² + b² − c²)/(2ab) = (9 + 25 − 49)/(2·3·5) = (−15)/30 = −1/2.
+    Ujemny cosinus potwierdza, że kąt jest rozwarty. Kątem o cosinusie równym −1/2 jest γ = 120°.
+    Odpowiedź: trójkąt jest rozwartokątny, jego największy kąt ma miarę 120°.
+  difficulty: 3
+- statement: Boki trójkąta mają długości x, x + 2 oraz x + 4, gdzie x > 0. Dla jakich x trójkąt ten jest
+    prostokątny, a dla jakich rozwartokątny?
+  worked_solution: |-
+    Najdłuższy bok to c = x + 4 (bo x < x + 2 < x + 4), pozostałe: a = x, b = x + 2.
+    Warunek istnienia: x + (x + 2) > x + 4, czyli 2x + 2 > x + 4, stąd x > 2.
+    Prostokątny: x² + (x + 2)² = (x + 4)².
+    x² + x² + 4x + 4 = x² + 8x + 16
+    x² − 4x − 12 = 0, Δ = 16 + 48 = 64, √Δ = 8, x = (4 − 8)/2 = −2 lub x = (4 + 8)/2 = 6.
+    Odrzucamy x = −2 (musi być x > 2). Zostaje x = 6, czyli boki 6, 8, 10 ✔.
+    Rozwartokątny: x² + (x + 2)² < (x + 4)², czyli x² − 4x − 12 < 0, a więc x ∈ (−2, 6). Uwzględniając x > 2 dostajemy x ∈ (2, 6).
+    Odpowiedź: prostokątny dla x = 6, rozwartokątny dla x ∈ (2, 6) (a ostrokątny dla x > 6).
+  difficulty: 4
+objectives:
+- statement: Podać definicje trójkąta ostrokątnego, prostokątnego i rozwartokątnego oraz wyjaśnić, dlaczego
+    o typie trójkąta decyduje jego największy kąt.
+  bloom_level: Rozumienie
+- statement: Sprawdzić, czy z trzech danych odcinków można zbudować trójkąt, stosując nierówność trójkąta.
+  bloom_level: Stosowanie
+- statement: Sformułować twierdzenie odwrotne do twierdzenia Pitagorasa i odróżnić je od twierdzenia Pitagorasa.
+  bloom_level: Rozumienie
+- statement: Zaklasyfikować trójkąt o danych długościach boków jako ostrokątny, prostokątny lub rozwartokątny,
+    porównując sumę kwadratów krótszych boków z kwadratem najdłuższego boku.
+  bloom_level: Stosowanie
+- statement: Wykorzystać twierdzenie cosinusów do wyznaczenia cosinusa (i miary) kąta trójkąta o danych
+    bokach oraz do uzasadnienia jego rodzaju.
+  bloom_level: Stosowanie
+- statement: Uporządkować kąty trójkąta według miar na podstawie długości boków, stosując twierdzenie
+    o większym kącie naprzeciw dłuższego boku.
+  bloom_level: Stosowanie
+- statement: Rozpoznawać trójki pitagorejskie i ich wielokrotności oraz uzasadnić, że przeskalowanie boków
+    nie zmienia rodzaju trójkąta.
+  bloom_level: Analiza
+- statement: Wyznaczyć wszystkie możliwe długości brakującego boku, dla których trójkąt jest prostokątny,
+    rozważając oba położenia niewiadomego boku.
+  bloom_level: Analiza
+- statement: Zbadać, dla jakich wartości parametru trójkąt o bokach zależnych od tego parametru jest ostrokątny,
+    prostokątny lub rozwartokątny.
+  bloom_level: Analiza
+- statement: Ocenić poprawność cudzego rozumowania klasyfikującego trójkąt i wskazać błąd (np. brak sprawdzenia
+    nierówności trójkąta lub złe wskazanie najdłuższego boku).
+  bloom_level: Ocenianie
+misconceptions:
+- name: Porównywanie kwadratów bez wskazania najdłuższego boku
+  incorrect_reasoning: Dla boków 4, 5, 8 uczeń liczy 4² + 8² = 80 > 5² = 25 i stwierdza, że trójkąt jest
+    ostrokątny.
+  correct_reasoning: 'W kryterium po prawej stronie musi stać kwadrat NAJDŁUŻSZEGO boku, bo tylko naprzeciw
+    niego może leżeć kąt prosty lub rozwarty. Poprawnie: 4² + 5² = 41 < 8² = 64, więc trójkąt jest rozwartokątny.
+    Zawsze najpierw uporządkuj boki rosnąco.'
+  severity: 5
+- name: Pomijanie warunku istnienia trójkąta
+  incorrect_reasoning: Dla liczb 2, 3, 7 uczeń liczy 2² + 3² = 13 < 49 i odpowiada „trójkąt rozwartokątny".
+  correct_reasoning: Ponieważ 2 + 3 = 5 < 7, taki trójkąt w ogóle nie istnieje — nie ma czego klasyfikować.
+    Zanim zastosujesz kryterium kwadratów, sprawdź nierówność trójkąta dla najdłuższego boku.
+  severity: 4
+- name: Mylenie kierunku nierówności w kryterium
+  incorrect_reasoning: „Skoro a² + b² < c², to bok c jest krótki, a trójkąt musi być ostrokątny."
+  correct_reasoning: 'Jest odwrotnie: a² + b² < c² oznacza, że bok c jest ZA DŁUGI jak na kąt prosty,
+    więc kąt naprzeciw niego jest rozwarty. Pamiętaj mnemotechnicznie: większa suma kwadratów przyprostokątnych
+    ⇒ mniejszy kąt ⇒ ostrokątny. Potwierdza to wzór cos γ = (a² + b² − c²)/(2ab): ujemny licznik ⇒ ujemny
+    cosinus ⇒ kąt rozwarty.'
+  severity: 4
+- name: Mylenie twierdzenia Pitagorasa z twierdzeniem odwrotnym
+  incorrect_reasoning: „Twierdzenie Pitagorasa mówi, że jeśli a² + b² = c², to trójkąt jest prostokątny."
+  correct_reasoning: Twierdzenie Pitagorasa zakłada prostokątność i daje równość; twierdzenie ODWROTNE
+    zakłada równość i daje prostokątność. Do rozpoznawania rodzaju trójkąta z danych długości boków używamy
+    twierdzenia odwrotnego i tak trzeba je nazwać w uzasadnieniu.
+  severity: 3
+- name: Sumowanie boków zamiast ich kwadratów
+  incorrect_reasoning: Dla boków 5, 6, 11 uczeń pisze 5 + 6 = 11, więc „trójkąt jest prostokątny".
+  correct_reasoning: 'Warunek prostokątności dotyczy kwadratów: 5² + 6² = 61 ≠ 121. Równość 5 + 6 = 11
+    oznacza natomiast, że trójkąt jest zdegenerowany — punkty leżą na jednej prostej i trójkąt nie istnieje.'
+  severity: 4
+- name: Przekonanie, że „prawie równość" oznacza kąt prosty
+  incorrect_reasoning: Dla boków 5, 6, 8 uczeń liczy 25 + 36 = 61 ≈ 64 i uznaje trójkąt za prostokątny
+    („różnica jest mała").
+  correct_reasoning: 'Kryterium jest ścisłe: 61 < 64, więc trójkąt jest rozwartokątny, choć tylko nieznacznie
+    (kąt ≈ 93°). W matematyce nie zaokrągla się warunku równości — decyduje dokładne porównanie.'
+  severity: 3
+- name: Utożsamianie trójkąta równoramiennego z ostrokątnym
+  incorrect_reasoning: „Trójkąt równoramienny ma dwa równe kąty przy podstawie, więc jest ostrokątny."
+  correct_reasoning: Podział ze względu na boki jest niezależny od podziału ze względu na kąty. Trójkąt
+    o bokach 6, 6, 9 jest równoramienny i rozwartokątny, o bokach 1, 1, √2 — równoramienny i prostokątny.
+    Tylko trójkąt równoboczny jest zawsze ostrokątny.
+  severity: 3
+- name: Odwrócenie zależności między bokiem a kątem
+  incorrect_reasoning: „Naprzeciw najdłuższego boku leży najmniejszy kąt, bo bok się «rozciąga»."
+  correct_reasoning: 'Naprzeciw dłuższego boku leży WIĘKSZY kąt. Łatwo to sprawdzić na trójkącie prostokątnym:
+    przeciwprostokątna (bok najdłuższy) leży naprzeciw kąta prostego, czyli największego w tym trójkącie.'
+  severity: 4
+- name: Sądzenie, że trójkąt może mieć dwa kąty rozwarte lub proste
+  incorrect_reasoning: „W trójkącie o bokach 2, 3, 4 mogą być dwa kąty rozwarte, trzeba więc sprawdzić
+    każdy bok osobno."
+  correct_reasoning: Suma kątów wynosi 180°, więc dwa kąty ≥ 90° dałyby sumę ≥ 180° i nie zostałoby nic
+    na trzeci kąt. Wystarczy zbadać kąt naprzeciw najdłuższego boku — jeśli on jest ostry, wszystkie są
+    ostre.
+  severity: 3
+- name: Zapominanie o drugim przypadku przy szukaniu brakującego boku
+  incorrect_reasoning: Dla danych boków 8 i 15 uczeń podaje tylko x = 17, uznając, że szukany bok musi
+    być przeciwprostokątną.
+  correct_reasoning: 'Niewiadomy bok może być również przyprostokątną: wtedy x² + 8² = 15², czyli x =
+    √161. Trzeba rozważyć oba przypadki i za każdym razem sprawdzić nierówność trójkąta.'
+  severity: 4

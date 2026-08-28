@@ -1,0 +1,293 @@
+section: wartosc-bezwzgledna
+name: 'Wartość bezwzględna: interpretacja i proste równania'
+scope: Absolute value read geometrically (distance) and algebraically; solving simple equations with an
+  absolute value.
+requirements:
+- I.7
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T13:54:20.538340'
+  approved_at: '2026-08-28T18:27:56.454056'
+  approved_by: reviewer
+concepts:
+- name: Wartość bezwzględna (moduł) liczby rzeczywistej
+  description: '|x| = x dla x ≥ 0 oraz |x| = −x dla x < 0.'
+  explanation: 'To definicja algebraiczna: moduł "zdejmuje minus" z liczby ujemnej. Kluczowe jest to,
+    że zapis −x nie oznacza liczby ujemnej — jeśli x jest ujemne, to −x jest dodatnie. Wynik działania
+    |...| nigdy nie jest ujemny.'
+  difficulty: 1
+- name: Interpretacja geometryczna |x|
+  description: '|x| to odległość punktu o współrzędnej x od punktu 0 na osi liczbowej.'
+  explanation: 'Zamiast liczyć znaki, patrz na oś: |x| = 5 znaczy "jestem oddalony od zera o 5 kroków",
+    więc x = 5 lub x = −5. To najszybszy sposób przewidzenia liczby rozwiązań równania.'
+  difficulty: 1
+- name: Odległość dwóch liczb na osi
+  description: Odległość między punktami o współrzędnych a i b na osi liczbowej wynosi d(a, b) = |a −
+    b| = |b − a|.
+  explanation: Wyrażenie |x − a| czytaj zawsze jako "odległość x od a". Stąd |x + 4| = |x − (−4)| to odległość
+    x od −4 — trzeba pamiętać o zamianie plusa na odejmowanie liczby przeciwnej.
+  difficulty: 2
+- name: Środek i promień w równaniu |x − a| = r
+  description: Rozwiązaniami równania |x − a| = r (dla r > 0) są dwie liczby a − r i a + r, symetryczne
+    względem a.
+  explanation: 'Liczba a to "środek", r to "promień". Odwrotnie: mając dwa rozwiązania p i q, środek to
+    a = (p+q)/2, a promień r = |p − q|/2.'
+  difficulty: 2
+- name: Nieujemność modułu i wynikające z niej warunki
+  description: Dla każdego x zachodzi |x| ≥ 0, przy czym |x| = 0 wtedy i tylko wtedy, gdy x = 0.
+  explanation: 'To narzędzie do natychmiastowego odrzucania równań: |coś| = liczba ujemna nie ma rozwiązań.
+    W równaniach typu |f(x)| = g(x) daje też warunek konieczny g(x) ≥ 0.'
+  difficulty: 1
+- name: Moduł wyrażenia niewymiernego
+  description: Aby opuścić moduł z wyrażenia liczbowego, trzeba najpierw rozstrzygnąć jego znak, np. |√5
+    − 3| = 3 − √5, bo √5 < 3.
+  explanation: Porównuj liczby przez podniesienie do kwadratu lub przybliżenie (√2 ≈ 1,41; √3 ≈ 1,73;
+    √5 ≈ 2,24). Jeśli wyrażenie jest ujemne, wynikiem jest liczba do niego przeciwna.
+  difficulty: 2
+- name: Własności działaniowe modułu
+  description: '|−x| = |x|, |x·y| = |x|·|y|, |x/y| = |x|/|y| (y ≠ 0), |x|² = x², √(x²) = |x|.'
+  explanation: Moduł "przechodzi" przez mnożenie i dzielenie, ale NIE przez dodawanie. Dzięki |x·y| =
+    |x||y| można np. zapisać |2x − 6| = 2|x − 3|, co ujawnia interpretację geometryczną.
+  difficulty: 3
+- name: Nierówność trójkąta
+  description: '|a + b| ≤ |a| + |b| dla dowolnych liczb rzeczywistych a, b; równość zachodzi, gdy a i
+    b mają ten sam znak lub jedna z nich jest zerem.'
+  explanation: 'To ostrzeżenie przed "rozdzielaniem" modułu sumy: |3 + (−5)| = 2, a |3| + |−5| = 8. Wystarczy
+    pamiętać przykład liczbowy.'
+  difficulty: 3
+- name: Równanie z wartością bezwzględną
+  description: Równanie, w którym niewiadoma występuje pod znakiem modułu, np. |ax + b| = c, |f(x)| =
+    |g(x)|, |f(x)| = g(x).
+  explanation: 'Rozwiązywanie zawsze polega na pozbyciu się modułu: albo przez rozbicie na dwa przypadki
+    (dwa równania), albo przez analizę znaku wyrażenia pod modułem na przedziałach.'
+  difficulty: 2
+- name: Liczba rozwiązań równania |x − a| = m
+  description: Dla m < 0 brak rozwiązań, dla m = 0 dokładnie jedno (x = a), dla m > 0 dokładnie dwa (x
+    = a ± m).
+  explanation: 'Myśl o okręgu na osi: promień ujemny nie istnieje, promień zerowy daje jeden punkt, dodatni
+    — dwa. Ta analiza wystarcza do zadań z parametrem na poziomie podstawowym.'
+  difficulty: 3
+- name: Wyrażenie przeciwne pod modułem
+  description: '|a − b| = |b − a|, ogólnie |f(x)| = |−f(x)|.'
+  explanation: Kolejność odejmowania w module jest bez znaczenia — przydaje się przy porządkowaniu zapisu
+    odległości i przy równaniach |f| = |g|.
+  difficulty: 2
+formulas:
+- name: Definicja wartości bezwzględnej
+  latex_raw: '|x| = \begin{cases} x, & x \ge 0\\ -x, & x < 0\end{cases}'
+  conditions: x ∈ ℝ
+  description: Definicja algebraiczna — podstawa opuszczania modułu w przypadkach.
+- name: Interpretacja geometryczna
+  latex_raw: '|x| = d(x,0), \qquad |x-a| = d(x,a)'
+  conditions: x, a ∈ ℝ; d — odległość na osi liczbowej
+  description: Czytaj |x − a| jako "odległość x od a".
+- name: Równanie |x| = c
+  latex_raw: '|x| = c \iff \big(x = c \ \lor\ x = -c\big)'
+  conditions: c > 0; dla c = 0 jedynym rozwiązaniem jest x = 0; dla c < 0 równanie sprzeczne
+- name: Równanie |x − a| = r
+  latex_raw: '|x-a| = r \iff \big(x = a-r \ \lor\ x = a+r\big)'
+  conditions: r > 0
+- name: Równanie |ax + b| = c
+  latex_raw: '|ax+b| = c \iff \big(ax+b = c \ \lor\ ax+b = -c\big)'
+  conditions: a ≠ 0, c ≥ 0; dla c < 0 brak rozwiązań
+- name: Równanie |f(x)| = |g(x)|
+  latex_raw: '|f(x)| = |g(x)| \iff \big(f(x) = g(x) \ \lor\ f(x) = -g(x)\big)'
+  conditions: zawsze (bez dodatkowych założeń)
+- name: Równanie |f(x)| = g(x)
+  latex_raw: '|f(x)| = g(x) \iff g(x) \ge 0 \ \land\ \big(f(x) = g(x) \ \lor\ f(x) = -g(x)\big)'
+  conditions: konieczny warunek g(x) ≥ 0 albo równoważne sprawdzenie otrzymanych rozwiązań
+- name: Własności modułu
+  latex_raw: '|{-x}| = |x|,\quad |xy| = |x|\,|y|,\quad \left|\tfrac{x}{y}\right| = \tfrac{|x|}{|y|},\quad
+    |x|^2 = x^2'
+  conditions: y ≠ 0 w dzieleniu
+- name: Pierwiastek z kwadratu
+  latex_raw: \sqrt{x^2} = |x|
+  conditions: x ∈ ℝ (nie √(x²) = x!)
+- name: Nierówność trójkąta
+  latex_raw: '|a+b| \le |a| + |b|'
+  conditions: a, b ∈ ℝ
+- name: Odtworzenie równania z dwóch rozwiązań
+  latex_raw: '|x - \tfrac{p+q}{2}| = \tfrac{|p-q|}{2}'
+  conditions: p ≠ q — równanie o rozwiązaniach dokładnie p i q
+methods:
+- name: Opuszczanie modułu z wyrażenia liczbowego
+  when_to_use: Gdy trzeba obliczyć wartość wyrażenia zawierającego moduły liczb lub liczb niewymiernych.
+  steps:
+  - Rozstrzygnij znak każdego wyrażenia pod modułem (porównaj liczby, w razie potrzeby użyj przybliżeń
+    pierwiastków lub podnieś do kwadratu).
+  - Jeśli wyrażenie jest nieujemne — przepisz je bez modułu.
+  - Jeśli wyrażenie jest ujemne — zapisz liczbę do niego przeciwną (zamień kolejność odejmowania lub zmień
+    znaki wszystkich składników).
+  - Wykonaj działania i uprość wynik.
+- name: Rozwiązywanie równania |ax + b| = c
+  when_to_use: Równanie z jednym modułem, po prawej stronie liczba (bez niewiadomej).
+  steps:
+  - 'Sprawdź znak c: jeśli c < 0 — zapisz, że równanie nie ma rozwiązań i zakończ.'
+  - Jeśli c = 0 — rozwiąż ax + b = 0.
+  - 'Jeśli c > 0 — rozbij na alternatywę: ax + b = c lub ax + b = −c.'
+  - Rozwiąż oba równania liniowe.
+  - Zapisz odpowiedź jako dwie liczby (lub zaznacz je na osi, podając interpretację odległościową).
+- name: Interpretacja geometryczna zamiast rachunków
+  when_to_use: Gdy równanie ma postać |x − a| = r lub daje się do niej sprowadzić (np. przez wyłączenie
+    współczynnika przed moduł), a także gdy trzeba ułożyć równanie o zadanych rozwiązaniach.
+  steps:
+  - 'Sprowadź lewą stronę do postaci |x − a| (wyłącz współczynnik: |ax + b| = |a|·|x + b/a|, następnie
+    podziel obie strony przez |a|).'
+  - 'Odczytaj: szukamy liczb odległych od a o r.'
+  - Zapisz rozwiązania x = a − r oraz x = a + r i zaznacz je na osi.
+  - 'W zadaniu odwrotnym: mając rozwiązania p i q, policz środek a = (p+q)/2 i promień r = |p − q|/2,
+    po czym zapisz |x − a| = r.'
+- name: Rozwiązywanie równania |f(x)| = |g(x)|
+  when_to_use: Gdy moduły stoją po obu stronach równania.
+  steps:
+  - 'Zapisz alternatywę: f(x) = g(x) lub f(x) = −g(x) (pamiętaj o nawiasie przy minusie).'
+  - Rozwiąż każde z równań osobno.
+  - Zbierz wszystkie otrzymane liczby — żadnych dodatkowych założeń nie ma, ale warto zrobić szybkie sprawdzenie
+    rachunkowe.
+  - Zapisz odpowiedź.
+- name: Metoda przypadków (przedziałów) dla |f(x)| = g(x)
+  when_to_use: Gdy po drugiej stronie równania występuje niewiadoma, albo gdy w równaniu jest kilka modułów.
+  steps:
+  - Wyznacz miejsca zerowe wyrażeń pod modułami i podziel oś liczbową na przedziały.
+  - W każdym przedziale ustal znak wyrażenia pod modułem i opuść moduł zgodnie z definicją (bez zmiany
+    znaku lub ze zmianą znaku całego wyrażenia).
+  - Rozwiąż otrzymane równanie bez modułu przy założeniu, że x należy do rozważanego przedziału.
+  - Odrzuć rozwiązania spoza przedziału, w którym pracujesz.
+  - Połącz rozwiązania ze wszystkich przypadków; dla pewności podstaw je do równania wyjściowego.
+- name: Analiza liczby rozwiązań równania z parametrem
+  when_to_use: 'Zadania typu: dla jakich wartości m równanie |x − a| = m (lub |ax+b| = m) ma 0, 1, 2 rozwiązania.'
+  steps:
+  - Sprowadź równanie do postaci |x − a| = W(m), gdzie po prawej stronie nie ma x.
+  - 'Wykorzystaj nieujemność modułu: jeśli W(m) < 0 — brak rozwiązań.'
+  - Jeśli W(m) = 0 — dokładnie jedno rozwiązanie x = a.
+  - Jeśli W(m) > 0 — dokładnie dwa rozwiązania a ± W(m).
+  - Rozwiąż odpowiednie równanie/nierówność względem m i zapisz odpowiedź.
+examples:
+- statement: Oblicz wartość wyrażenia A = |−7| − |3 − 8| + |√5 − 3| − |2 − √2|.
+  worked_solution: |-
+    Kolejno rozstrzygamy znaki wyrażeń pod modułami.
+    |−7| = 7.
+    3 − 8 = −5 < 0, więc |3 − 8| = 5.
+    √5 ≈ 2,24 < 3, więc √5 − 3 < 0 i |√5 − 3| = 3 − √5.
+    √2 ≈ 1,41 < 2, więc 2 − √2 > 0 i |2 − √2| = 2 − √2.
+    Podstawiamy: A = 7 − 5 + (3 − √5) − (2 − √2) = 7 − 5 + 3 − √5 − 2 + √2 = 3 − √5 + √2.
+    Odpowiedź: A = 3 + √2 − √5 (liczba niewymierna, w przybliżeniu 3 + 1,41 − 2,24 ≈ 2,17).
+  difficulty: 2
+- statement: Rozwiąż równanie |2x − 6| = 8 i zaznacz rozwiązania na osi liczbowej, podając ich interpretację
+    geometryczną.
+  worked_solution: |-
+    Sposób algebraiczny: ponieważ 8 > 0, mamy alternatywę
+    2x − 6 = 8  lub  2x − 6 = −8,
+    2x = 14 lub 2x = −2,
+    x = 7 lub x = −1.
+    Sposób geometryczny: |2x − 6| = 2|x − 3|, więc równanie 2|x − 3| = 8 daje |x − 3| = 4, czyli szukamy liczb odległych od 3 o 4. Są to 3 − 4 = −1 oraz 3 + 4 = 7. Na osi punkty −1 i 7 leżą symetrycznie względem punktu 3.
+    Odpowiedź: x = −1 lub x = 7.
+  difficulty: 2
+- statement: Rozwiąż równanie |x + 1| = |3x − 5|.
+  worked_solution: |-
+    Moduły stoją po obu stronach, więc korzystamy z równoważności |f| = |g| ⟺ f = g lub f = −g.
+    Przypadek 1: x + 1 = 3x − 5 ⟹ 1 + 5 = 3x − x ⟹ 6 = 2x ⟹ x = 3.
+    Przypadek 2: x + 1 = −(3x − 5) = −3x + 5 ⟹ x + 3x = 5 − 1 ⟹ 4x = 4 ⟹ x = 1.
+    Sprawdzenie: dla x = 3: |3 + 1| = 4, |3·3 − 5| = 4 ✓. Dla x = 1: |1 + 1| = 2, |3 − 5| = 2 ✓.
+    Odpowiedź: x = 1 lub x = 3.
+  difficulty: 3
+- statement: Rozwiąż równanie |x − 2| = 3x + 1.
+  worked_solution: |-
+    Po prawej stronie występuje niewiadoma, więc najpierw warunek konieczny: 3x + 1 ≥ 0, czyli x ≥ −1/3 (moduł nie może być równy liczbie ujemnej).
+    Dzielimy oś miejscem zerowym wyrażenia x − 2, czyli punktem x = 2.
+    Przypadek 1: x ≥ 2. Wtedy |x − 2| = x − 2, więc x − 2 = 3x + 1 ⟹ −3 = 2x ⟹ x = −1,5. Liczba −1,5 nie należy do przedziału [2, +∞), więc odrzucamy.
+    Przypadek 2: x < 2. Wtedy |x − 2| = −(x − 2) = 2 − x, więc 2 − x = 3x + 1 ⟹ 1 = 4x ⟹ x = 1/4. Liczba 1/4 należy do (−∞, 2) i spełnia warunek x ≥ −1/3, więc jest rozwiązaniem.
+    Sprawdzenie: |1/4 − 2| = |−7/4| = 7/4 oraz 3·(1/4) + 1 = 3/4 + 1 = 7/4 ✓.
+    Odpowiedź: x = 1/4.
+  difficulty: 4
+- statement: '(a) Zapisz w postaci równania z wartością bezwzględną warunek: "liczba x jest oddalona od
+    −5 o tyle samo, co od 11" — nie, zapisz równanie z jednym modułem, którego rozwiązaniami są dokładnie
+    liczby −5 i 11. (b) Dla jakich wartości parametru m równanie |x − 3| = 2m − 4 ma dokładnie dwa rozwiązania,
+    dla jakich jedno, a dla jakich nie ma rozwiązań?'
+  worked_solution: |-
+    (a) Rozwiązania równania |x − a| = r są symetryczne względem a i odległe od a o r.
+    Środek: a = (−5 + 11)/2 = 6/2 = 3. Promień: r = |11 − (−5)|/2 = 16/2 = 8.
+    Szukane równanie: |x − 3| = 8. Sprawdzenie: x − 3 = 8 ⟹ x = 11; x − 3 = −8 ⟹ x = −5 ✓.
+    (b) Prawa strona nie zawiera x, więc decyduje jej znak.
+    Dwa rozwiązania: 2m − 4 > 0 ⟹ 2m > 4 ⟹ m > 2.
+    Jedno rozwiązanie: 2m − 4 = 0 ⟹ m = 2 (wtedy x = 3).
+    Brak rozwiązań: 2m − 4 < 0 ⟹ m < 2.
+    Odpowiedź: dwa rozwiązania dla m > 2, jedno dla m = 2, brak dla m < 2.
+  difficulty: 4
+objectives:
+- statement: Podać definicję algebraiczną wartości bezwzględnej i obliczyć moduł konkretnej liczby, w
+    tym wyrażenia z pierwiastkiem.
+  bloom_level: Zapamiętanie/Zrozumienie
+- statement: Wyjaśnić geometryczne znaczenie |x| oraz |x − a| jako odległości na osi liczbowej i zilustrować
+    je na rysunku.
+  bloom_level: Zrozumienie
+- statement: Stosować własności modułu (|xy| = |x||y|, |−x| = |x|, √(x²) = |x|) do upraszczania wyrażeń.
+  bloom_level: Zastosowanie
+- statement: Rozwiązywać równania postaci |ax + b| = c, rozpoznając przypadki c < 0, c = 0, c > 0.
+  bloom_level: Zastosowanie
+- statement: Rozwiązywać równania postaci |f(x)| = |g(x)| przez rozbicie na alternatywę dwóch równań liniowych.
+  bloom_level: Zastosowanie
+- statement: Rozwiązywać równania z modułem i niewiadomą po obu stronach metodą przypadków, poprawnie
+    odrzucając rozwiązania sprzeczne z założeniami przedziału.
+  bloom_level: Analiza
+- statement: Ułożyć równanie z wartością bezwzględną o zadanych dwóch rozwiązaniach, wykorzystując pojęcia
+    środka i promienia.
+  bloom_level: Tworzenie
+- statement: Określić liczbę rozwiązań równania z wartością bezwzględną w zależności od parametru.
+  bloom_level: Analiza
+- statement: Zweryfikować poprawność otrzymanych rozwiązań przez podstawienie do równania wyjściowego
+    i wskazać źródło ewentualnego błędu znakowego.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Zapominanie o drugim przypadku
+  incorrect_reasoning: '|x − 4| = 3 ⟹ x − 4 = 3 ⟹ x = 7 i to jedyne rozwiązanie.'
+  correct_reasoning: 'Moduł to odległość, a od punktu 4 o 3 jednostki oddalone są dwa punkty: 7 i 1. Zawsze
+    rozważamy alternatywę x − 4 = 3 lub x − 4 = −3.'
+  severity: 5
+- name: Moduł równy liczbie ujemnej
+  incorrect_reasoning: '|x + 2| = −6 ⟹ x + 2 = −6 lub x + 2 = 6, więc x = −8 lub x = 4.'
+  correct_reasoning: '|w| ≥ 0 dla każdego w, więc równanie |x + 2| = −6 jest sprzeczne — nie ma rozwiązań.
+    Przed rozbijaniem na przypadki zawsze sprawdzamy znak prawej strony.'
+  severity: 4
+- name: '"Moduł zamienia minus na plus" — |x| = x'
+  incorrect_reasoning: '|x − 5| = x − 5 (albo |x| = x), bo moduł po prostu usuwa minusy.'
+  correct_reasoning: Wyrażenie x − 5 może być ujemne. Zgodnie z definicją |x − 5| = x − 5 tylko dla x
+    ≥ 5, a dla x < 5 mamy |x − 5| = 5 − x. Zmiana znaku dotyczy całego wyrażenia, nie pojedynczych składników.
+  severity: 5
+- name: Rozdzielanie modułu przez dodawanie
+  incorrect_reasoning: '|a + b| = |a| + |b|, więc |x − 3| = |x| − 3 albo |2 − √2| = 2 + √2.'
+  correct_reasoning: 'Moduł jest zgodny z mnożeniem i dzieleniem, ale nie z dodawaniem: |3 + (−5)| = 2,
+    a |3| + |−5| = 8. Zachodzi jedynie nierówność |a + b| ≤ |a| + |b|.'
+  severity: 4
+- name: Błędny znak przy opuszczaniu modułu z liczby niewymiernej
+  incorrect_reasoning: '|√5 − 3| = √5 − 3, bo pierwiastek jest liczbą dodatnią.'
+  correct_reasoning: 'Trzeba porównać √5 z 3: √5 ≈ 2,24 < 3, więc √5 − 3 < 0 i |√5 − 3| = 3 − √5 (liczba
+    dodatnia). Znak wyrażenia rozstrzyga się przed opuszczeniem modułu.'
+  severity: 4
+- name: Brak weryfikacji rozwiązań w metodzie przypadków
+  incorrect_reasoning: W równaniu |x − 2| = 3x + 1 z przypadku x ≥ 2 otrzymuję x = −1,5 i dopisuję je
+    do odpowiedzi.
+  correct_reasoning: Każdy przypadek obowiązuje tylko w swoim przedziale. Rozwiązanie x = −1,5 nie należy
+    do [2, +∞), więc trzeba je odrzucić; dodatkowo prawa strona musi być nieujemna.
+  severity: 5
+- name: √(x²) = x
+  incorrect_reasoning: Pierwiastek i kwadrat się znoszą, więc √((−4)²) = −4.
+  correct_reasoning: '√(x²) = |x|, bo pierwiastek arytmetyczny jest nieujemny: √((−4)²) = √16 = 4 = |−4|.'
+  severity: 3
+- name: Zła interpretacja |x + a|
+  incorrect_reasoning: '|x + 4| = 6 oznacza odległość x od 4, więc x = −2 lub x = 10.'
+  correct_reasoning: '|x + 4| = |x − (−4)| to odległość x od −4. Zatem x = −4 − 6 = −10 lub x = −4 + 6
+    = 2.'
+  severity: 4
+- name: Gubienie nawiasu przy minusie
+  incorrect_reasoning: Z |x + 1| = |3x − 5| w drugim przypadku piszę x + 1 = −3x − 5.
+  correct_reasoning: 'Minus dotyczy całego wyrażenia: x + 1 = −(3x − 5) = −3x + 5. Zawsze zapisujemy nawias
+    przed uproszczeniem.'
+  severity: 4
+- name: Dzielenie równania przez moduł ze współczynnikiem
+  incorrect_reasoning: '|2x − 6| = 8 ⟹ |x − 3| = 8 (skróciłem dwójkę tylko w środku modułu).'
+  correct_reasoning: '|2x − 6| = 2|x − 3|, więc dzielimy obie strony przez 2: |x − 3| = 4. Wyłączony współczynnik
+    trzeba uwzględnić po obu stronach równania.'
+  severity: 3

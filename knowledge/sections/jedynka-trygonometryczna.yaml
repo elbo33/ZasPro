@@ -1,0 +1,341 @@
+section: jedynka-trygonometryczna
+name: Jedynka trygonometryczna i tangens jako sin/cos
+scope: The Pythagorean identity sin^2(a) + cos^2(a) = 1 and tan(a) = sin(a)/cos(a); recovering the remaining
+  trig values from one, and simplifying trigonometric expressions.
+requirements:
+- VII.2
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:14:55.797278'
+  approved_at: '2026-08-28T18:28:23.165862'
+  approved_by: reviewer
+concepts:
+- name: Funkcje trygonometryczne kąta ostrego
+  description: 'Dla kąta ostrego α w trójkącie prostokątnym: sin α = przyprostokątna naprzeciw α / przeciwprostokątna,
+    cos α = przyprostokątna przy α / przeciwprostokątna, tg α = przyprostokątna naprzeciw α / przyprostokątna
+    przy α.'
+  explanation: 'To punkt wyjścia całego rozdziału. Warto pamiętać skrót: sinus = naprzeciw/przeciwprostokątna,
+    cosinus = przy/przeciwprostokątna, tangens = naprzeciw/przy. Wszystkie trzy wartości są dla kąta ostrego
+    dodatnie, a sin α i cos α są mniejsze od 1, bo przeciwprostokątna jest najdłuższym bokiem.'
+  difficulty: 1
+- name: Zapis sin²α
+  description: sin²α oznacza (sin α)², czyli kwadrat liczby sin α; analogicznie cos²α = (cos α)², tg²α
+    = (tg α)².
+  explanation: To tylko wygodny skrót zapisu, żeby nie pisać nawiasów. Nie należy tego mylić z sin(α²)
+    ani z sin 2α — argument kąta pozostaje ten sam, potęgowana jest wartość funkcji.
+  difficulty: 1
+- name: Jedynka trygonometryczna
+  description: 'Tożsamość sin²α + cos²α = 1, prawdziwa dla każdego kąta α (na poziomie podstawowym: dla
+    każdego kąta ostrego).'
+  explanation: To po prostu twierdzenie Pitagorasa zapisane dla trójkąta o przeciwprostokątnej 1. Jeśli
+    w trójkącie prostokątnym o bokach a, b, c (c — przeciwprostokątna) podzielimy a² + b² = c² przez c²,
+    dostajemy (a/c)² + (b/c)² = 1, czyli sin²α + cos²α = 1. Nazwa 'jedynka' bierze się stąd, że suma zawsze
+    daje 1.
+  difficulty: 2
+- name: Tangens jako iloraz sinusa i cosinusa
+  description: tg α = sin α / cos α, przy założeniu cos α ≠ 0.
+  explanation: 'Wynika wprost z definicji: (a/c) : (b/c) = a/b. Dzięki temu tangens nie jest ''osobną''
+    funkcją — znając sin i cos, znamy tangens. Odwrotnie: sin α = tg α · cos α.'
+  difficulty: 2
+- name: Warunek istnienia tangensa
+  description: tg α jest określony tylko wtedy, gdy cos α ≠ 0, czyli dla kąta ostrego zawsze (0° < α <
+    90°), ale nie dla α = 90°.
+  explanation: Zanim podzielimy przez cos α lub skrócimy ułamek, trzeba sprawdzić, że mianownik nie znika.
+    W zadaniach z kątem ostrym warunek jest automatycznie spełniony, ale w przekształceniach wyrażeń trzeba
+    go zapisać.
+  difficulty: 2
+- name: Zakres wartości dla kąta ostrego
+  description: Dla 0° < α < 90° zachodzi 0 < sin α < 1, 0 < cos α < 1 oraz tg α > 0.
+  explanation: 'To jest ''filtr zdrowego rozsądku'': jeśli z rachunków wyjdzie sin α = 1,2 albo cos α
+    = −0,6, to gdzieś jest błąd (albo dane zadania są sprzeczne). Dodatniość pozwala też wybierać zawsze
+    plus przy pierwiastkowaniu.'
+  difficulty: 2
+- name: Wyznaczanie brakujących wartości z jedynki
+  description: 'Z jedynki trygonometrycznej: cos α = √(1 − sin²α) i sin α = √(1 − cos²α) dla kąta ostrego.'
+  explanation: 'Znajomość jednej z wartości sin/cos wyznacza pozostałe dwie funkcje kąta ostrego. Kluczowe:
+    pierwiastek bierzemy z plusem, bo kąt jest ostry (ogólnie √(x²) = |x|).'
+  difficulty: 3
+- name: Tożsamość trygonometryczna
+  description: Równość dwóch wyrażeń trygonometrycznych prawdziwa dla wszystkich kątów, dla których obie
+    strony mają sens.
+  explanation: Dowodząc tożsamości nie 'rozwiązujemy równania' — przekształcamy jedną stronę (zwykle bardziej
+    skomplikowaną) aż do drugiej, korzystając z jedynki, definicji tangensa i wzorów skróconego mnożenia.
+  difficulty: 3
+- name: Jedynka jako źródło zamiany 1 ↔ sin²+cos²
+  description: W wyrażeniach można zastąpić liczbę 1 przez sin²α + cos²α oraz odwrotnie; podobnie 1 −
+    sin²α = cos²α i 1 − cos²α = sin²α.
+  explanation: 'To najczęstszy trik przy upraszczaniu: gdy widzimy 1 − cos²α, od razu piszemy sin²α; gdy
+    w liczniku jest ''goła'' jedynka, a wokół same kwadraty sinusa i cosinusa, warto ją rozpisać, aby
+    móc skrócić ułamek.'
+  difficulty: 3
+- name: Związek 1 + tg²α = 1/cos²α
+  description: Dla cos α ≠ 0 zachodzi 1 + tg²α = 1/cos²α.
+  explanation: Powstaje z podzielenia jedynki trygonometrycznej stronami przez cos²α. Pozwala szybko przejść
+    od tangensa do cosinusa bez rozwiązywania układu równań.
+  difficulty: 3
+- name: Metoda podstawienia sin α = t·cos α
+  description: Jeśli dane jest tg α = t, to sin α = t·cos α; wstawienie tego do jedynki daje cos²α(1 +
+    t²) = 1.
+  explanation: Standardowy sposób odzyskania sin i cos z samego tangensa. Prowadzi do cos α = 1/√(1+t²)
+    i sin α = t/√(1+t²) dla kąta ostrego.
+  difficulty: 3
+- name: Kwadrat sumy sin α + cos α
+  description: (sin α + cos α)² = 1 + 2 sin α cos α oraz (sin α − cos α)² = 1 − 2 sin α cos α.
+  explanation: Połączenie wzoru skróconego mnożenia z jedynką. Dzięki temu, znając sin α + cos α, natychmiast
+    znamy iloczyn sin α · cos α — i odwrotnie. To klucz do zadań typu 'dane sin α + cos α = 1,4'.
+  difficulty: 4
+formulas:
+- name: Jedynka trygonometryczna
+  latex_raw: \sin^2\alpha + \cos^2\alpha = 1
+  conditions: 'dla każdego kąta α (na poziomie podstawowym: dla kąta ostrego 0° < α < 90°)'
+  description: Bezpośrednia konsekwencja twierdzenia Pitagorasa.
+- name: Definicja tangensa
+  latex_raw: \operatorname{tg}\alpha = \frac{\sin\alpha}{\cos\alpha}
+  conditions: cos α ≠ 0
+  description: 'Równoważnie: sin α = tg α · cos α.'
+- name: Sinus z cosinusa (kąt ostry)
+  latex_raw: \sin\alpha = \sqrt{1-\cos^2\alpha}
+  conditions: 0° < α < 90° (wtedy sin α > 0, więc bierzemy pierwiastek dodatni)
+- name: Cosinus z sinusa (kąt ostry)
+  latex_raw: \cos\alpha = \sqrt{1-\sin^2\alpha}
+  conditions: 0° < α < 90°
+- name: Tangens z sinusa (kąt ostry)
+  latex_raw: \operatorname{tg}\alpha = \frac{\sin\alpha}{\sqrt{1-\sin^2\alpha}}
+  conditions: 0° < α < 90°
+- name: Związek tangensa z cosinusem
+  latex_raw: 1+\operatorname{tg}^2\alpha = \frac{1}{\cos^2\alpha}
+  conditions: cos α ≠ 0
+  description: Otrzymane przez podzielenie jedynki przez cos²α.
+- name: Sinus i cosinus z tangensa (kąt ostry)
+  latex_raw: \cos\alpha = \frac{1}{\sqrt{1+\operatorname{tg}^2\alpha}},\qquad \sin\alpha = \frac{\operatorname{tg}\alpha}{\sqrt{1+\operatorname{tg}^2\alpha}}
+  conditions: 0° < α < 90°
+- name: Kwadrat sumy i różnicy
+  latex_raw: (\sin\alpha \pm \cos\alpha)^2 = 1 \pm 2\sin\alpha\cos\alpha
+  conditions: dla każdego kąta α
+- name: Suma czwartych potęg
+  latex_raw: \sin^4\alpha + \cos^4\alpha = 1 - 2\sin^2\alpha\cos^2\alpha
+  conditions: dla każdego kąta α
+  description: Z (sin²+cos²)² = 1.
+- name: Różnica czwartych potęg
+  latex_raw: \sin^4\alpha - \cos^4\alpha = \sin^2\alpha - \cos^2\alpha
+  conditions: dla każdego kąta α
+  description: Bo sin⁴−cos⁴ = (sin²−cos²)(sin²+cos²) = sin²−cos².
+- name: Iloczyn sin·cos przez tangens
+  latex_raw: \sin\alpha\cos\alpha = \frac{\operatorname{tg}\alpha}{1+\operatorname{tg}^2\alpha}
+  conditions: cos α ≠ 0
+- name: Wartości dla kątów szczególnych
+  latex_raw: \sin 30^\circ=\tfrac12,\ \cos 30^\circ=\tfrac{\sqrt3}{2},\ \operatorname{tg}30^\circ=\tfrac{\sqrt3}{3};\quad
+    \sin 45^\circ=\cos 45^\circ=\tfrac{\sqrt2}{2},\ \operatorname{tg}45^\circ=1;\quad \sin 60^\circ=\tfrac{\sqrt3}{2},\
+    \cos 60^\circ=\tfrac12,\ \operatorname{tg}60^\circ=\sqrt3
+  conditions: kąty 30°, 45°, 60°
+  description: 'Dobra kontrola: dla każdego z nich sin² + cos² = 1 oraz tg = sin/cos.'
+methods:
+- name: Odtworzenie pozostałych wartości, gdy dany jest sin α (lub cos α)
+  when_to_use: Gdy w zadaniu podano jedną wartość funkcji trygonometrycznej kąta ostrego i trzeba obliczyć
+    pozostałe albo wartość wyrażenia.
+  steps:
+  - 'Sprawdź, czy dana wartość jest sensowna: dla kąta ostrego 0 < sin α < 1 i 0 < cos α < 1.'
+  - 'Wstaw daną wartość do jedynki: sin²α + cos²α = 1.'
+  - Wyznacz kwadrat szukanej funkcji, np. cos²α = 1 − sin²α.
+  - Wyciągnij pierwiastek, biorąc znak plus, bo kąt jest ostry.
+  - Jeśli potrzebny tangens, oblicz tg α = sin α / cos α i usuń niewymierność z mianownika.
+  - Podstaw obliczone wartości do wyrażenia z zadania i uprość.
+- name: Odtworzenie sin α i cos α z danego tangensa
+  when_to_use: Gdy dane jest tg α = t (kąt ostry) i trzeba obliczyć sin α, cos α lub wartość wyrażenia
+    zawierającego sinus i cosinus.
+  steps:
+  - Zapisz sin α = t · cos α (z definicji tangensa).
+  - 'Wstaw to do jedynki: t²cos²α + cos²α = 1, czyli cos²α(1 + t²) = 1.'
+  - Wyznacz cos²α = 1/(1+t²), a następnie cos α = 1/√(1+t²) (znak plus — kąt ostry).
+  - Oblicz sin α = t · cos α = t/√(1+t²).
+  - 'Alternatywnie: narysuj trójkąt prostokątny o przyprostokątnych t i 1 i skorzystaj z twierdzenia Pitagorasa.'
+  - Usuń niewymierność z mianownika i podstaw wynik do wyrażenia.
+- name: Upraszczanie wyrażeń trygonometrycznych
+  when_to_use: Gdy trzeba doprowadzić wyrażenie do prostszej postaci lub udowodnić tożsamość.
+  steps:
+  - Zamień wszystkie tangensy na sin/cos (ujednolicenie zapisu).
+  - Sprowadź ułamki do wspólnego mianownika.
+  - 'Wypatruj wzorów skróconego mnożenia: a²−b², (a±b)², oraz wyrażeń 1 − sin²α, 1 − cos²α.'
+  - Zastąp 1 − cos²α przez sin²α, 1 − sin²α przez cos²α, a w razie potrzeby liczbę 1 przez sin²α + cos²α.
+  - Skróć wspólne czynniki (zaznaczając, że mianownik jest różny od zera).
+  - Sprawdź wynik, podstawiając kąt kontrolny, np. α = 45° lub α = 30°.
+- name: Dowodzenie tożsamości trygonometrycznej
+  when_to_use: Gdy zadanie brzmi 'wykaż, że ... = ...' dla dowolnego kąta ostrego.
+  steps:
+  - Zapisz założenia (np. cos α ≠ 0, sin α ≠ 0), jeśli występują mianowniki.
+  - Wybierz stronę bardziej złożoną i przekształcaj tylko ją.
+  - 'Stosuj kolejno: definicję tangensa, wspólny mianownik, wzory skróconego mnożenia, jedynkę trygonometryczną.'
+  - Doprowadź do postaci drugiej strony i zapisz wniosek 'co kończy dowód'.
+  - Nie 'przenoś przez znak równości' — nie wolno zakładać tezy.
+- name: Zadania z daną sumą sin α + cos α (lub iloczynem)
+  when_to_use: Gdy dane jest sin α + cos α, sin α − cos α albo sin α · cos α i pytamy o inne wyrażenie
+    symetryczne.
+  steps:
+  - Podnieś daną sumę (różnicę) do kwadratu.
+  - Skorzystaj ze wzoru (sin α ± cos α)² = 1 ± 2 sin α cos α, aby wyznaczyć iloczyn sin α cos α.
+  - Do obliczenia sin³α + cos³α użyj a³+b³ = (a+b)(a²−ab+b²) = (a+b)(1 − sin α cos α).
+  - Do obliczenia |sin α − cos α| użyj (sin α − cos α)² = 1 − 2 sin α cos α i wyciągnij pierwiastek z
+    wartością bezwzględną.
+  - Sprawdź sensowność wyniku (np. sin α + cos α dla kąta ostrego należy do przedziału (1, √2]).
+examples:
+- statement: Kąt α jest ostry i sin α = 3/5. Oblicz cos α oraz tg α.
+  worked_solution: |-
+    Z jedynki trygonometrycznej: sin²α + cos²α = 1, czyli (3/5)² + cos²α = 1.
+    9/25 + cos²α = 1, więc cos²α = 1 − 9/25 = 16/25.
+    Kąt α jest ostry, więc cos α > 0, zatem cos α = 4/5.
+    Tangens z definicji: tg α = sin α / cos α = (3/5) : (4/5) = 3/5 · 5/4 = 3/4.
+    Sprawdzenie: (3/5)² + (4/5)² = 9/25 + 16/25 = 1 — zgadza się (to znany trójkąt 3-4-5).
+    Odpowiedź: cos α = 4/5, tg α = 3/4.
+  difficulty: 1
+- statement: Kąt α jest ostry i cos α = 1/3. Oblicz sin α i tg α, a następnie wartość wyrażenia W = sin
+    α · tg α + cos α.
+  worked_solution: |-
+    sin²α = 1 − cos²α = 1 − 1/9 = 8/9, więc sin α = √(8/9) = 2√2/3 (plus, bo kąt ostry).
+    tg α = sin α / cos α = (2√2/3) : (1/3) = 2√2.
+    Teraz W = sin α · tg α + cos α. Zamiast liczyć liczbowo, uprośćmy najpierw:
+    W = sin α · (sin α/cos α) + cos α = sin²α/cos α + cos α = (sin²α + cos²α)/cos α = 1/cos α.
+    Zatem W = 1 : (1/3) = 3.
+    Kontrola rachunkiem: sin α·tg α = (2√2/3)(2√2) = 8/3, plus cos α = 1/3, razem 9/3 = 3. Zgadza się.
+    Odpowiedź: sin α = 2√2/3, tg α = 2√2, W = 3.
+  difficulty: 2
+- statement: Uprość wyrażenie W = (1 − cos²α)/(sin α · cos α) dla kąta ostrego α, a następnie oblicz jego
+    wartość dla α = 60°.
+  worked_solution: |-
+    Dla kąta ostrego sin α ≠ 0 i cos α ≠ 0, więc wyrażenie ma sens.
+    Z jedynki: 1 − cos²α = sin²α.
+    W = sin²α/(sin α cos α) = sin α/cos α = tg α (skróciliśmy przez sin α ≠ 0).
+    Dla α = 60°: W = tg 60° = √3.
+    Sprawdzenie bezpośrednie: 1 − cos²60° = 1 − 1/4 = 3/4; sin 60°·cos 60° = (√3/2)(1/2) = √3/4; iloraz: (3/4):(√3/4) = 3/√3 = √3. Zgadza się.
+    Odpowiedź: W = tg α, dla 60° wartość √3.
+  difficulty: 2
+- statement: Kąt α jest ostry i tg α = 2. Oblicz sin α, cos α oraz wartość wyrażenia W = (2 sin α + cos
+    α)/(sin α − 3 cos α).
+  worked_solution: |-
+    Sposób 1 (podstawienie). Z definicji tangensa: sin α = 2 cos α. Wstawiamy do jedynki:
+    (2cos α)² + cos²α = 1 → 4cos²α + cos²α = 1 → 5cos²α = 1 → cos²α = 1/5.
+    Kąt ostry, więc cos α = 1/√5 = √5/5, a sin α = 2cos α = 2√5/5.
+    Sposób 2 (trójkąt): tg α = 2 = 2/1, więc przyprostokątne mają długości 2 i 1, przeciwprostokątna √5, skąd sin α = 2/√5, cos α = 1/√5.
+    Teraz wyrażenie. Najprościej podzielić licznik i mianownik przez cos α (≠ 0):
+    W = (2 tg α + 1)/(tg α − 3) = (2·2 + 1)/(2 − 3) = 5/(−1) = −5.
+    Kontrola liczbowa: licznik 2·(2√5/5) + √5/5 = (4√5 + √5)/5 = √5; mianownik 2√5/5 − 3√5/5 = −√5/5; iloraz √5 : (−√5/5) = −5. Zgadza się.
+    Odpowiedź: sin α = 2√5/5, cos α = √5/5, W = −5.
+  difficulty: 3
+- statement: Kąt α jest ostry i sin α + cos α = 7/5. Oblicz sin α · cos α, |sin α − cos α| oraz sin³α
+    + cos³α.
+  worked_solution: |-
+    Podnosimy daną równość do kwadratu:
+    (sin α + cos α)² = (7/5)² = 49/25.
+    Z drugiej strony (sin α + cos α)² = sin²α + 2 sin α cos α + cos²α = 1 + 2 sin α cos α.
+    Stąd 1 + 2 sin α cos α = 49/25, czyli 2 sin α cos α = 49/25 − 1 = 24/25, więc sin α cos α = 12/25.
+    Dalej: (sin α − cos α)² = 1 − 2 sin α cos α = 1 − 24/25 = 1/25, więc |sin α − cos α| = 1/5.
+    Wreszcie, ze wzoru a³ + b³ = (a + b)(a² − ab + b²):
+    sin³α + cos³α = (sin α + cos α)(sin²α + cos²α − sin α cos α) = (7/5)(1 − 12/25) = (7/5)(13/25) = 91/125.
+    (Uwaga: konkretne wartości to sin α i cos α równe 3/5 i 4/5 w pewnej kolejności — istotnie 3/5 + 4/5 = 7/5 oraz (3/5)(4/5) = 12/25.)
+    Odpowiedź: sin α cos α = 12/25, |sin α − cos α| = 1/5, sin³α + cos³α = 91/125.
+  difficulty: 4
+- statement: 'Wykaż, że dla każdego kąta ostrego α zachodzi równość: sin α/(1 + cos α) + (1 + cos α)/sin
+    α = 2/sin α.'
+  worked_solution: |-
+    Założenia: α ostry, więc sin α > 0 i 1 + cos α > 0 — oba mianowniki są różne od zera.
+    Przekształcamy lewą stronę, sprowadzając do wspólnego mianownika sin α(1 + cos α):
+    L = [sin²α + (1 + cos α)²] / [sin α(1 + cos α)]
+    = [sin²α + 1 + 2cos α + cos²α] / [sin α(1 + cos α)].
+    Korzystamy z jedynki: sin²α + cos²α = 1, więc licznik = 1 + 1 + 2cos α = 2 + 2cos α = 2(1 + cos α).
+    Zatem L = 2(1 + cos α) / [sin α(1 + cos α)] = 2/sin α (skróciliśmy przez 1 + cos α ≠ 0).
+    Otrzymaliśmy prawą stronę, co kończy dowód.
+  difficulty: 4
+objectives:
+- statement: Sformułować jedynkę trygonometryczną sin²α + cos²α = 1 i uzasadnić ją twierdzeniem Pitagorasa
+    w trójkącie prostokątnym.
+  bloom_level: Rozumienie
+- statement: Zapisać i stosować definicję tangensa jako ilorazu tg α = sin α / cos α wraz z warunkiem
+    cos α ≠ 0.
+  bloom_level: Zapamiętanie/Rozumienie
+- statement: Obliczyć cos α i tg α, gdy dany jest sin α kąta ostrego (i analogicznie w pozostałych wariantach),
+    wybierając poprawny znak pierwiastka.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć sin α i cos α kąta ostrego z danej wartości tangensa, metodą podstawienia lub przez
+    odpowiedni trójkąt prostokątny.
+  bloom_level: Stosowanie
+- statement: Upraszczać wyrażenia trygonometryczne, zamieniając tangens na sin/cos, stosując wzory skróconego
+    mnożenia i zamianę 1 ↔ sin²α + cos²α.
+  bloom_level: Stosowanie/Analiza
+- statement: Wykazywać proste tożsamości trygonometryczne dla kąta ostrego, poprawnie zapisując założenia
+    i przekształcając jedną stronę równości.
+  bloom_level: Analiza
+- statement: 'Wyprowadzić i stosować wzory pochodne: 1 + tg²α = 1/cos²α, (sin α ± cos α)² = 1 ± 2 sin
+    α cos α, sin⁴α − cos⁴α = sin²α − cos²α.'
+  bloom_level: Analiza
+- statement: Rozwiązywać zadania, w których dana jest suma, różnica lub iloczyn sin α i cos α, i obliczać
+    z nich inne wyrażenia symetryczne.
+  bloom_level: Analiza
+- statement: Ocenić sensowność otrzymanych wartości funkcji trygonometrycznych (zakres 0–1 dla kąta ostrego)
+    i wykryć błąd rachunkowy lub sprzeczność danych.
+  bloom_level: Ocenianie
+misconceptions:
+- name: sin²α mylone z sin(α²) lub sin 2α
+  incorrect_reasoning: Uczeń czyta sin²α jako 'sinus kwadratu kąta' i liczy np. sin²30° = sin 900° albo
+    utożsamia sin²α z sin 2α.
+  correct_reasoning: 'sin²α to skrót zapisu (sin α)², czyli najpierw obliczamy sin α, potem podnosimy
+    tę liczbę do kwadratu: sin²30° = (1/2)² = 1/4. Kąt się nie zmienia.'
+  severity: 4
+- name: '''Jedynka'' bez kwadratów'
+  incorrect_reasoning: Uczeń zapisuje sin α + cos α = 1 i z sin α = 0,6 wnioskuje cos α = 0,4.
+  correct_reasoning: 'Tożsamość dotyczy kwadratów: sin²α + cos²α = 1. Z sin α = 0,6 mamy cos²α = 1 − 0,36
+    = 0,64, czyli cos α = 0,8. Suma sin α + cos α dla kąta ostrego jest zawsze większa od 1 (i nie większa
+    niż √2).'
+  severity: 5
+- name: 'Błędne pierwiastkowanie: √(1 − sin²α) = 1 − sin α'
+  incorrect_reasoning: 'Uczeń ''rozdziela'' pierwiastek na różnicę: √(1 − sin²α) = √1 − √(sin²α) = 1 −
+    sin α.'
+  correct_reasoning: 'Pierwiastek z różnicy nie jest różnicą pierwiastków. √(1 − sin²α) trzeba obliczyć
+    dopiero po wstawieniu liczby, np. dla sin α = 3/5: √(1 − 9/25) = √(16/25) = 4/5, a nie 1 − 3/5 = 2/5.'
+  severity: 5
+- name: Pomijanie wartości bezwzględnej / znaku przy pierwiastkowaniu
+  incorrect_reasoning: Z równania cos²α = 1/4 uczeń automatycznie pisze cos α = ±1/2 i podaje dwie odpowiedzi,
+    albo odwrotnie — w sytuacji z wartością bezwzględną gubi moduł, pisząc √((sin α − cos α)²) = sin α
+    − cos α.
+  correct_reasoning: '√(x²) = |x|. Dla kąta ostrego sin α i cos α są dodatnie, więc wybieramy pierwiastek
+    dodatni: cos α = 1/2. Natomiast dla sin α − cos α znaku nie znamy, więc poprawnie jest |sin α − cos
+    α| = √(1 − 2 sin α cos α).'
+  severity: 3
+- name: Odwrócony wzór na tangens
+  incorrect_reasoning: Uczeń pisze tg α = cos α / sin α.
+  correct_reasoning: 'tg α = sin α / cos α — sinus na górze. Kontrola: tg 60° = √3 > 1, a sin 60°/cos
+    60° = (√3/2)/(1/2) = √3, natomiast cos/sin dałoby √3/3. Warto zapamiętać przez trójkąt: tangens =
+    naprzeciw/przy.'
+  severity: 4
+- name: Skracanie 'sin' jak zmiennej
+  incorrect_reasoning: W wyrażeniu sin α / sin β uczeń skraca 'sin' i pisze α/β; podobnie z (sin α + cos
+    α)/sin α robi 1 + cos α.
+  correct_reasoning: sin to nazwa funkcji, nie czynnik — skracać można tylko całe wspólne czynniki. (sin
+    α + cos α)/sin α = 1 + cos α/sin α, a sin α/sin β nie upraszcza się w ogóle.
+  severity: 5
+- name: Dzielenie przez cos α bez sprawdzenia założeń
+  incorrect_reasoning: Uczeń dzieli wyrażenie przez cos α lub skraca ułamek przez 1 + cos α, nie zapisując,
+    że dzielnik jest różny od zera.
+  correct_reasoning: Przed dzieleniem lub skracaniem trzeba stwierdzić, że dany czynnik nie jest zerem
+    — dla kąta ostrego wystarczy zauważyć, że sin α > 0 i cos α > 0; w dowodach ogólnych trzeba to wypisać
+    jako założenie.
+  severity: 2
+- name: Akceptowanie niemożliwych wartości
+  incorrect_reasoning: Uczeń bez zastrzeżeń liczy dalej, gdy z rachunków wyjdzie sin α = 5/4 albo cos²α
+    = −0,2.
+  correct_reasoning: Dla dowolnego kąta |sin α| ≤ 1 i |cos α| ≤ 1, a kwadrat nie może być ujemny. Taki
+    wynik oznacza błąd rachunkowy lub sprzeczne dane — trzeba wrócić i sprawdzić przekształcenia.
+  severity: 3
+- name: Traktowanie tangensa jako czegoś niezależnego od sin i cos
+  incorrect_reasoning: Uczeń, mając tg α = 2, szuka wartości kąta na kalkulatorze albo twierdzi, że bez
+    tablic nie da się obliczyć sin α.
+  correct_reasoning: Z tg α = 2 mamy sin α = 2cos α; wstawiając do jedynki dostajemy 5cos²α = 1, czyli
+    cos α = √5/5 i sin α = 2√5/5 — bez żadnych tablic. Tangens jest w pełni wyznaczony przez sinus i cosinus
+    i odwrotnie.
+  severity: 3
+- name: Dowodzenie tożsamości przez 'przenoszenie na drugą stronę'
+  incorrect_reasoning: Uczeń w dowodzie zakłada tezę, mnoży obie strony przez mianowniki i po dojściu
+    do prawdziwej równości pisze 'c.n.d.', nie uzasadniając odwracalności kroków.
+  correct_reasoning: 'Bezpieczny schemat: przekształcamy tylko jedną stronę (zwykle bardziej złożoną)
+    do postaci drugiej strony, albo obie strony niezależnie do tej samej postaci, zapisując przy tym założenia.'
+  severity: 2

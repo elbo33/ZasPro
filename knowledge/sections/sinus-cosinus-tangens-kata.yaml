@@ -1,0 +1,343 @@
+section: sinus-cosinus-tangens-kata
+name: Sinus, cosinus i tangens kąta od 0° do 180°
+scope: sin, cos and tan for angles from 0 to 180 degrees; exact values for 30, 45 and 60 degrees and the
+  reduction relationships for obtuse angles.
+requirements:
+- VII.1
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:12:16.826609'
+  approved_at: '2026-08-28T18:28:22.902954'
+  approved_by: reviewer
+concepts:
+- name: Kąt w położeniu standardowym (kąt umieszczony w układzie współrzędnych)
+  description: Kąt o mierze α, którego wierzchołek leży w początku układu współrzędnych O=(0,0), jedno
+    ramię pokrywa się z dodatnią półosią OX, a drugie ramię jest obrócone o α w kierunku przeciwnym do
+    ruchu wskazówek zegara. Rozważamy 0° ≤ α ≤ 180°, więc drugie ramię leży w I lub II ćwiartce (albo
+    na osi OX lub OY).
+  explanation: 'To ''ustawienie'' kąta pozwala mówić o sinusie, cosinusie i tangensie także dla kątów
+    rozwartych i prostych, dla których nie ma trójkąta prostokątnego. Zawsze warto zacząć od szkicu: gdzie
+    leży drugie ramię – w I czy w II ćwiartce.'
+  difficulty: 2
+- name: Definicje sin, cos, tg w trójkącie prostokątnym
+  description: 'Dla kąta ostrego α w trójkącie prostokątnym: sin α = (długość przyprostokątnej naprzeciw
+    α)/(przeciwprostokątna), cos α = (przyprostokątna przy α)/(przeciwprostokątna), tg α = (przyprostokątna
+    naprzeciw α)/(przyprostokątna przy α).'
+  explanation: Punkt wyjścia dla kątów 0° < α < 90°. Wartości zależą tylko od miary kąta (trójkąty o tych
+    samych kątach są podobne), a nie od wielkości trójkąta.
+  difficulty: 1
+- name: Definicja współrzędnościowa funkcji trygonometrycznych
+  description: Niech P=(x, y) będzie dowolnym punktem różnym od O, leżącym na drugim ramieniu kąta α w
+    położeniu standardowym, i niech r = |OP| = √(x²+y²) > 0. Wtedy sin α = y/r, cos α = x/r, tg α = y/x
+    (dla x ≠ 0).
+  explanation: 'To uogólnienie definicji z trójkąta na wszystkie kąty od 0° do 180°. Wynik nie zależy
+    od wyboru punktu P na ramieniu (punkty dają trójkąty podobne). Zauważ: r jest zawsze dodatnie, natomiast
+    x może być ujemne – stąd biorą się ujemne wartości cosinusa i tangensa dla kątów rozwartych.'
+  difficulty: 3
+- name: Okrąg jednostkowy
+  description: Okrąg o środku w O i promieniu 1. Jeśli P jest punktem przecięcia drugiego ramienia kąta
+    α z tym okręgiem, to P = (cos α, sin α).
+  explanation: 'Szczególny przypadek definicji współrzędnościowej dla r = 1: pierwsza współrzędna punktu
+    to cosinus, druga to sinus. Bardzo wygodny sposób ''odczytywania'' wartości i znaków oraz zapamiętania,
+    że |sin α| ≤ 1 i |cos α| ≤ 1.'
+  difficulty: 3
+- name: Znaki funkcji trygonometrycznych w przedziale [0°,180°]
+  description: 'Dla 0° < α < 90°: sin α > 0, cos α > 0, tg α > 0. Dla α = 90°: sin α = 1, cos α = 0, tg
+    α nie istnieje. Dla 90° < α < 180°: sin α > 0, cos α < 0, tg α < 0.'
+  explanation: 'Sinus jest w całym przedziale (0°,180°) dodatni, bo y > 0. O znaku cosinusa i tangensa
+    decyduje znak x: w II ćwiartce x < 0, więc cos i tg są ujemne. To najszybszy sposób kontroli poprawności
+    wyniku.'
+  difficulty: 2
+- name: Kąt rozwarty i kąt do niego przyległy (180° − α)
+  description: Jeśli α jest kątem rozwartym, to 180° − α jest kątem ostrym; punkty na okręgu jednostkowym
+    odpowiadające α i 180° − α są symetryczne względem osi OY.
+  explanation: 'Symetria względem OY zmienia znak pierwszej współrzędnej (cosinusa), a zachowuje drugą
+    (sinus). Stąd wzory redukcyjne. Praktycznie: wartość funkcji dla kąta rozwartego sprowadzamy do wartości
+    dla kąta ostrego, dopisując odpowiedni znak.'
+  difficulty: 3
+- name: Wartości szczególne (kąty 30°, 45°, 60°)
+  description: sin30°=1/2, cos30°=√3/2, tg30°=√3/3; sin45°=cos45°=√2/2, tg45°=1; sin60°=√3/2, cos60°=1/2,
+    tg60°=√3.
+  explanation: Wyprowadza się je z połowy trójkąta równobocznego (30°,60°,90° o bokach 1, √3, 2) i z połowy
+    kwadratu (45°,45°,90° o bokach 1,1,√2). Warto umieć je odtworzyć rysunkiem, a nie tylko pamiętać tabelkę.
+  difficulty: 2
+- name: Wartości dla kątów 0°, 90°, 180°
+  description: sin0°=0, cos0°=1, tg0°=0; sin90°=1, cos90°=0, tg90° nie istnieje; sin180°=0, cos180°=−1,
+    tg180°=0.
+  explanation: Odczytujemy je z punktów (1,0), (0,1), (−1,0) na okręgu jednostkowym. Tangens 90° nie istnieje,
+    bo w definicji y/x mielibyśmy dzielenie przez x = 0.
+  difficulty: 2
+- name: Jedynka trygonometryczna
+  description: Dla każdego kąta α z przedziału [0°,180°] zachodzi sin²α + cos²α = 1, gdzie sin²α oznacza
+    (sin α)².
+  explanation: To po prostu twierdzenie Pitagorasa dla punktu (cos α, sin α) na okręgu jednostkowym. Pozwala
+    wyznaczyć cos α, gdy znamy sin α (znak dobieramy z informacji, czy kąt jest ostry, czy rozwarty).
+  difficulty: 3
+- name: Związek tangensa z sinusem i cosinusem
+  description: tg α = sin α / cos α dla każdego α ∈ [0°,180°] takiego, że cos α ≠ 0 (czyli α ≠ 90°).
+  explanation: 'Wynika wprost z definicji: (y/r)/(x/r) = y/x. Dzięki temu tangens liczymy zawsze na końcu,
+    gdy znamy już sinus i cosinus.'
+  difficulty: 2
+- name: Monotoniczność i jednoznaczność wyznaczania kąta
+  description: W przedziale [0°,180°] cosinus maleje od 1 do −1 (każdej wartości odpowiada dokładnie jeden
+    kąt), natomiast sinus rośnie od 0 do 1 na [0°,90°] i maleje od 1 do 0 na [90°,180°] (wartości z przedziału
+    (0,1) odpowiadają dwóm kątom).
+  explanation: 'Praktyczny wniosek: równanie cos α = c ma w [0°,180°] co najwyżej jedno rozwiązanie, a
+    równanie sin α = s dla 0 < s < 1 ma dwa rozwiązania: α i 180° − α. Trzeba o tym pamiętać, podając
+    wszystkie odpowiedzi.'
+  difficulty: 3
+- name: Zakres wartości funkcji trygonometrycznych
+  description: 'Dla α ∈ [0°,180°]: 0 ≤ sin α ≤ 1, −1 ≤ cos α ≤ 1, natomiast tangens przyjmuje wszystkie
+    wartości rzeczywiste (nie istnieje dla α = 90°).'
+  explanation: Sinus i cosinus to stosunki współrzędnych do promienia r, a |x| ≤ r i |y| ≤ r. Dlatego
+    zapis typu sin α = 1,3 lub cos α = −2 jest natychmiast błędny; tangens takich ograniczeń nie ma.
+  difficulty: 2
+formulas:
+- name: Definicje w trójkącie prostokątnym
+  latex_raw: \sin\alpha=\frac{a}{c},\qquad \cos\alpha=\frac{b}{c},\qquad \operatorname{tg}\alpha=\frac{a}{b}
+  conditions: 0°<α<90°; a – przyprostokątna naprzeciw α, b – przyprostokątna przy α, c – przeciwprostokątna
+  description: Wartości nie zależą od rozmiaru trójkąta (podobieństwo).
+- name: Definicje współrzędnościowe
+  latex_raw: \sin\alpha=\frac{y}{r},\qquad \cos\alpha=\frac{x}{r},\qquad \operatorname{tg}\alpha=\frac{y}{x},\qquad
+    r=\sqrt{x^2+y^2}
+  conditions: P=(x,y)≠(0,0) leży na drugim ramieniu kąta α w położeniu standardowym, 0°≤α≤180°; tangens
+    tylko dla x≠0 (α≠90°)
+  description: Zawsze r>0.
+- name: Punkt na okręgu jednostkowym
+  latex_raw: P=(\cos\alpha,\ \sin\alpha)
+  conditions: P – punkt przecięcia ramienia kąta α z okręgiem x²+y²=1
+- name: Jedynka trygonometryczna
+  latex_raw: \sin^2\alpha+\cos^2\alpha=1
+  conditions: dla każdego α∈[0°,180°]
+  description: Stąd sin α = √(1−cos²α) (bo sin α ≥ 0) oraz cos α = ±√(1−sin²α), znak zależy od tego, czy
+    kąt jest ostry, czy rozwarty.
+- name: Tangens jako iloraz
+  latex_raw: \operatorname{tg}\alpha=\frac{\sin\alpha}{\cos\alpha}
+  conditions: α∈[0°,180°], α≠90°
+- name: Wzory redukcyjne dla kąta rozwartego
+  latex_raw: \sin(180^\circ-\alpha)=\sin\alpha,\qquad \cos(180^\circ-\alpha)=-\cos\alpha,\qquad \operatorname{tg}(180^\circ-\alpha)=-\operatorname{tg}\alpha
+  conditions: 0°≤α≤180°; wzór dla tangensa wymaga α≠90°
+  description: Sinus 'nie zmienia znaku', cosinus i tangens zmieniają.
+- name: Tabela wartości szczególnych
+  latex_raw: \begin{array}{c|cccccc} \alpha & 0^\circ & 30^\circ & 45^\circ & 60^\circ & 90^\circ & 180^\circ\\
+    \hline \sin\alpha & 0 & \tfrac12 & \tfrac{\sqrt2}{2} & \tfrac{\sqrt3}{2} & 1 & 0\\ \cos\alpha & 1
+    & \tfrac{\sqrt3}{2} & \tfrac{\sqrt2}{2} & \tfrac12 & 0 & -1\\ \operatorname{tg}\alpha & 0 & \tfrac{\sqrt3}{3}
+    & 1 & \sqrt3 & - & 0 \end{array}
+  conditions: tg 90° nie istnieje
+  description: 'Warto pamiętać: sinus rośnie 0, 1/2, √2/2, √3/2, 1, a cosinus czyta się tę samą listę
+    od tyłu.'
+- name: Wartości dla kątów rozwartych szczególnych
+  latex_raw: \sin120^\circ=\tfrac{\sqrt3}{2},\ \cos120^\circ=-\tfrac12,\ \operatorname{tg}120^\circ=-\sqrt3;\quad
+    \sin135^\circ=\tfrac{\sqrt2}{2},\ \cos135^\circ=-\tfrac{\sqrt2}{2},\ \operatorname{tg}135^\circ=-1;\quad
+    \sin150^\circ=\tfrac12,\ \cos150^\circ=-\tfrac{\sqrt3}{2},\ \operatorname{tg}150^\circ=-\tfrac{\sqrt3}{3}
+  conditions: otrzymane ze wzorów redukcyjnych dla 60°, 45°, 30°
+- name: Rozwiązania podstawowych równań w [0°,180°]
+  latex_raw: \sin\alpha=s\ (0<s<1)\iff \alpha=\alpha_0\ \text{lub}\ \alpha=180^\circ-\alpha_0;\qquad \cos\alpha=c\iff
+    \alpha \text{ jednoznacznie}
+  conditions: α₀ – kąt ostry taki, że sin α₀ = s; dla cosinusa c∈[−1,1]
+  description: Dla s=1 jedynym rozwiązaniem jest 90°, dla s=0 są to 0° i 180°.
+methods:
+- name: Wyprowadzanie wartości dla 30°, 45°, 60° z rysunku
+  when_to_use: Gdy trzeba szybko odtworzyć tabelę wartości szczególnych bez podręcznika.
+  steps:
+  - Narysuj trójkąt równoboczny o boku 2 i popro­wadź wysokość; powstaje trójkąt prostokątny o kątach
+    30°, 60°, 90° i bokach 1, √3, 2.
+  - 'Odczytaj: sin30° = 1/2, cos30° = √3/2, tg30° = 1/√3 = √3/3 (usuń niewymierność z mianownika).'
+  - 'Odczytaj z tego samego trójkąta dla 60°: sin60° = √3/2, cos60° = 1/2, tg60° = √3.'
+  - Narysuj kwadrat o boku 1 z przekątną √2; powstaje trójkąt 45°, 45°, 90°.
+  - 'Odczytaj: sin45° = cos45° = 1/√2 = √2/2, tg45° = 1.'
+- name: Obliczanie sin, cos, tg z punktu leżącego na ramieniu kąta
+  when_to_use: Gdy dany jest punkt P=(x,y) na drugim ramieniu kąta w położeniu standardowym (lub kąt opisany
+    współrzędnościowo).
+  steps:
+  - Zaznacz punkt P w układzie współrzędnych i naszkicuj kąt.
+  - Oblicz r = √(x²+y²) (zawsze wartość dodatnia).
+  - 'Podstaw: sin α = y/r, cos α = x/r, tg α = y/x (jeśli x ≠ 0).'
+  - Usuń niewymierność z mianownika, jeśli r jest liczbą niewymierną.
+  - 'Sprawdź znaki: dla ramienia w II ćwiartce cos i tg muszą wyjść ujemne, sin dodatni.'
+- name: Redukcja kąta rozwartego do ostrego
+  when_to_use: Gdy trzeba obliczyć sin, cos lub tg kąta z przedziału (90°,180°), np. 120°, 135°, 150°,
+    lub uprościć wyrażenie z takim kątem.
+  steps:
+  - Zapisz kąt rozwarty w postaci 180° − α₀, gdzie α₀ jest kątem ostrym (α₀ = 180° − dany kąt).
+  - 'Zastosuj wzory: sin(180°−α₀) = sin α₀, cos(180°−α₀) = −cos α₀, tg(180°−α₀) = −tg α₀.'
+  - Odczytaj wartość dla kąta ostrego α₀ z tabeli wartości szczególnych (lub z treści zadania).
+  - Dopisz właściwy znak i uprość wynik.
+  - 'Kontrola: sinus kąta rozwartego jest dodatni, cosinus i tangens ujemne.'
+- name: Wyznaczanie pozostałych funkcji, gdy znana jest jedna z nich
+  when_to_use: Gdy dane jest np. sin α = 3/5 (lub cos α) wraz z informacją, czy kąt jest ostry, czy rozwarty.
+  steps:
+  - Zapisz jedynkę trygonometryczną sin²α + cos²α = 1 i podstaw znaną wartość.
+  - Wyznacz kwadrat drugiej funkcji i weź pierwiastek.
+  - 'Dobierz znak: sin α ≥ 0 zawsze; cos α > 0 dla kąta ostrego, cos α < 0 dla rozwartego.'
+  - Oblicz tg α = sin α / cos α i uprość (usuń niewymierność, jeśli trzeba).
+  - Sprawdź spójność znaków z położeniem ramienia kąta.
+- name: Rozwiązywanie prostego równania trygonometrycznego w [0°,180°]
+  when_to_use: Gdy szukamy miary kąta o zadanej wartości sinusa, cosinusa lub tangensa (np. w zadaniach
+    geometrycznych z twierdzeniem sinusów/cosinusów).
+  steps:
+  - 'Sprawdź, czy wartość jest dopuszczalna: sin α ∈ [0,1], cos α ∈ [−1,1] dla kątów z tego przedziału.'
+  - Rozpoznaj wartość bezwzględną liczby w tabeli i odczytaj odpowiadający jej kąt ostry α₀.
+  - 'Dla równania z sinusem: jeśli 0 < s < 1, podaj dwie odpowiedzi α₀ oraz 180° − α₀; dla s = 1 tylko
+    90°.'
+  - 'Dla równania z cosinusem: jeśli c > 0 odpowiedzią jest α₀, jeśli c < 0 odpowiedzią jest 180° − α₀
+    (jedno rozwiązanie).'
+  - 'Dla równania z tangensem: jeśli t > 0 odpowiedzią jest α₀, jeśli t < 0 odpowiedzią jest 180° − α₀.'
+  - Jeśli zadanie dotyczy kąta w trójkącie, odrzuć rozwiązania sprzeczne z warunkami zadania.
+- name: Obliczanie wartości wyrażeń z kątami szczególnymi
+  when_to_use: Gdy trzeba wyznaczyć dokładną (nie przybliżoną) wartość wyrażenia typu sin30°·cos150° +
+    tg²60°.
+  steps:
+  - Zredukuj wszystkie kąty rozwarte do ostrych, zapisując znaki.
+  - Wstaw dokładne wartości z tabeli (ułamki z pierwiastkami), pamiętając o nawiasach.
+  - 'Wykonaj działania na ułamkach i pierwiastkach: potęgowanie, mnożenie, dodawanie.'
+  - Uprość wynik i, jeśli trzeba, usuń niewymierność z mianownika.
+  - 'Uwaga: sin²α oznacza (sin α)², a nie sin(α²).'
+examples:
+- statement: Oblicz dokładną wartość wyrażenia W = sin30° · cos60° + tg45° · sin²60°.
+  worked_solution: |-
+    Odczytujemy wartości szczególne: sin30° = 1/2, cos60° = 1/2, tg45° = 1, sin60° = √3/2.
+    sin²60° = (√3/2)² = 3/4.
+    W = (1/2)·(1/2) + 1·(3/4) = 1/4 + 3/4 = 1.
+    Odpowiedź: W = 1.
+  difficulty: 1
+- statement: Oblicz sin135°, cos135° i tg135°, a następnie wartość wyrażenia cos150° + sin120°.
+  worked_solution: |-
+    Zapisujemy 135° = 180° − 45°. Ze wzorów redukcyjnych:
+    sin135° = sin45° = √2/2,
+    cos135° = −cos45° = −√2/2,
+    tg135° = −tg45° = −1.
+    Dalej 150° = 180° − 30°, więc cos150° = −cos30° = −√3/2; oraz 120° = 180° − 60°, więc sin120° = sin60° = √3/2.
+    Zatem cos150° + sin120° = −√3/2 + √3/2 = 0.
+    Kontrola znaków: oba kąty są rozwarte, więc cosinus wyszedł ujemny, a sinus dodatni – zgodnie z oczekiwaniem.
+  difficulty: 2
+- statement: Kąt α ma wierzchołek w początku układu współrzędnych, jedno ramię na dodatniej półosi OX,
+    a na drugim ramieniu leży punkt P = (−5, 12). Oblicz sin α, cos α i tg α oraz rozstrzygnij, czy α
+    jest kątem ostrym, czy rozwartym.
+  worked_solution: |-
+    Punkt P leży w II ćwiartce (x < 0, y > 0), więc ramię kąta jest w II ćwiartce i α jest kątem rozwartym.
+    Obliczamy r = |OP| = √((−5)² + 12²) = √(25 + 144) = √169 = 13.
+    Z definicji:
+    sin α = y/r = 12/13,
+    cos α = x/r = −5/13,
+    tg α = y/x = 12/(−5) = −12/5.
+    Znaki się zgadzają: sinus dodatni, cosinus i tangens ujemne – tak być musi dla kąta rozwartego.
+    Sprawdzenie jedynką trygonometryczną: (12/13)² + (−5/13)² = 144/169 + 25/169 = 169/169 = 1. ✔
+  difficulty: 3
+- statement: Kąt α jest kątem rozwartym i sin α = 3/5. Oblicz cos α oraz tg α, a następnie wartość wyrażenia
+    (1 − cos α)/tg α.
+  worked_solution: |-
+    Z jedynki trygonometrycznej: sin²α + cos²α = 1, czyli (3/5)² + cos²α = 1.
+    cos²α = 1 − 9/25 = 16/25, więc cos α = 4/5 lub cos α = −4/5.
+    Ponieważ α jest kątem rozwartym, cosinus jest ujemny: cos α = −4/5.
+    tg α = sin α / cos α = (3/5) : (−4/5) = (3/5)·(−5/4) = −3/4.
+    Dalej: 1 − cos α = 1 − (−4/5) = 9/5.
+    (1 − cos α)/tg α = (9/5) : (−3/4) = (9/5)·(−4/3) = −36/15 = −12/5.
+    Odpowiedź: cos α = −4/5, tg α = −3/4, wartość wyrażenia = −12/5 = −2,4.
+  difficulty: 3
+- statement: 'Wyznacz wszystkie kąty α ∈ ⟨0°, 180°⟩ spełniające: (a) sin α = √2/2, (b) cos α = −1/2, (c)
+    tg α = −√3. Następnie w trójkącie ABC dane są kąty: sin A = √3/2 oraz kąt B = 100°. Wyznacz miarę
+    kąta A.'
+  worked_solution: |-
+    (a) Kątem ostrym o sinusie √2/2 jest 45°. Ponieważ 0 < √2/2 < 1, w przedziale ⟨0°,180°⟩ są dwa rozwiązania: α = 45° oraz α = 180° − 45° = 135°.
+    (b) Kątem ostrym o cosinusie 1/2 jest 60°. Skoro dana wartość jest ujemna, kąt jest rozwarty: α = 180° − 60° = 120°. Cosinus jest w tym przedziale malejący, więc to jedyne rozwiązanie.
+    (c) Kątem ostrym o tangensie √3 jest 60°. Wartość ujemna oznacza kąt rozwarty: α = 180° − 60° = 120°. (Jedyne rozwiązanie.)
+    Trójkąt: sin A = √3/2 daje A = 60° lub A = 120°. Suma kątów trójkąta wynosi 180°, a B = 100°, więc A < 80°. Rozwiązanie A = 120° odrzucamy.
+    Odpowiedź: A = 60° (wtedy C = 20°).
+  difficulty: 4
+objectives:
+- statement: Podać definicje sinusa, cosinusa i tangensa kąta ostrego w trójkącie prostokątnym oraz definicje
+    współrzędnościowe dla kąta od 0° do 180°.
+  bloom_level: Zapamiętywanie
+- statement: Wyjaśnić, dlaczego wartości funkcji trygonometrycznych nie zależą od wyboru punktu na ramieniu
+    kąta ani od rozmiaru trójkąta.
+  bloom_level: Rozumienie
+- statement: Wyprowadzić z rysunku (połowa trójkąta równobocznego, połowa kwadratu) i zapamiętać wartości
+    sin, cos, tg dla kątów 30°, 45°, 60° oraz odczytać z okręgu jednostkowego wartości dla 0°, 90°, 180°.
+  bloom_level: Rozumienie
+- statement: Wyznaczyć sin α, cos α, tg α dla kąta, którego ramię przechodzi przez dany punkt układu współrzędnych.
+  bloom_level: Stosowanie
+- statement: Zastosować wzory redukcyjne sin(180°−α)=sin α, cos(180°−α)=−cos α, tg(180°−α)=−tg α do obliczania
+    wartości funkcji kątów rozwartych, w szczególności 120°, 135°, 150°.
+  bloom_level: Stosowanie
+- statement: Obliczyć dokładną wartość wyrażenia arytmetycznego zawierającego funkcje trygonometryczne
+    kątów szczególnych, w tym rozwartych.
+  bloom_level: Stosowanie
+- statement: Wyznaczyć pozostałe funkcje trygonometryczne kąta, gdy dana jest jedna z nich oraz informacja,
+    czy kąt jest ostry, czy rozwarty, korzystając z jedynki trygonometrycznej i związku tg α = sin α/cos
+    α.
+  bloom_level: Stosowanie
+- statement: Rozwiązać w przedziale ⟨0°,180°⟩ proste równania postaci sin α = s, cos α = c, tg α = t o
+    wartościach szczególnych, podając wszystkie rozwiązania.
+  bloom_level: Stosowanie
+- statement: Określić znak sinusa, cosinusa i tangensa na podstawie położenia ramienia kąta oraz ocenić,
+    czy podany wynik jest możliwy (kontrola znaków i zakresu wartości).
+  bloom_level: Analiza
+- statement: Uzasadnić, dlaczego równanie z cosinusem ma w przedziale ⟨0°,180°⟩ co najwyżej jedno rozwiązanie,
+    a równanie z sinusem może mieć dwa, oraz wybrać rozwiązanie zgodne z warunkami zadania geometrycznego.
+  bloom_level: Analiza
+misconceptions:
+- name: „Sinus kąta rozwartego jest ujemny”
+  incorrect_reasoning: 'Uczeń rozumuje: skoro kąt jest w II ćwiartce, to wszystkie funkcje zmieniają znak,
+    więc sin120° = −√3/2.'
+  correct_reasoning: 'Dla kąta z przedziału (0°,180°) punkt na ramieniu ma współrzędną y > 0, a r > 0,
+    więc sin α = y/r > 0. Zmieniają znak tylko cosinus i tangens (bo x < 0). Poprawnie: sin120° = sin60°
+    = √3/2.'
+  severity: 4
+- name: Zły wzór redukcyjny dla cosinusa
+  incorrect_reasoning: Uczeń stosuje cos(180° − α) = cos α i otrzymuje cos150° = √3/2.
+  correct_reasoning: 'Symetria względem osi OY zmienia znak pierwszej współrzędnej punktu, więc cos(180°
+    − α) = −cos α. Poprawnie: cos150° = −cos30° = −√3/2. Szybka kontrola: cosinus kąta rozwartego musi
+    być ujemny.'
+  severity: 4
+- name: Przypisywanie tangensowi wartości w 90°
+  incorrect_reasoning: Uczeń pisze tg90° = 0 (bo cos90° = 0) albo tg90° = 1, traktując 90° jak zwykły
+    kąt szczególny.
+  correct_reasoning: tg α = sin α/cos α, a dla α = 90° mianownik jest zerem – dzielenie przez zero jest
+    niewykonalne, więc tg90° nie istnieje (funkcja nie jest tam określona). W definicji współrzędnościowej
+    odpowiada to x = 0.
+  severity: 3
+- name: Podawanie tylko jednego rozwiązania równania z sinusem
+  incorrect_reasoning: Z równania sin α = 1/2 uczeń podaje wyłącznie α = 30°, zapominając o kącie rozwartym.
+  correct_reasoning: 'W przedziale ⟨0°,180°⟩ sinus przyjmuje każdą wartość z przedziału (0,1) dwa razy:
+    dla α₀ i dla 180° − α₀. Zatem sin α = 1/2 daje α = 30° lub α = 150°. Dopiero dodatkowe warunki zadania
+    (np. suma kątów trójkąta) pozwalają odrzucić jedno z rozwiązań. Dla cosinusa jest odwrotnie – rozwiązanie
+    jest jedno.'
+  severity: 4
+- name: Mylenie definicji sinusa i cosinusa w trójkącie
+  incorrect_reasoning: Uczeń bierze cos α = (przyprostokątna naprzeciw)/(przeciwprostokątna), bo „nie
+    pamięta, która jest która”.
+  correct_reasoning: 'Sinus to stosunek boku naprzeciw kąta do przeciwprostokątnej, cosinus – boku przyległego
+    do przeciwprostokątnej. Kontrola: dla małego kąta bok naprzeciw jest krótki, więc sinus jest bliski
+    0, a cosinus bliski 1 (sin0° = 0, cos0° = 1).'
+  severity: 3
+- name: Ignorowanie ograniczeń wartości sin i cos
+  incorrect_reasoning: Uczeń akceptuje wynik cos α = −1,25 albo sin α = 5/4 i liczy dalej.
+  correct_reasoning: Dla dowolnego kąta |sin α| ≤ 1 i |cos α| ≤ 1, bo |y| ≤ r i |x| ≤ r. Wynik spoza przedziału
+    ⟨−1,1⟩ oznacza błąd rachunkowy lub brak rozwiązania zadania. (Tangens takich ograniczeń nie ma.)
+  severity: 3
+- name: Ujemne r w definicji współrzędnościowej
+  incorrect_reasoning: Dla punktu P = (−3, 4) uczeń przyjmuje r = −5 „bo punkt jest po lewej stronie”
+    i otrzymuje sin α = −4/5.
+  correct_reasoning: 'r = |OP| = √(x² + y²) jest długością odcinka, więc zawsze r > 0. Dla P = (−3,4):
+    r = 5, sin α = 4/5, cos α = −3/5, tg α = −4/3.'
+  severity: 3
+- name: Błędne rozumienie zapisu sin²α
+  incorrect_reasoning: Uczeń czyta sin²60° jako sin(60²) = sin3600° lub jako 2·sin60°.
+  correct_reasoning: 'Zapis sin²α to skrót od (sin α)², czyli najpierw obliczamy wartość funkcji, potem
+    podnosimy do kwadratu: sin²60° = (√3/2)² = 3/4.'
+  severity: 2
+- name: „Podwajanie kąta podwaja sinus”
+  incorrect_reasoning: Uczeń liczy sin120° jako 2·sin60° = √3 (co jest większe od 1) albo cos90° jako
+    2·cos45°.
+  correct_reasoning: 'Funkcje trygonometryczne nie są proporcjonalne do kąta: sin(2α) ≠ 2sin α. Wartość
+    dla 120° wyznaczamy wzorem redukcyjnym: sin120° = sin(180° − 60°) = sin60° = √3/2. Dodatkowo wynik
+    √3 > 1 jest natychmiast niemożliwy.'
+  severity: 3
+- name: Zaniedbanie usuwania niewymierności / błędna postać tg30°
+  incorrect_reasoning: Uczeń zapisuje tg30° = 3/√3 albo cos45° = 1/√2 i uznaje odpowiedź za nieprzekształcalną.
+  correct_reasoning: tg30° = sin30°/cos30° = (1/2):(√3/2) = 1/√3 = √3/3, a cos45° = 1/√2 = √2/2. Standardowa
+    postać wyniku ma mianownik wymierny; mnożymy licznik i mianownik przez √3 (odp. √2).
+  severity: 2

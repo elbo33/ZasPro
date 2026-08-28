@@ -1,0 +1,367 @@
+section: objetosci-i-pola-powierzchni-bryl
+name: Objętości i pola powierzchni brył
+scope: Volumes and surface areas of prisms, pyramids, the cylinder, the cone and the sphere, including
+  cases that need trigonometry to recover a missing length.
+requirements:
+- X.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T17:35:20.328226'
+  approved_at: '2026-08-28T18:28:25.083394'
+  approved_by: reviewer
+concepts:
+- name: Bryła, jej objętość i pole powierzchni
+  description: 'Objętość V to miara części przestrzeni zajmowanej przez bryłę (jednostki sześcienne: cm³,
+    dm³, m³); pole powierzchni całkowitej P_c to suma pól wszystkich ścian (powierzchni) ograniczających
+    bryłę (jednostki kwadratowe: cm², m²).'
+  explanation: Objętość odpowiada na pytanie „ile się zmieści w środku”, pole powierzchni – „ile materiału
+    potrzeba na opakowanie”. Już sama jednostka w odpowiedzi (cm² czy cm³) mówi, którą wielkość liczymy.
+  difficulty: 1
+- name: Siatka bryły
+  description: Płaska figura powstała z rozcięcia powierzchni bryły wzdłuż krawędzi i rozłożenia jej na
+    płaszczyźnie.
+  explanation: 'Siatka jest najbezpieczniejszym sposobem liczenia pola powierzchni: wypisujemy wszystkie
+    ściany z siatki i sumujemy ich pola. Dla stożka siatka to koło (podstawa) i wycinek koła (powierzchnia
+    boczna), dla walca – dwa koła i prostokąt.'
+  difficulty: 2
+- name: Graniastosłup prosty i prawidłowy
+  description: Graniastosłup prosty ma dwie równoległe, przystające podstawy i ściany boczne będące prostokątami
+    prostopadłymi do podstaw. Graniastosłup prawidłowy to graniastosłup prosty, którego podstawą jest
+    wielokąt foremny.
+  explanation: „Prawidłowy trójkątny” = podstawa to trójkąt równoboczny, „prawidłowy sześciokątny” = podstawa
+    to sześciokąt foremny. Wysokość graniastosłupa prostego to długość krawędzi bocznej.
+  difficulty: 1
+- name: Ostrosłup prawidłowy
+  description: Ostrosłup, którego podstawą jest wielokąt foremny, a spodek wysokości pokrywa się ze środkiem
+    podstawy; wszystkie krawędzie boczne są wtedy równe, a ściany boczne są przystającymi trójkątami równoramiennymi.
+  explanation: To najczęstszy typ ostrosłupa w zadaniach. Symetria pozwala policzyć jedną ścianę boczną
+    i pomnożyć przez liczbę ścian.
+  difficulty: 2
+- name: Wysokość bryły
+  description: Odcinek łączący wierzchołek (lub górną podstawę) z płaszczyzną podstawy, prostopadły do
+    tej płaszczyzny; jego długość oznaczamy H.
+  explanation: W ostrosłupie prawidłowym i w stożku wysokość „spada” do środka podstawy – to klucz do
+    budowania trójkątów prostokątnych wewnątrz bryły.
+  difficulty: 1
+- name: Krawędź boczna a wysokość ściany bocznej (apotema) ostrosłupa
+  description: Krawędź boczna b łączy wierzchołek ostrosłupa z wierzchołkiem podstawy; wysokość ściany
+    bocznej h (apotema ostrosłupa) łączy wierzchołek ze środkiem krawędzi podstawy i jest wysokością trójkąta
+    – ściany bocznej.
+  explanation: To dwa różne odcinki! Krawędź boczna „idzie do rogu”, apotema „idzie do środka boku”. Apotema
+    służy do liczenia pola ściany bocznej, krawędź boczna – do kąta nachylenia krawędzi.
+  difficulty: 3
+- name: Kąt nachylenia krawędzi bocznej do podstawy
+  description: Kąt między krawędzią boczną a jej rzutem prostokątnym na płaszczyznę podstawy (w ostrosłupie
+    prawidłowym rzutem jest promień okręgu opisanego na podstawie, czyli odcinek od środka do wierzchołka).
+  explanation: 'Powstaje trójkąt prostokątny: przyprostokątne H i R (odległość środka podstawy od wierzchołka),
+    przeciwprostokątna – krawędź boczna b.'
+  difficulty: 3
+- name: Kąt nachylenia ściany bocznej do podstawy
+  description: Kąt dwuścienny między płaszczyzną ściany bocznej a płaszczyzną podstawy; mierzymy go w
+    trójkącie prostokątnym o przyprostokątnych H i r (r – odległość środka podstawy od środka krawędzi
+    podstawy) i przeciwprostokątnej h (apotema).
+  explanation: Dla ostrosłupa prawidłowego czworokątnego o krawędzi podstawy a jest r = a/2; dla trójkątnego
+    r = a√3/6; dla sześciokątnego r = a√3/2.
+  difficulty: 4
+- name: Walec
+  description: Bryła obrotowa powstała z obrotu prostokąta wokół boku; ma dwie przystające podstawy –
+    koła o promieniu r – i powierzchnię boczną, której rozwinięciem jest prostokąt o wymiarach 2πr × H.
+  explanation: Przekrój osiowy walca (przekrój płaszczyzną zawierającą oś obrotu) to prostokąt 2r × H
+    – bardzo częsty punkt zaczepienia w zadaniach.
+  difficulty: 2
+- name: Stożek i jego tworząca
+  description: Bryła obrotowa powstała z obrotu trójkąta prostokątnego wokół przyprostokątnej; tworząca
+    l to odcinek łączący wierzchołek z punktem okręgu podstawy, r – promień podstawy, H – wysokość.
+  explanation: 'Trójkąt prostokątny (r, H, l) jest „sercem” każdego zadania o stożku: znając dwie z tych
+    wielkości albo jedną i kąt, wyznaczasz resztę. Przekrój osiowy stożka to trójkąt równoramienny o ramionach
+    l i podstawie 2r.'
+  difficulty: 2
+- name: Rozwinięcie powierzchni bocznej stożka
+  description: Wycinek koła o promieniu l i długości łuku równej obwodowi podstawy 2πr; kąt środkowy tego
+    wycinka spełnia α/360° = r/l.
+  explanation: Warunek „łuk wycinka = obwód podstawy” pozwala przeliczać kąt rozwinięcia na stosunek r/l
+    i odwrotnie.
+  difficulty: 4
+- name: Kula i sfera
+  description: Sfera o środku O i promieniu R to zbiór punktów przestrzeni odległych od O o R; kula to
+    sfera wraz z jej wnętrzem. Przekrój kuli płaszczyzną przechodzącą przez środek to koło wielkie o promieniu
+    R.
+  explanation: 'Kula ma tylko jedną „ścianę” – sferę o polu 4πR². Uwaga: półkula ma pole powierzchni 2πR²
+    (czasza) + πR² (koło), jeśli jest bryłą pełną.'
+  difficulty: 2
+- name: Pole powierzchni bocznej i całkowitej
+  description: P_b – suma pól ścian (powierzchni) bocznych, bez podstaw; P_c = P_b + pola podstaw (jednej
+    dla ostrosłupa, stożka; dwóch dla graniastosłupa, walca).
+  explanation: 'Zawsze czytaj treść: „pudełko bez wieczka”, „rynna”, „powierzchnia boczna” – od tego zależy,
+    ile podstaw doliczasz.'
+  difficulty: 2
+- name: Bryły złożone i bryły z otworem
+  description: Bryły powstałe przez sklejenie lub odjęcie brył podstawowych; ich objętość jest sumą (różnicą)
+    objętości części, a pole powierzchni sumą pól tylko tych powierzchni, które faktycznie leżą na zewnątrz.
+  explanation: Objętości dodajemy zawsze, ale pól nie – powierzchnie sklejenia znikają i nie wchodzą do
+    P_c.
+  difficulty: 3
+- name: Wpływ skali na objętość i pole
+  description: Jeśli wszystkie wymiary bryły pomnożymy przez k > 0, to każde pole rośnie k² razy, a objętość
+    k³ razy.
+  explanation: Podwojenie krawędzi sześcianu daje 4 razy większe pole i 8 razy większą objętość – przydatne
+    do szybkich szacowań i sprawdzania wyniku.
+  difficulty: 3
+- name: Jednostki objętości i pojemności
+  description: 1 dm³ = 1000 cm³ = 1 litr, 1 m³ = 1000 dm³ = 1 000 000 cm³; 1 m² = 10 000 cm².
+  explanation: Przy zamianie jednostek długości na objętość mnożnik podnosimy do sześcianu (1 m = 100
+    cm ⇒ 1 m³ = 100³ cm³).
+  difficulty: 2
+formulas:
+- name: Objętość graniastosłupa
+  latex_raw: V = P_p \cdot H
+  conditions: P_p – pole podstawy, H – wysokość; wzór obowiązuje dla dowolnego graniastosłupa (także pochyłego,
+    gdzie H to odległość podstaw).
+- name: Pole powierzchni graniastosłupa prostego
+  latex_raw: P_c = 2P_p + P_b,\qquad P_b = Ob_p \cdot H
+  conditions: Ob_p – obwód podstawy; wzór na P_b tylko dla graniastosłupa prostego.
+- name: Prostopadłościan i sześcian
+  latex_raw: V = abc,\quad P_c = 2(ab+bc+ac),\quad d = \sqrt{a^2+b^2+c^2};\qquad V = a^3,\quad P_c = 6a^2,\quad
+    d = a\sqrt{3}
+  conditions: d – przekątna bryły.
+- name: Objętość ostrosłupa
+  latex_raw: V = \tfrac{1}{3} P_p \cdot H
+  conditions: Dowolny ostrosłup; H – wysokość opuszczona na płaszczyznę podstawy.
+- name: Pole powierzchni ostrosłupa prawidłowego
+  latex_raw: P_c = P_p + P_b,\qquad P_b = \tfrac{1}{2}\,Ob_p \cdot h
+  conditions: h – wysokość ściany bocznej (apotema ostrosłupa); tylko gdy wszystkie ściany boczne są przystające.
+- name: Walec
+  latex_raw: V = \pi r^2 H,\qquad P_b = 2\pi r H,\qquad P_c = 2\pi r(r+H)
+  conditions: r – promień podstawy, H – wysokość.
+- name: Stożek
+  latex_raw: V = \tfrac{1}{3}\pi r^2 H,\qquad P_b = \pi r l,\qquad P_c = \pi r(r+l)
+  conditions: l – tworząca; wzór na P_b wymaga tworzącej, nie wysokości.
+- name: Związek r, H, l w stożku
+  latex_raw: l^2 = r^2 + H^2
+  conditions: Twierdzenie Pitagorasa w trójkącie prostokątnym z przekroju osiowego.
+- name: Kąt rozwinięcia powierzchni bocznej stożka
+  latex_raw: \frac{\alpha}{360^\circ} = \frac{r}{l}\quad\Longleftrightarrow\quad 2\pi r = \frac{\alpha}{360^\circ}\cdot
+    2\pi l
+  conditions: α – kąt środkowy wycinka będącego rozwinięciem powierzchni bocznej.
+- name: Kula
+  latex_raw: V = \tfrac{4}{3}\pi R^3,\qquad P = 4\pi R^2
+  conditions: R – promień kuli; P to pole sfery.
+- name: Trójkąt równoboczny
+  latex_raw: h = \frac{a\sqrt{3}}{2},\qquad P = \frac{a^2\sqrt{3}}{4}
+  conditions: a – bok; przydatne dla podstaw brył prawidłowych trójkątnych.
+- name: Sześciokąt foremny
+  latex_raw: P = \frac{3a^2\sqrt{3}}{2},\qquad d_{dłuższa} = 2a,\qquad d_{krótsza} = a\sqrt{3}
+  conditions: a – bok; sześciokąt dzieli się na 6 trójkątów równobocznych.
+- name: Kwadrat jako podstawa
+  latex_raw: P = a^2,\qquad d = a\sqrt{2},\qquad \tfrac{1}{2}d = \frac{a\sqrt{2}}{2}
+  conditions: Połowa przekątnej to rzut krawędzi bocznej ostrosłupa prawidłowego czworokątnego.
+- name: Zależności trygonometryczne w bryle
+  latex_raw: \operatorname{tg}\alpha = \frac{H}{x},\qquad \sin\alpha = \frac{H}{y},\qquad \cos\alpha =
+    \frac{x}{y}
+  conditions: W trójkącie prostokątnym o przyprostokątnych H (wysokość bryły) i x (rzut odcinka na podstawę)
+    oraz przeciwprostokątnej y (krawędź boczna, apotema lub tworząca), gdzie α – kąt nachylenia.
+- name: Kąt rozwarcia stożka
+  latex_raw: V = \tfrac{1}{3}\pi r^2 H,\quad r = l\sin\tfrac{\beta}{2},\quad H = l\cos\tfrac{\beta}{2}
+  conditions: β – kąt rozwarcia stożka (kąt przy wierzchołku w przekroju osiowym), l – tworząca.
+- name: Odległości od środka podstawy w wielokątach foremnych
+  latex_raw: '\text{kwadrat: } r=\frac{a}{2},\ R=\frac{a\sqrt{2}}{2};\quad \text{trójkąt: } r=\frac{a\sqrt{3}}{6},\
+    R=\frac{a\sqrt{3}}{3};\quad \text{sześciokąt: } r=\frac{a\sqrt{3}}{2},\ R=a'
+  conditions: r – promień okręgu wpisanego (do środka boku), R – promień okręgu opisanego (do wierzchołka);
+    używane przy kątach nachylenia ściany i krawędzi.
+- name: Skalowanie brył
+  latex_raw: P' = k^2 P,\qquad V' = k^3 V
+  conditions: Gdy wszystkie wymiary bryły mnożymy przez k > 0 (bryły podobne).
+methods:
+- name: Schemat rozwiązywania zadania o bryle
+  when_to_use: Do każdego zadania stereometrycznego z obliczaniem V lub P.
+  steps:
+  - Wykonaj czytelny rysunek bryły i oznacz dane oraz szukane (a, H, l, b, h, kąty).
+  - Zapisz wzory, które będą potrzebne (V, P_p, P_b) i sprawdź, których wielkości brakuje.
+  - Znajdź w bryle trójkąt prostokątny (lub inną figurę płaską) zawierający brakującą wielkość i narysuj
+    go osobno, płasko.
+  - Oblicz brakującą długość z twierdzenia Pitagorasa lub z funkcji trygonometrycznej kąta.
+  - Podstaw do wzorów, uprość wynik (usuń niewymierność z mianownika).
+  - Sprawdź jednostki (cm² dla pola, cm³ dla objętości) i sensowność wyniku.
+- name: Liczenie pola powierzchni z siatki
+  when_to_use: Gdy bryła ma ściany różnych typów lub gdy treść mówi o „bez podstawy”, „bez wieczka”, „powierzchnia
+    boczna”.
+  steps:
+  - Wypisz wszystkie ściany bryły (np. 2 podstawy + 4 prostokąty boczne).
+  - Dla każdej ściany ustal wymiary i policz jej pole.
+  - Zsumuj tylko te ściany, o które pyta zadanie.
+  - Dla brył złożonych pomiń powierzchnie sklejenia – nie należą do powierzchni zewnętrznej.
+- name: Trójkąty pomocnicze w ostrosłupie prawidłowym
+  when_to_use: Gdy dany jest kąt nachylenia krawędzi bocznej lub ściany bocznej albo długość krawędzi
+    bocznej/apotemy.
+  steps:
+  - 'Wyznacz z krawędzi podstawy a dwie odległości: r (środek podstawy → środek boku) i R (środek podstawy
+    → wierzchołek).'
+  - 'Do kąta nachylenia KRAWĘDZI bocznej użyj trójkąta (H, R, b): tg α = H/R, cos α = R/b.'
+  - 'Do kąta nachylenia ŚCIANY bocznej użyj trójkąta (H, r, h): tg β = H/r, cos β = r/h.'
+  - Sprawdź związek h² = H² + r² oraz b² = H² + R².
+  - Podstaw H do wzoru na objętość, a h do wzoru na pole powierzchni bocznej.
+- name: Praca z przekrojem osiowym bryły obrotowej
+  when_to_use: Gdy dane dotyczą przekroju osiowego walca lub stożka, kąta nachylenia tworzącej albo kąta
+    rozwarcia.
+  steps:
+  - 'Narysuj przekrój osiowy: prostokąt 2r × H (walec) lub trójkąt równoramienny o ramionach l i podstawie
+    2r (stożek).'
+  - 'Zaznacz w nim dany kąt: kąt między tworzącą a podstawą α lub połowę kąta rozwarcia β/2.'
+  - 'Z połowy przekroju (trójkąt prostokątny o bokach r, H, l) wyznacz brakujące długości: H = r·tg α,
+    r = l·cos α, H = l·sin α.'
+  - Wróć do przestrzeni i podstaw r, H, l do wzorów na V, P_b, P_c.
+- name: 'Zadanie odwrotne: z objętości lub pola do wymiaru'
+  when_to_use: Gdy dana jest objętość albo pole powierzchni, a szukany jest promień, wysokość lub krawędź.
+  steps:
+  - Zapisz odpowiedni wzór z niewiadomą.
+  - Podstaw dane liczbowe (π zostaw jako symbol, jeśli występuje po obu stronach – skróci się).
+  - Rozwiąż powstałe równanie (liniowe, kwadratowe lub sześcienne typu x³ = c).
+  - Odrzuć rozwiązania niedodatnie – długości muszą być dodatnie.
+  - Wstaw wynik z powrotem do wzoru, żeby sprawdzić poprawność.
+- name: Bryły złożone
+  when_to_use: Gdy bryła to np. walec z półkulą, graniastosłup z ostrosłupem, walec z wydrążonym otworem.
+  steps:
+  - Rozłóż bryłę na bryły podstawowe i zaznacz wspólne wymiary (najczęściej wspólny promień lub wspólna
+    podstawa).
+  - 'Objętość: dodaj objętości części sklejonych albo odejmij objętość części wydrążonej.'
+  - 'Pole: wypisz wyłącznie powierzchnie widoczne z zewnątrz (podstawy niesklejone, powierzchnie boczne,
+    czasze).'
+  - Zsumuj i uprość, wyłączając π przed nawias.
+examples:
+- statement: Oblicz objętość i pole powierzchni całkowitej graniastosłupa prawidłowego trójkątnego o krawędzi
+    podstawy 6 cm i wysokości 10 cm.
+  worked_solution: |-
+    Podstawą jest trójkąt równoboczny o boku a = 6 cm.
+    Pole podstawy: P_p = a²√3/4 = 36√3/4 = 9√3 cm².
+    Objętość: V = P_p · H = 9√3 · 10 = 90√3 cm³ ≈ 155,9 cm³.
+    Ściany boczne to trzy przystające prostokąty 6 × 10, więc P_b = 3 · 60 = 180 cm² (można też: P_b = Ob_p · H = 18 · 10 = 180 cm²).
+    Pole całkowite: P_c = 2P_p + P_b = 2 · 9√3 + 180 = 180 + 18√3 cm² ≈ 211,2 cm².
+  difficulty: 1
+- statement: Przekrój osiowy walca jest kwadratem o polu 36 cm². Oblicz objętość i pole powierzchni całkowitej
+    tego walca.
+  worked_solution: |-
+    Przekrój osiowy walca to prostokąt o wymiarach 2r × H. Skoro jest kwadratem o polu 36 cm², jego bok ma długość 6 cm, zatem 2r = 6 i H = 6, czyli r = 3 cm, H = 6 cm.
+    Objętość: V = πr²H = π · 9 · 6 = 54π cm³ ≈ 169,6 cm³.
+    Pole całkowite: P_c = 2πr(r + H) = 2π · 3 · (3 + 6) = 54π cm² ≈ 169,6 cm².
+    Uwaga: liczby są takie same, ale jednostki różne – to nie jest błąd, tylko przypadek wynikający z H = 2r.
+  difficulty: 2
+- statement: W ostrosłupie prawidłowym czworokątnym krawędź podstawy ma długość 6, a krawędź boczna jest
+    nachylona do płaszczyzny podstawy pod kątem 60°. Oblicz objętość i pole powierzchni całkowitej tego
+    ostrosłupa.
+  worked_solution: |-
+    Podstawą jest kwadrat o boku a = 6, więc P_p = 36, przekątna d = 6√2, a jej połowa R = 3√2. Odcinek R jest rzutem krawędzi bocznej na podstawę.
+    W trójkącie prostokątnym o przyprostokątnych H i R: tg 60° = H/R, czyli H = 3√2 · √3 = 3√6.
+    Objętość: V = (1/3)·P_p·H = (1/3)·36·3√6 = 36√6 ≈ 88,2.
+    Pole powierzchni bocznej wymaga apotemy h (wysokości ściany bocznej). Odległość środka podstawy od środka boku wynosi r = a/2 = 3, więc
+    h² = H² + r² = (3√6)² + 3² = 54 + 9 = 63, czyli h = √63 = 3√7.
+    P_b = (1/2)·Ob_p·h = (1/2)·24·3√7 = 36√7.
+    P_c = P_p + P_b = 36 + 36√7 ≈ 131,2.
+    Sprawdzenie: krawędź boczna b = R/cos60° = 3√2 : (1/2) = 6√2 i rzeczywiście b² = H² + R² = 54 + 18 = 72. ✓
+  difficulty: 3
+- statement: Rozwinięciem powierzchni bocznej stożka jest wycinek koła o promieniu 9 i kącie środkowym
+    120°. Oblicz objętość i pole powierzchni całkowitej stożka oraz kąt nachylenia tworzącej do podstawy.
+  worked_solution: |-
+    Promień wycinka to tworząca: l = 9.
+    Długość łuku wycinka równa się obwodowi podstawy: (120°/360°)·2π·9 = (1/3)·18π = 6π = 2πr, stąd r = 3.
+    Wysokość: H = √(l² − r²) = √(81 − 9) = √72 = 6√2.
+    Objętość: V = (1/3)πr²H = (1/3)π·9·6√2 = 18√2 π ≈ 79,97.
+    Pole całkowite: P_c = πr(r + l) = π·3·(3 + 9) = 36π ≈ 113,1.
+    Kąt nachylenia tworzącej do podstawy α: cos α = r/l = 3/9 = 1/3, więc α = arccos(1/3) ≈ 70,5°.
+    Sprawdzenie kąta wycinka: α_wycinka/360° = r/l = 1/3, czyli 120°. ✓
+  difficulty: 4
+- statement: Zbiornik ma kształt walca o promieniu podstawy 3 m i wysokości 8 m, zamkniętego od góry półkulą
+    o tym samym promieniu. Oblicz objętość zbiornika oraz pole jego powierzchni zewnętrznej (dno jest
+    pełne).
+  worked_solution: |-
+    Objętość walca: V₁ = πr²H = π·9·8 = 72π m³.
+    Objętość półkuli: V₂ = (1/2)·(4/3)πR³ = (2/3)π·27 = 18π m³.
+    Razem: V = 72π + 18π = 90π m³ ≈ 282,7 m³ (czyli ok. 282 700 litrów).
+    Powierzchnia zewnętrzna składa się z: dolnej podstawy walca πr² = 9π m², powierzchni bocznej walca 2πrH = 2π·3·8 = 48π m², czaszy półkuli (1/2)·4πR² = 2π·9 = 18π m².
+    Górna podstawa walca jest miejscem sklejenia – nie należy do powierzchni zewnętrznej, więc jej nie liczymy.
+    P = 9π + 48π + 18π = 75π m² ≈ 235,6 m².
+  difficulty: 4
+objectives:
+- statement: Rozpoznawać i nazywać podstawowe bryły (graniastosłupy proste i prawidłowe, ostrosłupy prawidłowe,
+    walec, stożek, kula) oraz wskazywać w nich podstawę, wysokość, krawędź boczną, apotemę i tworzącą.
+  bloom_level: Zrozumienie
+- statement: Stosować wzory na objętość i pole powierzchni graniastosłupa, ostrosłupa, walca, stożka i
+    kuli w zadaniach z bezpośrednio danymi wymiarami.
+  bloom_level: Zastosowanie
+- statement: Wyznaczać brakującą długość w bryle (wysokość, tworzącą, apotemę, krawędź boczną, przekątną)
+    za pomocą twierdzenia Pitagorasa oraz zależności w trójkątach o kątach 30°, 45°, 60°.
+  bloom_level: Zastosowanie
+- statement: Wykorzystywać funkcje trygonometryczne kąta nachylenia krawędzi bocznej, ściany bocznej lub
+    tworzącej do podstawy, a także kąta rozwarcia stożka, aby obliczyć objętość i pole powierzchni bryły.
+  bloom_level: Zastosowanie
+- statement: Analizować przekrój osiowy walca i stożka oraz rozwinięcie powierzchni bocznej (w tym wycinek
+    koła) i odczytywać z nich zależności między r, H i l.
+  bloom_level: Analiza
+- statement: 'Rozwiązywać zadania odwrotne: z danej objętości lub danego pola powierzchni wyznaczać brakujący
+    wymiar bryły.'
+  bloom_level: Zastosowanie
+- statement: Obliczać objętość i pole powierzchni zewnętrznej brył złożonych i wydrążonych, poprawnie
+    decydując, które powierzchnie wliczyć.
+  bloom_level: Analiza
+- statement: Interpretować wyniki w kontekście praktycznym (pojemność w litrach, ilość materiału, koszt
+    malowania) z poprawną zamianą jednostek i sensownym zaokrągleniem.
+  bloom_level: Zastosowanie
+- statement: Oceniać poprawność wyniku, sprawdzając jednostki, rząd wielkości oraz wpływ zmiany skali
+    na pole (k²) i objętość (k³).
+  bloom_level: Ocena
+misconceptions:
+- name: Mylenie krawędzi bocznej z wysokością ściany bocznej
+  incorrect_reasoning: „Krawędź boczna ostrosłupa ma 10, więc pole ściany bocznej to (1/2)·a·10.”
+  correct_reasoning: Do pola trójkąta – ściany bocznej – potrzebna jest jego wysokość opuszczona na krawędź
+    podstawy (apotema h), a nie krawędź boczna b. Zawsze b > h. Apotemę liczymy z h² = H² + r² lub h²
+    = b² − (a/2)².
+  severity: 5
+- name: Pominięcie czynnika 1/3 w ostrosłupie i stożku
+  incorrect_reasoning: „V ostrosłupa = P_p · H”, „V stożka = πr²H”.
+  correct_reasoning: 'Ostrosłup i stożek mają objętość trzy razy mniejszą niż graniastosłup/walec o tej
+    samej podstawie i wysokości: V = (1/3)P_p·H, V = (1/3)πr²H.'
+  severity: 5
+- name: Użycie wysokości zamiast tworzącej w polu bocznym stożka
+  incorrect_reasoning: „P_b stożka = πrH”, bo H to „wysokość”.
+  correct_reasoning: 'P_b = πrl, gdzie l to tworząca. Jeśli dana jest H, najpierw licz l = √(r² + H²).
+    Odwrotnie: P_b walca = 2πrH – tu wchodzi wysokość, bo rozwinięciem jest prostokąt.'
+  severity: 4
+- name: Mylenie średnicy z promieniem
+  incorrect_reasoning: „Średnica podstawy wynosi 10, więc V = π·10²·H”.
+  correct_reasoning: 'We wzorach występuje promień: r = d/2 = 5, więc V = π·25·H. Warto od razu na rysunku
+    zapisywać r, a nie d.'
+  severity: 4
+- name: Zły trójkąt przy kącie nachylenia
+  incorrect_reasoning: '„Ściana boczna ostrosłupa prawidłowego czworokątnego jest nachylona pod kątem
+    60°, więc tg60° = H : (połowa przekątnej)”.'
+  correct_reasoning: 'Kąt nachylenia ŚCIANY mierzymy w trójkącie z odległością środka podstawy od środka
+    boku (r = a/2): tg60° = H/(a/2). Połowa przekątnej służy tylko do kąta nachylenia KRAWĘDZI bocznej.'
+  severity: 5
+- name: Sumowanie wszystkich pól w bryle złożonej
+  incorrect_reasoning: „Pole zbiornika walec + półkula = pole całkowite walca + pole całkowite półkuli”.
+  correct_reasoning: 'Powierzchnie sklejenia (tu: górna podstawa walca i koło półkuli) znikają wewnątrz
+    bryły. Do pola zewnętrznego wliczamy tylko powierzchnie widoczne z zewnątrz. Objętości natomiast dodajemy
+    w całości.'
+  severity: 4
+- name: Błędne skalowanie objętości i jednostek
+  incorrect_reasoning: „Krawędź sześcianu wzrosła 2 razy, więc objętość też 2 razy”; „1 m³ = 100 cm³”.
+  correct_reasoning: 'Objętość zmienia się w sześcianie skali: k = 2 ⇒ V rośnie 8 razy, pole 4 razy. Podobnie
+    1 m = 100 cm ⇒ 1 m³ = 100³ cm³ = 1 000 000 cm³, a 1 m² = 10 000 cm².'
+  severity: 3
+- name: Przedwczesne zaokrąglanie i gubienie π
+  incorrect_reasoning: Zaokrąglenie π ≈ 3,14 i pośrednich pierwiastków na każdym etapie, a potem podstawianie
+    zaokrągleń dalej.
+  correct_reasoning: Rachunki prowadzimy w postaci dokładnej (z π i pierwiastkami), a zaokrąglamy dopiero
+    końcowy wynik – inaczej błąd narasta. Często π i tak się skraca (np. przy porównywaniu objętości).
+  severity: 2
+- name: Wzór na pole sfery mylony z polem koła
+  incorrect_reasoning: „Pole powierzchni kuli to πR²” albo „objętość kuli to (4/3)πR²”.
+  correct_reasoning: 'Pole sfery: P = 4πR² (cztery koła wielkie), objętość: V = (4/3)πR³. Kontrola wykładników:
+    pole – kwadrat, objętość – sześcian.'
+  severity: 4
+- name: Traktowanie P_b = Ob_p·H jak wzoru uniwersalnego
+  incorrect_reasoning: „Pole boczne każdej bryły to obwód podstawy razy wysokość”.
+  correct_reasoning: Ten wzór działa dla graniastosłupa prostego i walca (rozwinięcie to prostokąt). Dla
+    ostrosłupa prawidłowego jest P_b = (1/2)·Ob_p·h z apotemą h, a dla stożka P_b = πrl.
+  severity: 4

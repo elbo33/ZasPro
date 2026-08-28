@@ -1,0 +1,284 @@
+section: wycinek-kola-luk
+name: Wycinek koła i długość łuku
+scope: Area of a circular sector and length of an arc from the central angle.
+requirements:
+- VIII.6
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:29:26.542721'
+  approved_at: '2026-08-28T18:28:07.202667'
+  approved_by: reviewer
+concepts:
+- name: Okrąg a koło
+  description: Okrąg o środku O i promieniu r to zbiór wszystkich punktów płaszczyzny odległych od O dokładnie
+    o r; koło to zbiór punktów odległych od O o nie więcej niż r (okrąg wraz z jego wnętrzem).
+  explanation: 'Okrąg jest „linią” – mierzymy jego długość (obwód). Koło jest „powierzchnią” – mierzymy
+    jego pole. Ta różnica przekłada się bezpośrednio na parę pojęć: łuk (fragment okręgu, długość) i wycinek
+    koła (fragment koła, pole).'
+  difficulty: 1
+- name: Kąt środkowy
+  description: Kąt, którego wierzchołek leży w środku okręgu, a ramiona przecinają okrąg; oznaczamy go
+    zwykle α, przy czym 0° < α ≤ 360°.
+  explanation: Kąt środkowy jest „miarą tego, jaką część okręgu wycinamy”. Pełny obrót to 360°, więc ułamek
+    α/360° mówi, jaką częścią całego okręgu (koła) jest wybrany kawałek.
+  difficulty: 1
+- name: Łuk okręgu
+  description: Część okręgu zawarta między dwoma punktami A, B leżącymi na okręgu; łuk odpowiadający kątowi
+    środkowemu α ma końce na ramionach tego kąta.
+  explanation: 'Dwa punkty dzielą okrąg na dwa łuki: krótszy (odpowiadający kątowi α) i dłuższy (odpowiadający
+    kątowi 360° − α). Zawsze trzeba wiedzieć, o który łuk pytamy. Długość łuku jest wielkością liniową
+    (cm, m).'
+  difficulty: 2
+- name: Wycinek koła
+  description: Część koła ograniczona dwoma promieniami i łukiem między ich końcami; wycinek odpowiadający
+    kątowi środkowemu α to „kawałek tortu” o kącie α.
+  explanation: Wycinek to figura płaska – liczymy jej pole (cm², m²). Brzeg wycinka składa się z łuku
+    i dwóch promieni, co jest ważne przy obliczaniu obwodu wycinka.
+  difficulty: 2
+- name: Odcinek koła (dla odróżnienia)
+  description: Część koła ograniczona cięciwą i łukiem, na który ta cięciwa jest opartą.
+  explanation: 'Nie mylić z wycinkiem: wycinek ogranicza łuk i dwa promienie, odcinek koła – łuk i cięciwa.
+    Pole odcinka to pole wycinka minus pole trójkąta o wierzchołku w środku (w zakresie podstawowym pojawia
+    się rzadko, głównie dla α = 90° lub 60°).'
+  difficulty: 3
+- name: Zasada proporcjonalności
+  description: 'Długość łuku i pole wycinka są wprost proporcjonalne do miary kąta środkowego: kąt k razy
+    większy daje łuk k razy dłuższy i wycinek o k razy większym polu (przy tym samym promieniu).'
+  explanation: 'To jest sedno całego tematu. Zamiast zapamiętywać wzory, można rozumować ułamkiem: α/360°
+    to część pełnego kąta, więc bierzemy taką samą część obwodu 2πr i taką samą część pola πr².'
+  difficulty: 2
+- name: Ułamek okręgu wyrażony procentowo
+  description: 'Część koła odpowiadającą kątowi α można podać jako procent: p% = (α/360°)·100%.'
+  explanation: 'Przydatne w zadaniach typu „diagram kołowy”: 25% koła to kąt 90°, 10% to 36°, 1% to 3,6°.'
+  difficulty: 2
+- name: Miara łukowa (radian) – uzupełnienie
+  description: Kąt o mierze 1 radiana to kąt środkowy, któremu odpowiada łuk o długości równej promieniowi;
+    180° = π rad.
+  explanation: W wersji radianowej wzory upraszczają się do l = αr oraz P = ½αr². Na poziomie podstawowym
+    wystarczy sprawnie liczyć w stopniach, ale warto wiedzieć, skąd biorą się zapisy z π.
+  difficulty: 3
+- name: Obwód wycinka koła
+  description: 'Suma długości łuku i dwóch promieni: Ob = l + 2r.'
+  explanation: 'Typowa pułapka: obwód wycinka to nie sam łuk. Idąc po brzegu „kawałka tortu”, przechodzimy
+    promień, łuk i drugi promień.'
+  difficulty: 2
+formulas:
+- name: Obwód okręgu
+  latex_raw: L = 2\pi r = \pi d
+  conditions: r – promień, d = 2r – średnica
+  description: Podstawa wszystkich wzorów na długość łuku.
+- name: Pole koła
+  latex_raw: P = \pi r^2
+  conditions: r – promień koła
+  description: Podstawa wzoru na pole wycinka.
+- name: Długość łuku (kąt w stopniach)
+  latex_raw: l = \frac{\alpha}{360^\circ}\cdot 2\pi r
+  conditions: α – miara kąta środkowego w stopniach, 0° < α ≤ 360°, r > 0
+  description: Dla α = 360° otrzymujemy cały obwód.
+- name: Pole wycinka koła (kąt w stopniach)
+  latex_raw: P_w = \frac{\alpha}{360^\circ}\cdot \pi r^2
+  conditions: α – miara kąta środkowego w stopniach, 0° < α ≤ 360°, r > 0
+  description: Dla α = 360° otrzymujemy pole całego koła.
+- name: Związek pola wycinka z długością łuku
+  latex_raw: P_w = \tfrac{1}{2}\, l \, r
+  conditions: l – długość łuku wycinka, r – promień
+  description: 'Wygodne, gdy znamy l i r, a nie znamy kąta. Analogia do pola trójkąta: „podstawa” l, „wysokość”
+    r.'
+- name: Wyznaczanie kąta z długości łuku
+  latex_raw: \alpha = \frac{l}{2\pi r}\cdot 360^\circ
+  conditions: l ≤ 2πr
+  description: Przekształcenie wzoru na długość łuku.
+- name: Wyznaczanie kąta z pola wycinka
+  latex_raw: \alpha = \frac{P_w}{\pi r^2}\cdot 360^\circ
+  conditions: P_w ≤ πr²
+  description: Przekształcenie wzoru na pole wycinka.
+- name: Obwód wycinka
+  latex_raw: Ob = l + 2r = \frac{\alpha}{360^\circ}\cdot 2\pi r + 2r
+  conditions: α < 360°
+  description: Wynik jest sumą składnika z π i składnika bez π – nie wolno ich dodać „w jedno”.
+- name: Wzory w mierze łukowej
+  latex_raw: l = \alpha r,\qquad P_w = \tfrac{1}{2}\alpha r^2
+  conditions: α wyrażone w radianach, 0 < α ≤ 2π
+  description: 'Zamiana: α[rad] = α[°]·π/180°.'
+- name: Stosunek wielkości w tym samym kole
+  latex_raw: \frac{l_1}{l_2}=\frac{\alpha_1}{\alpha_2},\qquad \frac{P_{w1}}{P_{w2}}=\frac{\alpha_1}{\alpha_2}
+  conditions: oba łuki/wycinki w kole o tym samym promieniu
+  description: Pozwala liczyć bez znajomości r.
+methods:
+- name: Obliczanie długości łuku i pola wycinka z danego kąta i promienia
+  when_to_use: Gdy dane są promień r oraz kąt środkowy α (w stopniach), a szukamy l lub P_w.
+  steps:
+  - 'Zapisz dane: r, α; jeśli podano średnicę, przelicz r = d/2.'
+  - 'Wyznacz ułamek koła: k = α/360° i skróć go do najprostszej postaci (np. 60/360 = 1/6).'
+  - 'Oblicz odpowiednią wielkość dla całego okręgu/koła: 2πr lub πr².'
+  - Pomnóż ją przez k.
+  - 'Zapisz wynik w postaci dokładnej (z π) lub przybliżonej, i dopisz jednostkę: liniową dla łuku, kwadratową
+    dla pola.'
+- name: Wyznaczanie kąta środkowego z danego łuku lub wycinka
+  when_to_use: Gdy znamy r oraz l (lub P_w), a szukamy α.
+  steps:
+  - Podstaw dane do wzoru l = (α/360°)·2πr lub P_w = (α/360°)·πr².
+  - Wyznacz ułamek k = l/(2πr) albo k = P_w/(πr²); skróć π.
+  - Oblicz α = k·360°.
+  - 'Sprawdź sensowność: 0° < α ≤ 360°.'
+- name: Wyznaczanie promienia
+  when_to_use: Gdy znamy kąt α oraz długość łuku lub pole wycinka, a szukamy r.
+  steps:
+  - 'Zapisz wzór z niewiadomą r: l = (α/360°)·2πr lub P_w = (α/360°)·πr².'
+  - Uprość ułamek α/360°.
+  - Rozwiąż równanie liniowe względem r (dla łuku) albo kwadratowe względem r² (dla pola).
+  - 'Przy pierwiastkowaniu odrzuć rozwiązanie ujemne: r > 0.'
+- name: Rachunek proporcją (bez zapamiętywania wzoru)
+  when_to_use: Gdy nie pamiętasz wzoru albo dane są „częściowe” (np. procent koła, stosunek kątów).
+  steps:
+  - 'Ustaw proporcję: 360° odpowiada całości (2πr lub πr²), a α odpowiada szukanej wielkości x.'
+  - 'Zapisz: x/całość = α/360°.'
+  - Wyznacz x mnożąc na krzyż.
+  - Zinterpretuj wynik i podaj jednostkę.
+- name: Obwód i pole figur złożonych z wycinków
+  when_to_use: Gdy figura jest sumą lub różnicą wycinków, trójkątów, prostokątów (np. fragment pierścienia,
+    rozeta, figura z zaokrąglonymi rogami).
+  steps:
+  - Narysuj figurę i zaznacz promienie oraz kąty środkowe wszystkich łuków.
+  - 'Rozłóż pole na sumę/różnicę znanych figur: pola wycinków licz wzorem (α/360°)·πr².'
+  - Do obwodu wliczaj tylko te fragmenty brzegu, po których naprawdę przechodzi kontur (łuki + odcinki),
+    pomijając linie pomocnicze wewnątrz figury.
+  - Zsumuj osobno składniki z π i osobno bez π.
+  - Sprawdź jednostki i, jeśli trzeba, podaj przybliżenie z π ≈ 3,14.
+- name: Kontrola poprawności wyniku
+  when_to_use: Zawsze na końcu zadania o łuku lub wycinku.
+  steps:
+  - Sprawdź, czy l ≤ 2πr oraz P_w ≤ πr².
+  - 'Sprawdź zgodność z intuicją: kąt bliski 180° → mniej więcej połowa obwodu/pola.'
+  - Zweryfikuj wynik drugim wzorem, np. P_w = ½·l·r.
+  - Upewnij się, że jednostka pola jest kwadratowa, a długości – liniowa.
+examples:
+- statement: W kole o promieniu r = 6 cm dany jest wycinek o kącie środkowym 60°. Oblicz długość łuku
+    tego wycinka, pole wycinka oraz jego obwód.
+  worked_solution: |-
+    Ułamek koła: 60°/360° = 1/6.
+    Długość łuku: l = (1/6)·2π·6 = (1/6)·12π = 2π cm ≈ 6,28 cm.
+    Pole wycinka: P = (1/6)·π·6² = (1/6)·36π = 6π cm² ≈ 18,85 cm².
+    Obwód wycinka: Ob = l + 2r = 2π + 12 cm ≈ 18,28 cm.
+    Kontrola: P = ½·l·r = ½·2π·6 = 6π cm² – zgadza się.
+  difficulty: 1
+- statement: Pole wycinka koła o promieniu 6 wynosi 12π. Wyznacz miarę kąta środkowego tego wycinka oraz
+    długość ograniczającego go łuku.
+  worked_solution: |-
+    Pole całego koła: πr² = 36π.
+    Ułamek koła: k = 12π/36π = 1/3.
+    Kąt: α = (1/3)·360° = 120°.
+    Długość łuku: l = (1/3)·2π·6 = (1/3)·12π = 4π.
+    Sprawdzenie wzorem P = ½lr: ½·4π·6 = 12π ✓.
+  difficulty: 2
+- statement: Łuk odpowiadający kątowi środkowemu 150° ma długość 5π. Oblicz promień okręgu i pole odpowiadającego
+    wycinka.
+  worked_solution: |-
+    Ułamek: 150°/360° = 5/12.
+    Z wzoru l = (5/12)·2πr mamy 5π = (5/12)·2πr = (5/6)πr.
+    Dzielimy obie strony przez π: 5 = (5/6)r, stąd r = 6.
+    Pole wycinka: P = (5/12)·π·6² = (5/12)·36π = 15π.
+    Alternatywnie: P = ½·l·r = ½·5π·6 = 15π ✓.
+  difficulty: 3
+- statement: Z koła o promieniu 10 wycięto koncentryczne koło o promieniu 4, a z powstałego pierścienia
+    wycięto fragment o kącie środkowym 45°. Oblicz pole i obwód tego fragmentu.
+  worked_solution: |-
+    Ułamek koła: 45°/360° = 1/8.
+    Pole fragmentu = 1/8 pola pierścienia = (1/8)(π·10² − π·4²) = (1/8)(100π − 16π) = (1/8)·84π = 10,5π ≈ 32,97.
+    (Równoważnie: różnica pól wycinków (1/8)·100π − (1/8)·16π.)
+    Obwód: składa się z łuku zewnętrznego, łuku wewnętrznego i dwóch odcinków o długości 10 − 4 = 6.
+    Łuk zewnętrzny: (1/8)·2π·10 = 2,5π; łuk wewnętrzny: (1/8)·2π·4 = π.
+    Ob = 2,5π + π + 2·6 = 3,5π + 12 ≈ 22,99.
+    Uwaga: składników z π i bez π nie łączymy w jeden.
+  difficulty: 4
+- statement: Wycinek koła o kącie 120° i promieniu 9 ma takie samo pole jak wycinek koła o promieniu 6.
+    Jaki jest kąt środkowy drugiego wycinka? Porównaj też długości ich łuków.
+  worked_solution: |-
+    Pole pierwszego wycinka: P₁ = (120/360)·π·9² = (1/3)·81π = 27π.
+    Dla drugiego: 27π = (β/360°)·π·6² = (β/360°)·36π.
+    Dzielimy przez π: 27 = 36·β/360°, czyli β/360° = 27/36 = 3/4, więc β = 270°.
+    Długości łuków: l₁ = (1/3)·2π·9 = 6π; l₂ = (3/4)·2π·6 = 9π.
+    Wniosek: równe pola wycinków nie oznaczają równych łuków – łuk drugiego wycinka jest dłuższy, mimo mniejszego promienia, bo kąt jest znacznie większy.
+    Kontrola wzorem P = ½lr: ½·9π·6 = 27π ✓.
+  difficulty: 4
+objectives:
+- statement: Rozróżnić okrąg i koło oraz łuk, cięciwę, wycinek i odcinek koła i wskazać je na rysunku.
+  bloom_level: Zrozumienie
+- statement: Podać i uzasadnić (przez proporcjonalność do kąta środkowego) wzory l = (α/360°)·2πr oraz
+    P_w = (α/360°)·πr².
+  bloom_level: Zrozumienie
+- statement: Obliczyć długość łuku i pole wycinka koła, mając dane promień (lub średnicę) i kąt środkowy.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć kąt środkowy lub promień z danej długości łuku albo pola wycinka, przekształcając
+    odpowiedni wzór.
+  bloom_level: Zastosowanie
+- statement: Obliczyć obwód wycinka koła oraz obwód i pole figur złożonych z wycinków, pierścieni i wielokątów.
+  bloom_level: Zastosowanie
+- statement: Stosować zależność P_w = ½·l·r do obliczeń i do sprawdzania poprawności wyniku.
+  bloom_level: Zastosowanie
+- statement: Zamieniać część koła wyrażoną procentowo lub ułamkiem na miarę kąta środkowego i odwrotnie.
+  bloom_level: Zastosowanie
+- statement: Analizować sytuacje praktyczne (droga po łuku, wycinek tarczy, diagram kołowy, obszar zraszany)
+    i przekładać je na obliczenia łuku i wycinka.
+  bloom_level: Analiza
+- statement: Ocenić sensowność otrzymanego wyniku (l ≤ 2πr, P_w ≤ πr², poprawność jednostek) i wykryć
+    typowe błędy rachunkowe.
+  bloom_level: Ocenianie
+misconceptions:
+- name: Pominięcie ułamka α/360°
+  incorrect_reasoning: Uczeń liczy pole wycinka jako πr², a długość łuku jako 2πr, ignorując kąt – bierze
+    wielkości dla całego koła.
+  correct_reasoning: 'Wycinek to tylko część koła. Zawsze mnożymy przez ułamek α/360°: P_w = (α/360°)·πr²,
+    l = (α/360°)·2πr. Sprawdzian: dla α = 360° wzory dają całe koło, dla α = 90° – jego czwartą część.'
+  severity: 5
+- name: Mylenie promienia ze średnicą
+  incorrect_reasoning: W zadaniu podano średnicę 10 cm, a uczeń podstawia r = 10.
+  correct_reasoning: 'Najpierw przelicz: r = d/2 = 5. Wszystkie wzory (2πr, πr², wzory na łuk i wycinek)
+    używają promienia. Błąd ten podwaja długość łuku i czterokrotnie zwiększa pole.'
+  severity: 4
+- name: Mylenie wzoru na długość łuku ze wzorem na pole wycinka
+  incorrect_reasoning: Uczeń liczy „długość łuku” jako (α/360°)·πr² albo pole jako (α/360°)·2πr.
+  correct_reasoning: 'Rozróżniaj wymiar: długość pochodzi z obwodu 2πr (jednostka liniowa), pole – z πr²
+    (jednostka kwadratowa). Kontrola jednostek natychmiast wykrywa pomyłkę.'
+  severity: 4
+- name: Obwód wycinka utożsamiony z długością łuku
+  incorrect_reasoning: „Obwód wycinka to długość jego łuku”, więc uczeń podaje samo l.
+  correct_reasoning: 'Brzeg wycinka tworzą łuk i dwa promienie: Ob = l + 2r. Wystarczy „przejść palcem”
+    po konturze figury, by to zobaczyć.'
+  severity: 3
+- name: Dodawanie składników z π i bez π
+  incorrect_reasoning: Uczeń zapisuje 2π + 12 = 14π (albo 14).
+  correct_reasoning: π jest liczbą niewymierną, 2π ≈ 6,28; wyrażenia 2π i 12 to wyrazy niepodobne. Wynik
+    zostawiamy w postaci 2π + 12 lub podajemy przybliżenie ≈ 18,28.
+  severity: 3
+- name: Przekonanie, że pole wycinka zależy od kwadratu kąta
+  incorrect_reasoning: „Skoro pole zawiera r², to podwojenie kąta czterokrotnie zwiększa pole wycinka.”
+  correct_reasoning: 'Pole wycinka jest wprost proporcjonalne do kąta: podwojenie α podwaja pole (przy
+    stałym r). Kwadrat dotyczy tylko promienia.'
+  severity: 4
+- name: Wybór niewłaściwego łuku
+  incorrect_reasoning: Przy kącie środkowym 300° uczeń liczy „krótszy” łuk, bo tak wygląda rysunek, albo
+    odwrotnie – dla łuku większego bierze kąt ostry.
+  correct_reasoning: 'Zawsze dopasuj kąt do konkretnego łuku: łukowi dopełniającemu odpowiada kąt 360°
+    − α. Jeśli szukany jest łuk większy, użyj kąta wypukłego lub wklęsłego zgodnie z rysunkiem.'
+  severity: 3
+- name: Mieszanie stopni z radianami
+  incorrect_reasoning: Uczeń podstawia α = 60 do wzoru l = αr (radianowego) i otrzymuje absurdalnie długi
+    łuk.
+  correct_reasoning: 'Wzory l = αr i P = ½αr² obowiązują wyłącznie dla kąta w radianach. Dla stopni używamy
+    ułamka α/360°; ewentualnie najpierw zamień: 60° = π/3 rad.'
+  severity: 3
+- name: Mylenie wycinka z odcinkiem koła
+  incorrect_reasoning: Do obliczenia pola części koła odciętej cięciwą uczeń stosuje sam wzór na pole
+    wycinka.
+  correct_reasoning: Odcinek koła = wycinek minus trójkąt o wierzchołku w środku koła. Wycinek ograniczają
+    dwa promienie i łuk, odcinek – cięciwa i łuk.
+  severity: 2
+- name: Zaokrąglanie na wczesnym etapie obliczeń
+  incorrect_reasoning: Uczeń już w pierwszym kroku wstawia π ≈ 3,14 i zaokrągla wyniki pośrednie, co psuje
+    dokładność i utrudnia skracanie.
+  correct_reasoning: Prowadź rachunki dokładnie, zostawiając π jako symbol (np. 10,5π), a przybliżenie
+    wykonaj dopiero na końcu, jeśli zadanie tego wymaga.
+  severity: 2

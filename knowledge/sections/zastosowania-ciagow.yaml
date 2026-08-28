@@ -1,0 +1,356 @@
+section: zastosowania-ciagow
+name: Zastosowania ciągów arytmetycznych i geometrycznych
+scope: Using sequence properties, arithmetic and geometric in particular, to solve problems, including
+  practical ones.
+requirements:
+- VI.7
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T15:14:28.802136'
+  approved_at: '2026-08-28T18:28:06.374203'
+  approved_by: reviewer
+concepts:
+- name: Ciąg jako model sytuacji praktycznej
+  description: Ciąg (a_n) to funkcja przyporządkowująca kolejnym liczbom naturalnym n wielkości opisujące
+    kolejne etapy pewnego procesu (kolejne lata, miesiące, rzędy, odbicia piłki, raty itp.).
+  explanation: 'Kluczowy krok każdego zadania praktycznego: zdecyduj, CO numerujesz (n = numer roku, rzędu,
+    odbicia) i CO jest wartością a_n (liczba miejsc, kwota, wysokość). Dopiero potem dobieraj wzory.'
+  difficulty: 1
+- name: Przyrost stały (model arytmetyczny)
+  description: 'Sytuacja, w której w każdym kroku wielkość zmienia się o tę samą liczbę jednostek r: a_{n+1}
+    = a_n + r.'
+  explanation: 'Rozpoznajesz go po sformułowaniach: „o 150 zł więcej co roku”, „w każdym następnym rzędzie
+    o 3 miejsca więcej”, „ubywa 2 litry na godzinę”. Zmiana jest bezwzględna, nie procentowa. Wykres punktów
+    leży na prostej.'
+  difficulty: 1
+- name: Przyrost procentowy (model geometryczny)
+  description: 'Sytuacja, w której w każdym kroku wielkość mnoży się przez tę samą liczbę q: a_{n+1} =
+    q·a_n.'
+  explanation: 'Rozpoznajesz go po sformułowaniach: „o 4% rocznie”, „o połowę mniej”, „podwaja się co
+    godzinę”, „traci 15% wartości”. Zmiana jest względna. Wzrost/spadek jest coraz szybszy/wolniejszy
+    w liczbach bezwzględnych.'
+  difficulty: 2
+- name: Współczynnik wzrostu i spadku
+  description: Wzrostowi o p% odpowiada mnożnik q = 1 + p/100; spadkowi o p% odpowiada mnożnik q = 1 −
+    p/100.
+  explanation: Zamiast liczyć „ile wynosi 4% z kwoty i dodać”, od razu mnóż przez 1,04. To zamienia procenty
+    na ciąg geometryczny i pozwala liczyć wiele kroków naraz przez potęgowanie.
+  difficulty: 2
+- name: Kapitalizacja odsetek
+  description: Dopisanie odsetek do kapitału na koniec okresu kapitalizacji, tak że w następnym okresie
+    odsetki naliczane są także od dopisanych odsetek (procent składany).
+  explanation: Procent składany = ciąg geometryczny. Jeśli odsetki są wypłacane i nie dopisywane (procent
+    prosty), kapitał rośnie o stałą kwotę — to ciąg arytmetyczny.
+  difficulty: 2
+- name: Okres kapitalizacji i oprocentowanie w okresie
+  description: Jeśli roczna stopa nominalna wynosi p% przy kapitalizacji m razy w roku, to stopa w jednym
+    okresie wynosi p/m procent, a po t latach mamy mt okresów.
+  explanation: Kapitalizacja kwartalna przy 4% w skali roku oznacza 1% na kwartał (nie 4%!). Częstsza
+    kapitalizacja daje nieco więcej odsetek niż roczna.
+  difficulty: 3
+- name: Podatek od odsetek
+  description: Od zysku z odsetek pobierany bywa podatek (np. 19%); wtedy do kapitału dopisuje się tylko
+    część odsetek.
+  explanation: Przy podatku 19% i stopie p% mnożnik jednego okresu wynosi 1 + 0,81·p/100. Zawsze najpierw
+    ustal mnożnik jednego kroku, potem podnieś go do potęgi.
+  difficulty: 3
+- name: Suma jako wartość skumulowana
+  description: S_n = a_1 + a_2 + … + a_n oznacza w zadaniach praktycznych łączną liczbę/kwotę zgromadzoną
+    w n krokach (wszystkie miejsca w n rzędach, całkowity zarobek przez n lat, łączna droga).
+  explanation: Odróżniaj pytanie „ile w n-tym roku?” (to a_n) od „ile łącznie przez n lat?” (to S_n).
+    To najczęstsze rozgałęzienie w zadaniach tekstowych.
+  difficulty: 2
+- name: Warunek na trzy kolejne wyrazy ciągu arytmetycznego
+  description: Liczby a, b, c (w tej kolejności) tworzą ciąg arytmetyczny wtedy i tylko wtedy, gdy 2b
+    = a + c, czyli b jest średnią arytmetyczną sąsiadów.
+  explanation: 'To narzędzie do zadań typu „dobierz x tak, by liczby tworzyły ciąg arytmetyczny”. Wygodne
+    podstawienie trzech liczb: a−r, a, a+r (ich suma to 3a).'
+  difficulty: 2
+- name: Warunek na trzy kolejne wyrazy ciągu geometrycznego
+  description: Liczby a, b, c (niezerowe, w tej kolejności) tworzą ciąg geometryczny wtedy i tylko wtedy,
+    gdy b² = a·c.
+  explanation: 'Wygodne podstawienie: a/q, a, aq (ich iloczyn to a³). Pamiętaj, że żaden wyraz ciągu geometrycznego
+    nie może być zerem.'
+  difficulty: 2
+- name: Monotoniczność modelu
+  description: Ciąg arytmetyczny rośnie, gdy r > 0, maleje, gdy r < 0; ciąg geometryczny o a_1 > 0 rośnie,
+    gdy q > 1, maleje, gdy 0 < q < 1, jest stały dla q = 1, a dla q < 0 zmienia znak naprzemiennie.
+  explanation: 'Sprawdzenie monotoniczności to szybki test sensowności wyniku: wartość samochodu po latach
+    musi maleć, liczba bakterii rosnąć.'
+  difficulty: 2
+- name: Wyznaczanie liczby kroków (nieznane n)
+  description: Zadania typu „po ilu latach kapitał przekroczy…”, „w którym rzędzie jest 90 miejsc” prowadzą
+    do równania lub nierówności, w której niewiadomą jest numer wyrazu n ∈ N₊.
+  explanation: 'W modelu arytmetycznym otrzymujesz równanie liniowe, w geometrycznym — nierówność wykładniczą,
+    którą na poziomie podstawowym rozwiązuje się przez kolejne szacowanie potęg (lub logarytm). Wynik
+    zaokrąglaj zgodnie z sensem: „przekroczy” → w górę.'
+  difficulty: 3
+- name: Interpretacja i zaokrąglanie wyniku
+  description: 'Odpowiedź musi być liczbą sensowną w kontekście: liczba osób i rzędów jest naturalna,
+    kwota w złotych podawana z dokładnością do groszy, wysokość w metrach z rozsądną dokładnością.'
+  explanation: Rachunki prowadź na dokładnych wartościach (np. 1,04^5), zaokrąglaj dopiero w odpowiedzi;
+    przy zaokrąglaniu kwot najczęściej stosuje się zaokrąglenie do 0,01 zł.
+  difficulty: 1
+- name: Porównywanie modelu liniowego i wykładniczego
+  description: Dwie oferty (stała podwyżka kwotowa vs stała podwyżka procentowa) opisane są odpowiednio
+    ciągiem arytmetycznym i geometrycznym; porównuje się je licząc wybrane wyrazy albo sumy.
+  explanation: Na krótką metę model arytmetyczny bywa korzystniejszy, ale wzrost geometryczny prędzej
+    czy później przewyższa arytmetyczny — dlatego zawsze precyzuj horyzont porównania.
+  difficulty: 3
+formulas:
+- name: Wzór ogólny ciągu arytmetycznego
+  latex_raw: a_n = a_1 + (n-1)r
+  conditions: n ∈ N₊, r — różnica ciągu
+  description: 'W zadaniach: a_1 to wielkość w pierwszym kroku, r — stały przyrost.'
+- name: Suma n początkowych wyrazów ciągu arytmetycznego
+  latex_raw: S_n = \frac{a_1 + a_n}{2}\cdot n = \frac{2a_1 + (n-1)r}{2}\cdot n
+  conditions: n ∈ N₊
+  description: Druga postać przydaje się, gdy a_n nie jest jeszcze policzone.
+- name: Warunek trzech kolejnych wyrazów ciągu arytmetycznego
+  latex_raw: 2b = a + c
+  conditions: a, b, c kolejne wyrazy ciągu arytmetycznego
+- name: Wzór ogólny ciągu geometrycznego
+  latex_raw: a_n = a_1\cdot q^{\,n-1}
+  conditions: n ∈ N₊, a_1 ≠ 0, q ≠ 0
+  description: 'Uwaga na wykładnik n−1: a_1 odpowiada zeru kroków.'
+- name: Suma n początkowych wyrazów ciągu geometrycznego
+  latex_raw: S_n = a_1\cdot\frac{1-q^{\,n}}{1-q}\quad (q \neq 1),\qquad S_n = n\,a_1\quad (q = 1)
+  conditions: a_1 ≠ 0, q ≠ 0; osobno rozpatruj przypadek q = 1
+- name: Warunek trzech kolejnych wyrazów ciągu geometrycznego
+  latex_raw: b^2 = a\cdot c
+  conditions: a, b, c kolejne wyrazy ciągu geometrycznego, wszystkie różne od 0
+- name: Procent składany (kapitalizacja roczna)
+  latex_raw: K_n = K_0\left(1+\frac{p}{100}\right)^{n}
+  conditions: K_0 — kapitał początkowy, p% — roczna stopa, n — liczba pełnych lat, odsetki dopisywane
+    co roku
+  description: Ciąg (K_n) jest geometryczny o ilorazie 1+p/100; K_0 to "wyraz zerowy".
+- name: Procent składany przy kapitalizacji m razy w roku
+  latex_raw: K = K_0\left(1+\frac{p}{100\,m}\right)^{m\,t}
+  conditions: p% — nominalna stopa roczna, m — liczba kapitalizacji w roku, t — liczba lat
+- name: Procent składany z podatkiem od odsetek
+  latex_raw: K_n = K_0\left(1+\frac{p}{100}\cdot(1-s)\right)^{n}
+  conditions: s — stopa podatku od odsetek (np. s = 0,19), kapitalizacja na koniec każdego okresu
+- name: Spadek wykładniczy (amortyzacja, deprecjacja)
+  latex_raw: W_n = W_0\left(1-\frac{p}{100}\right)^{n}
+  conditions: 0 < p < 100, W_0 — wartość początkowa, n — liczba okresów spadku
+- name: Procent prosty (model arytmetyczny)
+  latex_raw: K_n = K_0\left(1 + n\cdot\frac{p}{100}\right)
+  conditions: odsetki naliczane od kapitału początkowego i nie kapitalizowane
+  description: Ciąg (K_n) jest arytmetyczny o różnicy K_0·p/100.
+methods:
+- name: Budowa modelu ciągowego dla zadania tekstowego
+  when_to_use: Zawsze na początku zadania osadzonego w kontekście praktycznym (rzędy, lata, raty, odbicia,
+    produkcja).
+  steps:
+  - 'Nazwij zmienną: określ, co numeruje n i co oznacza a_n (podaj jednostki).'
+  - 'Wypisz kilka pierwszych wartości z treści zadania: a_1, a_2, a_3.'
+  - Sprawdź, czy różnice a_2−a_1, a_3−a_2 są równe (model arytmetyczny), czy równe są ilorazy a_2/a_1,
+    a_3/a_2 (model geometryczny).
+  - Zapisz a_1 oraz r albo q; przy procentach użyj mnożnika q = 1 ± p/100.
+  - 'Ustal, o co pyta zadanie: pojedynczy wyraz a_n, suma S_n, czy numer n.'
+  - Zastosuj odpowiedni wzór, wykonaj rachunki i zinterpretuj wynik w kontekście (jednostki, zaokrąglenie,
+    sensowność).
+- name: Obliczanie kapitału przy procencie składanym
+  when_to_use: Lokaty, kredyty, inflacja, wzrost/spadek wartości o stały procent w kolejnych okresach.
+  steps:
+  - Ustal kapitał początkowy K_0 i długość jednego okresu kapitalizacji.
+  - 'Oblicz stopę procentową przypadającą na jeden okres: p_okr = p_rocz / m.'
+  - 'Uwzględnij ewentualny podatek: mnożnik jednego okresu q = 1 + (p_okr/100)·(1−s).'
+  - Policz liczbę okresów N = m·t.
+  - Zastosuj K = K_0·q^N.
+  - Zaokrąglij do groszy i odpowiedz pełnym zdaniem; w razie potrzeby policz same odsetki jako K − K_0.
+- name: Wyznaczanie liczby okresów n z równania lub nierówności
+  when_to_use: Pytania typu „po ilu latach…”, „ile rzędów…”, „po którym odbiciu wysokość spadnie poniżej…”.
+  steps:
+  - Zapisz warunek zadania jako równanie/nierówność z niewiadomą n, np. a_1+(n−1)r ≥ A lub a_1·q^{n−1}
+    < A.
+  - W modelu arytmetycznym rozwiąż nierówność liniową względem n.
+  - W modelu geometrycznym przekształć do postaci q^{k} < A/a_1 i szacuj kolejne potęgi q (lub użyj logarytmu),
+    aż znajdziesz najmniejsze k spełniające warunek.
+  - Wybierz n będące liczbą naturalną, zaokrąglając w stronę zgodną z treścią („co najmniej”, „przekroczy”
+    → w górę).
+  - Sprawdź wynik, podstawiając n i n−1, i sformułuj odpowiedź.
+- name: Zadania o trzech liczbach tworzących ciąg
+  when_to_use: Gdy treść mówi, że trzy liczby tworzą ciąg arytmetyczny lub geometryczny i podana jest
+    ich suma lub iloczyn.
+  steps:
+  - Dla ciągu arytmetycznego oznacz liczby a−r, a, a+r (suma = 3a); dla geometrycznego a/q, a, aq (iloczyn
+    = a³).
+  - Zapisz podane w treści warunki jako równania w tych oznaczeniach.
+  - Rozwiąż układ (zwykle jedno równanie natychmiast daje a).
+  - Wyznacz r lub q; pamiętaj o obu pierwiastkach równania kwadratowego.
+  - Odtwórz wszystkie trzy liczby dla każdego rozwiązania i sprawdź zgodność z treścią (np. czy są dodatnie,
+    rosnące).
+  - Podaj wszystkie pasujące zestawy liczb.
+- name: 'Zadania mieszane: arytmetyczny → geometryczny'
+  when_to_use: Gdy trzy liczby tworzą ciąg arytmetyczny, a po zmianie (dodaniu/odjęciu ustalonych liczb)
+    tworzą ciąg geometryczny — lub odwrotnie.
+  steps:
+  - Oznacz wyjściowe liczby jako a−r, a, a+r i wykorzystaj podaną sumę do wyznaczenia a.
+  - Zapisz nowe (zmienione) liczby przez a i r.
+  - Zastosuj warunek b² = a·c do nowej trójki (albo 2b = a+c, jeśli powstaje ciąg arytmetyczny).
+  - Rozwiąż otrzymane równanie kwadratowe względem r.
+  - Dla każdego r wypisz obie trójki i sprawdź oba warunki zadania.
+- name: Porównywanie dwóch scenariuszy wzrostu
+  when_to_use: 'Wybór korzystniejszej oferty: stała podwyżka kwotowa kontra stała podwyżka procentowa;
+    porównanie lokat.'
+  steps:
+  - 'Zbuduj osobny model dla każdej oferty: (a_n) arytmetyczny, (b_n) geometryczny, z tym samym indeksowaniem.'
+  - Ustal, czy porównujesz wartość w ustalonym roku (a_n vs b_n), czy sumę z całego okresu (S_n vs S'_n).
+  - Policz obie wielkości dla żądanego n, korzystając z odpowiednich wzorów na wyraz i sumę.
+  - Porównaj liczby i odpowiedz, o ile jedna oferta jest lepsza od drugiej.
+  - Jeśli trzeba, sprawdź, od którego n przewaga się odwraca, licząc kolejne wyrazy.
+examples:
+- statement: W widowni teatru pierwszy rząd ma 18 miejsc, a każdy następny rząd ma o 3 miejsca więcej
+    niż poprzedni. Widownia ma 25 rzędów. Ile miejsc jest w ostatnim rzędzie i ile miejsc ma cała widownia?
+  worked_solution: |-
+    Niech a_n oznacza liczbę miejsc w n-tym rzędzie. Z treści a_1 = 18 oraz a_{n+1} = a_n + 3, więc (a_n) jest ciągiem arytmetycznym o r = 3.
+    Ostatni rząd: a_25 = a_1 + 24r = 18 + 24·3 = 18 + 72 = 90.
+    Cała widownia to suma 25 wyrazów: S_25 = (a_1 + a_25)/2 · 25 = (18 + 90)/2 · 25 = 54 · 25 = 1350.
+    Odpowiedź: w ostatnim rzędzie jest 90 miejsc, a cała widownia liczy 1350 miejsc.
+  difficulty: 1
+- statement: Pan Kowalski wpłacił 8000 zł na lokatę oprocentowaną 4% w skali roku. Oblicz wartość lokaty
+    po 5 latach przy kapitalizacji rocznej oraz przy kapitalizacji kwartalnej (pomijamy podatek). Wyniki
+    podaj z dokładnością do 1 grosza.
+  worked_solution: |-
+    Kapitalizacja roczna: mnożnik jednego roku q = 1 + 4/100 = 1,04, liczba okresów N = 5.
+    K = 8000·1,04^5. Ponieważ 1,04^5 ≈ 1,2166529, otrzymujemy K ≈ 8000·1,2166529 = 9733,22 zł.
+    Kapitalizacja kwartalna: stopa na kwartał wynosi 4%/4 = 1%, więc q = 1,01; liczba okresów N = 4·5 = 20.
+    K = 8000·1,01^20. Ponieważ 1,01^20 ≈ 1,2201900, mamy K ≈ 8000·1,2201900 = 9761,52 zł.
+    Odpowiedź: przy kapitalizacji rocznej lokata da ok. 9733,22 zł, a przy kwartalnej ok. 9761,52 zł — częstsza kapitalizacja daje ok. 28 zł więcej. (Uwaga: gdyby doliczyć 19% podatku od odsetek, mnożnik roczny wynosiłby 1 + 0,04·0,81 = 1,0324.)
+  difficulty: 2
+- statement: 'Pracownik dostał dwie oferty. Oferta A: pensja roczna 36 000 zł w pierwszym roku i co roku
+    podwyżka o 1800 zł. Oferta B: pensja roczna 36 000 zł w pierwszym roku i co roku podwyżka o 4%. Która
+    oferta daje wyższą pensję w 10. roku pracy, a która wyższy łączny zarobek przez 10 lat?'
+  worked_solution: |-
+    Oferta A to ciąg arytmetyczny: a_1 = 36000, r = 1800.
+    a_10 = 36000 + 9·1800 = 36000 + 16200 = 52200 zł.
+    S_10 = (a_1 + a_10)/2 · 10 = (36000 + 52200)/2 · 10 = 44100·10 = 441000 zł.
+    Oferta B to ciąg geometryczny: b_1 = 36000, q = 1,04.
+    b_10 = 36000·1,04^9 ≈ 36000·1,4233118 = 51239,22 zł.
+    S'_10 = b_1·(1 − q^10)/(1 − q) = 36000·(1 − 1,04^10)/(1 − 1,04) = 36000·(1,4802443 − 1)/0,04 ≈ 36000·12,006107 = 432219,86 zł.
+    Porównanie: 52200 > 51239,22 oraz 441000 > 432219,86.
+    Odpowiedź: w perspektywie 10 lat korzystniejsza jest oferta A — daje wyższą pensję w 10. roku (o ok. 961 zł) i wyższy łączny zarobek (o ok. 8780 zł). Przy dłuższym horyzoncie przewaga procentowa oferty B w końcu weźmie górę.
+  difficulty: 3
+- statement: Trzy liczby tworzą ciąg arytmetyczny, a ich suma jest równa 15. Jeżeli do pierwszej liczby
+    dodamy 1, do drugiej 1, a do trzeciej 4, to otrzymane liczby utworzą ciąg geometryczny. Wyznacz te
+    liczby.
+  worked_solution: |-
+    Oznaczmy liczby jako a − r, a, a + r.
+    Suma: (a − r) + a + (a + r) = 3a = 15, stąd a = 5. Liczby to 5 − r, 5, 5 + r.
+    Po zmianie otrzymujemy: 5 − r + 1 = 6 − r, 5 + 1 = 6, 5 + r + 4 = 9 + r.
+    Warunek ciągu geometrycznego: 6² = (6 − r)(9 + r).
+    36 = 54 + 6r − 9r − r², czyli 36 = 54 − 3r − r², więc r² + 3r − 18 = 0.
+    Δ = 9 + 72 = 81, √Δ = 9, r = (−3 − 9)/2 = −6 lub r = (−3 + 9)/2 = 3.
+    Dla r = 3: liczby 2, 5, 8; po zmianie 3, 6, 12 — ciąg geometryczny o q = 2 (6² = 3·12 = 36 ✓).
+    Dla r = −6: liczby 11, 5, −1; po zmianie 12, 6, 3 — ciąg geometryczny o q = 1/2 (6² = 12·3 = 36 ✓).
+    Odpowiedź: szukane liczby to 2, 5, 8 albo 11, 5, −1.
+  difficulty: 4
+- statement: Piłkę upuszczono z wysokości 2 m. Po każdym odbiciu od podłoża wznosi się ona na 60% wysokości
+    poprzedniego wzniesienia. (a) Na jaką wysokość wzniesie się po 4. odbiciu? (b) Po którym odbiciu wysokość
+    wzniesienia będzie po raz pierwszy mniejsza niż 10 cm?
+  worked_solution: |-
+    Niech h_n będzie wysokością wzniesienia po n-tym odbiciu. Wtedy h_1 = 2·0,6 = 1,2 m, a każde następne wzniesienie jest 0,6 razy mniejsze, więc (h_n) jest ciągiem geometrycznym o h_1 = 1,2 i q = 0,6. Równoważnie h_n = 2·0,6^n.
+    (a) h_4 = 2·0,6^4 = 2·0,1296 = 0,2592 m ≈ 25,9 cm.
+    (b) Szukamy najmniejszego n ∈ N₊ takiego, że 2·0,6^n < 0,1, czyli 0,6^n < 0,05.
+    Szacujemy kolejne potęgi: 0,6^4 = 0,1296; 0,6^5 = 0,07776; 0,6^6 = 0,046656 < 0,05.
+    Zatem najmniejsze n to 6 (dla n = 5 mamy 0,6^5 = 0,07776 > 0,05, więc h_5 = 0,15552 m > 0,1 m; dla n = 6 mamy h_6 = 0,093312 m < 0,1 m).
+    Odpowiedź: (a) ok. 25,9 cm; (b) po raz pierwszy po 6. odbiciu (wzniesienie ok. 9,3 cm).
+  difficulty: 4
+objectives:
+- statement: Rozpoznać na podstawie treści zadania, czy opisany proces modeluje ciąg arytmetyczny (stały
+    przyrost kwotowy), czy geometryczny (stała zmiana procentowa), i uzasadnić wybór modelu.
+  bloom_level: Analiza
+- statement: 'Zbudować model ciągowy sytuacji praktycznej: określić, co numeruje n, wyznaczyć a_1 oraz
+    r lub q wraz z jednostkami.'
+  bloom_level: Zastosowanie
+- statement: Obliczyć wskazany wyraz ciągu arytmetycznego lub geometrycznego opisującego sytuację praktyczną
+    (liczba miejsc w rzędzie, pensja w danym roku, wysokość odbicia, wartość maszyny).
+  bloom_level: Zastosowanie
+- statement: Obliczyć sumę n początkowych wyrazów ciągu arytmetycznego lub geometrycznego jako wielkość
+    skumulowaną (łączna liczba miejsc, łączny zarobek, suma wpłat).
+  bloom_level: Zastosowanie
+- statement: Stosować wzór na procent składany, w tym przy kapitalizacji częstszej niż roczna oraz z uwzględnieniem
+    podatku od odsetek, i obliczać kapitał, odsetki lub kapitał początkowy.
+  bloom_level: Zastosowanie
+- statement: Obliczać wartość wielkości malejącej o stały procent (amortyzacja, spadek ceny, rozpad) po
+    zadanej liczbie okresów.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć liczbę okresów spełniającą zadany warunek, rozwiązując równanie lub nierówność
+    z niewiadomym numerem wyrazu i zaokrąglając wynik zgodnie z sensem zadania.
+  bloom_level: Analiza
+- statement: Wykorzystać warunki 2b = a + c oraz b² = a·c do wyznaczania liczb tworzących ciąg arytmetyczny
+    lub geometryczny, w tym w zadaniach mieszanych z podaną sumą lub iloczynem.
+  bloom_level: Zastosowanie
+- statement: Porównać dwa scenariusze wzrostu (arytmetyczny i geometryczny) w ustalonym horyzoncie czasu
+    i uzasadnić, który jest korzystniejszy dla wyrazu i dla sumy.
+  bloom_level: Ocena
+- statement: 'Zinterpretować otrzymany wynik w kontekście praktycznym: podać jednostki, sensownie zaokrąglić,
+    ocenić realność odpowiedzi i sformułować pełną odpowiedź.'
+  bloom_level: Ocena
+misconceptions:
+- name: Mylenie wzrostu o stały procent ze wzrostem o stałą kwotę
+  incorrect_reasoning: „Pensja rośnie o 4% rocznie, czyli w pierwszym roku o 4% z 36000 = 1440 zł, więc
+    co roku o 1440 zł — to ciąg arytmetyczny o r = 1440.”
+  correct_reasoning: 'Wzrost o stały procent liczony jest za każdym razem od nowej, większej wartości,
+    więc przyrost kwotowy rośnie. Model jest geometryczny: b_n = 36000·1,04^{n−1}. Ciąg arytmetyczny opisuje
+    tylko wzrost o stałą KWOTĘ.'
+  severity: 5
+- name: Zły wykładnik przy procencie składanym
+  incorrect_reasoning: „Kapitał po 5 latach to K_0·q^{5−1} = K_0·q^4, bo we wzorze na ciąg geometryczny
+    jest wykładnik n−1.”
+  correct_reasoning: 'Kapitał początkowy odpowiada zeru okresów, więc po n okresach mamy K_n = K_0·q^n.
+    Wzór a_n = a_1·q^{n−1} obowiązuje przy numeracji od a_1; jeśli przyjmiesz a_1 = K_0, to kapitał po
+    5 latach to a_6. Zawsze sprawdź na jednym roku: po 1 roku ma być K_0·q.'
+  severity: 5
+- name: Nieprzeliczenie stopy na okres kapitalizacji
+  incorrect_reasoning: „Oprocentowanie 4% w skali roku, kapitalizacja kwartalna, 5 lat, więc K = K_0·1,04^{20}.”
+  correct_reasoning: Przy kapitalizacji m razy w roku stopa jednego okresu to p/m. Dla 4% rocznie i kwartałów
+    jest to 1%, więc K = K_0·1,01^{20}.
+  severity: 4
+- name: Sądzenie, że spadek o p% i wzrost o p% się znoszą
+  incorrect_reasoning: „Cena spadła o 20%, potem wzrosła o 20%, więc wróciła do wyjściowej.”
+  correct_reasoning: 'Mnożniki nie znoszą się: 0,8·1,2 = 0,96, czyli cena jest o 4% niższa niż początkowa.
+    Procenty liczone są od różnych podstaw.'
+  severity: 4
+- name: Mylenie wyrazu z sumą wyrazów
+  incorrect_reasoning: '„Pytanie brzmi: ile pracownik zarobi przez 10 lat — liczę a_10.”'
+  correct_reasoning: 'a_10 to zarobek w dziesiątym roku; łączny zarobek przez 10 lat to S_10. Zawsze przetłumacz
+    pytanie: „w n-tym…” → a_n, „łącznie/razem/w sumie przez n…” → S_n.'
+  severity: 4
+- name: Błąd o jeden przy numerowaniu okresów
+  incorrect_reasoning: „Piąty rząd ma o 5·3 miejsc więcej niż pierwszy”, albo „a_n = a_1 + n·r”.
+  correct_reasoning: Od pierwszego do n-tego wyrazu wykonujemy n−1 kroków, więc a_n = a_1 + (n−1)r; piąty
+    rząd ma o 4·3 = 12 miejsc więcej od pierwszego. Sprawdzaj wzór na n = 1.
+  severity: 4
+- name: Stosowanie warunku średniej arytmetycznej do ciągu geometrycznego
+  incorrect_reasoning: „Liczby a, b, c tworzą ciąg geometryczny, więc b = (a+c)/2.”
+  correct_reasoning: Dla ciągu geometrycznego zachodzi b² = a·c (b jest średnią geometryczną co do wartości
+    bezwzględnej), a warunek 2b = a + c dotyczy ciągu arytmetycznego.
+  severity: 4
+- name: Pominięcie jednego z rozwiązań równania kwadratowego
+  incorrect_reasoning: „Z równania r² + 3r − 18 = 0 wychodzi r = 3, więc liczby to 2, 5, 8 — koniec.”
+  correct_reasoning: Równanie ma dwa pierwiastki (r = 3 i r = −6) i oba trzeba sprawdzić z treścią zadania;
+    jeśli oba dają poprawne trójki liczb, należy podać obie odpowiedzi. Odrzucać wolno tylko te, które
+    łamią warunki (np. wyraz równy 0 w ciągu geometrycznym, wielkość ujemna tam, gdzie musi być dodatnia).
+  severity: 3
+- name: Użycie wzoru na sumę ciągu geometrycznego przy q = 1
+  incorrect_reasoning: „S_n = a_1(1−q^n)/(1−q) zawsze działa.”
+  correct_reasoning: Dla q = 1 mianownik jest zerem — wtedy wszystkie wyrazy są równe i S_n = n·a_1. Przed
+    użyciem wzoru sprawdzaj, czy q ≠ 1.
+  severity: 3
+- name: Zaokrąglanie w trakcie rachunków i złe zaokrąglenie liczby okresów
+  incorrect_reasoning: „1,04^5 ≈ 1,2, więc kapitał to 9600 zł”; albo „n ≈ 5,4 lat, więc po 5 latach kapitał
+    przekroczy zadaną kwotę.”
+  correct_reasoning: Zaokrąglaj dopiero końcowy wynik (kwoty do groszy). Jeśli warunek ma być spełniony
+    („przekroczy”, „co najmniej”), liczbę okresów zaokrąglamy w górę do liczby naturalnej i weryfikujemy,
+    podstawiając n oraz n−1.
+  severity: 3
+- name: Mylenie procentu prostego ze składanym
+  incorrect_reasoning: „Odsetki 5% rocznie przez 3 lata to zawsze K_0·1,05^3.”
+  correct_reasoning: 'Jeżeli odsetki nie są dopisywane do kapitału (procent prosty), kapitał rośnie liniowo:
+    K_n = K_0(1 + n·0,05) — to ciąg arytmetyczny. Wzór wykładniczy stosujemy tylko przy kapitalizacji
+    (dopisywaniu) odsetek.'
+  severity: 3

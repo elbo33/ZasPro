@@ -1,0 +1,370 @@
+section: prawa-dzialan-potegi-pierwiastki
+name: Prawa działań na potęgach i pierwiastkach
+scope: Rational exponents and the root-power link; the laws for multiplying, dividing and raising powers,
+  and their counterparts for roots.
+requirements:
+- I.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T14:00:22.889381'
+  approved_at: '2026-08-28T18:28:01.345516'
+  approved_by: reviewer
+concepts:
+- name: Potęga o wykładniku naturalnym
+  description: 'Dla liczby rzeczywistej a i liczby naturalnej n ≥ 1: aⁿ = a·a·…·a (n czynników). Liczbę
+    a nazywamy podstawą, n — wykładnikiem.'
+  explanation: 'To najprostsza sytuacja: potęgowanie jest skróconym zapisem mnożenia tego samego czynnika.
+    Wszystkie późniejsze rozszerzenia (wykładnik 0, ujemny, ułamkowy) są tak dobierane, żeby prawa działań
+    pozostały prawdziwe.'
+  difficulty: 1
+- name: Potęga o wykładniku 0 i o wykładniku całkowitym ujemnym
+  description: Dla a ≠ 0 przyjmujemy a⁰ = 1 oraz a⁻ⁿ = 1/aⁿ dla n naturalnego dodatniego. Wyrażenie 0⁰
+    oraz 0⁻ⁿ nie są określone.
+  explanation: 'Definicje te nie są ''umową z powietrza'': wynikają z żądania, by wzór aᵐ : aⁿ = aᵐ⁻ⁿ
+    działał także wtedy, gdy m = n lub m < n. Ujemny wykładnik nie oznacza liczby ujemnej — oznacza odwrotność.'
+  difficulty: 2
+- name: Pierwiastek arytmetyczny stopnia n
+  description: 'Dla a ≥ 0 i n ≥ 2 pierwiastkiem arytmetycznym stopnia n z a nazywamy tę jedyną liczbę
+    b ≥ 0, dla której bⁿ = a. Zapis: b = ⁿ√a. Dla n = 2 piszemy √a.'
+  explanation: 'Kluczowe jest słowo ''nieujemna'': √16 = 4, a nie ±4. Symbol √ oznacza jedną konkretną
+    liczbę, a nie zbiór rozwiązań równania x² = 16.'
+  difficulty: 2
+- name: Pierwiastek nieparzystego stopnia z liczby ujemnej
+  description: Gdy n jest nieparzyste, dla a < 0 przyjmujemy ⁿ√a = −ⁿ√(−a), np. ∛(−8) = −2.
+  explanation: Dla nieparzystego n funkcja x ↦ xⁿ przyjmuje wszystkie wartości rzeczywiste i jest różnowartościowa,
+    więc pierwiastek istnieje i jest jednoznaczny także dla liczb ujemnych. Dla parzystego n takiej możliwości
+    nie ma — √(−4) nie istnieje w liczbach rzeczywistych.
+  difficulty: 3
+- name: Potęga o wykładniku wymiernym
+  description: Dla a > 0 oraz liczby wymiernej m/n (m całkowite, n naturalne ≥ 2) przyjmujemy a^(m/n)
+    = ⁿ√(aᵐ) = (ⁿ√a)ᵐ. W szczególności a^(1/n) = ⁿ√a. Dla wykładnika dodatniego dopuszczamy też a = 0
+    (0^(m/n) = 0).
+  explanation: 'Wykładnik ułamkowy to ''pierwiastek zapisany po nowemu'': mianownik ułamka mówi, jakiego
+    stopnia pierwiastek, licznik — do której potęgi. Dzięki temu wszystkie prawa działań na potęgach obejmują
+    automatycznie pierwiastki.'
+  difficulty: 3
+- name: Związek pierwiastkowania z potęgowaniem
+  description: ⁿ√a = a^(1/n) dla a ≥ 0; ponadto (ⁿ√a)ⁿ = a dla a ≥ 0 oraz ⁿ√(aⁿ) = a dla a ≥ 0.
+  explanation: 'Pierwiastkowanie jest działaniem odwrotnym do potęgowania (na liczbach nieujemnych). Praktycznie:
+    gdy wyrażenie zawiera pierwiastki różnych stopni, zamieniamy je na potęgi o wykładnikach wymiernych,
+    liczymy na wykładnikach, a na końcu wracamy do zapisu pierwiastkowego.'
+  difficulty: 3
+- name: Zastrzeżenie o dodatniej podstawie
+  description: Prawa działań na potęgach o wykładnikach wymiernych formułujemy dla podstaw dodatnich (a
+    > 0, b > 0). Dla podstaw ujemnych zapis a^(m/n) nie jest stosowany.
+  explanation: 'Bez tego założenia dostajemy sprzeczności: (−8)^(1/3) = −2, ale (−8)^(2/6) musiałoby być
+    ⁶√((−8)²) = ⁶√64 = 2, choć 1/3 = 2/6. Dlatego przy wykładnikach ułamkowych zawsze pilnujemy, by podstawa
+    była dodatnia.'
+  difficulty: 4
+- name: Wzór √(a²) = |a|
+  description: Dla dowolnej liczby rzeczywistej a zachodzi √(a²) = |a|; ogólniej ⁿ√(aⁿ) = |a| dla parzystego
+    n oraz ⁿ√(aⁿ) = a dla nieparzystego n.
+  explanation: 'Wynik pierwiastka parzystego stopnia musi być nieujemny, więc ''skracanie'' potęgi z pierwiastkiem
+    wymaga wartości bezwzględnej: √((−5)²) = 5, a nie −5.'
+  difficulty: 3
+- name: Prawa działań na potęgach
+  description: 'Zestaw pięciu wzorów: aᵐ·aⁿ = aᵐ⁺ⁿ, aᵐ:aⁿ = aᵐ⁻ⁿ, (aᵐ)ⁿ = a^(mn), (ab)ⁿ = aⁿbⁿ, (a/b)ⁿ
+    = aⁿ/bⁿ.'
+  explanation: Pierwsze trzy dotyczą tej samej podstawy (działamy na wykładnikach), dwa ostatnie — tego
+    samego wykładnika (działamy na podstawach). Rozpoznanie, który z tych dwóch typów mamy przed sobą,
+    jest połową sukcesu.
+  difficulty: 2
+- name: Prawa działań na pierwiastkach
+  description: 'Dla a, b ≥ 0 (przy dzieleniu b > 0) i n ≥ 2: ⁿ√a·ⁿ√b = ⁿ√(ab), ⁿ√a : ⁿ√b = ⁿ√(a/b), (ⁿ√a)^k
+    = ⁿ√(aᵏ), ᵐ√(ⁿ√a) = ^(mn)√a.'
+  explanation: 'To po prostu prawa potęgowania przepisane dla wykładnika 1/n. Zwróć uwagę: nie ma żadnego
+    wzoru na pierwiastek sumy lub różnicy — pierwiastek ''przechodzi'' tylko przez mnożenie i dzielenie.'
+  difficulty: 3
+- name: Wyłączanie czynnika przed znak pierwiastka
+  description: Zamiana √(k²·b) na k√b (dla k > 0, b ≥ 0), np. √72 = √(36·6) = 6√6; analogicznie ∛(k³·b)
+    = k·∛b.
+  explanation: Rozkładamy liczbę pod pierwiastkiem na iloczyn, w którym jeden czynnik jest możliwie największym
+    kwadratem (sześcianem). Dzięki temu pierwiastki o różnym wyglądzie okazują się podobne i można je
+    dodać lub odjąć.
+  difficulty: 3
+- name: Włączanie czynnika pod znak pierwiastka
+  description: Zamiana k√b na √(k²b) dla k ≥ 0, b ≥ 0.
+  explanation: Operacja odwrotna do wyłączania; używamy jej głównie przy porównywaniu liczb, np. by ocenić,
+    która z liczb 3√2 i 2√5 jest większa (√18 < √20).
+  difficulty: 3
+- name: Usuwanie niewymierności z mianownika
+  description: Przekształcenie ułamka tak, by w mianowniku nie było pierwiastka, np. a/√b = a√b/b (b >
+    0), a/ⁿ√(bᵏ) = a·ⁿ√(b^(n−k))/b.
+  explanation: Mnożymy licznik i mianownik przez ten sam pierwiastek — wartość ułamka się nie zmienia,
+    a mianownik staje się liczbą wymierną. To standardowa 'postać końcowa' wyniku.
+  difficulty: 3
+- name: Sprowadzanie do wspólnej podstawy
+  description: Zapisanie wszystkich składników wyrażenia jako potęg jednej liczby (np. 4 = 2², 8 = 2³,
+    1/16 = 2⁻⁴), aby móc zastosować prawa działań.
+  explanation: Gdy w zadaniu występują liczby 2, 4, 8, 16, 32 (albo 3, 9, 27, 81), niemal zawsze opłaca
+    się przejść na jedną podstawę — wtedy całe zadanie sprowadza się do dodawania i odejmowania wykładników.
+  difficulty: 3
+- name: Porównywanie potęg i pierwiastków
+  description: Metoda oceniania, która z dwóch liczb jest większa, przez sprowadzenie ich do tej samej
+    podstawy albo tego samego wykładnika (stopnia pierwiastka).
+  explanation: Dla a > 1 większy wykładnik daje większą potęgę; dla tego samego wykładnika dodatniego
+    większa podstawa daje większą potęgę. Pierwiastki różnych stopni porównujemy, podnosząc obie liczby
+    do potęgi będącej NWW stopni.
+  difficulty: 4
+formulas:
+- name: Definicja potęgi o wykładniku naturalnym
+  latex_raw: a^n = \underbrace{a\cdot a\cdot\ldots\cdot a}_{n\ \text{czynników}}
+  conditions: a ∈ ℝ, n ∈ ℕ, n ≥ 1
+- name: Potęga o wykładniku zerowym
+  latex_raw: a^0 = 1
+  conditions: a ≠ 0
+  description: Symbol 0⁰ jest nieokreślony.
+- name: Potęga o wykładniku całkowitym ujemnym
+  latex_raw: a^{-n} = \frac{1}{a^{n}}
+  conditions: a ≠ 0, n ∈ ℕ, n ≥ 1
+- name: Odwrotność w potędze
+  latex_raw: \left(\frac{a}{b}\right)^{-n} = \left(\frac{b}{a}\right)^{n}
+  conditions: a ≠ 0, b ≠ 0
+  description: 'Wygodny skrót: ujemny wykładnik = odwracamy ułamek.'
+- name: Mnożenie potęg o tej samej podstawie
+  latex_raw: a^{m}\cdot a^{n} = a^{m+n}
+  conditions: a > 0 dla wykładników wymiernych; a ≠ 0 dla wykładników całkowitych
+- name: Dzielenie potęg o tej samej podstawie
+  latex_raw: \frac{a^{m}}{a^{n}} = a^{m-n}
+  conditions: a > 0 dla wykładników wymiernych; a ≠ 0 dla wykładników całkowitych
+- name: Potęgowanie potęgi
+  latex_raw: \left(a^{m}\right)^{n} = a^{m\cdot n}
+  conditions: a > 0 dla wykładników wymiernych
+- name: Potęga iloczynu
+  latex_raw: (a\cdot b)^{n} = a^{n}\cdot b^{n}
+  conditions: a, b > 0 dla wykładnika wymiernego; a, b ∈ ℝ dla n naturalnego
+- name: Potęga ilorazu
+  latex_raw: \left(\frac{a}{b}\right)^{n} = \frac{a^{n}}{b^{n}}
+  conditions: b ≠ 0 (a, b > 0 dla wykładnika wymiernego)
+- name: Pierwiastek jako potęga
+  latex_raw: \sqrt[n]{a} = a^{\frac{1}{n}}
+  conditions: a ≥ 0, n ∈ ℕ, n ≥ 2
+- name: Potęga o wykładniku wymiernym
+  latex_raw: a^{\frac{m}{n}} = \sqrt[n]{a^{m}} = \left(\sqrt[n]{a}\right)^{m}
+  conditions: a > 0, m ∈ ℤ, n ∈ ℕ, n ≥ 2
+- name: Ujemny wykładnik wymierny
+  latex_raw: a^{-\frac{m}{n}} = \frac{1}{\sqrt[n]{a^{m}}}
+  conditions: a > 0
+- name: Pierwiastek z iloczynu
+  latex_raw: \sqrt[n]{a}\cdot\sqrt[n]{b} = \sqrt[n]{a\cdot b}
+  conditions: a ≥ 0, b ≥ 0, n ≥ 2
+- name: Pierwiastek z ilorazu
+  latex_raw: \frac{\sqrt[n]{a}}{\sqrt[n]{b}} = \sqrt[n]{\frac{a}{b}}
+  conditions: a ≥ 0, b > 0, n ≥ 2
+- name: Potęga pierwiastka
+  latex_raw: \left(\sqrt[n]{a}\right)^{k} = \sqrt[n]{a^{k}}
+  conditions: a ≥ 0 (a > 0, gdy k < 0)
+- name: Pierwiastek z pierwiastka
+  latex_raw: \sqrt[m]{\sqrt[n]{a}} = \sqrt[m\cdot n]{a}
+  conditions: a ≥ 0, m, n ≥ 2
+- name: Skracanie potęgi i pierwiastka
+  latex_raw: \left(\sqrt[n]{a}\right)^{n} = a,\qquad \sqrt[n]{a^{n}} = a
+  conditions: a ≥ 0
+- name: Pierwiastek parzystego stopnia z potęgi
+  latex_raw: \sqrt{a^{2}} = |a|,\qquad \sqrt[n]{a^{n}} = |a|\ (n\ \text{parzyste})
+  conditions: a ∈ ℝ
+  description: 'Dla n nieparzystego: ⁿ√(aⁿ) = a dla każdego a ∈ ℝ.'
+- name: Wyłączanie / włączanie czynnika
+  latex_raw: k\sqrt{b} = \sqrt{k^{2}b}
+  conditions: k ≥ 0, b ≥ 0
+- name: Usuwanie niewymierności (pierwiastek kwadratowy)
+  latex_raw: \frac{a}{\sqrt{b}} = \frac{a\sqrt{b}}{b}
+  conditions: b > 0
+- name: Usuwanie niewymierności (pierwiastek stopnia n)
+  latex_raw: \frac{a}{\sqrt[n]{b^{k}}} = \frac{a\cdot\sqrt[n]{b^{\,n-k}}}{b}
+  conditions: b > 0, 0 < k < n
+methods:
+- name: Obliczanie wartości potęgi o wykładniku wymiernym
+  when_to_use: Gdy trzeba podać liczbową wartość wyrażenia typu 8^(2/3), 16^(−3/4), (1/25)^(−1/2).
+  steps:
+  - Jeśli wykładnik jest ujemny, zastosuj a^(−w) = 1/a^w lub odwróć ułamek stanowiący podstawę.
+  - 'Zapisz podstawę jako potęgę liczby pierwszej (lub możliwie najprostszej): 8 = 2³, 16 = 2⁴, 27 = 3³,
+    1/25 = 5⁻².'
+  - Zastosuj wzór (aᵐ)ⁿ = a^(mn) i pomnóż wykładniki.
+  - Uprość otrzymany wykładnik do liczby całkowitej (jeśli się da) i oblicz potęgę.
+  - 'Sprawdź sensowność: potęga liczby dodatniej jest zawsze dodatnia.'
+- name: Upraszczanie wyrażenia potęgowego przez sprowadzenie do wspólnej podstawy
+  when_to_use: Gdy w iloczynie/ilorazie występują liczby będące potęgami tej samej liczby (2, 4, 8, 16;
+    3, 9, 27, 81) lub ta sama zmienna w różnych potęgach.
+  steps:
+  - Każdy czynnik zapisz jako potęgę wspólnej podstawy a.
+  - Zastosuj (aᵐ)ⁿ = a^(mn) tam, gdzie potęga jest podniesiona do potęgi.
+  - Czynniki w liczniku dodaj wykładnikami, czynniki w mianowniku odejmij (aᵐ:aⁿ = aᵐ⁻ⁿ).
+  - Uprość wykładnik (działania na ułamkach) i zapisz wynik jako jedną potęgę.
+  - W razie potrzeby wróć do zapisu pierwiastkowego lub oblicz wartość liczbową.
+- name: Upraszczanie wyrażeń z pierwiastkami (dodawanie i odejmowanie)
+  when_to_use: Gdy mamy sumę lub różnicę pierwiastków kwadratowych z różnych liczb, np. √50 − 3√8 + 2√18.
+  steps:
+  - Rozłóż każdą liczbę podpierwiastkową na iloczyn największego kwadratu i reszty.
+  - 'Wyłącz czynnik przed pierwiastek: √(k²b) = k√b.'
+  - Zbierz wyrazy podobne — tylko pierwiastki z tej samej liczby można dodawać/odejmować.
+  - Wykonaj działania na współczynnikach i zapisz wynik.
+  - 'Pamiętaj: √a + √b ≠ √(a+b) — sprawdzaj, że nie skracasz sumy pod pierwiastkiem.'
+- name: Zamiana pierwiastków na potęgi w celu wykonania działań
+  when_to_use: 'Gdy w jednym wyrażeniu występują pierwiastki różnych stopni tej samej liczby (np. ∛5·⁴√5
+    : ⁶√5) albo pierwiastek z pierwiastka.'
+  steps:
+  - 'Sprawdź, że podstawa jest dodatnia (dla zmiennej: zapisz założenie a > 0).'
+  - 'Zamień każdy pierwiastek na potęgę o wykładniku wymiernym: ⁿ√(aᵏ) = a^(k/n).'
+  - 'Zastosuj prawa działań: dodaj wykładniki przy mnożeniu, odejmij przy dzieleniu, pomnóż przy potęgowaniu.'
+  - Sprowadź wykładniki do wspólnego mianownika i uprość.
+  - Wynik zapisz w żądanej postaci — jako potęgę o wykładniku wymiernym lub jako pierwiastek.
+- name: Usuwanie niewymierności z mianownika
+  when_to_use: Gdy wynik ma postać ułamka z pierwiastkiem w mianowniku, np. 6/√3, 5/(2∛4).
+  steps:
+  - Uprość najpierw liczbę pod pierwiastkiem (wyłącz czynniki, skróć ułamek).
+  - Dla pierwiastka kwadratowego pomnóż licznik i mianownik przez ten sam pierwiastek √b.
+  - Dla pierwiastka stopnia n z bᵏ pomnóż licznik i mianownik przez ⁿ√(b^(n−k)), aby pod pierwiastkiem
+    powstało bⁿ.
+  - Uprość mianownik korzystając z (√b)² = b oraz skróć ułamek.
+  - Sprawdź, czy wynik można jeszcze uprościć (wyłączenie czynnika, skrócenie).
+- name: Porównywanie liczb zapisanych za pomocą potęg lub pierwiastków
+  when_to_use: Gdy trzeba rozstrzygnąć, która z liczb jest większa, np. 3√2 i 2√5, albo ∛3 i ⁴√5.
+  steps:
+  - Jeśli liczby mają tę samą podstawę, porównaj wykładniki (dla podstawy > 1 większy wykładnik oznacza
+    większą liczbę).
+  - Jeśli mają ten sam stopień pierwiastka, włącz czynniki pod pierwiastek i porównaj liczby podpierwiastkowe.
+  - Jeśli stopnie są różne, zapisz obie liczby jako potęgi i podnieś obie do potęgi równej NWW mianowników
+    wykładników (obie liczby muszą być dodatnie!).
+  - Porównaj otrzymane liczby całkowite i przenieś wniosek na liczby wyjściowe.
+  - Zapisz odpowiedź w postaci nierówności.
+examples:
+- statement: 'Oblicz wartość wyrażenia: 8^(2/3) + 16^(−1/2) − (1/27)^(−1/3).'
+  worked_solution: |-
+    Rozpatrujemy każdy składnik osobno.
+    1) 8^(2/3) = (2³)^(2/3) = 2^(3·2/3) = 2² = 4. (Równoważnie: 8^(2/3) = (∛8)² = 2² = 4.)
+    2) 16^(−1/2) = 1/16^(1/2) = 1/√16 = 1/4.
+    3) (1/27)^(−1/3) = 27^(1/3) = ∛27 = 3 (ujemny wykładnik odwraca ułamek).
+    Razem: 4 + 1/4 − 3 = 1 + 1/4 = 5/4.
+    Odpowiedź: 5/4 (czyli 1,25).
+  difficulty: 2
+- statement: 'Zapisz w postaci potęgi liczby 3 i oblicz wartość: (3⁴ · 9³) / (27² · 3^(−2)).'
+  worked_solution: |-
+    Sprowadzamy wszystko do podstawy 3: 9 = 3², 27 = 3³.
+    Licznik: 3⁴ · (3²)³ = 3⁴ · 3⁶ = 3^(4+6) = 3¹⁰.
+    Mianownik: (3³)² · 3^(−2) = 3⁶ · 3^(−2) = 3^(6−2) = 3⁴.
+    Całość: 3¹⁰ / 3⁴ = 3^(10−4) = 3⁶.
+    Wartość: 3⁶ = 729.
+    Odpowiedź: wyrażenie równa się 3⁶ = 729.
+  difficulty: 2
+- statement: 'Uprość wyrażenie: √50 − 3√8 + 2√18 oraz oblicz 6/√3 + √27 − √48.'
+  worked_solution: |-
+    Część 1. Wyłączamy czynniki przed pierwiastek:
+    √50 = √(25·2) = 5√2, √8 = √(4·2) = 2√2, √18 = √(9·2) = 3√2.
+    Zatem √50 − 3√8 + 2√18 = 5√2 − 3·2√2 + 2·3√2 = 5√2 − 6√2 + 6√2 = 5√2.
+    Część 2. Najpierw usuwamy niewymierność: 6/√3 = 6√3/(√3·√3) = 6√3/3 = 2√3.
+    Dalej √27 = √(9·3) = 3√3 oraz √48 = √(16·3) = 4√3.
+    Suma: 2√3 + 3√3 − 4√3 = (2+3−4)√3 = √3.
+    Odpowiedzi: 5√2 oraz √3.
+  difficulty: 3
+- statement: 'a) Zapisz w postaci jednej potęgi liczby 5: (∛5 · ⁴√5) / ⁶√5.  b) Dla a > 0 uprość: (a^(3/4)
+    · √a) / ∛a i zapisz wynik w postaci pierwiastka.'
+  worked_solution: |-
+    a) Zamieniamy pierwiastki na potęgi: ∛5 = 5^(1/3), ⁴√5 = 5^(1/4), ⁶√5 = 5^(1/6).
+    Mnożenie → dodajemy wykładniki, dzielenie → odejmujemy:
+    1/3 + 1/4 − 1/6 = 4/12 + 3/12 − 2/12 = 5/12.
+    Zatem wyrażenie równa się 5^(5/12) = ¹²√(5⁵).
+    b) √a = a^(1/2), ∛a = a^(1/3), więc wykładnik wynosi
+    3/4 + 1/2 − 1/3 = 9/12 + 6/12 − 4/12 = 11/12.
+    Wynik: a^(11/12) = ¹²√(a¹¹).
+    Uwaga: założenie a > 0 jest konieczne, by móc używać wykładników wymiernych.
+  difficulty: 4
+- statement: 'Rozstrzygnij, która liczba jest większa: a) 3√2 czy 2√5,  b) ∛3 czy ⁴√5.'
+  worked_solution: |-
+    a) Obie liczby są dodatnie, mają pierwiastki tego samego stopnia — włączamy czynniki pod pierwiastek:
+    3√2 = √(9·2) = √18,  2√5 = √(4·5) = √20.
+    Ponieważ 18 < 20, to √18 < √20, czyli 3√2 < 2√5.
+    b) Stopnie są różne (3 i 4), NWW(3,4) = 12. Obie liczby są dodatnie, więc możemy je podnieść do potęgi 12 — nierówność się nie odwróci:
+    (∛3)¹² = (3^(1/3))¹² = 3⁴ = 81,
+    (⁴√5)¹² = (5^(1/4))¹² = 5³ = 125.
+    Ponieważ 81 < 125, mamy ∛3 < ⁴√5.
+    Odpowiedź: a) 3√2 < 2√5; b) ∛3 < ⁴√5.
+  difficulty: 4
+objectives:
+- statement: Podać definicję potęgi o wykładniku naturalnym, całkowitym i wymiernym oraz pierwiastka arytmetycznego
+    stopnia n wraz z warunkami, przy których są określone.
+  bloom_level: Zapamiętywanie
+- statement: Wyjaśnić związek pierwiastkowania z potęgowaniem i uzasadnić, dlaczego ⁿ√a = a^(1/n) oraz
+    dlaczego wykładniki wymierne stosuje się tylko do podstaw dodatnich.
+  bloom_level: Rozumienie
+- statement: Obliczać wartości potęg o wykładnikach całkowitych i wymiernych oraz pierwiastków dowolnego
+    stopnia z liczb nieujemnych (i nieparzystego stopnia z liczb ujemnych).
+  bloom_level: Stosowanie
+- statement: Stosować prawa działań na potęgach (mnożenie, dzielenie, potęgowanie potęgi, potęga iloczynu
+    i ilorazu) do upraszczania wyrażeń liczbowych i literowych.
+  bloom_level: Stosowanie
+- statement: 'Wykonywać działania na pierwiastkach: mnożyć i dzielić pierwiastki tego samego stopnia,
+    wyłączać i włączać czynnik przed znak pierwiastka, dodawać i odejmować wyrazy podobne.'
+  bloom_level: Stosowanie
+- statement: Zamieniać zapis pierwiastkowy na potęgowy i odwrotnie, aby wykonać działania na pierwiastkach
+    różnych stopni.
+  bloom_level: Stosowanie
+- statement: Usuwać niewymierność z mianownika ułamka i doprowadzać wynik do możliwie najprostszej postaci.
+  bloom_level: Stosowanie
+- statement: Porównywać liczby zapisane za pomocą potęg i pierwiastków, dobierając strategię (wspólna
+    podstawa, wspólny wykładnik, włączanie czynnika pod pierwiastek).
+  bloom_level: Analiza
+- statement: Rozpoznawać i korygować błędne przekształcenia potęg i pierwiastków (np. rozdzielanie względem
+    sumy, pomijanie wartości bezwzględnej w √(a²)).
+  bloom_level: Ocenianie
+misconceptions:
+- name: Rozdzielanie potęgi lub pierwiastka względem sumy
+  incorrect_reasoning: (a + b)² = a² + b² oraz √(a + b) = √a + √b, np. √(9 + 16) = 3 + 4 = 7.
+  correct_reasoning: 'Potęgowanie i pierwiastkowanie są rozdzielne tylko względem mnożenia i dzielenia.
+    Sprawdzenie: √(9+16) = √25 = 5 ≠ 7. Poprawnie (a+b)² = a² + 2ab + b², a pierwiastka z sumy na ogół
+    nie da się rozbić.'
+  severity: 5
+- name: √(a²) = a bez wartości bezwzględnej
+  incorrect_reasoning: Pierwiastek i kwadrat się znoszą, więc √((−5)²) = −5.
+  correct_reasoning: Pierwiastek arytmetyczny jest zawsze nieujemny, więc √((−5)²) = √25 = 5. Ogólnie
+    √(a²) = |a|; znoszenie 'wprost' wolno stosować tylko dla a ≥ 0.
+  severity: 4
+- name: Ujemny wykładnik daje liczbę ujemną
+  incorrect_reasoning: 2⁻³ = −8, bo minus w wykładniku 'przechodzi' na wynik.
+  correct_reasoning: 'Ujemny wykładnik oznacza odwrotność: 2⁻³ = 1/2³ = 1/8 — liczba dodatnia. Znak wyniku
+    zależy wyłącznie od znaku podstawy i parzystości wykładnika.'
+  severity: 4
+- name: Mylenie −aⁿ z (−a)ⁿ
+  incorrect_reasoning: −2⁴ = 16, bo (−2)·(−2)·(−2)·(−2) = 16.
+  correct_reasoning: 'Bez nawiasu potęgowanie wykonujemy przed zmianą znaku: −2⁴ = −(2⁴) = −16, natomiast
+    (−2)⁴ = 16. Nawias decyduje o tym, co jest podstawą.'
+  severity: 3
+- name: Dodawanie stopni pierwiastków przy mnożeniu
+  incorrect_reasoning: √a · ∛a = ⁵√a, bo stopnie się dodają.
+  correct_reasoning: 'Dodają się wykładniki, a nie stopnie: √a·∛a = a^(1/2)·a^(1/3) = a^(1/2+1/3) = a^(5/6)
+    = ⁶√(a⁵).'
+  severity: 4
+- name: Mnożenie podstaw przy mnożeniu potęg o tej samej podstawie
+  incorrect_reasoning: 2³ · 2⁴ = 4⁷, bo mnożymy podstawy i dodajemy wykładniki.
+  correct_reasoning: 'Przy tej samej podstawie podstawa się nie zmienia: 2³·2⁴ = 2⁷ = 128. Wzór (ab)ⁿ
+    = aⁿbⁿ dotyczy sytuacji odwrotnej — tego samego wykładnika, różnych podstaw.'
+  severity: 4
+- name: Mylenie (aᵐ)ⁿ z a^(mⁿ)
+  incorrect_reasoning: (2³)² = 2⁹, bo 'potęga potęgi' to 3².
+  correct_reasoning: 'Przy potęgowaniu potęgi wykładniki mnożymy: (2³)² = 2⁶ = 64. Wieża potęg 2^(3²)
+    = 2⁹ to inny, zapisywany bez nawiasu, wyraz.'
+  severity: 3
+- name: Stosowanie wykładnika wymiernego do podstawy ujemnej
+  incorrect_reasoning: (−8)^(2/6) = (−8)^(1/3) = −2, bo 2/6 = 1/3.
+  correct_reasoning: Wykładniki wymierne definiujemy tylko dla podstaw dodatnich — powyższy rachunek prowadzi
+    do sprzeczności, bo ⁶√((−8)²) = ⁶√64 = 2 ≠ −2. Z liczb ujemnych wyciągamy jedynie pierwiastki nieparzystego
+    stopnia, w zapisie pierwiastkowym.
+  severity: 3
+- name: Dodawanie niepodobnych pierwiastków
+  incorrect_reasoning: 2√3 + 3√2 = 5√5 (albo 5√6), bo 'zbieramy wyrazy podobne'.
+  correct_reasoning: √3 i √2 to różne liczby niewymierne — nie są wyrazami podobnymi i nie można ich dodać.
+    Suma 2√3 + 3√2 pozostaje w tej postaci; upraszczać wolno dopiero, gdy po wyłączeniu czynników pod
+    pierwiastkami stoi ta sama liczba.
+  severity: 4
+- name: Skracanie liczby spod pierwiastka z liczbą przed nim
+  incorrect_reasoning: (6√3)/3 = 6, bo trójki się skracają; albo (2 + √8)/2 = √8.
+  correct_reasoning: 'Skracamy tylko czynniki stojące poza pierwiastkiem: (6√3)/3 = 2√3. W drugim przykładzie
+    najpierw upraszczamy √8 = 2√2, potem (2 + 2√2)/2 = 1 + √2 — dzielimy oba składniki sumy.'
+  severity: 4
+- name: Pozostawianie pierwiastka w mianowniku bez uproszczenia
+  incorrect_reasoning: Wynik 6/√12 jest już 'najprostszy'.
+  correct_reasoning: 'Najpierw upraszczamy: √12 = 2√3, więc 6/√12 = 6/(2√3) = 3/√3 = 3√3/3 = √3. Standardowa
+    postać wyniku nie zawiera pierwiastka w mianowniku.'
+  severity: 2
