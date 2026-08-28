@@ -163,6 +163,25 @@ class KnowledgeTruncated(KnowledgeError):
     discarded and the job fails — never persisted as a complete spec."""
 
 
+class KnowledgeMalformed(RuntimeError):
+    """The model emitted its tool call as Claude's internal `<parameter name=…>`
+    pseudo-syntax stuffed into a string argument, instead of a real structured
+    tool call. Pydantic is right to reject it. It is intermittent and
+    sampling-dependent, so `_call` re-samples; only if it persists across
+    `MALFORMED_RETRIES` does it become a `KnowledgeError`. NOT a
+    `PermanentJobError` — we never unpack the pseudo-syntax."""
+
+
+def _is_pseudo_syntax(err: ValidationError) -> bool:
+    """True when a rejected value is a string carrying `<parameter name=` — the
+    specific malformation, not a generic schema violation."""
+    for d in err.errors():
+        iv = d.get("input")
+        if isinstance(iv, str) and "<parameter name=" in iv:
+            return True
+    return False
+
+
 def _usage_dict(u) -> dict:
     return {
         "in": getattr(u, "input_tokens", 0) or 0,
@@ -353,11 +372,19 @@ class ClaudeKnowledgeAgent:
     name = "claude"
     prompt_version = PROMPT_VERSION
 
-    def __init__(self, *, model: str = "claude-opus-5", max_tokens: int = 32000) -> None:
+    # how many times one _call may be re-sampled past a <parameter> malformation
+    MALFORMED_RETRIES = 2
+
+    def __init__(
+        self, *, model: str = "claude-opus-5", max_tokens: int = 32000,
+        thinking: bool = True,
+    ) -> None:
         self.model = model
         self.max_tokens = max_tokens
+        self.thinking = thinking
         self._client = None
         self.last_usage = None
+        self.malformed_retries = 0  # <parameter> re-samples this extract() call
 
     def _client_lazy(self):
         if self._client is None:
@@ -402,22 +429,23 @@ class ClaudeKnowledgeAgent:
         self.last_usage["cache_read"] += getattr(u, "cache_read_input_tokens", 0) or 0
         self.last_usage["cache_write"] += getattr(u, "cache_creation_input_tokens", 0) or 0
 
-    def _call(self, request: KnowledgeRequest, system: str, tool: dict, model_cls, tool_name: str):
+    def _stream_once(self, request: KnowledgeRequest, system: str, tool: dict, tool_name: str):
         client = self._client_lazy()
         _cache = {"type": "ephemeral"}
         tc = request.topic_code
+        kw: dict = dict(
+            model=self.model,
+            max_tokens=self.max_tokens,
+            system=[{"type": "text", "text": system, "cache_control": _cache}],
+            tools=[{**tool, "cache_control": _cache}],
+            messages=[{"role": "user", "content": self._user_block(request)}],
+        )
+        if self.thinking:
+            kw["thinking"] = {"type": "adaptive"}
         # Stream, don't `create`: a large max_tokens pushes the worst-case
-        # response time past 10 minutes and the SDK refuses a non-streaming
-        # call outright. `get_final_message()` accumulates the whole response.
+        # response time past 10 minutes and the SDK refuses a non-streaming call.
         try:
-            with client.messages.stream(
-                model=self.model,
-                max_tokens=self.max_tokens,
-                thinking={"type": "adaptive"},
-                system=[{"type": "text", "text": system, "cache_control": _cache}],
-                tools=[{**tool, "cache_control": _cache}],
-                messages=[{"role": "user", "content": self._user_block(request)}],
-            ) as stream:
+            with client.messages.stream(**kw) as stream:
                 msg = stream.get_final_message()
         except PermanentJobError:
             raise
@@ -430,7 +458,9 @@ class ClaudeKnowledgeAgent:
                 raise KnowledgeError(f"{tool_name} for {tc}: API {status} — {e}") from e
             raise
         self._add_usage(getattr(msg, "usage", None))
+        return msg
 
+    def _parse_call(self, msg, model_cls, tool_name: str, tc: str):
         # Fail loudly on truncation — never persist a partial spec as complete.
         if getattr(msg, "stop_reason", None) == "max_tokens":
             _dump_raw(tc, tool_name, msg)
@@ -464,16 +494,47 @@ class ClaudeKnowledgeAgent:
             return model_cls.model_validate(data)
         except ValidationError as e:
             path = _dump_raw(tc, tool_name, msg)
+            if _is_pseudo_syntax(e):
+                # Claude emitted `<parameter name=…>` pseudo-syntax as a string
+                # argument. Transient, sampling-dependent — re-sample, don't
+                # unpack. Caller retries; the malformation is logged with the
+                # topic so we can watch the rate.
+                raise KnowledgeMalformed(
+                    f"{tool_name} for {tc}: <parameter> pseudo-syntax in a tool "
+                    f"argument; raw -> {path}"
+                ) from e
             raise KnowledgeError(
                 f"{tool_name} for {tc}: tool input failed the {model_cls.__name__} "
                 f"schema; raw -> {path}\n{e}"
             ) from e
+
+    def _call(self, request: KnowledgeRequest, system: str, tool: dict, model_cls, tool_name: str):
+        tc = request.topic_code
+        for attempt in range(self.MALFORMED_RETRIES + 1):
+            msg = self._stream_once(request, system, tool, tool_name)
+            try:
+                return self._parse_call(msg, model_cls, tool_name, tc)
+            except KnowledgeMalformed as e:
+                self.malformed_retries += 1
+                last = attempt == self.MALFORMED_RETRIES
+                log.warning(
+                    "MALFORMED_TOOL_CALL topic=%s tool=%s attempt=%d/%d%s :: %s",
+                    tc, tool_name, attempt + 1, self.MALFORMED_RETRIES + 1,
+                    " (giving up)" if last else " (re-sampling)", e,
+                )
+                if last:
+                    raise KnowledgeError(
+                        f"{tool_name} for {tc}: <parameter> malformation persisted "
+                        f"across {attempt + 1} samples — failing the job"
+                    ) from e
+        raise AssertionError("unreachable")
 
     def extract(self, request: KnowledgeRequest) -> KnowledgeExtraction:
         # Two calls: structure (concepts/formulas/methods) then pedagogy
         # (examples/objectives/misconceptions). Neither response has to carry a
         # large topic's whole spec. Usage is summed across both.
         self.last_usage = {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
+        self.malformed_retries = 0
         struct: _StructureExtraction = self._call(
             request, _SYSTEM_STRUCTURE, _TOOL_STRUCTURE, _StructureExtraction, "record_structure"
         )

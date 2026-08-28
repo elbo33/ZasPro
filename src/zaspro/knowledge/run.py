@@ -5,11 +5,14 @@
     uv run python -m zaspro.knowledge.run --all              # every podstawowy requirement
     uv run python -m zaspro.knowledge.run --all --force      # include already-frozen topics
     uv run python -m zaspro.knowledge.run --all --reset      # wipe M4 state first, extract clean
+    uv run python -m zaspro.knowledge.run I.3 I.4 --no-thinking   # extract without adaptive thinking
 
 Each topic is extracted in two agent calls (structure: concepts/formulas/methods,
 then pedagogy: examples/objectives/misconceptions) so no single response has to
 carry a large topic's whole spec. A call that hits max_tokens fails the job
-loudly — a partial spec is never persisted as complete.
+loudly — a partial spec is never persisted as complete. An intermittent
+`<parameter>` pseudo-syntax malformation in the tool call is re-sampled (not
+unpacked); the run reports how often it happened.
 
 With no ANTHROPIC_API_KEY this uses `StubKnowledgeAgent`; with a key,
 `ClaudeKnowledgeAgent` (`claude-opus-5`). `--all` prints a cost estimate and
@@ -228,10 +231,16 @@ def _queue_depth(session) -> dict:
 
 
 def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
-        force: bool = False, assume_yes: bool = False, reset: bool = False) -> int:
+        force: bool = False, assume_yes: bool = False, reset: bool = False,
+        no_thinking: bool = False) -> int:
     agent = get_agent()
     real = isinstance(agent, ClaudeKnowledgeAgent)
-    print(f"agent: {type(agent).__name__} (model={agent.model!r})")
+    if real and no_thinking:
+        from zaspro.knowledge.agent import set_agent
+        agent = ClaudeKnowledgeAgent(thinking=False)
+        set_agent(agent)  # the job handler picks this up via get_agent()
+    print(f"agent: {type(agent).__name__} (model={agent.model!r}"
+          f"{', thinking=off' if real and no_thinking else ''})")
     if real:
         try:
             print(f"preflight: API reachable, model={agent.preflight()}")
@@ -317,6 +326,8 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
         failed = 0
         src_total: dict[str, int] = {}
         ti = to = tcr = 0
+        malformed = 0
+        malformed_topics: list[str] = []
         timings: list[tuple[str, float, int]] = []  # (code, elapsed_s, out_tok)
         print("\n" + "=" * 72)
         for status, out in rows:
@@ -326,6 +337,10 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
                 continue
             u = out.get("usage") or {}
             ti += u.get("in", 0); to += u.get("out", 0); tcr += u.get("cache_read", 0)
+            mr = out.get("malformed_retries", 0)
+            if mr:
+                malformed += mr
+                malformed_topics.append(f"{out['topic_code']}×{mr}")
             el = out.get("elapsed_s") or 0.0
             ot = u.get("out", 0)
             timings.append((out["topic_code"], el, ot))
@@ -352,6 +367,10 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
                 src_total[k] = src_total.get(k, 0) + v
 
         print("\n" + "=" * 72)
+        if malformed:
+            print(f"malformed tool calls re-sampled: {malformed} across "
+                  f"{len(malformed_topics)} topic(s) [{', '.join(malformed_topics)}] "
+                  f"— <parameter> pseudo-syntax; raw responses in m4/knowledge_debug/")
         if timings:
             slow = sorted(timings, key=lambda t: -t[1])[:3]
             total_s = sum(t[1] for t in timings)
@@ -397,6 +416,7 @@ if __name__ == "__main__":
     all_topics = "--all" in args
     force = "--force" in args
     reset = "--reset" in args
+    no_thinking = "--no-thinking" in args
     assume_yes = "--yes" in args or "-y" in args
     n = 5
     codes = [a for a in args if not a.startswith("-")]
@@ -406,4 +426,4 @@ if __name__ == "__main__":
         if v in codes:
             codes.remove(v)
     sys.exit(run(codes or None, n=n, all_topics=all_topics, force=force,
-                 assume_yes=assume_yes, reset=reset))
+                 assume_yes=assume_yes, reset=reset, no_thinking=no_thinking))

@@ -354,6 +354,7 @@ def handle_extract_knowledge(session: Session, job: Job) -> dict:
         "flags": res.flags, "unsourced_misconceptions": res.unsourced_misconceptions,
         "flagged_misconceptions": res.flagged_misconceptions,
         "review_item_id": res.review_item_id,
+        "malformed_retries": getattr(agent, "malformed_retries", 0),
     }
     if getattr(agent, "last_usage", None):
         out["usage"] = agent.last_usage

@@ -82,28 +82,54 @@ against v1's 18, I.1 from empty to 16 — but exposed two failures:
 and reports per-topic elapsed time and output tokens, names the slowest, and
 warns on any topic over eight minutes.
 
+**`--reset` shipped without the snapshot and destroyed 34 topics of completed
+extraction with no recovery path** — the second `--all` attempt failed after two
+topics and the reset had already run. The snapshot-first behaviour above should
+have been there from the start; a wipe of expensive derived data must be
+recoverable.
+
 ### 1b. Retryable vs permanent job failures; raw-response capture
 
-The first `--all` run hit an **intermittent** malformed tool response: some
-topics returned `tool_use.input` as a dict whose first field's *value* was a
-string of XML-style `<parameter name="…">` tags instead of a JSON array, so
-`model_validate` raised `ValidationError`. Two problems: the job queue retried
-it three times (deterministic → three identical failures, three paid calls,
-~20 min each on a large topic); and the traceback truncated the offending
-value, so the actual response shape was guesswork.
+The first `--all` run hit an **intermittent, sampling-dependent** malformed tool
+response: some topics returned `tool_use.input` as a dict whose first field's
+*value* was a string of Claude's internal `<parameter name="…">` tool-call
+pseudo-syntax instead of a JSON array, so `model_validate` raised
+`ValidationError`. Two problems: the job queue retried the *deterministic* error
+three times (three identical failures, three paid calls, ~20 min each on a large
+topic); and the traceback truncated the offending value, so the shape was
+guesswork.
 
 * `zaspro.jobs.PermanentJobError` — the worker fails a job raising it (or a
-  subclass) **without** consuming the remaining `max_attempts`. `KnowledgeError`
-  and `KnowledgeTruncated` are subclasses; schema-invalid input, a missing tool
-  block, a non-JSON string input, and a 4xx (other than 429) from the API all
-  raise `KnowledgeError`. Transient failures — connection, timeout, 429, 5xx,
-  overload — propagate unwrapped and are retried.
-* On any parse failure `ClaudeKnowledgeAgent._call` writes the model's raw
-  content blocks (every block's `type`, and for `tool_use` the verbatim
-  `input`) to `m4/knowledge_debug/<code>-<tool>-<ts>.json` and names the file
-  in the error. The parse itself is unchanged pending that evidence —
-  no tag-stripping heuristic. `m4/knowledge_debug/` and `m4/reset_backups/`
-  are gitignored.
+  subclass) **without** consuming the remaining `max_attempts`. Transient
+  failures — connection, timeout, 429, 5xx, overload — propagate unwrapped and
+  retry.
+* **The `<parameter>` malformation is treated as transient, not permanent.**
+  Pydantic is right to reject it; we do **not** build an unpacker for the
+  pseudo-syntax — a mis-unpack would produce a silently wrong knowledge spec
+  rather than an error. Instead `_parse_call` detects the specific shape (a
+  rejected value that is a string containing `<parameter name=`) and raises
+  `KnowledgeMalformed` (a plain `RuntimeError`, **not** a `PermanentJobError`).
+  `_call` re-samples up to `MALFORMED_RETRIES = 2` times; a retry succeeds
+  because it is sampling-dependent (as I.1 did on attempt 2). Only if it
+  persists across all three samples does it become a `KnowledgeError`. Every
+  occurrence is logged `MALFORMED_TOOL_CALL topic=… tool=… attempt=…` and
+  counted into the job output; `run` prints the per-run total so the rate is
+  visible. If the rate turns out ~30% rather than ~5%, revisit.
+* Genuine schema violations (wrong type, missing required field, no
+  `<parameter>` marker) still raise `KnowledgeError` immediately — permanent, no
+  retry. So do a missing tool block, a non-JSON string input, a truncation
+  (`KnowledgeTruncated`), and an API 4xx other than 429.
+* On any parse failure `ClaudeKnowledgeAgent` writes the model's raw content
+  blocks (every block's `type`, and for `tool_use` the verbatim `input`) to
+  `m4/knowledge_debug/<code>-<tool>-<ts>.json` and names the file in the error.
+  `m4/knowledge_debug/` and `m4/reset_backups/` are gitignored.
+
+### 1c. Adaptive thinking is under review for these calls
+
+The malformation may correlate with interleaved thinking blocks. Extraction is a
+structured-output task, not a reasoning-heavy one, so `ClaudeKnowledgeAgent`
+takes `thinking: bool = True` and `run` has `--no-thinking`; turning it off is
+being tested on the four affected topics for both the failure rate and cost.
 
 ### 2. One `KNOWLEDGE_SPEC` review card per topic
 
