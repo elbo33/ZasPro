@@ -1,35 +1,33 @@
-"""The Knowledge Agent (SPEC §12 agent 3, §11).
+"""The Knowledge Agent (SPEC §12 agent 3).
 
-Contract: LLM -> structured response -> Pydantic -> business-rule validation ->
-database. Hard rules from SPEC §11, enforced in the prompt AND re-checked in
-`zaspro.knowledge.extract`:
+Contract: LLM -> structured response -> Pydantic -> persistence. Every topic
+gets a COMPLETE spec (ADR 0011 §2): the agent uses exam exercises where they
+inform an item and its own knowledge of Polish high-school mathematics where
+they do not. No suppression, no "insufficient material" outcomes.
 
-* concepts / formulas / methods / examples / objectives may not invent facts
-  absent from the provided material; each cites the exercise(s) it came from
-* sources that disagree -> both readings + a CONFLICT flag, no winner picked
-* missing information -> a GAP record, not a filled gap
-* misconceptions are the exception (ADR 0011): exam papers do not state student
-  errors, so they are *not* suppressed for lack of a citation — they are
-  emitted, labelled by `source_kind`, and the low-provenance ones
-  (AGENT_INFERENCE / UNSOURCED) are flagged for human approval, which is the
-  verification step.
+* every item records `provenance` — EXAM_TASK / MARKING_SCHEME / DISTRACTOR /
+  AGENT_KNOWLEDGE — as information for the reviewer, not a gate
+* genuine source disagreement -> a CONFLICT flag (rare); GAPs are not emitted
+* a human approves every spec in the dashboard — the only verification that
+  matters
 
-`StubKnowledgeAgent` runs the whole path offline; `ClaudeKnowledgeAgent`
-(`claude-opus-5`) is used only from a command the user runs.
+The response is split into two calls (structure / pedagogy) so no single
+response carries a large topic's whole spec. `StubKnowledgeAgent` runs the
+whole path offline; `ClaudeKnowledgeAgent` (`claude-opus-5`) is used only from
+a command the user runs.
 """
 
 from __future__ import annotations
 
 import json
 import logging
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Protocol
 
 from pydantic import BaseModel, Field, ValidationError
 
-from zaspro.db.models import MisconceptionSource
+from zaspro.db.models import KnowledgeProvenance
 from zaspro.jobs import PermanentJobError
 
 log = logging.getLogger("zaspro.knowledge.agent")
@@ -37,7 +35,7 @@ log = logging.getLogger("zaspro.knowledge.agent")
 # raw model responses for failed parses land here, one JSON file per failure
 DEBUG_DIR = Path("m4/knowledge_debug")
 
-PROMPT_VERSION = "m4-know-v4"  # v4: two-call split (structure / pedagogy) + hard truncation check; v3 instructions unchanged
+PROMPT_VERSION = "m4-know-v5"  # v5: complete spec for every topic; provenance as info not gate; empty-exercise prompt fixed
 
 
 class ExerciseCtx(BaseModel):
@@ -57,17 +55,29 @@ class KnowledgeRequest(BaseModel):
 
 
 class _Item(BaseModel):
+    provenance: KnowledgeProvenance = Field(
+        default=KnowledgeProvenance.AGENT_KNOWLEDGE,
+        description=(
+            "Where this item comes from: EXAM_TASK (an exercise informs it), "
+            "MARKING_SCHEME (a Zasady oceniania rule), DISTRACTOR (a specific "
+            "multiple-choice option), or AGENT_KNOWLEDGE (your own knowledge of "
+            "the subject — the right label when no exercise covers it)."
+        ),
+    )
     from_exercises: list[str] = Field(
         default_factory=list,
         description=(
             "Bare Zadanie numbers this item is drawn from, e.g. [\"11.1\", \"14\"]. "
             "Not \"Zadanie 11.1\", not a sentence — just the numbers. "
-            "[] only when the item is from no exercise at all."
+            "[] when provenance is AGENT_KNOWLEDGE."
         ),
     )
     evidence: str = Field(
         min_length=1, max_length=800,
-        description="A short quote or paraphrase from that material naming the task it is from.",
+        description=(
+            "For an exam-derived item, a short quote or paraphrase from the "
+            "material. For AGENT_KNOWLEDGE, a one-line justification."
+        ),
     )
 
 
@@ -100,13 +110,12 @@ class MisconceptionOut(_Item):
     incorrect_reasoning: str
     correct_reasoning: str
     severity: int | None = Field(None, ge=1, le=5)
-    source_kind: MisconceptionSource
     distractor: str | None = Field(
         None,
         description=(
-            "Required when source_kind is DISTRACTOR_INFERENCE: the specific "
-            "wrong multiple-choice option(s) the error is read off, e.g. "
-            "\"B and D\" or \"C: 20000 · 1,06\". Leave null otherwise."
+            "When provenance is DISTRACTOR: the specific wrong multiple-choice "
+            "option(s) the error is read off, e.g. \"B and D\" or "
+            "\"C: 20000 · 1,06\". Leave null otherwise."
         ),
     )
 
@@ -117,7 +126,7 @@ class ObjectiveOut(_Item):
 
 
 class FlagOut(BaseModel):
-    kind: str  # CONFLICT | GAP
+    kind: str  # CONFLICT (genuine source disagreement); GAPs are not emitted
     item_kind: str
     detail: str = Field(min_length=1, max_length=800)
     from_exercises: list[str] = Field(default_factory=list)
@@ -243,12 +252,11 @@ class KnowledgeAgent(Protocol):
 # --------------------------------------------------------------------------- #
 # Stub
 
-_VERB = re.compile(r"\b(oblicz|rozwiąż|wyznacz|wykaż|uzasadnij|zapisz)\b", re.I)
-
 
 class StubKnowledgeAgent:
     """Offline, deterministic. Not a model — enough structure to exercise the
-    persistence + yield report without the network."""
+    persistence path without the network. Always produces a full-ish spec,
+    exercises or not."""
 
     name = "stub"
     model = None
@@ -256,39 +264,39 @@ class StubKnowledgeAgent:
 
     def extract(self, request: KnowledgeRequest) -> KnowledgeExtraction:
         out = KnowledgeExtraction()
-        if not request.exercises:
-            out.flags.append(FlagOut(
-                kind="GAP", item_kind="all",
-                detail=f"no exercises mapped to {request.topic_code}",
-            ))
-            return out
-        ex = request.exercises[0]
+        ex = request.exercises[0] if request.exercises else None
+        exam = KnowledgeProvenance.EXAM_TASK
+        own = KnowledgeProvenance.AGENT_KNOWLEDGE
+
         out.concepts.append(ConceptOut(
             name=request.topic_name[:80],
-            description=f"exercised by Zadanie {ex.number}",
-            from_exercises=[ex.number], evidence=ex.text[:200],
+            description=(f"exercised by Zadanie {ex.number}" if ex
+                        else f"core idea of {request.topic_code}"),
+            provenance=exam if ex else own,
+            from_exercises=[ex.number] if ex else [],
+            evidence=ex.text[:200] if ex else "stub: from the requirement text",
         ))
-        if _VERB.search(" ".join(e.text for e in request.exercises)):
-            out.methods.append(MethodOut(
-                name=f"procedure for {request.topic_code}",
-                when_to_use="see exercises", steps=["identify given", "apply", "verify"],
-                from_exercises=[ex.number], evidence=ex.text[:200],
-            ))
-        # the stub emits two misconceptions: one inferred from an exercise
-        # (AGENT_INFERENCE, keeps its citation) and one it cannot source
-        # (UNSOURCED) — enough to exercise both flag paths offline.
+        out.methods.append(MethodOut(
+            name=f"procedure for {request.topic_code}",
+            when_to_use="see exercises" if ex else "general",
+            steps=["identify given", "apply", "verify"],
+            provenance=exam if ex else own,
+            from_exercises=[ex.number] if ex else [],
+            evidence=(ex.text[:200] if ex else "stub method"),
+        ))
         out.misconceptions.append(MisconceptionOut(
             name=f"common slip on {request.topic_code}",
             incorrect_reasoning="(stub)", correct_reasoning="(stub)",
-            source_kind=MisconceptionSource.AGENT_INFERENCE,
-            from_exercises=[ex.number], evidence="stub inference from exercise structure",
+            provenance=own,
+            from_exercises=[], evidence="stub: a known error for this requirement",
         ))
-        out.misconceptions.append(MisconceptionOut(
-            name=f"textbook slip on {request.topic_code}",
-            incorrect_reasoning="(stub)", correct_reasoning="(stub)",
-            source_kind=MisconceptionSource.UNSOURCED,
-            from_exercises=[], evidence="stub: a known error with nothing in the material",
-        ))
+        if ex:
+            out.misconceptions.append(MisconceptionOut(
+                name=f"task-backed slip on {request.topic_code}",
+                incorrect_reasoning="(stub)", correct_reasoning="(stub)",
+                provenance=exam, from_exercises=[ex.number],
+                evidence="stub: drawn from the exercise structure",
+            ))
         return out
 
 
@@ -296,62 +304,49 @@ class StubKnowledgeAgent:
 # Claude
 
 _SYSTEM_BASE = """\
-You extract a structured knowledge spec for ONE Polish Matura mathematics \
-curriculum requirement, from the material provided: the requirement text and a \
-set of exam exercises that test it, each with its marking scheme (Zasady \
-oceniania) where available.
+You write a COMPLETE knowledge spec for ONE Polish Matura ("podstawowy") \
+mathematics curriculum requirement — enough to support four teaching episodes. \
+You are given the requirement text and, where they exist, exam exercises that \
+test it, each with its marking scheme (Zasady oceniania).
 
-Extraction is done in two passes. THIS pass covers only {scope}. Do not emit \
-anything outside that set in this call — the other items are collected \
-separately.
+This is high-school mathematics and you know it well. Use the exercises where \
+they inform an item; use your own knowledge of the subject where they do not. \
+A requirement with few or no exercises still gets a full spec, written from the \
+requirement text and what you know. Do NOT hold anything back for lack of a \
+citation, and do NOT emit "insufficient material" / GAP outcomes — a human \
+reviews and approves every spec, and that is the verification step.
+
+Label every item's `provenance`:
+* EXAM_TASK — an exercise informs it; put the bare Zadanie number(s) in \
+`from_exercises`.
+* MARKING_SCHEME — a partial-credit / "0 pkt jeśli…" rule informs it.
+* DISTRACTOR — a specific wrong multiple-choice option informs it.
+* AGENT_KNOWLEDGE — your own knowledge of the subject; `from_exercises` is [].
+AGENT_KNOWLEDGE on every item is a fine outcome for a requirement with no \
+exercises.
+
+If two genuine sources disagree, emit a CONFLICT flag carrying both readings.
+
+Extraction runs in two passes; THIS pass covers only {scope}. Do not emit \
+anything outside that set in this call.
 """
 
 _SYSTEM_STRUCTURE = _SYSTEM_BASE.format(scope="concepts, formulas, methods") + """
-Hard rules:
-* Use only what is in the provided material. Do not add facts, formulas or \
-methods from your own knowledge that the material does not show.
-* Every item lists `from_exercises` (the Zadanie numbers it is drawn from) and \
-a short `evidence` quote or paraphrase from that material.
-* If two sources disagree, emit a flag with kind "CONFLICT" carrying both \
-readings; do not choose.
-* If the material is missing something the requirement clearly needs, emit a \
-flag with kind "GAP"; do not fill it from memory.
-
-Call record_structure exactly once.
+Aim for the concepts, formulas and methods a student needs to actually work \
+this requirement — not a minimal list. Call record_structure exactly once.
 """
 
 _SYSTEM_PEDAGOGY = _SYSTEM_BASE.format(
     scope="worked examples, learning objectives, misconceptions"
 ) + """
-Hard rules for examples and objectives:
-* Use only what is in the provided material. Every item lists `from_exercises` \
-and a short `evidence` quote or paraphrase. Missing information -> a GAP flag, \
-not a filled gap; disagreement -> a CONFLICT flag.
-
-Misconceptions are different, and the rule is the opposite: do NOT suppress \
-them. Exam papers do not state student errors outright, so a "material-supported \
-only" rule would return almost nothing — and that is worse than useless. \
-Instead: list the real, common student errors on THIS requirement (aim for 3–6), \
-and label each honestly with `source_kind`. A human approves every misconception \
-in the dashboard before it is used — that review IS the verification step, so an \
-inferred misconception is acceptable as long as it is labelled as one.
-
-* MARKING_SCHEME — a partial-credit / "0 pkt jeśli…" rule in a Zasady oceniania \
-block. Put the task number in `from_exercises`.
-* INFORMATOR — CKE informator commentary (not present in the material yet).
-* DISTRACTOR_INFERENCE — a wrong option in a multiple-choice / true-false task \
-is built to catch this error. Name the task in `from_exercises` and the \
-option(s) in `distractor` (e.g. "B and D", "C: 20000 · 1,06"). Prefer this over \
-AGENT_INFERENCE whenever a distractor fits — it is the strongest source here.
-* AGENT_INFERENCE — you are inferring the error from an open exercise's \
-structure or its marking scheme, with no single distractor to point at. Name \
-the exercise in `from_exercises` and say why in `evidence`. This is fine.
-* UNSOURCED — a real student error you are confident about, but nothing in the \
-material points to it. Still emit it, labelled UNSOURCED. Do not drop it.
-
-Never withhold a misconception because you cannot cite it. A missing item helps \
-nobody; a labelled inference gets reviewed. Only genuine non-errors should be \
-left out.
+* Worked examples: 2–4 concrete problems with full solutions, drawn from the \
+exercises where possible, otherwise representative ones you construct.
+* Learning objectives: what a student should be able to do, at the right Bloom \
+level.
+* Misconceptions: the real, common student errors on THIS requirement (aim \
+3–6). A multiple-choice distractor built to catch an error is a DISTRACTOR- \
+provenance misconception — name the option in `distractor`. Otherwise most \
+will be AGENT_KNOWLEDGE, which is fine.
 
 Call record_pedagogy exactly once.
 """
@@ -410,8 +405,16 @@ class ClaudeKnowledgeAgent:
             f"REQUIREMENT {req.topic_code}: {req.topic_name}",
             f"requirement text: {req.requirement_text or '—'}",
             "",
-            f"EXERCISES ({len(req.exercises)}):",
         ]
+        if not req.exercises:
+            lines.append(
+                "EXERCISES: none. No exam tasks are mapped to this requirement. "
+                "Write the whole spec from the requirement text and your own "
+                "knowledge of the subject; label every item AGENT_KNOWLEDGE and "
+                "leave from_exercises empty."
+            )
+            return "\n".join(lines)
+        lines.append(f"EXERCISES ({len(req.exercises)}):")
         for e in req.exercises:
             lines.append(f"\n--- Zadanie {e.number}"
                          f"{f' (difficulty {e.difficulty})' if e.difficulty else ''}"

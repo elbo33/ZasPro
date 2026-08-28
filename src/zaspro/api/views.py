@@ -22,15 +22,12 @@ from zaspro.db.models import (
     LearningObjective,
     Method,
     Misconception,
-    MisconceptionSource,
     ReviewItem,
     ReviewItemType,
     SourceChunk,
     Topic,
 )
 from zaspro.mapping.handler import candidate_topics, _parent_chunk
-
-_FLAGGED_SOURCES = {MisconceptionSource.AGENT_INFERENCE, MisconceptionSource.UNSOURCED}
 
 
 def mapping_view(session: Session, mapping: ChunkMapping) -> MappingView:
@@ -94,16 +91,15 @@ def knowledge_spec_view(session: Session, topic_id: int) -> KnowledgeSpecView | 
                 or getattr(obj, "worked_solution", None)
                 or getattr(obj, "incorrect_reasoning", None)
             )
-            sk = getattr(obj, "source_kind", None)
+            prov = getattr(obj, "provenance", None)
             items.append(KnowledgeItemView(
                 kind=kind, id=obj.id,
                 status=obj.verification_status.value,
                 title=title, detail=detail,
                 evidence=getattr(obj, "explanation", None) or getattr(obj, "description", None),
                 from_exercises=_ex_numbers(session, obj.source_chunk_ids),
-                source_kind=sk.value if sk is not None else None,
+                provenance=prov.value if prov is not None else None,
                 distractor=getattr(obj, "distractor", None),
-                flagged=(sk in _FLAGGED_SOURCES) if sk is not None else False,
             ))
 
     flags = [

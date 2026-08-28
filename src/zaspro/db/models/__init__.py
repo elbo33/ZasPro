@@ -35,10 +35,10 @@ from zaspro.db.models.knowledge import (
     Formula,
     KnowledgeExtraction,
     KnowledgeFlag,
+    KnowledgeProvenance,
     LearningObjective,
     Method,
     Misconception,
-    MisconceptionSource,
 )
 from zaspro.db.models.mapping import (
     ChunkMapping,
@@ -77,6 +77,6 @@ __all__ = [
     "ReviewDecision", "ReviewDecisionType", "ReviewReasonCode",
     # knowledge (M4)
     "Concept", "Formula", "Method", "Example", "Misconception",
-    "LearningObjective", "MisconceptionSource",
+    "LearningObjective", "KnowledgeProvenance",
     "KnowledgeFlag", "FlagKind", "KnowledgeExtraction",
 ]

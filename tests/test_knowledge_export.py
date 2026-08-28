@@ -6,8 +6,8 @@ import pytest
 
 from tests.fixtures.mapping_world import build_world
 from zaspro.db.models import (
-    Concept, ExerciseTopic, Misconception, MisconceptionSource, ReviewDecisionType,
-    ReviewReasonCode, TopicRole, VerificationStatus,
+    Concept, Exercise, ExerciseTopic, KnowledgeProvenance, Misconception,
+    ReviewDecisionType, ReviewReasonCode, TopicRole, VerificationStatus,
 )
 from zaspro.knowledge import export as kexport
 from zaspro.knowledge.agent import ConceptOut, KnowledgeExtraction, MisconceptionOut
@@ -24,7 +24,6 @@ def _kroot(tmp_path, monkeypatch):
 def _extract(db):
     w = build_world(db)
     for num in ("1", "4"):
-        from zaspro.db.models import Exercise
         ex = db.query(Exercise).filter_by(
             source_document_id=w.document_id, exercise_number=num
         ).one()
@@ -33,21 +32,22 @@ def _extract(db):
     db.flush()
 
     class A:
-        name, model, prompt_version = "fake", "claude-opus-5", "m4-know-v3"
+        name, model, prompt_version = "fake", "claude-opus-5", "m4-know-v5"
         last_usage = None
 
         def extract(self, request):
             return KnowledgeExtraction(
                 concepts=[
                     ConceptOut(name="Pythagoras", description="a^2+b^2=c^2",
+                               provenance=KnowledgeProvenance.EXAM_TASK,
                                from_exercises=["1"], evidence="Zad 1"),
                 ],
                 misconceptions=[
                     MisconceptionOut(
                         name="adds the legs", incorrect_reasoning="a+b=c",
                         correct_reasoning="square them",
-                        source_kind=MisconceptionSource.AGENT_INFERENCE,
-                        from_exercises=["1"], evidence="Zad 1 slip",
+                        provenance=KnowledgeProvenance.AGENT_KNOWLEDGE,
+                        from_exercises=[], evidence="a common slip",
                     ),
                 ],
             )
@@ -78,6 +78,7 @@ def test_approved_topic_exports_only_approved_items_and_freezes(db):
     data = load_export("VIII.2")
     assert data["requirement_code"] == "VIII.2"
     assert [c["name"] for c in data["concepts"]] == ["Pythagoras"]
+    assert data["concepts"][0]["provenance"] == "EXAM_TASK"
     assert data["misconceptions"] == []          # the rejected one is not in the file
     assert data["extraction"]["approved_by"] == "elie"
     assert {e["number"] for e in data["exercises"]} == {"1", "4"}

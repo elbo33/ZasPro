@@ -40,10 +40,9 @@ class KnowledgeItemView(BaseModel):
     detail: str | None = None
     evidence: str | None = None
     from_exercises: list[str] = Field(default_factory=list)
-    # misconception-only
-    source_kind: str | None = None
-    distractor: str | None = None
-    flagged: bool = False  # AGENT_INFERENCE / UNSOURCED — needs a human eye
+    # EXAM_TASK / MARKING_SCHEME / DISTRACTOR / AGENT_KNOWLEDGE — info, not a gate
+    provenance: str | None = None
+    distractor: str | None = None  # misconception-only, when provenance == DISTRACTOR
 
 
 class KnowledgeSpecView(BaseModel):
@@ -91,7 +90,7 @@ class KnowledgeIndexRow(BaseModel):
     unit: str | None = None
     exercises: int = 0
     counts: dict[str, int] = Field(default_factory=dict)
-    flagged_misconceptions: int = 0
+    agent_knowledge_items: int = 0  # items with AGENT_KNOWLEDGE provenance
     review_status: str | None = None  # OPEN | APPROVED | REJECTED | None (not extracted)
     review_item_id: int | None = None
     exported_at: datetime | None = None

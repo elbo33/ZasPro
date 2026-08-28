@@ -1,9 +1,11 @@
-"""Knowledge tables (SPEC §5 "Knowledge", §11).
+"""Knowledge tables (SPEC §5 "Knowledge").
 
-One row per extracted item, each carrying `source_chunk_ids` — the chunks the
-Knowledge Agent drew it from (SPEC §11: "every extracted item carries source
-chunk references"; the agent may not invent facts absent from the chunks).
-Conflicts and gaps are `knowledge_flags` rows and become review items.
+One row per extracted item. Every topic gets a COMPLETE spec (ADR 0011 §2):
+the agent uses exam exercises where they inform an item and its own knowledge
+of the subject where they do not. `provenance` records which — as information
+for the reviewer, not a gate. `source_chunk_ids` holds the backing chunks for
+exam-derived items. The human approves every spec in the dashboard; that is the
+verification step.
 
 `verification_status` reuses `zaspro.db.models.exercises.VerificationStatus`.
 """
@@ -29,31 +31,44 @@ def _vs() -> Enum:
     )
 
 
-class MisconceptionSource(str, enum.Enum):
-    """Where a misconception actually came from (SPEC §11 provenance). The yield
-    check keys on this: mostly `AGENT_INFERENCE` / `UNSOURCED` means it is the
-    model's priors about student errors, not a database."""
+class KnowledgeProvenance(str, enum.Enum):
+    """Where a knowledge item came from — recorded on every item, for every
+    kind (concept / formula / method / example / objective / misconception).
+    Information for the reviewer, never a gate: a topic with no exam material
+    is legitimately `AGENT_KNOWLEDGE` throughout."""
 
-    MARKING_SCHEME = "MARKING_SCHEME"      # a partial-credit / "0 pkt jeśli…" rule
-    INFORMATOR = "INFORMATOR"              # CKE informator commentary
-    DISTRACTOR_INFERENCE = "DISTRACTOR_INFERENCE"  # a named multiple-choice distractor built to catch this error
-    AGENT_INFERENCE = "AGENT_INFERENCE"    # inferred from an exercise's structure
-    UNSOURCED = "UNSOURCED"                # no chunk supports it — a §11 violation
+    EXAM_TASK = "EXAM_TASK"              # from one or more exam exercises
+    MARKING_SCHEME = "MARKING_SCHEME"    # from a Zasady oceniania block
+    DISTRACTOR = "DISTRACTOR"            # from a specific multiple-choice distractor
+    INFORMATOR = "INFORMATOR"            # CKE informator commentary (not ingested yet)
+    AGENT_KNOWLEDGE = "AGENT_KNOWLEDGE"  # the model's own knowledge of the subject
 
 
 class FlagKind(str, enum.Enum):
     CONFLICT = "CONFLICT"  # sources disagree; both readings kept
-    GAP = "GAP"            # information missing for this topic
+    GAP = "GAP"            # kept for back-compat; the agent no longer emits GAPs
+
+
+def _prov() -> Enum:
+    return Enum(
+        KnowledgeProvenance, name="knowledge_provenance",
+        native_enum=False, validate_strings=True, length=32,
+    )
 
 
 class _KItem:
-    """Mixin: every knowledge item is tied to a topic and its source chunks."""
+    """Mixin: every knowledge item is tied to a topic, carries its provenance,
+    and (for exam-derived items) the backing source chunks."""
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     topic_id: Mapped[int] = mapped_column(
         ForeignKey("topics.id", ondelete="CASCADE"), index=True
     )
     source_chunk_ids: Mapped[Any] = mapped_column(JSONB, default=list)
+    provenance: Mapped[KnowledgeProvenance] = mapped_column(
+        _prov(), default=KnowledgeProvenance.AGENT_KNOWLEDGE,
+        server_default=KnowledgeProvenance.AGENT_KNOWLEDGE.value,
+    )
     verification_status: Mapped[VerificationStatus] = mapped_column(
         _vs(), default=VerificationStatus.AI_GENERATED
     )
@@ -104,11 +119,7 @@ class Misconception(Base, TimestampMixin, _KItem):
     correct_reasoning: Mapped[str | None] = mapped_column(Text)
     example: Mapped[str | None] = mapped_column(Text)
     severity: Mapped[int | None] = mapped_column(Integer)  # 1..5
-    source_kind: Mapped[MisconceptionSource] = mapped_column(
-        Enum(MisconceptionSource, name="misconception_source",
-             native_enum=False, validate_strings=True, length=32)
-    )
-    # for DISTRACTOR_INFERENCE: the named distractor(s) the error was read off,
+    # when provenance == DISTRACTOR: the named option(s) the error was read off,
     # e.g. "B and D" or "C: 20000 · 1,06" (the exercise is in source_chunk_ids)
     distractor: Mapped[str | None] = mapped_column(String(255))
 
@@ -121,7 +132,8 @@ class LearningObjective(Base, TimestampMixin, _KItem):
 
 
 class KnowledgeFlag(Base, TimestampMixin):
-    """A conflict or gap surfaced during extraction (SPEC §11) — a review item."""
+    """A CONFLICT the agent surfaced during extraction (sources disagree, both
+    readings kept). GAPs are no longer emitted — every topic gets a full spec."""
 
     __tablename__ = "knowledge_flags"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

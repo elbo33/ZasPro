@@ -35,9 +35,8 @@ export type KnowledgeItemView = {
   detail: string | null;
   evidence: string | null;
   from_exercises: string[];
-  source_kind: string | null;
+  provenance: string | null;
   distractor: string | null;
-  flagged: boolean;
 };
 
 export type KnowledgeSpecView = {
@@ -84,7 +83,7 @@ export type KnowledgeIndexRow = {
   unit: string | null;
   exercises: number;
   counts: Record<string, number>;
-  flagged_misconceptions: number;
+  agent_knowledge_items: number;
   review_status: string | null;
   review_item_id: number | null;
   exported_at: string | null;

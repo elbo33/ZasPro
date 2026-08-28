@@ -130,9 +130,13 @@ function KRow({ it, active }: { it: KnowledgeItemView; active: boolean }) {
     >
       <div className="row">
         <span className="pill">{it.kind}</span>
-        {it.source_kind && (
-          <span className={"pill" + (it.flagged ? " warn" : "")}>
-            {it.source_kind}
+        {it.provenance && (
+          <span
+            className={
+              "pill" + (it.provenance === "AGENT_KNOWLEDGE" ? "" : " good")
+            }
+          >
+            {it.provenance}
           </span>
         )}
         {it.distractor && (

@@ -16,8 +16,8 @@ from sqlalchemy.orm import Session
 
 from zaspro.db.models import (
     Concept, Example, Exercise, ExerciseTopic, Formula, Job, JobType,
-    KnowledgeExtraction, KnowledgeFlag, FlagKind, LearningObjective, Method,
-    Misconception, MisconceptionSource, ReviewItem, ReviewItemType,
+    KnowledgeExtraction, KnowledgeFlag, FlagKind, KnowledgeProvenance,
+    LearningObjective, Method, Misconception, ReviewItem, ReviewItemType,
     ReviewStatus, SourceChunk, SourceDocument, Topic,
 )
 from zaspro.jobs import register
@@ -56,11 +56,10 @@ class ExtractResult:
     examples: int = 0
     objectives: int = 0
     misconceptions: int = 0
-    misconception_sources: dict[str, int] = field(default_factory=dict)
+    # provenance breakdown across ALL items (concepts, formulas, …, misconceptions)
+    provenance_counts: dict[str, int] = field(default_factory=dict)
     misconception_detail: list[dict] = field(default_factory=list)
     flags: int = 0
-    unsourced_misconceptions: int = 0
-    flagged_misconceptions: int = 0  # AGENT_INFERENCE or UNSOURCED — routed to review
     review_item_id: int | None = None
 
 
@@ -223,9 +222,7 @@ def extract_topic(
     def refs(raw: list[str], prose: str | None = None) -> list[str]:
         """Exercise numbers an item is actually backed by. Tolerates the model
         putting "Zadanie 11.1" (not "11.1") in `from_exercises`, and falls back
-        to the item's own prose when `from_exercises` is empty — so an item that
-        names its task anywhere is still traceable (was: everything intersected
-        to nothing and stored as "from Zadanie none")."""
+        to the item's own prose when `from_exercises` is empty."""
         out: list[str] = []
         for entry in raw:
             for tok in _NUM.findall(entry):
@@ -237,77 +234,76 @@ def extract_topic(
                     out.append(tok)
         return out
 
+    def prov(item) -> KnowledgeProvenance:
+        """The agent's provenance label, coerced to the enum. A cited exercise
+        upgrades a bare AGENT_KNOWLEDGE label to EXAM_TASK; nothing is downgraded
+        (the label is information, not a gate — ADR 0011 §2)."""
+        p = item.provenance
+        if not isinstance(p, KnowledgeProvenance):
+            try:
+                p = KnowledgeProvenance(str(p))
+            except ValueError:
+                p = KnowledgeProvenance.AGENT_KNOWLEDGE
+        cited = refs(item.from_exercises, getattr(item, "evidence", None))
+        if cited and p is KnowledgeProvenance.AGENT_KNOWLEDGE:
+            p = KnowledgeProvenance.EXAM_TASK
+        res.provenance_counts[p.value] = res.provenance_counts.get(p.value, 0) + 1
+        return p
+
     for c in result.concepts:
-        cited = refs(c.from_exercises, c.evidence)
+        p = prov(c)
         session.add(Concept(
             topic_id=topic_id, name=c.name[:255], description=c.description,
-            explanation=c.evidence, difficulty=c.difficulty,
-            source_chunk_ids=cids(cited),
+            explanation=c.evidence, difficulty=c.difficulty, provenance=p,
+            source_chunk_ids=cids(refs(c.from_exercises, c.evidence)),
         ))
         res.concepts += 1
     for f in result.formulas:
-        cited = refs(f.from_exercises, f.evidence)
+        p = prov(f)
         session.add(Formula(
             topic_id=topic_id, name=f.name[:255], latex_raw=f.latex_raw,
-            description=f.evidence, conditions=f.conditions,
-            source_chunk_ids=cids(cited),
+            description=f.evidence, conditions=f.conditions, provenance=p,
+            source_chunk_ids=cids(refs(f.from_exercises, f.evidence)),
         ))
         res.formulas += 1
     for m in result.methods:
-        cited = refs(m.from_exercises, m.evidence)
+        p = prov(m)
         session.add(Method(
             topic_id=topic_id, name=m.name[:255], when_to_use=m.when_to_use,
-            steps=m.steps, source_chunk_ids=cids(cited),
+            steps=m.steps, provenance=p,
+            source_chunk_ids=cids(refs(m.from_exercises, m.evidence)),
         ))
         res.methods += 1
     for e in result.examples:
-        cited = refs(e.from_exercises, e.evidence)
+        p = prov(e)
         session.add(Example(
             topic_id=topic_id, statement=e.statement, worked_solution=e.worked_solution,
-            difficulty=e.difficulty, source_chunk_ids=cids(cited),
+            difficulty=e.difficulty, provenance=p,
+            source_chunk_ids=cids(refs(e.from_exercises, e.evidence)),
         ))
         res.examples += 1
     for o in result.objectives:
-        cited = refs(o.from_exercises, o.evidence)
+        p = prov(o)
         session.add(LearningObjective(
             topic_id=topic_id, statement=o.statement, bloom_level=o.bloom_level,
-            source_chunk_ids=cids(cited),
+            provenance=p,
+            source_chunk_ids=cids(refs(o.from_exercises, o.evidence)),
         ))
         res.objectives += 1
 
     for mc in result.misconceptions:
         cited = refs(mc.from_exercises, mc.evidence)
-        kind = mc.source_kind
-        # An inference (or a claimed distractor) with no exercise behind it is
-        # relabelled UNSOURCED — accurate labelling, not suppression (ADR 0011).
-        # MARKING_SCHEME / INFORMATOR / DISTRACTOR_INFERENCE that DO cite an
-        # exercise are real sources, kept as-is.
-        if kind in (MisconceptionSource.AGENT_INFERENCE,
-                    MisconceptionSource.DISTRACTOR_INFERENCE) and not cited:
-            kind = MisconceptionSource.UNSOURCED
-        if kind is MisconceptionSource.UNSOURCED:
-            res.unsourced_misconceptions += 1
-        # AGENT_INFERENCE and UNSOURCED both go to the reviewer — the item is
-        # kept, labelled, and flagged; the human approves or rejects it. Real-
-        # source misconceptions still ride the topic's KNOWLEDGE_SPEC card but
-        # need no per-item flag.
-        if kind in (MisconceptionSource.AGENT_INFERENCE, MisconceptionSource.UNSOURCED):
-            res.flagged_misconceptions += 1
-            session.add(KnowledgeFlag(
-                topic_id=topic_id, kind=FlagKind.GAP, item_kind="misconception",
-                detail=f"[{kind.value}] '{mc.name}': {mc.evidence}",
-            ))
+        p = prov(mc)
         session.add(Misconception(
             topic_id=topic_id, name=mc.name[:255], description=mc.evidence,
             incorrect_reasoning=mc.incorrect_reasoning,
             correct_reasoning=mc.correct_reasoning, severity=mc.severity,
-            source_kind=kind, distractor=(mc.distractor or None),
+            provenance=p, distractor=(mc.distractor or None),
             source_chunk_ids=cids(cited),
         ))
         res.misconceptions += 1
-        res.misconception_sources[kind.value] = res.misconception_sources.get(kind.value, 0) + 1
         res.misconception_detail.append({
-            "name": mc.name, "source_kind": kind.value,
+            "name": mc.name, "provenance": p.value,
             "from_exercises": cited, "distractor": mc.distractor or None,
             "evidence": mc.evidence[:160],
         })
@@ -315,8 +311,8 @@ def extract_topic(
     for fl in result.flags:
         try:
             fk = FlagKind(fl.kind.upper())
-        except ValueError:
-            fk = FlagKind.GAP
+        except (ValueError, AttributeError):
+            fk = FlagKind.CONFLICT
         session.add(KnowledgeFlag(
             topic_id=topic_id, kind=fk, item_kind=fl.item_kind[:32],
             detail=fl.detail, source_chunk_ids=cids(refs(fl.from_exercises, fl.detail)),
@@ -325,9 +321,7 @@ def extract_topic(
 
     session.flush()
 
-    ri = _upsert_review_item(
-        session, topic, has_flags=(res.flags + res.flagged_misconceptions) > 0
-    )
+    ri = _upsert_review_item(session, topic, has_flags=res.flags > 0)
     res.review_item_id = ri.id
     _upsert_extraction(session, topic_id, agent, len(pairs), ri.id)
     return res
@@ -349,10 +343,9 @@ def handle_extract_knowledge(session: Session, job: Job) -> dict:
         "concepts": res.concepts, "formulas": res.formulas, "methods": res.methods,
         "examples": res.examples, "objectives": res.objectives,
         "misconceptions": res.misconceptions,
-        "misconception_sources": res.misconception_sources,
+        "provenance_counts": res.provenance_counts,
         "misconception_detail": res.misconception_detail,
-        "flags": res.flags, "unsourced_misconceptions": res.unsourced_misconceptions,
-        "flagged_misconceptions": res.flagged_misconceptions,
+        "flags": res.flags,
         "review_item_id": res.review_item_id,
         "malformed_retries": getattr(agent, "malformed_retries", 0),
     }

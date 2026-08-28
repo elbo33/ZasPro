@@ -94,7 +94,7 @@ def test_extract_makes_two_calls_merges_and_sums_usage():
             **_OK_PEDA,
             "misconceptions": [{
                 "name": "m", "incorrect_reasoning": "x", "correct_reasoning": "y",
-                "source_kind": "AGENT_INFERENCE", "from_exercises": ["1"], "evidence": "Zad 1",
+                "provenance": "AGENT_KNOWLEDGE", "from_exercises": [], "evidence": "common error",
             }],
         }, out_tokens=3000),
     })

@@ -101,7 +101,7 @@ export default function KnowledgePage() {
               {KINDS.map((k) => (
                 <th key={k}>{k.slice(0, 4)}</th>
               ))}
-              <th>flagged mc</th>
+              <th>agent-only</th>
               <th>review</th>
               <th>export</th>
             </tr>
@@ -121,8 +121,11 @@ export default function KnowledgePage() {
                     {r.counts[k] ?? 0}
                   </td>
                 ))}
-                <td className={r.flagged_misconceptions ? "" : "muted"}>
-                  {r.flagged_misconceptions}
+                <td
+                  className={r.agent_knowledge_items ? "" : "muted"}
+                  title="items with AGENT_KNOWLEDGE provenance"
+                >
+                  {r.agent_knowledge_items}
                 </td>
                 <td>
                   {r.review_status ? (

@@ -247,9 +247,8 @@ def test_promote_counts_as_disagreement_in_the_curve(db):
 def _knowledge_card(db, monkeypatch):
     """Extract VIII.2 with a stub knowledge agent -> one KNOWLEDGE_SPEC card."""
     import zaspro.knowledge.export as kexport
-    from zaspro.db.models import ExerciseTopic, TopicRole
+    from zaspro.db.models import ExerciseTopic, KnowledgeProvenance, TopicRole
     from zaspro.knowledge.agent import ConceptOut, KnowledgeExtraction, MisconceptionOut
-    from zaspro.db.models import MisconceptionSource
     from zaspro.knowledge.extract import extract_topic
 
     monkeypatch.setattr(kexport, "KNOWLEDGE_ROOT",
@@ -269,11 +268,12 @@ def _knowledge_card(db, monkeypatch):
         def extract(self, request):
             return KnowledgeExtraction(
                 concepts=[ConceptOut(name="c", description="d",
+                                     provenance=KnowledgeProvenance.EXAM_TASK,
                                      from_exercises=["1"], evidence="Zad 1")],
                 misconceptions=[MisconceptionOut(
                     name="m", incorrect_reasoning="x", correct_reasoning="y",
-                    source_kind=MisconceptionSource.AGENT_INFERENCE,
-                    from_exercises=["1"], evidence="Zad 1")],
+                    provenance=KnowledgeProvenance.AGENT_KNOWLEDGE,
+                    from_exercises=[], evidence="a common error")],
             )
     res = extract_topic(db, w.topic_ids["VIII.2"], A())
     return w, res

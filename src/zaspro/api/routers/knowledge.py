@@ -15,11 +15,10 @@ from sqlalchemy.orm import Session
 
 from zaspro.api.deps import get_db
 from zaspro.api.schemas import ExportResult, KnowledgeIndexRow, KnowledgeSpecView
-from zaspro.api.views import knowledge_spec_view
+from zaspro.api.views import _KNOWLEDGE_KINDS, knowledge_spec_view
 from zaspro.db.models import (
     KnowledgeExtraction,
-    Misconception,
-    MisconceptionSource,
+    KnowledgeProvenance,
     ReviewItem,
     ReviewItemType,
     Topic,
@@ -28,8 +27,6 @@ from zaspro.db.models import (
 from zaspro.knowledge.export import ExportError, export_topic
 
 router = APIRouter(prefix="/knowledge", tags=["knowledge"])
-
-_FLAGGED = (MisconceptionSource.AGENT_INFERENCE, MisconceptionSource.UNSOURCED)
 
 
 @router.get("", response_model=list[KnowledgeIndexRow])
@@ -55,9 +52,12 @@ def get_index(db: Session = Depends(get_db)) -> list[KnowledgeIndexRow]:
         spec = knowledge_spec_view(db, t.id)
         ke = kes.get(t.id)
         ri = ris.get(t.id)
-        n_flagged = db.query(Misconception).filter(
-            Misconception.topic_id == t.id, Misconception.source_kind.in_(_FLAGGED)
-        ).count()
+        agent_only = 0
+        for _kind, model in _KNOWLEDGE_KINDS:
+            agent_only += db.query(model).filter(
+                model.topic_id == t.id,
+                model.provenance == KnowledgeProvenance.AGENT_KNOWLEDGE,
+            ).count()
         rows.append(KnowledgeIndexRow(
             topic_id=t.id,
             code=t.official_requirement_code,
@@ -65,7 +65,7 @@ def get_index(db: Session = Depends(get_db)) -> list[KnowledgeIndexRow]:
             unit=f"{t.unit.code} {t.unit.name}" if t.unit else None,
             exercises=ke.exercises if ke else 0,
             counts=spec.counts if spec else {},
-            flagged_misconceptions=n_flagged,
+            agent_knowledge_items=agent_only,
             review_status=ri.status.value if ri else None,
             review_item_id=ri.id if ri else None,
             exported_at=ke.exported_at if ke else None,

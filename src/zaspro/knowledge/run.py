@@ -36,9 +36,9 @@ import zaspro.knowledge.extract  # noqa: F401 - register EXTRACT_KNOWLEDGE
 import zaspro.mapping.handler  # noqa: F401 - register MAP_CHUNK
 from zaspro.db.base import session_scope
 from zaspro.db.models import (
-    ExerciseTopic, Job, JobStatus, JobType, KnowledgeFlag, Misconception,
-    MisconceptionSource, ReviewItem, ReviewItemType, ReviewStatus, Topic,
-    TopicLevel, TopicRole,
+    Concept, Example, ExerciseTopic, Formula, Job, JobStatus, JobType,
+    KnowledgeFlag, KnowledgeProvenance, LearningObjective, Method, Misconception,
+    ReviewItem, ReviewItemType, ReviewStatus, Topic, TopicLevel, TopicRole,
 )
 from zaspro.jobs import Worker, enqueue
 from zaspro.knowledge.agent import ClaudeKnowledgeAgent, KnowledgeRequest, get_agent
@@ -119,11 +119,11 @@ def _estimate(session, picks: list[tuple[str, int, str]]) -> tuple[int, int, flo
             exercises=[ctx for _, ctx in pairs],
         )
         # TWO calls per topic (structure + pedagogy): the exercises block is
-        # resent for each, so input roughly doubles; output total is similar to
-        # a single call (~the same items, split across two responses).
+        # resent for each, so input roughly doubles. Every topic gets a full
+        # spec regardless of exercise count, so output has a floor.
         body = agent._user_block(req) if hasattr(agent, "_user_block") else ""
         est_in += 2 * (1600 + len(body) // 4)
-        est_out += min(2 * _MAX_OUT, 9000 + 350 * len(pairs))
+        est_out += min(2 * _MAX_OUT, 14000 + 250 * len(pairs))
     lo = (est_in * OPUS5_IN + est_out * 0.7 * OPUS5_OUT) / 1e6
     hi = (est_in * OPUS5_IN + est_out * 1.1 * OPUS5_OUT) / 1e6
     return est_in, est_out, lo, hi
@@ -210,13 +210,14 @@ def _queue_depth(session) -> dict:
             ReviewItem.status == ReviewStatus.OPEN
         )
     ) or 0
-    flagged_mc = session.scalar(
-        select(func.count()).select_from(Misconception).where(
-            Misconception.source_kind.in_(
-                (MisconceptionSource.AGENT_INFERENCE, MisconceptionSource.UNSOURCED)
+    items = agent_only = 0
+    for model in (Concept, Formula, Method, Example, LearningObjective, Misconception):
+        items += session.scalar(select(func.count()).select_from(model)) or 0
+        agent_only += session.scalar(
+            select(func.count()).select_from(model).where(
+                model.provenance == KnowledgeProvenance.AGENT_KNOWLEDGE
             )
-        )
-    ) or 0
+        ) or 0
     open_flags = session.scalar(
         select(func.count()).select_from(KnowledgeFlag).where(
             KnowledgeFlag.resolved.is_(False)
@@ -225,8 +226,9 @@ def _queue_depth(session) -> dict:
     return {
         "open_knowledge_cards": open_specs,
         "open_review_items_total": open_total,
-        "flagged_misconceptions": flagged_mc,
-        "unresolved_knowledge_flags": open_flags,
+        "knowledge_items": items,
+        "agent_knowledge_items": agent_only,
+        "unresolved_conflicts": open_flags,
     }
 
 
@@ -252,8 +254,8 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
         if reset:
             depth = _queue_depth(s)
             print(f"\n--reset: {depth['open_knowledge_cards']} knowledge cards, "
-                  f"{depth['flagged_misconceptions']} flagged misconceptions and all "
-                  f"knowledge rows will be DELETED (they are derived, regenerable).")
+                  f"{depth['knowledge_items']} items and all knowledge rows will be "
+                  f"DELETED (they are derived, regenerable; snapshotted first).")
             if not assume_yes and sys.stdin.isatty():
                 if input("wipe M4 knowledge state? [y/N] ").strip().lower() not in ("y", "yes"):
                     print("declined.")
@@ -324,7 +326,7 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
         ).all()
 
         failed = 0
-        src_total: dict[str, int] = {}
+        prov_total: dict[str, int] = {}
         ti = to = tcr = 0
         malformed = 0
         malformed_topics: list[str] = []
@@ -349,22 +351,23 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
                       f"[{el:.0f}s, {ot:,} out tok]")
                 print(f"  concepts {out['concepts']}  formulas {out['formulas']}  "
                       f"methods {out['methods']}  examples {out['examples']}  "
-                      f"objectives {out['objectives']}  flags {out['flags']}")
-                print(f"  misconceptions: {out['misconceptions']}  "
-                      f"(sources: {out['misconception_sources'] or '—'})")
+                      f"objectives {out['objectives']}  misconceptions {out['misconceptions']}  "
+                      f"flags {out['flags']}")
+                print(f"  provenance: {out.get('provenance_counts') or '—'}")
                 for d in out["misconception_detail"]:
-                    frm = ", ".join(d["from_exercises"]) or "none"
+                    frm = ", ".join(d["from_exercises"]) or "—"
                     dis = f"  dystraktor {d['distractor']}" if d.get("distractor") else ""
-                    print(f"    - [{d['source_kind']}] {d['name']}{dis}")
-                    print(f"        from Zadanie {frm}  ::  {d['evidence']}")
+                    print(f"    - [{d['provenance']}] {d['name']}{dis}  (Zad {frm})")
             else:
+                pc = out.get("provenance_counts") or {}
+                exam = pc.get("EXAM_TASK", 0) + pc.get("MARKING_SCHEME", 0) + pc.get("DISTRACTOR", 0)
+                total = sum(pc.values())
                 print(f"  {out['topic_code']:8} c{out['concepts']:>2} f{out['formulas']:>2} "
                       f"m{out['methods']:>2} e{out['examples']:>2} o{out['objectives']:>2} "
-                      f"mc{out['misconceptions']:>2}  "
-                      f"flag {out['flags'] + out.get('flagged_misconceptions', 0):>2}  "
+                      f"mc{out['misconceptions']:>2}   exam {exam}/{total}   "
                       f"{el:>5.0f}s / {ot / 1000:.1f}k out")
-            for k, v in (out["misconception_sources"] or {}).items():
-                src_total[k] = src_total.get(k, 0) + v
+            for k, v in (out.get("provenance_counts") or {}).items():
+                prov_total[k] = prov_total.get(k, 0) + v
 
         print("\n" + "=" * 72)
         if malformed:
@@ -381,31 +384,29 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
                 print(f"  WARNING: {len(near)} topic(s) over 8 min "
                       f"({', '.join(near)}) — approaching the 10-min ceiling; "
                       f"streaming keeps them running but the spread is real")
-        tot_mc = sum(src_total.values())
-        print(f"misconceptions total: {tot_mc}   by source: {src_total or '—'}")
-        real_src = (src_total.get("MARKING_SCHEME", 0) + src_total.get("INFORMATOR", 0)
-                    + src_total.get("DISTRACTOR_INFERENCE", 0))
-        inferred = src_total.get("AGENT_INFERENCE", 0) + src_total.get("UNSOURCED", 0)
-        if tot_mc:
-            print(f"  from a real source (marking scheme / informator / distractor): "
-                  f"{real_src} / {tot_mc}")
-            print(f"  agent inference or unsourced (flagged for review): {inferred} / {tot_mc}")
+        tot_items = sum(prov_total.values())
+        print(f"knowledge items: {tot_items}   provenance: {prov_total or '—'}")
+        exam_backed = (prov_total.get("EXAM_TASK", 0) + prov_total.get("MARKING_SCHEME", 0)
+                       + prov_total.get("DISTRACTOR", 0) + prov_total.get("INFORMATOR", 0))
+        if tot_items:
+            print(f"  exam-material-backed: {exam_backed} / {tot_items}   "
+                  f"agent knowledge: {prov_total.get('AGENT_KNOWLEDGE', 0)} / {tot_items}")
         if real and (ti or to):
             cost = ti / 1e6 * 5 + tcr / 1e6 * 0.5 + to / 1e6 * 25
             print(f"tokens {ti:,} in / {tcr:,} cache-read / {to:,} out  ->  ${cost:,.2f} "
                   "(published claude-opus-5)")
 
         if failed:
-            print(f"\n{failed} extraction(s) FAILED (truncation or API error) — "
-                  f"not persisted. Re-run just those topics by code.")
+            print(f"\n{failed} extraction(s) FAILED (truncation, persistent malformation, "
+                  f"or API error) — not persisted. Re-run just those topics by code.")
 
         depth = _queue_depth(s)
         print("\nreview queue (whole database, not just this run):")
         print(f"  {depth['open_knowledge_cards']} open KNOWLEDGE_SPEC cards (one per extracted topic)")
         print(f"  {depth['open_review_items_total']} open review items in total")
-        print(f"  {depth['flagged_misconceptions']} flagged misconceptions "
-              f"(AGENT_INFERENCE / UNSOURCED) across all extracted topics")
-        print(f"  {depth['unresolved_knowledge_flags']} unresolved knowledge flags")
+        print(f"  {depth['knowledge_items']} knowledge items, of which "
+              f"{depth['agent_knowledge_items']} are AGENT_KNOWLEDGE provenance")
+        print(f"  {depth['unresolved_conflicts']} unresolved CONFLICT flags")
         print("\nReview in the dashboard (Knowledge tab), then export approved topics:")
         print("  uv run python -m zaspro.knowledge.export --all")
     return 1 if failed else 0

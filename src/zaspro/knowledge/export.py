@@ -74,6 +74,8 @@ def _chunk_number(session: Session, chunk_ids: list[int] | None) -> list[str]:
 
 def _item_dict(session: Session, item: Any, fields: list[str]) -> dict:
     d: dict[str, Any] = {}
+    prov = getattr(item, "provenance", None)
+    d["provenance"] = prov.value if hasattr(prov, "value") else prov
     for f in fields:
         v = getattr(item, f, None)
         if v not in (None, "", [], {}):
@@ -164,7 +166,7 @@ def build_export(session: Session, topic_id: int) -> dict:
         "misconceptions": [
             _item_dict(session, mc, [
                 "name", "description", "incorrect_reasoning", "correct_reasoning",
-                "severity", "source_kind", "distractor",
+                "severity", "distractor",
             ])
             for mc in _approved(session, Misconception, topic_id)
         ],
@@ -174,10 +176,6 @@ def build_export(session: Session, topic_id: int) -> dict:
         ],
         "exercises": _exercise_index(session, topic_id),
     }
-    # normalise enum values in misconceptions
-    for mc in data["misconceptions"]:
-        if hasattr(mc.get("source_kind"), "value"):
-            mc["source_kind"] = mc["source_kind"].value
     return data
 
 

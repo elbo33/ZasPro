@@ -29,32 +29,63 @@ did not anticipate:
 
 ## Decision
 
-### 1. Misconceptions are emitted, labelled, and flagged — never suppressed
+### 1. (superseded by §2)
 
-The agent lists every real, common student error on the requirement (aim 3–6)
-and labels each with `source_kind`:
+The original v3 decision — "misconceptions emitted, labelled by `source_kind`,
+low-provenance ones flagged" — is replaced by §2: every item of every kind
+gets a `provenance` label, and it is never a gate.
 
-| source_kind | meaning | provenance |
-|---|---|---|
-| `MARKING_SCHEME` | a partial-credit / "0 pkt jeśli…" rule | real |
-| `INFORMATOR` | CKE informator commentary (not ingested yet) | real |
-| `DISTRACTOR_INFERENCE` | a named multiple-choice distractor built to catch it | real |
-| `AGENT_INFERENCE` | inferred from an open exercise's structure | needs review |
-| `UNSOURCED` | a known error with nothing in the material behind it | needs review |
+### 2. A complete spec for every topic, from model knowledge where needed (`m4-know-v5`)
 
-`extract_topic` relabels an `AGENT_INFERENCE` / `DISTRACTOR_INFERENCE` claim
-with no surviving exercise citation as `UNSOURCED` (accurate labelling, not
-suppression), and raises a `knowledge_flags` GAP row for every `AGENT_INFERENCE`
-and `UNSOURCED` misconception. **Human approval in the dashboard is the
-verification step** — an AI-inferred misconception is acceptable once a person
-has approved it. Concepts / formulas / methods / examples / objectives keep the
-strict SPEC §11 rule: only what the material shows.
+Source material is **not** a constraint on what gets extracted. For every
+requirement — including the ~3 with zero mapped exercises and the ~13 with no
+primary coverage — the agent produces a full knowledge spec: concepts,
+formulas, methods, examples, learning objectives, misconceptions, aimed at
+supporting four teaching episodes. It uses the exam exercises where they inform
+an item and its own knowledge of Polish high-school mathematics where they do
+not. **No suppression, no GAP outcomes, no "insufficient material".** The
+progression v1→v5:
 
-Prompt is `m4-know-v3`. `max_tokens` raised 16k → 32k (v2 was truncating output
-on the large topics; v3 asks for more).
+* v1–v2 required material support and returned almost nothing for thin topics;
+* v3 stopped suppressing misconceptions but still framed non-exam items as a
+  deficiency (flagged, GAP rows);
+* v4 split the call in two (structure / pedagogy) + added a hard truncation
+  check (kept — see §1a);
+* **v5**: complete spec for every topic; the only labels are provenance.
 
-No run-to-run variance testing. Extraction happens once, is reviewed, and is
-frozen (§3). Variance does not matter if we never re-run.
+Every item — of every kind — records `provenance` (`knowledge_provenance`
+enum, migration 0012, on the `_KItem` mixin):
+
+| provenance | meaning |
+|---|---|
+| `EXAM_TASK` | an exercise informs it (`from_exercises` set) |
+| `MARKING_SCHEME` | a Zasady oceniania rule informs it |
+| `DISTRACTOR` | a specific multiple-choice option informs it (`Misconception.distractor`) |
+| `AGENT_KNOWLEDGE` | the model's own subject knowledge; `from_exercises` empty |
+
+This is **information for the reviewer**, not a gate — a distractor-backed
+misconception reads differently from an inferred one. `extract_topic` upgrades a
+bare `AGENT_KNOWLEDGE` label to `EXAM_TASK` when a real citation survives, and
+never downgrades. `MisconceptionSource` and `misconceptions.source_kind` are
+dropped; `distractor` stays. The per-item GAP-flag routing is gone; the
+`knowledge_flags` table now carries only genuine CONFLICT flags.
+
+**The human approves every spec in the dashboard. That is the verification
+step and the only one that matters.**
+
+### 2a. The empty-exercise-list prompt (fixes the I.5 malformation)
+
+I.5 (0 exercises) produced the `<parameter>` malformation on all three samples —
+not bad luck, a degenerate prompt: the user block ended `EXERCISES (0):` with
+nothing after it. The raw dumps (`m4/knowledge_debug/`) confirmed it:
+`stop_reason: tool_use` (not truncated), **empty `thinking` blocks**, and the
+malformation getting *worse* on re-sample (nested `<parameter name="0">`,
+integer keys). `_user_block` now emits an explicit "EXERCISES: none — write the
+whole spec from the requirement text and your own knowledge; label every item
+AGENT_KNOWLEDGE" instead of a dangling header. The `<parameter>` re-sample
+logic (§1b) stays as insurance.
+
+No run-to-run variance testing. Extraction happens once, is reviewed, frozen.
 
 ### 1a. Streaming, a two-call split, and a hard truncation check (`m4-know-v4`)
 
@@ -124,14 +155,15 @@ guesswork.
   `m4/knowledge_debug/<code>-<tool>-<ts>.json` and names the file in the error.
   `m4/knowledge_debug/` and `m4/reset_backups/` are gitignored.
 
-### 1c. Adaptive thinking is under review for these calls
+### 1c. Adaptive thinking is not the cause
 
-The malformation may correlate with interleaved thinking blocks. Extraction is a
-structured-output task, not a reasoning-heavy one, so `ClaudeKnowledgeAgent`
-takes `thinking: bool = True` and `run` has `--no-thinking`; turning it off is
-being tested on the four affected topics for both the failure rate and cost.
+The I.5 raw dumps show **empty `thinking` blocks** on every malformed sample, so
+interleaved thinking was not implicated — the cause was the degenerate empty
+prompt (§2a). `ClaudeKnowledgeAgent` still takes `thinking: bool = True` and
+`run` has `--no-thinking` for a cost/quality comparison, but the retry logic
+(§1b) stays as insurance, not as the fix.
 
-### 2. One `KNOWLEDGE_SPEC` review card per topic
+### 3. One `KNOWLEDGE_SPEC` review card per topic
 
 A single `ReviewItem` (`item_type = KNOWLEDGE_SPEC`, `ref_table = "topics"`,
 `ref_id = topic_id`) carries the whole spec. `record_decision`:
@@ -155,7 +187,7 @@ export state) and a `KNOWLEDGE_SPEC` branch on the review card — keys `a`
 (approve), `E` (approve & export), `x` (reject/restore the selected item),
 `j`/`k` (move), `r` (reject spec), `s` (skip).
 
-### 3. Git holds the record, the database is the working store
+### 4. Git holds the record, the database is the working store
 
 An approved topic exports to **`knowledge/topics/<official_requirement_code>.yaml`**
 — human-readable, diffable, one file per topic. It carries the extraction
