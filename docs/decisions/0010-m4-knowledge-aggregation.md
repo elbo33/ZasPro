@@ -97,12 +97,15 @@ partial-credit block where the session's zasady PDF has one.
 Business rules re-checked in `extract_topic` (SPEC §11/§12, never LLM →
 database):
 
-* an item's `from_exercises` are intersected with the topic's real exercise
-  numbers; `source_chunk_ids` is the chunk ids of the survivors.
-* a misconception the agent tags `AGENT_INFERENCE` with **no** surviving
-  exercise citation is stored as `UNSOURCED` and raises a `knowledge_flags`
-  GAP row — an unsourced misconception is a §11 violation, kept only so it can
-  be counted and rejected, not approved.
+* an item's `from_exercises` are resolved (`refs()` — number tokens out of each
+  entry, prose fallback) against the topic's real exercise numbers;
+  `source_chunk_ids` is the chunk ids of the survivors.
+* a misconception the agent tags `AGENT_INFERENCE` **or**
+  `DISTRACTOR_INFERENCE` with **no** surviving exercise citation is stored as
+  `UNSOURCED` and raises a `knowledge_flags` GAP row — an unsourced
+  misconception is a §11 violation, kept only so it can be counted and
+  rejected, not approved. `MARKING_SCHEME` / `INFORMATOR` /
+  `DISTRACTOR_INFERENCE` that do cite a task are kept as-is.
 * `flags` become `knowledge_flags` rows (later: review items).
 
 `extract_topic` clears the topic's prior knowledge items first, so re-running is
@@ -120,10 +123,50 @@ requirements well covered under *touch* and with primary coverage, two mid
 (touch 3–4), one of the requirements with **no primary** exercise — then runs
 extraction and reports, per topic: the concept/formula/method/example/objective
 counts and **every misconception with its `source_kind`
-(`MARKING_SCHEME | INFORMATOR | AGENT_INFERENCE | UNSOURCED`), the exercises it
-cites, and the evidence snippet**; then holds. The deliberate spread answers
-"does yield track material volume, or is it uniformly thin"; the per-source
-breakdown answers "is this a misconception database or the model's priors". If
-most come back `AGENT_INFERENCE` / `UNSOURCED`, the marking schemes / a textbook
-need ingesting before COMMON_MISTAKES is viable — learned after five API calls,
-not seventy-three. The run is a command the user executes (standing rule).
+(`MARKING_SCHEME | INFORMATOR | DISTRACTOR_INFERENCE | AGENT_INFERENCE |
+UNSOURCED`), the exercises it cites, the distractor where it has one, and the
+evidence snippet**; then holds. The deliberate spread answers "does yield track
+material volume, or is it uniformly thin"; the per-source breakdown answers "is
+this a misconception database or the model's priors". If most come back
+`AGENT_INFERENCE` / `UNSOURCED`, the marking schemes / a textbook need ingesting
+before COMMON_MISTAKES is viable — learned after five API calls, not
+seventy-three. The run is a command the user executes (standing rule).
+
+### First run (28 Aug 2026) — two findings
+
+**Citation bug (fixed).** Every stored item read `from Zadanie none` although
+its `evidence` prose named the task. `extract_topic` intersected the agent's
+`from_exercises` with the topic's exercise numbers by exact string match; the
+real agent returns `"Zadanie 11.1"` / `"Zad 11.1 dystraktory B and D"`, or
+leaves `from_exercises` empty and names the task only in prose. Nothing was
+traceable in the database — a §11 provenance failure regardless of source
+category. Fix: `refs()` pulls every number token out of each `from_exercises`
+entry, and falls back to scanning the item's own prose behind a `Zad`/`Zadanie`
+marker when the field is empty. Schema fields now carry descriptions asking for
+bare numbers. `PROMPT_VERSION` → `m4-know-v2`.
+
+**`DISTRACTOR_INFERENCE` added to `MisconceptionSource`** (migration 0010:
+`misconceptions.distractor` column + `source_kind` widened to VARCHAR(32); the
+enum has no CHECK). Most items the first run tagged `UNSOURCED` were not
+invention — each cited a specific multiple-choice distractor in a named exercise
+(*"Zad 11.1 dystraktory B and D"*, *"Zadanie 14 dystraktor C: 20000 · 1,06"*).
+CKE builds each wrong option to catch a particular error, so a distractor is a
+real source — likely the richest one the corpus offers. The agent now records
+the task in `from_exercises` and the option(s) in `distractor`; `extract_topic`
+keeps it as a real source when a task is cited and demotes it to `UNSOURCED`
+only when nothing is. The yield split counts `MARKING_SCHEME + INFORMATOR +
+DISTRACTOR_INFERENCE` as "from a real source".
+
+### I.1 is the informative failure
+
+I.1 (`liczby rzeczywiste`) has **no primary exercise** and 31 in the touch set.
+The first run drew 10 concepts and 13 formulas from it — and 0 examples, 0
+learning objectives, 0 misconceptions. Aggregating exercises that merely *use* a
+requirement yields its formulas and vocabulary and nothing teachable: no worked
+example is *about* I.1, no marking scheme grades I.1 specifically, no distractor
+targets an I.1 error. **A requirement with no primary coverage cannot support an
+episode on touch alone.** There are **13** such requirements (ADR table above).
+This is a concrete argument for the teaching layer (§3, SPEC §17) absorbing them
+— folded into a parent teaching unit that does have primary material — rather
+than each of the 13 being scoped as its own episode with a knowledge spec built
+from formulas alone.

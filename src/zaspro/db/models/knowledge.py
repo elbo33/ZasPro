@@ -11,9 +11,10 @@ Conflicts and gaps are `knowledge_flags` rows and become review items.
 from __future__ import annotations
 
 import enum
+from datetime import datetime
 from typing import Any
 
-from sqlalchemy import Enum, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import DateTime, Enum, Float, ForeignKey, Integer, String, Text, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -35,6 +36,7 @@ class MisconceptionSource(str, enum.Enum):
 
     MARKING_SCHEME = "MARKING_SCHEME"      # a partial-credit / "0 pkt jeśli…" rule
     INFORMATOR = "INFORMATOR"              # CKE informator commentary
+    DISTRACTOR_INFERENCE = "DISTRACTOR_INFERENCE"  # a named multiple-choice distractor built to catch this error
     AGENT_INFERENCE = "AGENT_INFERENCE"    # inferred from an exercise's structure
     UNSOURCED = "UNSOURCED"                # no chunk supports it — a §11 violation
 
@@ -104,8 +106,11 @@ class Misconception(Base, TimestampMixin, _KItem):
     severity: Mapped[int | None] = mapped_column(Integer)  # 1..5
     source_kind: Mapped[MisconceptionSource] = mapped_column(
         Enum(MisconceptionSource, name="misconception_source",
-             native_enum=False, validate_strings=True)
+             native_enum=False, validate_strings=True, length=32)
     )
+    # for DISTRACTOR_INFERENCE: the named distractor(s) the error was read off,
+    # e.g. "B and D" or "C: 20000 · 1,06" (the exercise is in source_chunk_ids)
+    distractor: Mapped[str | None] = mapped_column(String(255))
 
 
 class LearningObjective(Base, TimestampMixin, _KItem):
@@ -130,3 +135,31 @@ class KnowledgeFlag(Base, TimestampMixin):
     detail: Mapped[str] = mapped_column(Text)
     source_chunk_ids: Mapped[Any] = mapped_column(JSONB, default=list)
     resolved: Mapped[bool] = mapped_column(default=False)
+
+
+class KnowledgeExtraction(Base, TimestampMixin):
+    """One row per topic: the state of its knowledge layer — last extraction,
+    the review item guarding it, and whether it has been approved and frozen to
+    a committed git file (ADR 0011). The database stays the working store; the
+    exported YAML under `knowledge/topics/<code>.yaml` is the record of truth.
+    This table is itself rebuildable from those files plus the job history."""
+
+    __tablename__ = "knowledge_extractions"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    topic_id: Mapped[int] = mapped_column(
+        ForeignKey("topics.id", ondelete="CASCADE"), unique=True, index=True
+    )
+    agent_name: Mapped[str] = mapped_column(String(32))
+    model: Mapped[str | None] = mapped_column(String(64))
+    prompt_version: Mapped[str] = mapped_column(String(32))
+    exercises: Mapped[int] = mapped_column(Integer, default=0)  # touch-set size at extraction
+    extracted_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    # the KNOWLEDGE_SPEC review item that gates approval (one card per topic)
+    review_item_id: Mapped[int | None] = mapped_column(
+        ForeignKey("review_items.id", ondelete="SET NULL")
+    )
+    approved_at: Mapped[datetime | None] = mapped_column(DateTime)
+    approved_by: Mapped[str | None] = mapped_column(String(120))
+    exported_at: Mapped[datetime | None] = mapped_column(DateTime)
+    export_path: Mapped[str | None] = mapped_column(String(255))

@@ -4,10 +4,15 @@ Contract: LLM -> structured response -> Pydantic -> business-rule validation ->
 database. Hard rules from SPEC §11, enforced in the prompt AND re-checked in
 `zaspro.knowledge.extract`:
 
-* may not invent facts absent from the provided material
-* every item cites the exercise(s) / marking-scheme rule it came from
+* concepts / formulas / methods / examples / objectives may not invent facts
+  absent from the provided material; each cites the exercise(s) it came from
 * sources that disagree -> both readings + a CONFLICT flag, no winner picked
 * missing information -> a GAP record, not a filled gap
+* misconceptions are the exception (ADR 0011): exam papers do not state student
+  errors, so they are *not* suppressed for lack of a citation — they are
+  emitted, labelled by `source_kind`, and the low-provenance ones
+  (AGENT_INFERENCE / UNSOURCED) are flagged for human approval, which is the
+  verification step.
 
 `StubKnowledgeAgent` runs the whole path offline; `ClaudeKnowledgeAgent`
 (`claude-opus-5`) is used only from a command the user runs.
@@ -23,7 +28,7 @@ from pydantic import BaseModel, Field
 
 from zaspro.db.models import MisconceptionSource
 
-PROMPT_VERSION = "m4-know-v1"
+PROMPT_VERSION = "m4-know-v3"  # v3: stop suppressing misconceptions — emit + label + flag, never withhold
 
 
 class ExerciseCtx(BaseModel):
@@ -43,9 +48,18 @@ class KnowledgeRequest(BaseModel):
 
 
 class _Item(BaseModel):
-    # exercise numbers this item is drawn from; [] means "not from any exercise"
-    from_exercises: list[str] = Field(default_factory=list)
-    evidence: str = Field(min_length=1, max_length=800)
+    from_exercises: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Bare Zadanie numbers this item is drawn from, e.g. [\"11.1\", \"14\"]. "
+            "Not \"Zadanie 11.1\", not a sentence — just the numbers. "
+            "[] only when the item is from no exercise at all."
+        ),
+    )
+    evidence: str = Field(
+        min_length=1, max_length=800,
+        description="A short quote or paraphrase from that material naming the task it is from.",
+    )
 
 
 class ConceptOut(_Item):
@@ -78,6 +92,14 @@ class MisconceptionOut(_Item):
     correct_reasoning: str
     severity: int | None = Field(None, ge=1, le=5)
     source_kind: MisconceptionSource
+    distractor: str | None = Field(
+        None,
+        description=(
+            "Required when source_kind is DISTRACTOR_INFERENCE: the specific "
+            "wrong multiple-choice option(s) the error is read off, e.g. "
+            "\"B and D\" or \"C: 20000 · 1,06\". Leave null otherwise."
+        ),
+    )
 
 
 class ObjectiveOut(_Item):
@@ -148,12 +170,20 @@ class StubKnowledgeAgent:
                 when_to_use="see exercises", steps=["identify given", "apply", "verify"],
                 from_exercises=[ex.number], evidence=ex.text[:200],
             ))
-        # the stub only ever "infers" a misconception — it has no real source
+        # the stub emits two misconceptions: one inferred from an exercise
+        # (AGENT_INFERENCE, keeps its citation) and one it cannot source
+        # (UNSOURCED) — enough to exercise both flag paths offline.
         out.misconceptions.append(MisconceptionOut(
             name=f"common slip on {request.topic_code}",
             incorrect_reasoning="(stub)", correct_reasoning="(stub)",
             source_kind=MisconceptionSource.AGENT_INFERENCE,
             from_exercises=[ex.number], evidence="stub inference from exercise structure",
+        ))
+        out.misconceptions.append(MisconceptionOut(
+            name=f"textbook slip on {request.topic_code}",
+            incorrect_reasoning="(stub)", correct_reasoning="(stub)",
+            source_kind=MisconceptionSource.UNSOURCED,
+            from_exercises=[], evidence="stub: a known error with nothing in the material",
         ))
         return out
 
@@ -167,7 +197,7 @@ curriculum requirement, from the material provided: the requirement text and a \
 set of exam exercises that test it, each with its marking scheme (Zasady \
 oceniania) where available.
 
-Hard rules:
+Hard rules for concepts, formulas, methods, examples, objectives:
 * Use only what is in the provided material. Do not add facts, formulas or \
 methods from your own knowledge that the material does not show.
 * Every item lists `from_exercises` (the Zadanie numbers it is drawn from) and \
@@ -177,19 +207,30 @@ readings; do not choose.
 * If the material is missing something the requirement clearly needs, emit a \
 flag with kind "GAP"; do not fill it from memory.
 
-Misconceptions are special. Exam exercises do NOT state student misconceptions. \
-A marking scheme sometimes implies one through a partial-credit or "0 pkt jeśli" \
-rule. Record a misconception only when the material supports it, and set \
-`source_kind`:
-* MARKING_SCHEME — a partial-credit / error rule in a Zasady oceniania block
-* INFORMATOR — CKE informator commentary (not present here yet)
-* AGENT_INFERENCE — you are inferring it from an exercise's structure; name the \
-exercise and say why. Use this sparingly and honestly.
-* UNSOURCED — you believe it is a real student error but nothing in the material \
-supports it. Prefer emitting nothing over UNSOURCED.
+Misconceptions are different, and the rule is the opposite: do NOT suppress \
+them. Exam papers do not state student errors outright, so a "material-supported \
+only" rule would return almost nothing — and that is worse than useless. \
+Instead: list the real, common student errors on THIS requirement (aim for 3–6), \
+and label each honestly with `source_kind`. A human approves every misconception \
+in the dashboard before it is used — that review IS the verification step, so an \
+inferred misconception is acceptable as long as it is labelled as one.
 
-If a requirement has no misconception the material supports, return an empty \
-misconceptions list. That is a valid, informative answer.
+* MARKING_SCHEME — a partial-credit / "0 pkt jeśli…" rule in a Zasady oceniania \
+block. Put the task number in `from_exercises`.
+* INFORMATOR — CKE informator commentary (not present in the material yet).
+* DISTRACTOR_INFERENCE — a wrong option in a multiple-choice / true-false task \
+is built to catch this error. Name the task in `from_exercises` and the \
+option(s) in `distractor` (e.g. "B and D", "C: 20000 · 1,06"). Prefer this over \
+AGENT_INFERENCE whenever a distractor fits — it is the strongest source here.
+* AGENT_INFERENCE — you are inferring the error from an open exercise's \
+structure or its marking scheme, with no single distractor to point at. Name \
+the exercise in `from_exercises` and say why in `evidence`. This is fine.
+* UNSOURCED — a real student error you are confident about, but nothing in the \
+material points to it. Still emit it, labelled UNSOURCED. Do not drop it.
+
+Never withhold a misconception because you cannot cite it. A missing item helps \
+nobody; a labelled inference gets reviewed. Only genuine non-errors should be \
+left out.
 
 Call record_knowledge exactly once.
 """
@@ -205,7 +246,7 @@ class ClaudeKnowledgeAgent:
     name = "claude"
     prompt_version = PROMPT_VERSION
 
-    def __init__(self, *, model: str = "claude-opus-5", max_tokens: int = 16000) -> None:
+    def __init__(self, *, model: str = "claude-opus-5", max_tokens: int = 32000) -> None:
         self.model = model
         self.max_tokens = max_tokens
         self._client = None
@@ -249,14 +290,20 @@ class ClaudeKnowledgeAgent:
     def extract(self, request: KnowledgeRequest) -> KnowledgeExtraction:
         client = self._client_lazy()
         _cache = {"type": "ephemeral"}
-        msg = client.messages.create(
+        # Stream, don't `create`: at max_tokens=32000 the worst-case response
+        # time exceeds 10 minutes and the SDK refuses a non-streaming call
+        # outright. `get_final_message()` accumulates the whole response —
+        # usage and tool_use block included — so the rest of this method is
+        # unchanged. Keep 32k: 16k was truncating the large topics.
+        with client.messages.stream(
             model=self.model,
             max_tokens=self.max_tokens,
             thinking={"type": "adaptive"},
             system=[{"type": "text", "text": _SYSTEM, "cache_control": _cache}],
             tools=[{**_TOOL, "cache_control": _cache}],
             messages=[{"role": "user", "content": self._user_block(request)}],
-        )
+        ) as stream:
+            msg = stream.get_final_message()
         u = getattr(msg, "usage", None)
         self.last_usage = {
             "in": getattr(u, "input_tokens", 0) or 0,

@@ -33,6 +33,7 @@ from zaspro.db.models.knowledge import (
     Example,
     FlagKind,
     Formula,
+    KnowledgeExtraction,
     KnowledgeFlag,
     LearningObjective,
     Method,
@@ -77,5 +78,5 @@ __all__ = [
     # knowledge (M4)
     "Concept", "Formula", "Method", "Example", "Misconception",
     "LearningObjective", "MisconceptionSource",
-    "KnowledgeFlag", "FlagKind",
+    "KnowledgeFlag", "FlagKind", "KnowledgeExtraction",
 ]

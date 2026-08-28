@@ -27,6 +27,35 @@ export type MappingView = {
   prompt_version: string | null;
 };
 
+export type KnowledgeItemView = {
+  kind: string;
+  id: number;
+  status: string;
+  title: string;
+  detail: string | null;
+  evidence: string | null;
+  from_exercises: string[];
+  source_kind: string | null;
+  distractor: string | null;
+  flagged: boolean;
+};
+
+export type KnowledgeSpecView = {
+  topic_id: number;
+  code: string | null;
+  name: string;
+  unit: string | null;
+  requirement_text: string | null;
+  extracted_at: string | null;
+  prompt_version: string | null;
+  model: string | null;
+  exercises: number;
+  exported_at: string | null;
+  items: KnowledgeItemView[];
+  flags: string[];
+  counts: Record<string, number>;
+};
+
 export type ReviewItemView = {
   id: number;
   item_type: string;
@@ -45,6 +74,21 @@ export type ReviewItemView = {
   mapping: MappingView | null;
   secondaries: MappingView[];
   candidates: TopicOption[];
+  knowledge: KnowledgeSpecView | null;
+};
+
+export type KnowledgeIndexRow = {
+  topic_id: number;
+  code: string;
+  name: string;
+  unit: string | null;
+  exercises: number;
+  counts: Record<string, number>;
+  flagged_misconceptions: number;
+  review_status: string | null;
+  review_item_id: number | null;
+  exported_at: string | null;
+  prompt_version: string | null;
 };
 
 export type Calibration = {
@@ -127,6 +171,14 @@ export const api = {
       body: JSON.stringify({ reviewer, item_ids }),
     }),
   calibration: () => req<Calibration>("/review/calibration"),
+  knowledgeIndex: () => req<KnowledgeIndexRow[]>("/knowledge"),
+  knowledgeSpec: (topicId: number) =>
+    req<KnowledgeSpecView>(`/knowledge/${topicId}`),
+  exportKnowledge: (topicId: number, reviewer: string) =>
+    req<{ ok: boolean; code: string; path: string | null; error: string | null }>(
+      `/knowledge/${topicId}/export?reviewer=${encodeURIComponent(reviewer)}`,
+      { method: "POST" },
+    ),
   curriculum: () =>
     req<
       {

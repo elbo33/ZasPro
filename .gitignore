@@ -17,3 +17,6 @@ m0/_work/
 
 # M1: local dev storage root (behind the storage interface)
 /storage/
+
+# Local DB dumps (ADR 0011: the DB is the working store, not the record).
+backups/

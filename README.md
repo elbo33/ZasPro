@@ -4,7 +4,8 @@ Polish Matura knowledge base and episode planning system. The authoritative
 spec is [`docs/SPEC.md`](docs/SPEC.md); architectural decisions are ADRs in
 [`docs/decisions/`](docs/decisions/).
 
-Build state: **M2 (ingestion)** — Track A pipeline behind a job system.
+Build state: **M4 (knowledge layer)** — per-topic knowledge extraction, review,
+and export to committed files.
 
 ## Setup
 
@@ -37,6 +38,37 @@ seeds/                 hand-verified curriculum seed + review sheets (M0.6)
 sources/               MANIFEST.md (authoritative) + raw/ (read-only, gitignored)
 docs/                  SPEC.md, sources.md, decisions/
 ```
+
+## Knowledge layer (M4)
+
+```sh
+uv run python -m zaspro.knowledge.run --topics 5   # deliberate 5-topic yield check
+uv run python -m zaspro.knowledge.run --all        # every podstawowy requirement (asks first)
+```
+
+Each run leaves one `KNOWLEDGE_SPEC` review card per topic. Review in the
+dashboard (Knowledge tab), then freeze the approved ones to git:
+
+```sh
+uv run python -m zaspro.knowledge.export --all     # writes knowledge/topics/<code>.yaml
+```
+
+The committed YAML is the record of truth (ADR 0011). `knowledge.run` refuses to
+re-extract a topic that has one unless `--force`.
+
+## Backups
+
+The database is the **working** store; git holds the record (committed
+`knowledge/` files, `sources/` documents, the migration chain). Everything in
+Postgres should be rebuildable from those. A local dump is still a convenience:
+
+```sh
+./scripts/backup.sh                                  # -> backups/zaspro-<date>.sql.gz
+./scripts/restore.sh backups/zaspro-<date>.sql.gz    # replaces all current data
+```
+
+`backups/` is gitignored. **`docker compose down -v` destroys the Postgres
+volume** — run `backup.sh` first, or be prepared to rebuild from git + sources.
 
 ## Tests
 

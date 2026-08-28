@@ -32,6 +32,36 @@ class MappingView(BaseModel):
     prompt_version: str | None
 
 
+class KnowledgeItemView(BaseModel):
+    kind: str            # concept | formula | method | example | objective | misconception
+    id: int
+    status: str          # VerificationStatus
+    title: str           # name / statement head
+    detail: str | None = None
+    evidence: str | None = None
+    from_exercises: list[str] = Field(default_factory=list)
+    # misconception-only
+    source_kind: str | None = None
+    distractor: str | None = None
+    flagged: bool = False  # AGENT_INFERENCE / UNSOURCED — needs a human eye
+
+
+class KnowledgeSpecView(BaseModel):
+    topic_id: int
+    code: str | None
+    name: str
+    unit: str | None = None
+    requirement_text: str | None = None
+    extracted_at: datetime | None = None
+    prompt_version: str | None = None
+    model: str | None = None
+    exercises: int = 0
+    exported_at: datetime | None = None
+    items: list[KnowledgeItemView] = Field(default_factory=list)
+    flags: list[str] = Field(default_factory=list)
+    counts: dict[str, int] = Field(default_factory=dict)
+
+
 class ReviewItemView(BaseModel):
     id: int
     item_type: str
@@ -51,6 +81,28 @@ class ReviewItemView(BaseModel):
     mapping: MappingView | None = None  # the primary
     secondaries: list[MappingView] = Field(default_factory=list)
     candidates: list[TopicOption] = Field(default_factory=list)
+    knowledge: KnowledgeSpecView | None = None  # for a KNOWLEDGE_SPEC card
+
+
+class KnowledgeIndexRow(BaseModel):
+    topic_id: int
+    code: str
+    name: str
+    unit: str | None = None
+    exercises: int = 0
+    counts: dict[str, int] = Field(default_factory=dict)
+    flagged_misconceptions: int = 0
+    review_status: str | None = None  # OPEN | APPROVED | REJECTED | None (not extracted)
+    review_item_id: int | None = None
+    exported_at: datetime | None = None
+    prompt_version: str | None = None
+
+
+class ExportResult(BaseModel):
+    ok: bool
+    code: str
+    path: str | None = None
+    error: str | None = None
 
 
 class DecisionIn(BaseModel):

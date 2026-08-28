@@ -242,3 +242,70 @@ def test_promote_counts_as_disagreement_in_the_curve(db):
     assert cal.resolved == 1
     band = next(b for b in cal.bands if b.n == 1)
     assert band.agree == 0 and band.disagree == 1  # promote != agreement
+
+
+def _knowledge_card(db, monkeypatch):
+    """Extract VIII.2 with a stub knowledge agent -> one KNOWLEDGE_SPEC card."""
+    import zaspro.knowledge.export as kexport
+    from zaspro.db.models import ExerciseTopic, TopicRole
+    from zaspro.knowledge.agent import ConceptOut, KnowledgeExtraction, MisconceptionOut
+    from zaspro.db.models import MisconceptionSource
+    from zaspro.knowledge.extract import extract_topic
+
+    monkeypatch.setattr(kexport, "KNOWLEDGE_ROOT",
+                        __import__("pathlib").Path("/tmp/zaspro-test-knowledge-never"))
+    w = build_world(db)
+    ex = db.query(Exercise).filter_by(
+        source_document_id=w.document_id, exercise_number="1"
+    ).one()
+    db.add(ExerciseTopic(exercise_id=ex.id, topic_id=w.topic_ids["VIII.2"],
+                         role=TopicRole.PRIMARY, confidence=0.9))
+    db.flush()
+
+    class A:
+        name, model, prompt_version = "fake", None, "m4-know-v3"
+        last_usage = None
+
+        def extract(self, request):
+            return KnowledgeExtraction(
+                concepts=[ConceptOut(name="c", description="d",
+                                     from_exercises=["1"], evidence="Zad 1")],
+                misconceptions=[MisconceptionOut(
+                    name="m", incorrect_reasoning="x", correct_reasoning="y",
+                    source_kind=MisconceptionSource.AGENT_INFERENCE,
+                    from_exercises=["1"], evidence="Zad 1")],
+            )
+    res = extract_topic(db, w.topic_ids["VIII.2"], A())
+    return w, res
+
+
+def test_knowledge_spec_approve_marks_items_and_resolves(db, monkeypatch):
+    from zaspro.db.models import Concept, Misconception, VerificationStatus
+
+    _w, res = _knowledge_card(db, monkeypatch)
+    record_decision(db, res.review_item_id, reviewer="e",
+                    decision=ReviewDecisionType.APPROVE)
+
+    from zaspro.db.models import ReviewItem
+    ri = db.get(ReviewItem, res.review_item_id)
+    assert ri.status is ReviewStatus.APPROVED
+    assert db.query(Concept).one().verification_status is VerificationStatus.APPROVED
+    assert db.query(Misconception).one().verification_status is VerificationStatus.APPROVED
+
+
+def test_knowledge_spec_edit_rejects_one_item_and_stays_open(db, monkeypatch):
+    from zaspro.db.models import Misconception, ReviewItem, VerificationStatus
+
+    _w, res = _knowledge_card(db, monkeypatch)
+    mc = db.query(Misconception).one()
+    record_decision(db, res.review_item_id, reviewer="e",
+                    decision=ReviewDecisionType.EDIT,
+                    edit={"reject_items": [["misconception", mc.id]]})
+    ri = db.get(ReviewItem, res.review_item_id)
+    assert ri.status is ReviewStatus.OPEN
+    assert db.query(Misconception).one().verification_status is VerificationStatus.REJECTED
+
+    record_decision(db, res.review_item_id, reviewer="e",
+                    decision=ReviewDecisionType.APPROVE)
+    # the rejected item stays rejected after approve-all
+    assert db.query(Misconception).one().verification_status is VerificationStatus.REJECTED

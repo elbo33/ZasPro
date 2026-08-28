@@ -41,6 +41,7 @@ class MappingStatus(str, enum.Enum):
 
 class ReviewItemType(str, enum.Enum):
     CURRICULUM_MAPPING = "CURRICULUM_MAPPING"
+    KNOWLEDGE_SPEC = "KNOWLEDGE_SPEC"  # one card per topic: the whole knowledge layer (M4)
     FORMULA = "FORMULA"
     EXERCISE = "EXERCISE"
     MISCONCEPTION = "MISCONCEPTION"

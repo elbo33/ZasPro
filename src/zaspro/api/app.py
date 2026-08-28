@@ -27,9 +27,10 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    from zaspro.api.routers import curriculum, review, sources
+    from zaspro.api.routers import curriculum, knowledge, review, sources
 
     app.include_router(review.router)
+    app.include_router(knowledge.router)
     app.include_router(curriculum.router)
     app.include_router(sources.router)
 

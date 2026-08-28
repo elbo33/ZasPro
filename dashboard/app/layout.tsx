@@ -18,6 +18,7 @@ export default function RootLayout({
         <nav className="nav">
           <span className="brand">ZasPro</span>
           <Link href="/">Review queue</Link>
+          <Link href="/knowledge">Knowledge</Link>
           <Link href="/curriculum">Curriculum</Link>
           <Link href="/sources">Sources</Link>
           <Link href="/calibration">Calibration</Link>

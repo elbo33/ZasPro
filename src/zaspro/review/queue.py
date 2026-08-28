@@ -18,7 +18,15 @@ from sqlalchemy.orm import Session
 
 from zaspro.db.models import (
     ChunkMapping,
+    Concept,
+    Example,
+    Formula,
+    KnowledgeExtraction,
+    KnowledgeFlag,
+    LearningObjective,
     MappingStatus,
+    Method,
+    Misconception,
     ReviewDecision,
     ReviewDecisionType,
     ReviewItem,
@@ -26,8 +34,19 @@ from zaspro.db.models import (
     ReviewReasonCode,
     ReviewStatus,
     SourceChunk,
+    VerificationStatus,
 )
 from zaspro.mapping.handler import apply_mapping_to_exercise
+
+# knowledge item kind -> model, for KNOWLEDGE_SPEC card resolution
+_KNOWLEDGE_MODELS = {
+    "concept": Concept,
+    "formula": Formula,
+    "method": Method,
+    "example": Example,
+    "objective": LearningObjective,
+    "misconception": Misconception,
+}
 
 # batch approval is only offered above this (SPEC §9: "sharing high confidence")
 BATCH_MIN_CONFIDENCE = 0.6
@@ -221,10 +240,69 @@ def _promote_secondary(session: Session, item: ReviewItem, edit: dict | None) ->
     item.confidence = new_primary.confidence
 
 
+def _knowledge_items(session: Session, topic_id: int) -> list:
+    items: list = []
+    for model in _KNOWLEDGE_MODELS.values():
+        items += list(session.scalars(select(model).where(model.topic_id == topic_id)))
+    return items
+
+
+def _resolve_knowledge(session: Session, item: ReviewItem, decision: ReviewDecisionType,
+                       edit: dict | None) -> None:
+    """Resolve a KNOWLEDGE_SPEC card (one per topic, ADR 0011).
+
+    EDIT   — `edit={"reject_items": [["misconception", 12], ...]}` (and the
+             inverse `"unreject_items"`) sets individual item statuses and
+             leaves the card OPEN for a follow-up APPROVE.
+    APPROVE — every item not individually REJECTED becomes APPROVED.
+    REJECT  — every item becomes REJECTED (the whole spec is thrown out).
+    """
+    topic_id = item.ref_id
+    by_key = {
+        (kind, obj.id): obj
+        for kind, model in _KNOWLEDGE_MODELS.items()
+        for obj in session.scalars(select(model).where(model.topic_id == topic_id))
+    }
+
+    if decision is ReviewDecisionType.EDIT:
+        for kind, oid in (edit or {}).get("reject_items", []):
+            obj = by_key.get((kind, oid))
+            if obj is not None:
+                obj.verification_status = VerificationStatus.REJECTED
+        for kind, oid in (edit or {}).get("unreject_items", []):
+            obj = by_key.get((kind, oid))
+            if obj is not None:
+                obj.verification_status = VerificationStatus.AI_GENERATED
+        session.flush()
+        return
+
+    if decision is ReviewDecisionType.APPROVE:
+        for obj in by_key.values():
+            if obj.verification_status is not VerificationStatus.REJECTED:
+                obj.verification_status = VerificationStatus.APPROVED
+    elif decision is ReviewDecisionType.REJECT:
+        for obj in by_key.values():
+            obj.verification_status = VerificationStatus.REJECTED
+        session.query(KnowledgeFlag).filter_by(topic_id=topic_id).update(
+            {"resolved": True}
+        )
+
+    ke = session.scalars(
+        select(KnowledgeExtraction).where(KnowledgeExtraction.topic_id == topic_id)
+    ).one_or_none()
+    if ke is not None and decision is ReviewDecisionType.APPROVE:
+        ke.approved_at = _now()
+    session.flush()
+
+
 def _resolve_mapping(session: Session, item: ReviewItem, decision: ReviewDecisionType,
                      edit: dict | None) -> None:
     """Propagate a CURRICULUM_MAPPING decision to its `ChunkMapping` and the
     exercise row."""
+
+    if item.item_type is ReviewItemType.KNOWLEDGE_SPEC:
+        _resolve_knowledge(session, item, decision, edit)
+        return
 
     if item.item_type is not ReviewItemType.CURRICULUM_MAPPING:
         return
@@ -292,6 +370,18 @@ def record_decision(
     session.add(dec)
 
     _resolve_mapping(session, item, decision, edit)
+
+    if (
+        item.item_type is ReviewItemType.KNOWLEDGE_SPEC
+        and decision is ReviewDecisionType.APPROVE
+    ):
+        ke = session.scalars(
+            select(KnowledgeExtraction).where(
+                KnowledgeExtraction.topic_id == item.ref_id
+            )
+        ).one_or_none()
+        if ke is not None and not ke.approved_by:
+            ke.approved_by = reviewer
 
     if decision in (ReviewDecisionType.APPROVE, ReviewDecisionType.PROMOTE):
         # PROMOTE = "the agent's secondary was the right primary, use it" — a
