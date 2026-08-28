@@ -21,7 +21,10 @@ Exit codes: 0 ok, 1 a job failed, 2 bad args / nothing to do / declined.
 
 from __future__ import annotations
 
+import json
 import sys
+from datetime import datetime, timezone
+from pathlib import Path
 
 from sqlalchemy import func, select
 
@@ -123,16 +126,53 @@ def _estimate(session, picks: list[tuple[str, int, str]]) -> tuple[int, int, flo
     return est_in, est_out, lo, hi
 
 
+def _snapshot_before_reset(session, out_dir: Path) -> int:
+    """Dump every extracted topic's knowledge rows to JSON before `--reset`
+    deletes them, so a mistaken reset is recoverable. Returns topic count."""
+    from zaspro.db.models import (
+        Concept, Example, Formula, KnowledgeExtraction, KnowledgeFlag,
+        LearningObjective, Method, Misconception,
+    )
+
+    tids = list(session.scalars(select(KnowledgeExtraction.topic_id)))
+    if not tids:
+        return 0
+    out_dir.mkdir(parents=True, exist_ok=True)
+    kinds = [("concepts", Concept), ("formulas", Formula), ("methods", Method),
+             ("examples", Example), ("objectives", LearningObjective),
+             ("misconceptions", Misconception), ("flags", KnowledgeFlag)]
+    for tid in tids:
+        topic = session.get(Topic, tid)
+        code = (topic.official_requirement_code if topic else None) or str(tid)
+        data: dict = {"topic_code": code, "topic_id": tid, "items": {}}
+        for name, model in kinds:
+            rows = session.scalars(select(model).where(model.topic_id == tid)).all()
+            data["items"][name] = [
+                {c.name: getattr(r, c.name) for c in model.__table__.columns}
+                for r in rows
+            ]
+        (out_dir / f"{code}.json").write_text(
+            json.dumps(data, ensure_ascii=False, indent=1, default=str), encoding="utf-8"
+        )
+    return len(tids)
+
+
 def _reset_all(session) -> dict:
     """Wipe every M4 knowledge row and its review cards, and clear dead
     EXTRACT_KNOWLEDGE jobs. All of it is derived — regenerable from the
-    mappings + a fresh run. Used by `--reset` for a clean `--all`."""
+    mappings + a fresh run. Used by `--reset` for a clean `--all`. Every topic
+    is snapshotted to m4/reset_backups/<ts>/ first."""
     from zaspro.db.models import (
         Concept, Example, Formula, Job, JobStatus, KnowledgeExtraction,
         KnowledgeFlag, LearningObjective, Method, Misconception, ReviewDecision,
     )
 
     counts: dict[str, int] = {}
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    backup = Path("m4/reset_backups") / stamp
+    counts["snapshotted_topics"] = _snapshot_before_reset(session, backup)
+    if counts["snapshotted_topics"]:
+        print(f"  snapshot: {counts['snapshotted_topics']} topics -> {backup}/")
     ri_ids = list(session.scalars(
         select(ReviewItem.id).where(ReviewItem.item_type == ReviewItemType.KNOWLEDGE_SPEC)
     ))

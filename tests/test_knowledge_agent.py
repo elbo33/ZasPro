@@ -7,9 +7,16 @@ import types
 
 import pytest
 
+from zaspro.jobs import PermanentJobError
+from zaspro.knowledge import agent as kagent
 from zaspro.knowledge.agent import (
-    ClaudeKnowledgeAgent, KnowledgeRequest, KnowledgeTruncated,
+    ClaudeKnowledgeAgent, KnowledgeError, KnowledgeRequest, KnowledgeTruncated,
 )
+
+
+@pytest.fixture(autouse=True)
+def _debug_dir(tmp_path, monkeypatch):
+    monkeypatch.setattr(kagent, "DEBUG_DIR", tmp_path / "knowledge_debug")
 
 
 class _Stream:
@@ -107,3 +114,72 @@ def test_truncation_raises_and_does_not_return_a_partial():
         agent.extract(_req())
     # never reached the second call
     assert [c["tool"] for c in calls["stream"]] == ["record_structure"]
+    assert isinstance(KnowledgeTruncated(), PermanentJobError)
+
+
+def test_schema_invalid_tool_input_is_permanent_and_dumps_raw():
+    """The real failure: tool_use.input is a dict whose `concepts` value is a
+    string of XML-style <parameter name=...> tags, not a list."""
+    calls: dict = {}
+    bad = {"concepts": '\n<parameter name="concepts">\n[{"name": "x"}]\n</parameter>'}
+    agent = ClaudeKnowledgeAgent()
+    agent._client = types.SimpleNamespace(messages=_FakeMessages({
+        "record_structure": _msg("record_structure", bad),
+        "record_pedagogy": _msg("record_pedagogy", {}),
+    }, calls))
+
+    with pytest.raises(KnowledgeError) as ei:
+        agent.extract(_req())
+    assert isinstance(ei.value, PermanentJobError)         # worker won't retry
+    assert [c["tool"] for c in calls["stream"]] == ["record_structure"]
+    dumps = list((kagent.DEBUG_DIR).glob("I.1-record_structure-*.json"))
+    assert len(dumps) == 1
+    import json
+    raw = json.loads(dumps[0].read_text())
+    assert raw["content"][0]["input"] == bad              # verbatim, unabridged
+    assert raw["content"][0]["input_python_type"] == "dict"
+
+
+def test_no_tool_block_is_permanent_and_dumps_raw():
+    calls: dict = {}
+    text_only = types.SimpleNamespace(
+        usage=types.SimpleNamespace(input_tokens=1, output_tokens=1,
+                                    cache_read_input_tokens=0, cache_creation_input_tokens=0),
+        content=[types.SimpleNamespace(type="text", text="here is the answer ...")],
+        stop_reason="end_turn",
+    )
+    agent = ClaudeKnowledgeAgent()
+    agent._client = types.SimpleNamespace(messages=_FakeMessages(
+        {"record_structure": text_only, "record_pedagogy": _msg("record_pedagogy", {})}, calls))
+
+    with pytest.raises(KnowledgeError):
+        agent.extract(_req())
+    assert list((kagent.DEBUG_DIR).glob("I.1-record_structure-*.json"))
+
+
+def test_transient_api_error_propagates_unwrapped_for_retry():
+    class Boom(Exception):
+        status_code = 503  # service unavailable — transient
+
+    class _M:
+        def stream(self, **kw):
+            raise Boom("overloaded")
+
+    agent = ClaudeKnowledgeAgent()
+    agent._client = types.SimpleNamespace(messages=_M())
+    with pytest.raises(Boom):                              # NOT KnowledgeError
+        agent.extract(_req())
+
+
+def test_client_4xx_is_wrapped_permanent():
+    class Boom(Exception):
+        status_code = 400  # bad request — deterministic
+
+    class _M:
+        def stream(self, **kw):
+            raise Boom("context too long")
+
+    agent = ClaudeKnowledgeAgent()
+    agent._client = types.SimpleNamespace(messages=_M())
+    with pytest.raises(KnowledgeError):
+        agent.extract(_req())

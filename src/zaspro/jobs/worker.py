@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 
 from zaspro.db.base import session_scope
 from zaspro.db.models import Job, JobStatus, JobType
+from zaspro.jobs.errors import PermanentJobError
 from zaspro.jobs.queue import claim_one
 
 log = logging.getLogger("zaspro.jobs")
@@ -58,7 +59,16 @@ class Worker:
                 output = handler(s, j)
                 j.status = JobStatus.SUCCEEDED
                 j.output = output
-        except Exception:  # noqa: BLE001 - the queue records every failure
+        except PermanentJobError:
+            # deterministic — do not spend the remaining attempts (or, for
+            # agent jobs, the money) re-running the same broken call.
+            tb = traceback.format_exc()
+            log.warning("job %s (%s) failed permanently:\n%s", job_id, job_type, tb)
+            with session_scope() as s:
+                j = s.get(Job, job_id)
+                j.error = tb[-4000:]
+                j.status = JobStatus.FAILED
+        except Exception:  # noqa: BLE001 - transient; retry up to max_attempts
             tb = traceback.format_exc()
             log.warning("job %s (%s) failed:\n%s", job_id, job_type, tb)
             with session_scope() as s:

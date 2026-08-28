@@ -76,10 +76,34 @@ against v1's 18, I.1 from empty to 16 — but exposed two failures:
   rows. Prompt `m4-know-v4`; the v3 instructions are unchanged, only split
   across the two system prompts.
 
-`zaspro.knowledge.run` gains `--reset` (wipe all M4 knowledge rows + KNOWLEDGE_
-SPEC cards + dead EXTRACT_KNOWLEDGE jobs; everything M4 is derived) for a clean
-`--all`, and reports per-topic elapsed time and output tokens, names the
-slowest, and warns on any topic over eight minutes.
+`zaspro.knowledge.run` gains `--reset` (snapshot every extracted topic to
+`m4/reset_backups/<ts>/` then wipe all M4 knowledge rows + KNOWLEDGE_SPEC cards
++ dead EXTRACT_KNOWLEDGE jobs; everything M4 is derived) for a clean `--all`,
+and reports per-topic elapsed time and output tokens, names the slowest, and
+warns on any topic over eight minutes.
+
+### 1b. Retryable vs permanent job failures; raw-response capture
+
+The first `--all` run hit an **intermittent** malformed tool response: some
+topics returned `tool_use.input` as a dict whose first field's *value* was a
+string of XML-style `<parameter name="…">` tags instead of a JSON array, so
+`model_validate` raised `ValidationError`. Two problems: the job queue retried
+it three times (deterministic → three identical failures, three paid calls,
+~20 min each on a large topic); and the traceback truncated the offending
+value, so the actual response shape was guesswork.
+
+* `zaspro.jobs.PermanentJobError` — the worker fails a job raising it (or a
+  subclass) **without** consuming the remaining `max_attempts`. `KnowledgeError`
+  and `KnowledgeTruncated` are subclasses; schema-invalid input, a missing tool
+  block, a non-JSON string input, and a 4xx (other than 429) from the API all
+  raise `KnowledgeError`. Transient failures — connection, timeout, 429, 5xx,
+  overload — propagate unwrapped and are retried.
+* On any parse failure `ClaudeKnowledgeAgent._call` writes the model's raw
+  content blocks (every block's `type`, and for `tool_use` the verbatim
+  `input`) to `m4/knowledge_debug/<code>-<tool>-<ts>.json` and names the file
+  in the error. The parse itself is unchanged pending that evidence —
+  no tag-stripping heuristic. `m4/knowledge_debug/` and `m4/reset_backups/`
+  are gitignored.
 
 ### 2. One `KNOWLEDGE_SPEC` review card per topic
 

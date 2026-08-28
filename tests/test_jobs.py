@@ -7,7 +7,7 @@ fixture truncates every table between tests for isolation.
 import pytest
 
 from zaspro.db.models import Job, JobStatus, JobType
-from zaspro.jobs import Worker, enqueue
+from zaspro.jobs import PermanentJobError, Worker, enqueue
 from zaspro.jobs.worker import HANDLERS
 
 
@@ -63,6 +63,29 @@ def test_failing_job_retries_then_fails(db, handlers):
     assert job.attempts == 2
     assert "kaboom" in job.error
     assert seen == [1, 2]
+
+
+def test_permanent_job_error_fails_without_retrying(db, handlers):
+    seen = []
+
+    def boom(s, j):
+        seen.append(j.attempts)
+        raise PermanentJobError("deterministic — schema-invalid model response")
+
+    handlers[JobType.RUN_QA] = boom
+    enqueue(db, JobType.RUN_QA, {}, max_attempts=3)
+    db.commit()
+
+    w = Worker()
+    assert w.run_once() is True   # attempt 1 -> FAILED immediately
+    assert w.run_once() is False  # not requeued
+
+    db.expire_all()
+    job = db.query(Job).one()
+    assert job.status == JobStatus.FAILED
+    assert job.attempts == 1               # did NOT burn all 3
+    assert seen == [1]
+    assert "deterministic" in job.error
 
 
 def test_unknown_job_type_fails_cleanly(db, handlers):

@@ -20,3 +20,7 @@ m0/_work/
 
 # Local DB dumps (ADR 0011: the DB is the working store, not the record).
 backups/
+
+# M4 knowledge: raw model responses for failed parses; pre-`--reset` snapshots.
+m4/knowledge_debug/
+m4/reset_backups/

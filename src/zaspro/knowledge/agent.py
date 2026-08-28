@@ -21,12 +21,21 @@ database. Hard rules from SPEC §11, enforced in the prompt AND re-checked in
 from __future__ import annotations
 
 import json
+import logging
 import re
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Protocol
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 from zaspro.db.models import MisconceptionSource
+from zaspro.jobs import PermanentJobError
+
+log = logging.getLogger("zaspro.knowledge.agent")
+
+# raw model responses for failed parses land here, one JSON file per failure
+DEBUG_DIR = Path("m4/knowledge_debug")
 
 PROMPT_VERSION = "m4-know-v4"  # v4: two-call split (structure / pedagogy) + hard truncation check; v3 instructions unchanged
 
@@ -142,13 +151,66 @@ class _PedagogyExtraction(BaseModel):
     flags: list[FlagOut] = Field(default_factory=list)
 
 
-class KnowledgeError(RuntimeError):
-    pass
+class KnowledgeError(PermanentJobError):
+    """A deterministic extraction failure — a schema-invalid or truncated model
+    response, a missing tool call, a 4xx from the API. Retrying it just fails
+    again and costs another call, so the worker fails the job immediately
+    (transient errors — connection, 429, 5xx — propagate unwrapped and retry)."""
 
 
 class KnowledgeTruncated(KnowledgeError):
     """The model hit max_tokens before finishing. The partial tool call is
     discarded and the job fails — never persisted as a complete spec."""
+
+
+def _usage_dict(u) -> dict:
+    return {
+        "in": getattr(u, "input_tokens", 0) or 0,
+        "out": getattr(u, "output_tokens", 0) or 0,
+        "cache_read": getattr(u, "cache_read_input_tokens", 0) or 0,
+        "cache_write": getattr(u, "cache_creation_input_tokens", 0) or 0,
+    }
+
+
+def _dump_raw(topic_code: str, tool_name: str, msg) -> str:
+    """Write the model's raw content blocks to a file so a parse failure can be
+    diagnosed from what the API actually returned, not a truncated traceback."""
+    DEBUG_DIR.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    path = DEBUG_DIR / f"{topic_code}-{tool_name}-{ts}.json"
+    blocks = []
+    for b in getattr(msg, "content", []) or []:
+        bt = getattr(b, "type", None)
+        d: dict = {"type": bt}
+        if bt == "tool_use":
+            d["name"] = getattr(b, "name", None)
+            d["id"] = getattr(b, "id", None)
+            inp = getattr(b, "input", None)
+            d["input_python_type"] = type(inp).__name__
+            d["input"] = inp  # dict / list / str, verbatim — the whole point
+        elif bt == "text":
+            d["text"] = getattr(b, "text", None)
+        elif bt == "thinking":
+            th = getattr(b, "thinking", None) or ""
+            d["thinking_len"] = len(th)
+            d["thinking_head"] = th[:500]
+        else:
+            d["repr"] = repr(b)[:2000]
+        blocks.append(d)
+    payload = {
+        "topic_code": topic_code,
+        "tool_name": tool_name,
+        "stop_reason": getattr(msg, "stop_reason", None),
+        "model": getattr(msg, "model", None),
+        "usage": _usage_dict(getattr(msg, "usage", None)),
+        "content": blocks,
+    }
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
+    )
+    log.error("knowledge parse failed for %s/%s — raw response -> %s",
+              topic_code, tool_name, path)
+    return str(path)
 
 
 class KnowledgeAgent(Protocol):
@@ -343,32 +405,69 @@ class ClaudeKnowledgeAgent:
     def _call(self, request: KnowledgeRequest, system: str, tool: dict, model_cls, tool_name: str):
         client = self._client_lazy()
         _cache = {"type": "ephemeral"}
+        tc = request.topic_code
         # Stream, don't `create`: a large max_tokens pushes the worst-case
         # response time past 10 minutes and the SDK refuses a non-streaming
         # call outright. `get_final_message()` accumulates the whole response.
-        with client.messages.stream(
-            model=self.model,
-            max_tokens=self.max_tokens,
-            thinking={"type": "adaptive"},
-            system=[{"type": "text", "text": system, "cache_control": _cache}],
-            tools=[{**tool, "cache_control": _cache}],
-            messages=[{"role": "user", "content": self._user_block(request)}],
-        ) as stream:
-            msg = stream.get_final_message()
+        try:
+            with client.messages.stream(
+                model=self.model,
+                max_tokens=self.max_tokens,
+                thinking={"type": "adaptive"},
+                system=[{"type": "text", "text": system, "cache_control": _cache}],
+                tools=[{**tool, "cache_control": _cache}],
+                messages=[{"role": "user", "content": self._user_block(request)}],
+            ) as stream:
+                msg = stream.get_final_message()
+        except PermanentJobError:
+            raise
+        except Exception as e:  # noqa: BLE001
+            # 4xx other than 429 is deterministic (bad request, context length,
+            # auth) — permanent. Connection errors, 429, 5xx, overload have no
+            # status < 500 and propagate unwrapped so the worker retries them.
+            status = getattr(e, "status_code", None)
+            if status is not None and 400 <= status < 500 and status != 429:
+                raise KnowledgeError(f"{tool_name} for {tc}: API {status} — {e}") from e
+            raise
         self._add_usage(getattr(msg, "usage", None))
+
         # Fail loudly on truncation — never persist a partial spec as complete.
         if getattr(msg, "stop_reason", None) == "max_tokens":
+            _dump_raw(tc, tool_name, msg)
             raise KnowledgeTruncated(
-                f"{tool_name} hit max_tokens ({self.max_tokens}) for "
-                f"{request.topic_code}; partial result discarded"
+                f"{tool_name} hit max_tokens ({self.max_tokens}) for {tc}; "
+                f"partial result discarded"
             )
-        for block in msg.content:
-            if getattr(block, "type", None) == "tool_use" and block.name == tool_name:
-                data = block.input
-                if isinstance(data, str):
-                    data = json.loads(data)
-                return model_cls.model_validate(data)
-        raise KnowledgeError(f"model did not call {tool_name} for {request.topic_code}")
+
+        blocks = [
+            b for b in (msg.content or [])
+            if getattr(b, "type", None) == "tool_use" and getattr(b, "name", None) == tool_name
+        ]
+        if not blocks:
+            path = _dump_raw(tc, tool_name, msg)
+            raise KnowledgeError(
+                f"{tool_name} for {tc}: no matching tool_use block "
+                f"(stop_reason={getattr(msg, 'stop_reason', None)}); raw -> {path}"
+            )
+
+        data = blocks[0].input
+        if isinstance(data, str):
+            try:
+                data = json.loads(data)
+            except json.JSONDecodeError as e:
+                path = _dump_raw(tc, tool_name, msg)
+                raise KnowledgeError(
+                    f"{tool_name} for {tc}: tool input was a non-JSON string "
+                    f"({e}); raw -> {path}"
+                ) from e
+        try:
+            return model_cls.model_validate(data)
+        except ValidationError as e:
+            path = _dump_raw(tc, tool_name, msg)
+            raise KnowledgeError(
+                f"{tool_name} for {tc}: tool input failed the {model_cls.__name__} "
+                f"schema; raw -> {path}\n{e}"
+            ) from e
 
     def extract(self, request: KnowledgeRequest) -> KnowledgeExtraction:
         # Two calls: structure (concepts/formulas/methods) then pedagogy
