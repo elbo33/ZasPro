@@ -1,0 +1,375 @@
+section: graniastoslupy-i-ostroslupy
+name: 'Graniastosłupy i ostrosłupy: objętości i pola powierzchni'
+scope: Volume and surface area of prisms and pyramids, including regular ones; recovering a missing edge,
+  height or slant height with the Pythagorean theorem or trigonometry; the net.
+requirements:
+- X.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T19:03:23.307424'
+  approved_at: '2026-08-28T19:39:37.217725'
+  approved_by: reviewer
+concepts:
+- name: Graniastosłup
+  description: Wielościan, którego dwie ściany (podstawy) są przystającymi wielokątami leżącymi w równoległych
+    płaszczyznach, a pozostałe ściany (ściany boczne) są równoległobokami. W graniastosłupie prostym ściany
+    boczne są prostokątami, a krawędzie boczne są prostopadłe do podstaw i mają długość równą wysokości
+    bryły.
+  explanation: 'Myśl o graniastosłupie jako o wielokącie „przesuniętym" wzdłuż odcinka: podstawa nadaje
+    kształt, wysokość — grubość. Na maturze podstawowej praktycznie zawsze pojawia się graniastosłup prosty,
+    więc H = długość krawędzi bocznej.'
+  difficulty: 1
+- name: Graniastosłup prawidłowy
+  description: Graniastosłup prosty, którego podstawą jest wielokąt foremny (trójkąt równoboczny, kwadrat,
+    sześciokąt foremny itd.).
+  explanation: 'Słowo „prawidłowy" daje dwie informacje naraz: bryła jest prosta (ściany boczne to prostokąty)
+    i podstawa jest foremna (wszystkie krawędzie podstawy równe). Dzięki temu pole boczne to zawsze obwód
+    podstawy razy wysokość, czyli n·a·H.'
+  difficulty: 2
+- name: Prostopadłościan i sześcian
+  description: Prostopadłościan to graniastosłup prosty o podstawie prostokątnej — wszystkie ściany są
+    prostokątami. Sześcian to prostopadłościan o wszystkich krawędziach równych.
+  explanation: Wszystkie trzy wymiary a, b, c są równoprawne; można dowolną ścianę uznać za podstawę.
+    Sześcian to szczególny przypadek, w którym a = b = c.
+  difficulty: 1
+- name: Ostrosłup
+  description: Wielościan, którego jedną ścianą (podstawą) jest wielokąt, a pozostałe ściany są trójkątami
+    o wspólnym wierzchołku (wierzchołku ostrosłupa).
+  explanation: 'Kluczowa różnica względem graniastosłupa: jest tylko JEDNA podstawa, więc w polu całkowitym
+    pole podstawy liczymy raz.'
+  difficulty: 1
+- name: Ostrosłup prawidłowy
+  description: Ostrosłup, którego podstawą jest wielokąt foremny, a spodek wysokości (rzut prostokątny
+    wierzchołka na podstawę) pokrywa się ze środkiem tego wielokąta. Wszystkie krawędzie boczne są wtedy
+    równe, a wszystkie ściany boczne są przystającymi trójkątami równoramiennymi.
+  explanation: Środek wielokąta foremnego jest jednocześnie środkiem okręgu opisanego (odległość do wierzchołka
+    = R) i wpisanego (odległość do środka boku = r). To one tworzą przyprostokątne w trójkątach prostokątnych
+    wewnątrz bryły.
+  difficulty: 2
+- name: Wysokość bryły (H)
+  description: Odległość między płaszczyznami podstaw (graniastosłup) lub odległość wierzchołka od płaszczyzny
+    podstawy (ostrosłup).
+  explanation: W ostrosłupie wysokość to odcinek prostopadły do podstawy — nie mylić go z krawędzią boczną
+    ani z wysokością ściany bocznej. Zawsze rysuj go jako pionowy odcinek do środka podstawy.
+  difficulty: 1
+- name: Krawędź boczna
+  description: 'W graniastosłupie: odcinek łączący odpowiadające sobie wierzchołki podstaw. W ostrosłupie:
+    odcinek łączący wierzchołek ostrosłupa z wierzchołkiem podstawy.'
+  explanation: W ostrosłupie prawidłowym krawędź boczna b jest przeciwprostokątną trójkąta o przyprostokątnych
+    H oraz R (promień okręgu opisanego na podstawie).
+  difficulty: 2
+- name: Wysokość ściany bocznej (apotema ostrosłupa) h
+  description: Wysokość trójkąta będącego ścianą boczną, poprowadzona z wierzchołka ostrosłupa do środka
+    krawędzi podstawy.
+  explanation: To najczęściej mylona wielkość. W ostrosłupie prawidłowym h jest przeciwprostokątną trójkąta
+    o przyprostokątnych H oraz r (odległość środka podstawy od boku). Zawsze zachodzi r < h oraz H < h.
+  difficulty: 3
+- name: Siatka bryły
+  description: Płaska figura powstała z rozcięcia powierzchni bryły wzdłuż krawędzi i rozłożenia jej na
+    płaszczyźnie; składa się z wszystkich ścian bryły.
+  explanation: 'Siatka to najbezpieczniejszy sposób liczenia pola powierzchni: rysujesz osobno podstawy
+    i osobno ściany boczne, liczysz pole każdej i dodajesz. W ostrosłupie prawidłowym siatka to wielokąt
+    foremny z doklejonymi n przystającymi trójkątami.'
+  difficulty: 2
+- name: Pole powierzchni bocznej i całkowitej
+  description: 'Pole boczne P_b to suma pól wszystkich ścian bocznych; pole całkowite P_c to suma pól
+    wszystkich ścian: P_c = 2P_p + P_b dla graniastosłupa i P_c = P_p + P_b dla ostrosłupa.'
+  explanation: 'Zawsze zapytaj: ile podstaw ma ta bryła? Dwie (graniastosłup) czy jedna (ostrosłup)? To
+    jedyna różnica w schemacie.'
+  difficulty: 2
+- name: Objętość bryły
+  description: Miara części przestrzeni zajmowanej przez bryłę; dla graniastosłupa V = P_p·H, dla ostrosłupa
+    V = (1/3)P_p·H.
+  explanation: Ostrosłup o tej samej podstawie i tej samej wysokości co graniastosłup ma dokładnie trzy
+    razy mniejszą objętość — stąd czynnik 1/3. Jednostki objętości są sześcienne (cm³, dm³ = litr, m³).
+  difficulty: 2
+- name: Kąt nachylenia krawędzi bocznej do podstawy
+  description: Kąt między krawędzią boczną a jej rzutem prostokątnym na płaszczyznę podstawy.
+  explanation: W ostrosłupie prawidłowym rzutem krawędzi bocznej jest odcinek łączący środek podstawy
+    z jej wierzchołkiem, czyli R. Kąt ten „mieszka" w trójkącie prostokątnym o przyprostokątnych R i H.
+  difficulty: 3
+- name: Kąt nachylenia ściany bocznej do podstawy
+  description: Kąt dwuścienny mierzony w trójkącie prostokątnym o przyprostokątnych r (odległość środka
+    podstawy od krawędzi podstawy) i H, którego przeciwprostokątną jest wysokość ściany bocznej h.
+  explanation: Rysuj przekrój bryły przechodzący przez wierzchołek i przez środek krawędzi podstawy —
+    dostajesz trójkąt równoramienny, którego połowa jest szukanym trójkątem prostokątnym (r, H, h).
+  difficulty: 3
+- name: Przekątna graniastosłupa
+  description: Odcinek łączący dwa wierzchołki nienależące do tej samej ściany. Jego rzutem na podstawę
+    jest przekątna podstawy.
+  explanation: Przekątna, przekątna podstawy i krawędź boczna tworzą trójkąt prostokątny — to główne narzędzie
+    do liczenia kąta nachylenia przekątnej do podstawy.
+  difficulty: 3
+- name: Czworościan foremny
+  description: Ostrosłup prawidłowy trójkątny, w którym wszystkie cztery ściany są przystającymi trójkątami
+    równobocznymi o boku a.
+  explanation: 'To bryła o „nadmiarze" symetrii: krawędź boczna = krawędź podstawy. Jego wysokość H =
+    a√6/3 wynika z faktu, że spodek wysokości dzieli wysokość trójkąta równobocznego w stosunku 2:1.'
+  difficulty: 3
+- name: Trójkąt prostokątny wewnątrz bryły
+  description: Płaska figura wyznaczona przez wysokość bryły i odpowiedni odcinek w podstawie, służąca
+    do stosowania twierdzenia Pitagorasa lub funkcji trygonometrycznych.
+  explanation: 'To centralna idea całego działu: każde zadanie stereometryczne sprowadza się do znalezienia
+    właściwego trójkąta prostokątnego i narysowania go osobno, płasko, z opisanymi bokami.'
+  difficulty: 3
+formulas:
+- name: Objętość graniastosłupa
+  latex_raw: V = P_p \cdot H
+  conditions: P_p — pole podstawy, H — wysokość bryły (dla graniastosłupa prostego równa krawędzi bocznej).
+- name: Pole powierzchni całkowitej graniastosłupa
+  latex_raw: P_c = 2P_p + P_b
+  conditions: Dwie przystające podstawy i suma pól ścian bocznych.
+- name: Pole boczne graniastosłupa prostego
+  latex_raw: P_b = Ob_p \cdot H
+  conditions: Ob_p — obwód podstawy; tylko dla graniastosłupa prostego (ściany boczne to prostokąty).
+  description: 'Dla graniastosłupa prawidłowego n-kątnego: P_b = n·a·H.'
+- name: Prostopadłościan
+  latex_raw: V = abc,\qquad P_c = 2(ab + bc + ac),\qquad d = \sqrt{a^2+b^2+c^2}
+  conditions: a, b, c — długości krawędzi; d — przekątna prostopadłościanu.
+- name: Sześcian
+  latex_raw: V = a^3,\qquad P_c = 6a^2,\qquad d_{\text{ściany}} = a\sqrt{2},\qquad d = a\sqrt{3}
+  conditions: a — długość krawędzi.
+- name: Objętość ostrosłupa
+  latex_raw: V = \tfrac{1}{3} P_p \cdot H
+  conditions: H — wysokość ostrosłupa, czyli odległość wierzchołka od płaszczyzny podstawy (nie krawędź
+    boczna!).
+- name: Pole powierzchni całkowitej ostrosłupa
+  latex_raw: P_c = P_p + P_b
+  conditions: Jedna podstawa; P_b — suma pól ścian bocznych.
+- name: Pole boczne ostrosłupa prawidłowego
+  latex_raw: P_b = n \cdot \tfrac{1}{2} a h = \tfrac{1}{2} Ob_p \cdot h
+  conditions: n — liczba boków podstawy, a — krawędź podstawy, h — wysokość ściany bocznej (apotema).
+    Tylko gdy wszystkie ściany boczne są przystające.
+- name: Pole trójkąta równobocznego
+  latex_raw: P = \frac{a^2\sqrt{3}}{4},\qquad h_\triangle = \frac{a\sqrt{3}}{2}
+  conditions: a — bok trójkąta równobocznego.
+- name: Pole sześciokąta foremnego
+  latex_raw: P = \frac{3a^2\sqrt{3}}{2}
+  conditions: a — bok sześciokąta; wynika z podziału na 6 trójkątów równobocznych o boku a.
+- name: Promienie w podstawie foremnej ostrosłupa prawidłowego czworokątnego
+  latex_raw: R = \frac{a\sqrt{2}}{2},\qquad r = \frac{a}{2}
+  conditions: Podstawa to kwadrat o boku a; R — połowa przekątnej, r — połowa boku.
+- name: Promienie w podstawie ostrosłupa prawidłowego trójkątnego
+  latex_raw: R = \frac{a\sqrt{3}}{3},\qquad r = \frac{a\sqrt{3}}{6}
+  conditions: Podstawa to trójkąt równoboczny o boku a; R = 2/3 wysokości, r = 1/3 wysokości.
+- name: 'Związek Pitagorasa: wysokość ściany bocznej'
+  latex_raw: h^2 = H^2 + r^2
+  conditions: Ostrosłup prawidłowy; r — odległość środka podstawy od krawędzi podstawy (promień okręgu
+    wpisanego w podstawę).
+- name: 'Związek Pitagorasa: krawędź boczna'
+  latex_raw: b^2 = H^2 + R^2
+  conditions: Ostrosłup prawidłowy; R — promień okręgu opisanego na podstawie.
+- name: Związek w ścianie bocznej
+  latex_raw: b^2 = h^2 + \left(\tfrac{a}{2}\right)^2
+  conditions: Ściana boczna ostrosłupa prawidłowego to trójkąt równoramienny o ramieniu b, podstawie a
+    i wysokości h.
+- name: Trygonometria w ostrosłupie prawidłowym
+  latex_raw: \operatorname{tg}\alpha = \frac{H}{r},\quad \cos\alpha = \frac{r}{h};\qquad \operatorname{tg}\beta
+    = \frac{H}{R},\quad \cos\beta = \frac{R}{b}
+  conditions: α — kąt nachylenia ściany bocznej do podstawy, β — kąt nachylenia krawędzi bocznej do podstawy.
+- name: Kąt nachylenia przekątnej graniastosłupa do podstawy
+  latex_raw: \operatorname{tg}\varphi = \frac{H}{d_p}
+  conditions: d_p — przekątna podstawy będąca rzutem przekątnej bryły; graniastosłup prosty.
+- name: Przekątne sześciokąta foremnego
+  latex_raw: d_1 = a\sqrt{3},\qquad d_2 = 2a
+  conditions: a — bok sześciokąta; d₁ — krótsza przekątna, d₂ — dłuższa (przechodząca przez środek).
+- name: Czworościan foremny
+  latex_raw: H = \frac{a\sqrt{6}}{3},\qquad V = \frac{a^3\sqrt{2}}{12},\qquad P_c = a^2\sqrt{3}
+  conditions: Wszystkie krawędzie równe a.
+- name: Kąt między ścianą a podstawą — wysokość z kąta
+  latex_raw: H = r\cdot \operatorname{tg}\alpha,\qquad h = \frac{r}{\cos\alpha}
+  conditions: Ostrosłup prawidłowy, α — kąt nachylenia ściany bocznej do podstawy, 0° < α < 90°.
+methods:
+- name: Obliczanie objętości i pola powierzchni z danych bezpośrednich
+  when_to_use: Gdy znane są wymiary podstawy i wysokość bryły (lub dają się natychmiast odczytać).
+  steps:
+  - 'Rozpoznaj bryłę: graniastosłup czy ostrosłup, jaka podstawa, czy jest prawidłowa.'
+  - Wykonaj czytelny rysunek i opisz na nim wszystkie dane oraz oznacz szukane odcinki.
+  - Oblicz pole podstawy P_p odpowiednim wzorem planimetrycznym (kwadrat, trójkąt równoboczny, sześciokąt
+    foremny, prostokąt).
+  - Wstaw do wzoru V = P_p·H (graniastosłup) albo V = (1/3)P_p·H (ostrosłup).
+  - 'Oblicz pole boczne P_b: suma pól prostokątów albo n·(1/2)·a·h.'
+  - 'Złóż pole całkowite: P_c = 2P_p + P_b lub P_c = P_p + P_b.'
+  - Podaj wynik z właściwą jednostką (pole — kwadratowa, objętość — sześcienna).
+- name: Metoda trójkąta prostokątnego (odzyskiwanie brakującego odcinka)
+  when_to_use: Gdy brakuje wysokości bryły, krawędzi bocznej lub wysokości ściany bocznej, a dane są dwa
+    inne odcinki.
+  steps:
+  - Ustal, który odcinek jest szukany i do jakiego trójkąta należy.
+  - 'Wybierz właściwy trójkąt: (H, r, h) — gdy w grze jest ściana boczna; (H, R, b) — gdy w grze jest
+    krawędź boczna; (h, a/2, b) — gdy pracujesz wewnątrz ściany bocznej.'
+  - Narysuj ten trójkąt osobno, płasko, opisz przyprostokątne i przeciwprostokątną.
+  - Wyznacz r i R z geometrii podstawy (np. r = a/2, R = a√2/2 dla kwadratu).
+  - Zastosuj twierdzenie Pitagorasa i wylicz szukany bok; pamiętaj o pierwiastku i o dodatniości długości.
+  - Wróć do wzorów na V i P_c z uzupełnioną wielkością.
+- name: Wykorzystanie trygonometrii przy danym kącie
+  when_to_use: Gdy w treści pojawia się kąt nachylenia krawędzi bocznej lub ściany bocznej do podstawy,
+    kąt przy wierzchołku ściany bocznej, albo kąt nachylenia przekątnej graniastosłupa.
+  steps:
+  - 'Zidentyfikuj, między jakimi odcinkami leży kąt: jego wierzchołek jest w podstawie, jedno ramię leży
+    w podstawie (to rzut).'
+  - 'Nazwij rzut: dla ściany bocznej to r, dla krawędzi bocznej to R, dla przekątnej graniastosłupa to
+    przekątna podstawy.'
+  - 'Zapisz odpowiednią funkcję: tangens, gdy łączysz H z rzutem; cosinus, gdy łączysz rzut z odcinkiem
+    ukośnym; sinus, gdy łączysz H z odcinkiem ukośnym.'
+  - Wstaw wartości funkcji dla kątów 30°, 45°, 60° lub użyj wartości z zadania.
+  - Wylicz brakujący odcinek, usuń niewymierność z mianownika.
+  - Podstaw do wzorów na objętość i pole.
+- name: Praca z siatką bryły
+  when_to_use: Gdy zadanie podaje lub wymaga siatki, gdy trzeba obliczyć zużycie materiału, albo gdy chcesz
+    uniknąć pomyłek przy polu powierzchni.
+  steps:
+  - 'Ustal liczbę i kształt ścian: graniastosłup n-kątny ma 2 podstawy i n ścian bocznych; ostrosłup n-kątny
+    — 1 podstawę i n trójkątów.'
+  - 'Naszkicuj siatkę: podstawę (podstawy) i przylegające do jej boków ściany boczne.'
+  - Opisz wymiary każdej ściany — dla graniastosłupa prostego prostokąty mają wymiary a×H, dla ostrosłupa
+    prawidłowego trójkąty mają podstawę a i wysokość h.
+  - Oblicz pole każdego rodzaju ściany i pomnóż przez liczbę takich ścian.
+  - Zsumuj wszystko — to pole całkowite, czyli pole siatki.
+- name: Wyznaczanie brakującej danej z równania (zadanie odwrotne)
+  when_to_use: Gdy dana jest objętość lub pole powierzchni, a szukana jest krawędź lub wysokość.
+  steps:
+  - Oznacz szukaną wielkość literą i wyraź przez nią pole podstawy oraz wysokość.
+  - 'Zapisz równanie: podany wzór na V lub P_c = wartość liczbowa z treści.'
+  - Rozwiąż równanie (najczęściej liniowe lub prosta postać z a², a³).
+  - Odrzuć rozwiązania niedodatnie — długości są dodatnie.
+  - Sprawdź wynik, wstawiając go z powrotem do wzoru.
+examples:
+- statement: Prostopadłościan ma krawędzie długości 3 cm, 4 cm i 5 cm. Oblicz jego objętość, pole powierzchni
+    całkowitej oraz długość przekątnej.
+  worked_solution: |-
+    Objętość: V = abc = 3·4·5 = 60 cm³.
+    Pole powierzchni: P_c = 2(ab + bc + ac) = 2(3·4 + 4·5 + 3·5) = 2(12 + 20 + 15) = 2·47 = 94 cm².
+    Przekątna: d = √(a² + b² + c²) = √(9 + 16 + 25) = √50 = 5√2 cm ≈ 7,07 cm.
+    Sprawdzenie sensu: przekątna musi być dłuższa od najdłuższej krawędzi (5 cm) — i jest.
+  difficulty: 1
+- statement: W graniastosłupie prawidłowym trójkątnym krawędź podstawy ma długość 6, a wysokość bryły
+    wynosi 10. Oblicz objętość i pole powierzchni całkowitej.
+  worked_solution: |-
+    Podstawa to trójkąt równoboczny o boku a = 6:
+    P_p = a²√3/4 = 36√3/4 = 9√3.
+    Objętość: V = P_p·H = 9√3·10 = 90√3 ≈ 155,9.
+    Pole boczne: trzy przystające prostokąty 6×10, czyli P_b = 3·6·10 = 180.
+    Pole całkowite: P_c = 2P_p + P_b = 2·9√3 + 180 = 18√3 + 180 ≈ 211,2.
+  difficulty: 2
+- statement: Ostrosłup prawidłowy czworokątny ma krawędź podstawy a = 8 i wysokość H = 3. Oblicz jego
+    objętość, wysokość ściany bocznej, pole powierzchni całkowitej oraz długość krawędzi bocznej.
+  worked_solution: |-
+    Pole podstawy (kwadrat): P_p = 8² = 64.
+    Objętość: V = (1/3)·64·3 = 64.
+    Wysokość ściany bocznej: pracujemy w trójkącie prostokątnym o przyprostokątnych H = 3 i r = a/2 = 4:
+    h² = 3² + 4² = 25, więc h = 5.
+    Pole boczne: P_b = 4·(1/2·a·h) = 4·(1/2·8·5) = 4·20 = 80.
+    Pole całkowite: P_c = P_p + P_b = 64 + 80 = 144.
+    Krawędź boczna: R = a√2/2 = 4√2, więc b² = H² + R² = 9 + 32 = 41, czyli b = √41 ≈ 6,4.
+    (Kontrola: w ścianie bocznej b² = h² + (a/2)² = 25 + 16 = 41 — zgadza się.)
+  difficulty: 3
+- statement: W ostrosłupie prawidłowym czworokątnym krawędź podstawy ma długość 6, a ściana boczna jest
+    nachylona do płaszczyzny podstawy pod kątem 60°. Oblicz objętość i pole powierzchni całkowitej tego
+    ostrosłupa.
+  worked_solution: |-
+    Kąt nachylenia ściany bocznej leży w trójkącie prostokątnym o przyprostokątnych r = a/2 = 3 i H, z przeciwprostokątną h.
+    Wysokość bryły: tg 60° = H/r ⟹ H = 3·√3 = 3√3.
+    Wysokość ściany bocznej: cos 60° = r/h ⟹ h = r/cos60° = 3/(1/2) = 6.
+    Pole podstawy: P_p = 6² = 36.
+    Objętość: V = (1/3)·36·3√3 = 36√3 ≈ 62,4.
+    Pole boczne: P_b = 4·(1/2·6·6) = 4·18 = 72.
+    Pole całkowite: P_c = 36 + 72 = 108.
+  difficulty: 4
+- statement: W graniastosłupie prawidłowym sześciokątnym krawędź podstawy ma długość 4, a najdłuższa przekątna
+    bryły jest nachylona do płaszczyzny podstawy pod kątem 30°. Oblicz objętość tego graniastosłupa.
+  worked_solution: |-
+    Rzutem najdłuższej przekątnej bryły na podstawę jest najdłuższa przekątna sześciokąta foremnego: d = 2a = 8.
+    Kąt nachylenia: tg 30° = H/d ⟹ H = 8·tg30° = 8·(√3/3) = 8√3/3.
+    Pole podstawy: P_p = 3a²√3/2 = 3·16·√3/2 = 24√3.
+    Objętość: V = P_p·H = 24√3 · 8√3/3 = (24·8·3)/3 = 192.
+    Odpowiedź: V = 192.
+    (Dla porządku: pole boczne wynosiłoby P_b = 6·4·8√3/3 = 64√3.)
+  difficulty: 5
+objectives:
+- statement: Rozpoznać i nazwać graniastosłup (prosty, prawidłowy, prostopadłościan, sześcian) oraz ostrosłup
+    (w tym prawidłowy i czworościan foremny), wskazując podstawę, ściany boczne, krawędzie boczne, wysokość
+    bryły i wysokość ściany bocznej.
+  bloom_level: zrozumienie
+- statement: Naszkicować siatkę graniastosłupa i ostrosłupa, opisać wymiary jej części i na tej podstawie
+    obliczyć pole powierzchni bocznej i całkowitej.
+  bloom_level: zastosowanie
+- statement: Obliczyć objętość i pole powierzchni graniastosłupa oraz ostrosłupa o podstawie prostokątnej,
+    trójkątnej równobocznej lub sześciokątnej foremnej, gdy dane są wymiary podstawy i wysokość.
+  bloom_level: zastosowanie
+- statement: Wyznaczyć brakującą wysokość bryły, krawędź boczną, wysokość ściany bocznej lub przekątną,
+    stosując twierdzenie Pitagorasa w odpowiednio dobranym trójkącie prostokątnym wewnątrz bryły.
+  bloom_level: zastosowanie
+- statement: Wykorzystać funkcje trygonometryczne kąta ostrego do obliczenia elementów bryły, gdy dany
+    jest kąt nachylenia krawędzi bocznej, ściany bocznej lub przekątnej do płaszczyzny podstawy.
+  bloom_level: zastosowanie
+- statement: 'Przeanalizować treść zadania stereometrycznego: wykonać rysunek, zidentyfikować właściwy
+    trójkąt prostokątny i wybrać drogę rozwiązania prowadzącą od danych do szukanych wielkości.'
+  bloom_level: analiza
+- statement: Rozwiązać zadanie odwrotne — wyznaczyć krawędź lub wysokość bryły z danej objętości albo
+    danego pola powierzchni, układając i rozwiązując odpowiednie równanie.
+  bloom_level: zastosowanie
+- statement: Ocenić poprawność otrzymanego wyniku pod względem sensu geometrycznego (relacje h > H, b
+    > h, d > krawędzie) oraz zgodności jednostek.
+  bloom_level: ocenianie
+misconceptions:
+- name: Pominięcie czynnika 1/3 w objętości ostrosłupa
+  incorrect_reasoning: „Objętość liczę jako pole podstawy razy wysokość" — uczeń stosuje V = P_p·H także
+    do ostrosłupa.
+  correct_reasoning: 'Ostrosłup o tej samej podstawie i wysokości co graniastosłup ma trzykrotnie mniejszą
+    objętość: V = (1/3)·P_p·H. Zawsze najpierw nazwij bryłę, potem wybierz wzór.'
+  severity: 5
+- name: Mylenie wysokości ściany bocznej z krawędzią boczną
+  incorrect_reasoning: Uczeń podstawia krawędź boczną b do wzoru P_b = n·(1/2)·a·h, traktując ją jak wysokość
+    trójkąta.
+  correct_reasoning: W trójkącie równoramiennym będącym ścianą boczną ramieniem jest b, a wysokością h,
+    przy czym h = √(b² − (a/2)²) < b. Do pola ściany potrzebna jest wysokość h, nie ramię b.
+  severity: 5
+- name: Mylenie wysokości bryły z wysokością ściany bocznej
+  incorrect_reasoning: „Wysokość ostrosłupa jest wysokością każdej ściany bocznej" — uczeń używa H tam,
+    gdzie potrzebne jest h.
+  correct_reasoning: H jest prostopadła do podstawy i wychodzi ze środka podstawy; h leży w płaszczyźnie
+    ściany bocznej. Łączy je zależność h² = H² + r². Zawsze h > H.
+  severity: 5
+- name: Podwajanie podstawy ostrosłupa
+  incorrect_reasoning: P_c = 2P_p + P_b stosowane do ostrosłupa, bo „taki jest wzór na pole całkowite".
+  correct_reasoning: 'Ostrosłup ma tylko jedną podstawę: P_c = P_p + P_b. Podwójną podstawę ma graniastosłup.'
+  severity: 4
+- name: Utożsamianie kąta ściany z kątem krawędzi
+  incorrect_reasoning: Uczeń traktuje kąt nachylenia ściany bocznej i kąt nachylenia krawędzi bocznej
+    jako ten sam kąt i używa R zamiast r (lub odwrotnie).
+  correct_reasoning: To dwa różne kąty. Kąt ściany bocznej opiera się na r (odległość środka podstawy
+    od boku), kąt krawędzi bocznej na R (odległość środka od wierzchołka). Ponieważ R > r, kąt krawędzi
+    jest zawsze mniejszy.
+  severity: 4
+- name: Błędne promienie w podstawie
+  incorrect_reasoning: Dla kwadratu o boku a uczeń przyjmuje R = a lub r = a√2/2; dla trójkąta równobocznego
+    przyjmuje R = r = a√3/2 (całą wysokość).
+  correct_reasoning: 'Dla kwadratu: r = a/2, R = a√2/2. Dla trójkąta równobocznego środek dzieli wysokość
+    w stosunku 2:1, więc R = (2/3)·(a√3/2) = a√3/3, a r = a√3/6.'
+  severity: 4
+- name: Traktowanie ścian bocznych ostrosłupa jako trójkątów równobocznych
+  incorrect_reasoning: „Skoro ostrosłup jest prawidłowy, to wszystkie jego ściany są takie same jak podstawa"
+    — uczeń liczy pole ściany wzorem a²√3/4.
+  correct_reasoning: Ściany boczne ostrosłupa prawidłowego są trójkątami równoramiennymi; równoboczne
+    są tylko wtedy, gdy krawędź boczna równa się krawędzi podstawy (np. czworościan foremny). Zwykle trzeba
+    wyznaczyć h i użyć wzoru (1/2)·a·h.
+  severity: 3
+- name: Mylenie przekątnej ściany z przekątną bryły
+  incorrect_reasoning: W prostopadłościanie uczeń liczy √(a²+b²) i nazywa to przekątną prostopadłościanu.
+  correct_reasoning: '√(a²+b²) to przekątna ściany. Przekątna bryły to d = √(a²+b²+c²) — stosujemy Pitagorasa
+    dwa razy: najpierw w podstawie, potem w trójkącie z krawędzią boczną.'
+  severity: 3
+- name: Nieprawidłowe jednostki i skalowanie
+  incorrect_reasoning: Uczeń podaje objętość w cm² albo zakłada, że po podwojeniu krawędzi objętość też
+    się podwaja.
+  correct_reasoning: Objętość ma jednostkę sześcienną, pole — kwadratową. Przy zwiększeniu wszystkich
+    wymiarów k razy pole rośnie k² razy, a objętość k³ razy.
+  severity: 3
+- name: Zapominanie o pierwiastku po zastosowaniu Pitagorasa
+  incorrect_reasoning: Uczeń wylicza h² = 25 i wpisuje h = 25 do dalszych rachunków.
+  correct_reasoning: 'Po Pitagorasie zawsze wyciągnij pierwiastek: h = √25 = 5. Warto sprawdzić rząd wielkości
+    — przeciwprostokątna nie może być kilkakrotnie większa od przyprostokątnych.'
+  severity: 3

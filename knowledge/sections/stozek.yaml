@@ -1,0 +1,317 @@
+section: stozek
+name: Stożek
+scope: Volume and surface area of a right cone; slant height, apex angle and the axial cross-section;
+  the circular sector that unrolls to the lateral surface.
+requirements:
+- X.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T19:08:35.949283'
+  approved_at: '2026-08-28T19:39:37.802929'
+  approved_by: reviewer
+concepts:
+- name: Stożek obrotowy (prosty)
+  description: Bryła obrotowa powstająca przez obrót trójkąta prostokątnego dookoła prostej zawierającej
+    jedną z jego przyprostokątnych. Ograniczona jest kołem (podstawą) i powierzchnią boczną zbiegającą
+    się w wierzchołku.
+  explanation: 'Wyobraź sobie prostokątny trójkąt „zakręcony” wokół pionowej przyprostokątnej: ta przyprostokątna
+    staje się wysokością H, druga zakreśla koło o promieniu r, a przeciwprostokątna zamiata powierzchnię
+    boczną i staje się tworzącą l. Na maturze „stożek” zawsze oznacza stożek prosty (obrotowy).'
+  difficulty: 1
+- name: Promień podstawy r, wysokość H, tworząca l
+  description: r – promień koła będącego podstawą; H – odległość wierzchołka od płaszczyzny podstawy (odcinek
+    łączący wierzchołek ze środkiem podstawy); l – odcinek łączący wierzchołek z dowolnym punktem okręgu
+    podstawy.
+  explanation: To trzy podstawowe wielkości stożka. Wysokość pada w środek podstawy, więc r, H i l tworzą
+    trójkąt prostokątny o przyprostokątnych r, H i przeciwprostokątnej l. Znając dwie z nich, zawsze wyliczysz
+    trzecią.
+  difficulty: 1
+- name: Przekrój osiowy stożka
+  description: Figura powstała przez przecięcie stożka płaszczyzną zawierającą jego oś (prostą przez wierzchołek
+    i środek podstawy). Jest to trójkąt równoramienny o podstawie 2r, ramionach długości l i wysokości
+    H.
+  explanation: Cała geometria stożka „spłaszcza się” do tego trójkąta – prawie każde zadanie da się rozwiązać,
+    rysując go i stosując twierdzenie Pitagorasa lub trygonometrię. Wysokość H dzieli go na dwa przystające
+    trójkąty prostokątne o bokach r, H, l.
+  difficulty: 2
+- name: Kąt rozwarcia stożka
+  description: Kąt przy wierzchołku przekroju osiowego, czyli kąt między dwiema tworzącymi leżącymi w
+    jednej płaszczyźnie osiowej. Oznaczamy go zwykle 2α, gdzie α to kąt między osią a tworzącą.
+  explanation: 'Uwaga: wysokość dzieli kąt rozwarcia na połowę. Jeśli w zadaniu dany jest kąt rozwarcia
+    2α, to w trójkącie prostokątnym o bokach r, H, l pracujesz z kątem α: sin α = r/l, cos α = H/l, tg
+    α = r/H.'
+  difficulty: 2
+- name: Kąt nachylenia tworzącej do podstawy
+  description: Kąt β między tworzącą a płaszczyzną podstawy, czyli kąt przy podstawie przekroju osiowego.
+    Zachodzi 2α + 2β = 180°, więc α + β = 90°.
+  explanation: 'W trójkącie prostokątnym (r, H, l) kąt β leży przy wierzchołku podstawy: cos β = r/l,
+    sin β = H/l, tg β = H/r. To najczęściej spotykany kąt w zadaniach z trygonometrią.'
+  difficulty: 2
+- name: Powierzchnia boczna i jej rozwinięcie
+  description: Powierzchnia boczna stożka po rozwinięciu na płaszczyznę jest wycinkiem koła o promieniu
+    równym tworzącej l i o długości łuku równej obwodowi podstawy 2πr.
+  explanation: 'Rozetnij stożek wzdłuż jednej tworzącej i rozprostuj – dostaniesz „kawałek pizzy” o promieniu
+    l. Kluczowa równość: łuk wycinka = obwód podstawy koła, czyli 2πr = (φ/360°)·2πl.'
+  difficulty: 3
+- name: Siatka stożka
+  description: Siatka stożka składa się z koła o promieniu r (podstawa) oraz wycinka koła o promieniu
+    l i kącie środkowym φ = 360°·r/l.
+  explanation: 'Z siatki od razu widać wzór na pole całkowite: pole koła plus pole wycinka. Kąt φ zawsze
+    jest mniejszy od 360°, bo r < l.'
+  difficulty: 3
+- name: Kąt środkowy wycinka φ
+  description: 'Miara kąta rozwinięcia powierzchni bocznej: φ = 360°·r/l (równoważnie φ/360° = r/l).'
+  explanation: 'Wynika z proporcji: wycinek stanowi taką część koła o promieniu l, jaką jego łuk stanowi
+    części pełnego okręgu o promieniu l. Zapamiętaj stosunek r/l – to jedyna rzecz, którą trzeba pamiętać.'
+  difficulty: 3
+- name: Stożek równoboczny (o przekroju osiowym równobocznym)
+  description: Stożek, którego przekrój osiowy jest trójkątem równobocznym; wtedy l = 2r, H = r√3, kąt
+    rozwarcia 60°, kąt nachylenia tworzącej 60°.
+  explanation: 'Bardzo częsty przypadek szczególny. Wystarczy znać jedną wielkość (np. r), by wyznaczyć
+    wszystkie pozostałe: V = (√3/3)πr³, P_c = 3πr².'
+  difficulty: 2
+- name: Stożek a walec i ostrosłup
+  description: Stożek o promieniu r i wysokości H ma objętość trzy razy mniejszą niż walec o tej samej
+    podstawie i wysokości; wzór (1/3)·P_p·H jest wspólny dla ostrosłupów i stożka.
+  explanation: Traktuj stożek jak „ostrosłup o podstawie koła”. Ta analogia pomaga zapamiętać czynnik
+    1/3 i odróżnić objętość stożka od objętości walca.
+  difficulty: 1
+- name: Skala podobieństwa brył
+  description: Jeżeli wszystkie wymiary liniowe stożka pomnożymy przez k, to pola powierzchni rosną k²
+    razy, a objętość k³ razy.
+  explanation: 'Przydatne przy pytaniach typu „jak zmieni się objętość, gdy promień i wysokość podwoimy?”.
+    Odpowiedź: 2³ = 8 razy, a pole 4 razy.'
+  difficulty: 3
+formulas:
+- name: Związek Pitagorasa w stożku
+  latex_raw: l^2 = r^2 + H^2
+  conditions: stożek prosty (obrotowy); r – promień podstawy, H – wysokość, l – tworząca
+  description: Stąd l = \sqrt{r^2+H^2},\ H = \sqrt{l^2-r^2},\ r = \sqrt{l^2-H^2}. Zawsze l > r i l > H.
+- name: Objętość stożka
+  latex_raw: V = \tfrac{1}{3}\pi r^2 H
+  conditions: stożek prosty o promieniu podstawy r i wysokości H
+  description: Ogólnie V = \tfrac13 P_p\cdot H, gdzie P_p = \pi r^2.
+- name: Pole podstawy
+  latex_raw: P_p = \pi r^2
+  conditions: podstawą jest koło o promieniu r
+- name: Pole powierzchni bocznej
+  latex_raw: P_b = \pi r l
+  conditions: stożek prosty; l – tworząca (nie wysokość!)
+  description: To pole wycinka koła o promieniu l i łuku 2\pi r.
+- name: Pole powierzchni całkowitej
+  latex_raw: P_c = \pi r^2 + \pi r l = \pi r (r+l)
+  conditions: stożek prosty (pełny, z podstawą)
+- name: Kąt środkowy rozwinięcia powierzchni bocznej
+  latex_raw: \frac{\varphi}{360^\circ} = \frac{r}{l}\quad\Longleftrightarrow\quad \varphi = 360^\circ\cdot\frac{r}{l}
+  conditions: φ – kąt środkowy wycinka będącego siatką powierzchni bocznej
+  description: 'Równoważnie: 2\pi r = \frac{\varphi}{360^\circ}\cdot 2\pi l (łuk = obwód podstawy).'
+- name: Pole wycinka koła
+  latex_raw: P_{wyc} = \frac{\varphi}{360^\circ}\cdot \pi l^2
+  conditions: wycinek koła o promieniu l i kącie środkowym φ
+  description: Po podstawieniu φ/360° = r/l otrzymujemy P_b = πrl.
+- name: Zależności trygonometryczne (kąt nachylenia tworzącej β)
+  latex_raw: r = l\cos\beta,\qquad H = l\sin\beta,\qquad \operatorname{tg}\beta = \frac{H}{r}
+  conditions: β – kąt między tworzącą a płaszczyzną podstawy, 0° < β < 90°
+- name: Zależności trygonometryczne (połowa kąta rozwarcia α)
+  latex_raw: r = l\sin\alpha,\qquad H = l\cos\alpha,\qquad \operatorname{tg}\alpha = \frac{r}{H}
+  conditions: 2α – kąt rozwarcia stożka (kąt przy wierzchołku przekroju osiowego), α + β = 90°
+- name: Objętość i pole wyrażone przez l i β
+  latex_raw: V = \tfrac13 \pi l^3\cos^2\beta\sin\beta,\qquad P_c = \pi l^2\cos\beta(\cos\beta+1)
+  conditions: stożek prosty, β – kąt nachylenia tworzącej do podstawy
+  description: Nie trzeba tego pamiętać – wystarczy najpierw policzyć r i H, a potem użyć wzorów podstawowych.
+- name: Stożek o przekroju osiowym równobocznym
+  latex_raw: l = 2r,\quad H = r\sqrt3,\quad V = \frac{\sqrt3}{3}\pi r^3,\quad P_c = 3\pi r^2
+  conditions: przekrój osiowy jest trójkątem równobocznym (kąt rozwarcia 60°)
+- name: Pole przekroju osiowego
+  latex_raw: P_{\triangle} = \frac{1}{2}\cdot 2r\cdot H = rH
+  conditions: przekrój osiowy stożka prostego – trójkąt równoramienny o podstawie 2r i wysokości H
+methods:
+- name: Obliczanie objętości i pola powierzchni z danych r, H (lub r, l)
+  when_to_use: Gdy w zadaniu podane są dwie z trzech wielkości r, H, l (bezpośrednio lub przez średnicę
+    podstawy).
+  steps:
+  - Wypisz dane i zaznacz je na rysunku przekroju osiowego.
+  - Jeśli podana jest średnica, podziel ją przez 2, aby otrzymać r.
+  - Brakującą wielkość wyznacz z zależności l² = r² + H².
+  - Podstaw do V = (1/3)πr²H.
+  - Podstaw do P_c = πr(r+l); jeśli pytanie dotyczy tylko powierzchni bocznej, użyj P_b = πrl.
+  - Zapisz wynik z jednostkami (objętość – jednostki sześcienne, pole – kwadratowe).
+- name: Wykorzystanie trygonometrii w przekroju osiowym
+  when_to_use: 'Gdy dany jest kąt: nachylenia tworzącej do podstawy, kąt rozwarcia stożka albo kąt między
+    tworzącą a osią.'
+  steps:
+  - Narysuj przekrój osiowy – trójkąt równoramienny – i wysokość H dzielącą go na dwa trójkąty prostokątne
+    o bokach r, H, l.
+  - 'Zidentyfikuj, który kąt jest dany: kąt rozwarcia trzeba najpierw podzielić na pół (α), kąt przy podstawie
+    to β.'
+  - 'Zapisz odpowiednie funkcje: dla β: r = l cos β, H = l sin β, tg β = H/r; dla α: r = l sin α, H =
+    l cos α.'
+  - Wyznacz kolejno brakujące r, H, l z jednego równania z jedną niewiadomą.
+  - Podstaw wyniki do wzorów na V i P.
+  - 'Sprawdź sensowność: dla β = 60° powinno być H > r, dla β = 30° – H < r.'
+- name: 'Przejście: siatka (wycinek koła) ↔ stożek'
+  when_to_use: 'Gdy dane dotyczą rozwinięcia powierzchni bocznej: promienia i kąta wycinka, długości łuku
+    albo pola wycinka.'
+  steps:
+  - 'Zapamiętaj: promień wycinka = tworząca l, łuk wycinka = obwód podstawy 2πr.'
+  - Z danych zapisz równanie (φ/360°)·2πl = 2πr, czyli φ/360° = r/l.
+  - 'Wyznacz brakującą wielkość: r = l·φ/360° albo φ = 360°·r/l, albo l = 360°·r/φ.'
+  - Wysokość policz z H = √(l² − r²).
+  - Policz żądaną wielkość (V, P_b = πrl, P_c) korzystając z wyznaczonych r, H, l.
+- name: Zadania odwrotne – szukanie r, H lub l z danej objętości albo pola
+  when_to_use: Gdy dana jest objętość lub pole powierzchni oraz jedna wielkość liniowa, a szukamy pozostałych.
+  steps:
+  - Zapisz odpowiedni wzór (V = (1/3)πr²H lub P_c = πr(r+l)) i podstaw wartości znane.
+  - Przekształć równanie względem niewiadomej; przy V = ... najpierw pomnóż obustronnie przez 3 i podziel
+    przez π.
+  - Jeśli powstanie równanie kwadratowe (np. z pola całkowitego), rozwiąż je i odrzuć pierwiastki niedodatnie.
+  - Sprawdź warunek geometryczny l > r; wyznacz pozostałe wielkości z l² = r² + H².
+  - Odpowiedz na pytanie zadania (często pyta się o inną wielkość niż wyznaczona bezpośrednio).
+- name: Stożek jako bryła obrotowa trójkąta prostokątnego
+  when_to_use: Gdy zadanie mówi o obrocie trójkąta prostokątnego wokół prostej zawierającej jego bok.
+  steps:
+  - 'Ustal oś obrotu: przyprostokątna leżąca na osi staje się wysokością H.'
+  - Druga przyprostokątna staje się promieniem podstawy r, a przeciwprostokątna – tworzącą l.
+  - Jeśli trójkąt obracamy wokół drugiej przyprostokątnej, role r i H zamieniają się – powstaje inny stożek
+    o innej objętości.
+  - Podstaw do wzorów na V i P.
+  - Przy porównywaniu dwóch brył obrotowych z tego samego trójkąta porównaj (1/3)πr²H dla obu ustawień.
+examples:
+- statement: Promień podstawy stożka ma długość 3, a wysokość 4. Oblicz objętość i pole powierzchni całkowitej
+    tego stożka.
+  worked_solution: |-
+    Dane: r = 3, H = 4.
+    Tworząca: l² = r² + H² = 9 + 16 = 25, więc l = 5.
+    Objętość: V = (1/3)πr²H = (1/3)·π·9·4 = 12π.
+    Pole całkowite: P_c = πr(r + l) = π·3·(3 + 5) = 24π.
+    Odpowiedź: V = 12π, P_c = 24π (pole boczne wynosi πrl = 15π, podstawa 9π).
+  difficulty: 1
+- statement: Przekrój osiowy stożka jest trójkątem równobocznym o boku 6. Oblicz objętość stożka i pole
+    jego powierzchni bocznej.
+  worked_solution: |-
+    Przekrój osiowy to trójkąt równoramienny o podstawie 2r i ramionach l. Skoro jest równoboczny o boku 6, to l = 6 oraz 2r = 6, czyli r = 3.
+    Wysokość stożka to wysokość tego trójkąta: H = 6·√3/2 = 3√3 (można też: H = √(36 − 9) = √27 = 3√3).
+    Objętość: V = (1/3)π·3²·3√3 = (1/3)π·9·3√3 = 9√3π.
+    Pole boczne: P_b = πrl = π·3·6 = 18π.
+    Uwaga: kąt rozwarcia takiego stożka wynosi 60°, a tworząca jest nachylona do podstawy pod kątem 60°.
+  difficulty: 2
+- statement: Powierzchnia boczna stożka po rozwinięciu na płaszczyznę jest wycinkiem koła o promieniu
+    12 i kącie środkowym 120°. Oblicz objętość tego stożka.
+  worked_solution: |-
+    Promień wycinka to tworząca: l = 12.
+    Długość łuku wycinka równa się obwodowi podstawy:
+    (120°/360°)·2π·12 = 2πr  →  (1/3)·24π = 2πr  →  8π = 2πr  →  r = 4.
+    (Ten sam wynik z wzoru r = l·φ/360° = 12·(1/3) = 4.)
+    Wysokość: H = √(l² − r²) = √(144 − 16) = √128 = 8√2.
+    Objętość: V = (1/3)π·4²·8√2 = (1/3)π·16·8√2 = (128√2/3)π.
+    Dla kontroli: P_b = πrl = 48π i pole wycinka = (1/3)·π·144 = 48π – zgadza się.
+  difficulty: 3
+- statement: Tworząca stożka ma długość 8 i jest nachylona do płaszczyzny podstawy pod kątem 30°. Oblicz
+    objętość i pole powierzchni całkowitej stożka.
+  worked_solution: |-
+    Rysujemy przekrój osiowy; w trójkącie prostokątnym o bokach r, H, l kąt przy podstawie to β = 30°.
+    r = l·cos30° = 8·(√3/2) = 4√3,
+    H = l·sin30° = 8·(1/2) = 4.
+    Sprawdzenie: r² + H² = 48 + 16 = 64 = l². ✓
+    Objętość: V = (1/3)π·(4√3)²·4 = (1/3)π·48·4 = 64π.
+    Pole całkowite: P_c = πr(r + l) = π·4√3·(4√3 + 8) = π(48 + 32√3) = 16π(3 + 2√3).
+  difficulty: 3
+- statement: Objętość stożka wynosi 96π, a jego wysokość jest równa 8. Oblicz pole powierzchni całkowitej
+    stożka oraz kąt środkowy wycinka, który jest siatką jego powierzchni bocznej (wynik podaj z dokładnością
+    do 1°, jeśli nie wychodzi liczba całkowita).
+  worked_solution: |-
+    Z wzoru na objętość: 96π = (1/3)πr²·8  →  96 = (8/3)r²  →  r² = 36  →  r = 6 (r > 0).
+    Tworząca: l = √(36 + 64) = √100 = 10.
+    Pole całkowite: P_c = πr(r + l) = π·6·16 = 96π.
+    Kąt wycinka: φ = 360°·r/l = 360°·6/10 = 216°.
+    Odpowiedź: P_c = 96π, φ = 216°. (Warto zauważyć przypadkową zgodność liczb: V = 96π i P_c = 96π – to różne wielkości o różnych jednostkach.)
+  difficulty: 4
+objectives:
+- statement: Wskazać i nazwać elementy stożka obrotowego (promień podstawy, wysokość, tworząca, oś, wierzchołek)
+    oraz opisać stożek jako bryłę powstałą z obrotu trójkąta prostokątnego.
+  bloom_level: Rozumienie
+- statement: Stosować zależność l² = r² + H² do wyznaczania brakującej wielkości liniowej stożka.
+  bloom_level: Zastosowanie
+- statement: Obliczać objętość, pole powierzchni bocznej i pole powierzchni całkowitej stożka z danych
+    r, H lub r, l.
+  bloom_level: Zastosowanie
+- statement: Rysować i wykorzystywać przekrój osiowy stożka jako narzędzie do rozwiązywania zadań, w tym
+    obliczać jego pole.
+  bloom_level: Zastosowanie
+- statement: Wykorzystywać funkcje trygonometryczne kąta nachylenia tworzącej do podstawy oraz kąta rozwarcia
+    stożka do wyznaczania r, H i l, a następnie objętości i pól.
+  bloom_level: Zastosowanie
+- statement: Opisywać siatkę stożka i przechodzić między danymi wycinka koła (promień, kąt środkowy, długość
+    łuku, pole) a danymi stożka.
+  bloom_level: Analiza
+- statement: 'Rozwiązywać zadania odwrotne: wyznaczać r, H lub l z zadanej objętości lub pola powierzchni,
+    przekształcając równania i odrzucając rozwiązania niegeometryczne.'
+  bloom_level: Analiza
+- statement: Uzasadniać wzór P_b = πrl na podstawie pola wycinka koła i proporcji φ/360° = r/l.
+  bloom_level: Analiza
+- statement: Oceniać wpływ zmiany skali wymiarów stożka na jego pole powierzchni i objętość oraz porównywać
+    stożki (np. dwie bryły obrotowe tego samego trójkąta prostokątnego).
+  bloom_level: Ocena
+- statement: Rozwiązywać proste zadania praktyczne z kontekstem (lejek, kopiec, czapka) z prawidłowym
+    użyciem jednostek i zaokrągleń.
+  bloom_level: Zastosowanie
+misconceptions:
+- name: Wstawianie wysokości zamiast tworzącej do wzoru na pole boczne
+  incorrect_reasoning: P_b = πrH – „przecież wysokość jest w każdym wzorze na bryły”.
+  correct_reasoning: Pole powierzchni bocznej to pole wycinka koła o promieniu równym tworzącej, więc
+    P_b = πrl. Wysokość H występuje tylko we wzorze na objętość. Najpierw policz l = √(r² + H²), dopiero
+    potem pole.
+  severity: 5
+- name: Pominięcie czynnika 1/3 w objętości
+  incorrect_reasoning: V = πr²H, jak w walcu.
+  correct_reasoning: 'Stożek jest „ostrosłupem o podstawie kołowej”: V = (1/3)P_p·H = (1/3)πr²H. Objętość
+    stożka to jedna trzecia objętości walca o tej samej podstawie i wysokości.'
+  severity: 5
+- name: Błędne łączenie r, H, l
+  incorrect_reasoning: l = r + H albo l² = r² − H².
+  correct_reasoning: 'r, H, l tworzą trójkąt prostokątny, w którym l jest przeciwprostokątną: l² = r²
+    + H². Zawsze l jest największa: l > r i l > H.'
+  severity: 4
+- name: Mylenie kąta rozwarcia z kątem między tworzącą a wysokością
+  incorrect_reasoning: Kąt rozwarcia wynosi 60°, więc w trójkącie prostokątnym r/l = sin60°.
+  correct_reasoning: 'Wysokość dzieli kąt rozwarcia na pół. Przy kącie rozwarcia 2α = 60° w trójkącie
+    prostokątnym pracujemy z α = 30°: r = l·sin30°, H = l·cos30°.'
+  severity: 4
+- name: Mylenie kąta nachylenia tworzącej z kątem przy wierzchołku
+  incorrect_reasoning: Podstawianie tg β = r/H, gdy β jest kątem między tworzącą a podstawą.
+  correct_reasoning: 'Dla kąta β przy podstawie: przyprostokątna przyległa to r, naprzeciw leży H, więc
+    tg β = H/r, cos β = r/l, sin β = H/l. Dla kąta α przy wierzchołku (przy osi) role się odwracają: tg
+    α = r/H.'
+  severity: 4
+- name: Uznanie, że promień wycinka w siatce jest równy promieniowi podstawy
+  incorrect_reasoning: Skoro wycinek „pasuje” do koła podstawy, to ma promień r.
+  correct_reasoning: 'Promień wycinka to tworząca l (odległość od wierzchołka do brzegu podstawy). Z podstawą
+    wiąże go jedynie długość łuku: łuk wycinka = 2πr.'
+  severity: 4
+- name: Błędna proporcja kąta wycinka
+  incorrect_reasoning: φ = 360°·l/r lub φ = 360°·r²/l².
+  correct_reasoning: 'Proporcja jest liniowa dla łuków: (φ/360°)·2πl = 2πr, czyli φ = 360°·r/l. Ponieważ
+    r < l, zawsze φ < 360°, co jest dobrym sprawdzianem wyniku.'
+  severity: 3
+- name: „Stożek równoboczny” rozumiany jako H = 2r
+  incorrect_reasoning: Skoro przekrój jest równoboczny, to wysokość jest dwa razy większa od promienia.
+  correct_reasoning: 'Równoboczny jest trójkąt przekroju: bok = 2r = l, więc l = 2r i H = r√3 (H ≈ 1,73r,
+    a nie 2r).'
+  severity: 3
+- name: Zapominanie o polu podstawy w polu całkowitym
+  incorrect_reasoning: P_c = πrl, bo „to jest cała powierzchnia stożka”.
+  correct_reasoning: 'Stożek pełny ma jeszcze koło podstawy: P_c = πr² + πrl = πr(r + l). Tylko gdy zadanie
+    mówi o powierzchni bocznej (np. czapeczce, lejku bez dna), używamy samego πrl.'
+  severity: 4
+- name: Podwojenie wymiarów podwaja objętość
+  incorrect_reasoning: Zwiększenie r i H dwukrotnie zwiększa objętość dwukrotnie.
+  correct_reasoning: Objętość zależy od r²H, więc przy skali k = 2 rośnie 2³ = 8 razy, a pola powierzchni
+    2² = 4 razy.
+  severity: 3
+- name: Mieszanie jednostek
+  incorrect_reasoning: Podanie objętości w cm² lub porównywanie liczbowo pola i objętości.
+  correct_reasoning: Objętość podajemy w jednostkach sześciennych (cm³, m³), pole – w kwadratowych (cm²,
+    m²). Ta sama liczba przy różnych jednostkach nie oznacza równości wielkości.
+  severity: 2

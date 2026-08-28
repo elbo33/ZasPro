@@ -1,0 +1,386 @@
+section: rownania-kwadratowe
+name: Równania kwadratowe
+scope: 'Solving quadratic equations: factoring, the discriminant and the quadratic formula, Vieta''s formulas;
+  the number of real roots from the sign of the discriminant; equations reducible to quadratic.'
+requirements:
+- III.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T18:57:43.152869'
+  approved_at: '2026-08-28T19:39:36.957569'
+  approved_by: reviewer
+concepts:
+- name: Równanie kwadratowe (postać ogólna)
+  description: 'Równanie postaci ax² + bx + c = 0, gdzie a, b, c są liczbami rzeczywistymi i a ≠ 0. Liczby
+    a, b, c nazywamy współczynnikami: a — przy x², b — przy x, c — wyrazem wolnym.'
+  explanation: 'Warunek a ≠ 0 jest kluczowy — to on odróżnia równanie kwadratowe od liniowego. Zanim zaczniesz
+    cokolwiek liczyć, uporządkuj równanie do tej postaci: wszystko przenieś na lewą stronę i zredukuj
+    wyrazy podobne. Dopiero wtedy odczytasz a, b, c.'
+  difficulty: 1
+- name: Pierwiastek (rozwiązanie) równania kwadratowego
+  description: 'Liczba x₀, która po podstawieniu w miejsce x zamienia równanie w zdanie prawdziwe: ax₀²
+    + bx₀ + c = 0.'
+  explanation: Pierwiastek równania ax²+bx+c=0 to dokładnie to samo co miejsce zerowe funkcji kwadratowej
+    f(x)=ax²+bx+c, czyli odcięta punktu przecięcia paraboli z osią OX. Każde rozwiązanie można (i warto)
+    sprawdzić przez podstawienie.
+  difficulty: 1
+- name: Równanie kwadratowe niezupełne
+  description: Równanie kwadratowe, w którym b = 0 (postać ax² + c = 0) lub c = 0 (postać ax² + bx = 0),
+    albo oba naraz (ax² = 0).
+  explanation: Takich równań nie opłaca się rozwiązywać deltą. Gdy c = 0 — wyłącz x przed nawias; gdy
+    b = 0 — przenieś c na drugą stronę i pierwiastkuj (pamiętając o dwóch znakach). To najszybsze ścieżki
+    i najczęstsze źródło oszczędności czasu.
+  difficulty: 2
+- name: Wyróżnik (delta) trójmianu kwadratowego
+  description: Liczba Δ = b² − 4ac przypisana równaniu ax² + bx + c = 0.
+  explanation: Delta mierzy, „czy parabola sięga osi OX”. Jej znak — i tylko jej znak — decyduje o liczbie
+    rozwiązań rzeczywistych. Licząc Δ, podstawiaj współczynniki w nawiasach, bo najwięcej błędów bierze
+    się z minusów.
+  difficulty: 2
+- name: Liczba rozwiązań a znak wyróżnika
+  description: Dla Δ > 0 równanie ma dwa różne pierwiastki rzeczywiste; dla Δ = 0 — jeden pierwiastek
+    (podwójny) x₀ = −b/(2a); dla Δ < 0 — nie ma pierwiastków rzeczywistych.
+  explanation: 'Geometrycznie: parabola przecina oś OX w dwóch punktach, jest do niej styczna, albo leży
+    w całości nad lub pod nią. Ten wynik pozwala odpowiadać na pytania o liczbę rozwiązań bez wyznaczania
+    samych rozwiązań.'
+  difficulty: 2
+- name: Postać kanoniczna trójmianu
+  description: ax² + bx + c = a(x − p)² + q, gdzie p = −b/(2a), q = −Δ/(4a); punkt (p, q) to wierzchołek
+    paraboli.
+  explanation: 'Z postaci kanonicznej równanie rozwiązuje się „ręcznie”: a(x−p)² = −q, potem pierwiastkowanie.
+    Widać też od razu, że gdy −q/a < 0, rozwiązań nie ma — co jest tym samym co Δ < 0.'
+  difficulty: 3
+- name: Postać iloczynowa trójmianu
+  description: Jeśli Δ > 0, to ax² + bx + c = a(x − x₁)(x − x₂); jeśli Δ = 0, to ax² + bx + c = a(x −
+    x₀)². Dla Δ < 0 postać iloczynowa nie istnieje.
+  explanation: 'To most między pierwiastkami a zapisem wielomianu. Czytając ją w drugą stronę: jeżeli
+    równanie jest już zapisane jako iloczyn równy zeru, pierwiastki widać gołym okiem. Nie zapominaj o
+    współczynniku a z przodu.'
+  difficulty: 3
+- name: Własność iloczynu równego zeru
+  description: 'Dla liczb rzeczywistych: u·v = 0 wtedy i tylko wtedy, gdy u = 0 lub v = 0.'
+  explanation: To jedyne uzasadnienie metody rozkładu na czynniki. Działa wyłącznie wtedy, gdy po jednej
+    stronie równania stoi iloczyn, a po drugiej dokładnie zero — dla iloczynu równego 6 nie wnioskujemy
+    niczego.
+  difficulty: 2
+- name: Wzory Viète'a
+  description: Jeżeli x₁, x₂ są pierwiastkami równania ax² + bx + c = 0 (czyli Δ ≥ 0), to x₁ + x₂ = −b/a
+    oraz x₁·x₂ = c/a.
+  explanation: 'Pozwalają badać pierwiastki, nie licząc ich: sprawdzić znaki, obliczyć wyrażenia symetryczne
+    (suma kwadratów, suma odwrotności), dobrać parametr. Zawsze najpierw zapewnij istnienie pierwiastków
+    warunkiem Δ ≥ 0 (lub Δ > 0 dla dwóch różnych).'
+  difficulty: 3
+- name: Wyrażenia symetryczne pierwiastków
+  description: Wyrażenia nie zmieniające się przy zamianie x₁ z x₂, np. x₁² + x₂², 1/x₁ + 1/x₂, (x₁ −
+    x₂)², x₁³ + x₂³.
+  explanation: Każde takie wyrażenie da się przekształcić tak, by występowały w nim tylko suma S = x₁+x₂
+    i iloczyn P = x₁x₂, a te znamy ze wzorów Viète'a. To standardowy schemat zadań z parametrem.
+  difficulty: 4
+- name: Równanie sprowadzalne do kwadratowego
+  description: Równanie, które po odpowiednim podstawieniu lub przekształceniu (przy zachowaniu dziedziny)
+    przyjmuje postać kwadratową, np. dwukwadratowe ax⁴ + bx² + c = 0, równania wymierne czy z podstawieniem
+    t = wyrażenie.
+  explanation: 'Idea: znaleźć powtarzający się „blok” i nazwać go nową zmienną t. Rozwiązujemy równanie
+    w t, a potem koniecznie wracamy do x — to ten powrót daje ostateczne odpowiedzi.'
+  difficulty: 3
+- name: Równanie dwukwadratowe
+  description: Równanie postaci ax⁴ + bx² + c = 0, a ≠ 0, rozwiązywane podstawieniem t = x², t ≥ 0.
+  explanation: 'Po rozwiązaniu równania at² + bt + c = 0 odrzucamy ujemne wartości t (bo x² ≥ 0), a z
+    każdego t > 0 dostajemy dwa x: ±√t; z t = 0 jedno x = 0. Stąd takie równanie może mieć 0, 1, 2, 3
+    lub 4 rozwiązania.'
+  difficulty: 4
+- name: Dziedzina równania wymiernego
+  description: Zbiór tych x, dla których wszystkie mianowniki występujące w równaniu są różne od zera.
+  explanation: Dziedzinę ustalamy PRZED przekształceniami. Po pomnożeniu obu stron przez mianowniki mogą
+    pojawić się rozwiązania „fałszywe” — takie, które nie należą do dziedziny i trzeba je odrzucić.
+  difficulty: 3
+- name: Równanie kwadratowe z parametrem
+  description: Równanie, w którym oprócz niewiadomej x występuje litera (parametr, np. m), a pytanie dotyczy
+    liczby lub własności rozwiązań w zależności od wartości parametru.
+  explanation: 'Schemat: sprawdź, czy współczynnik przy x² może się zerować (wtedy równanie nie jest kwadratowe),
+    oblicz Δ jako wyrażenie zależne od m i rozwiąż nierówność Δ > 0, Δ = 0 lub Δ < 0. Warunki dodatkowe
+    (znaki pierwiastków, ich suma) dokładasz przez wzory Viète''a.'
+  difficulty: 4
+formulas:
+- name: Wyróżnik trójmianu kwadratowego
+  latex_raw: \Delta = b^2 - 4ac
+  conditions: dla równania ax^2+bx+c=0, a \neq 0, zapisanego w postaci ogólnej
+  description: 'Podstawiaj współczynniki w nawiasach: dla 2x²−5x−3 mamy Δ=(−5)²−4·2·(−3)=25+24=49.'
+- name: Wzory na pierwiastki (Δ > 0)
+  latex_raw: x_1 = \frac{-b-\sqrt{\Delta}}{2a},\qquad x_2 = \frac{-b+\sqrt{\Delta}}{2a}
+  conditions: gdy Δ > 0
+  description: Cały licznik dzielimy przez 2a, nie tylko pierwiastek.
+- name: Pierwiastek podwójny (Δ = 0)
+  latex_raw: x_0 = \frac{-b}{2a}
+  conditions: gdy Δ = 0
+  description: Równanie ma wtedy dokładnie jedno rozwiązanie; jest ono jednocześnie odciętą wierzchołka
+    paraboli.
+- name: Brak rozwiązań
+  latex_raw: \Delta < 0 \iff ax^2+bx+c=0 \text{ nie ma rozwiązań rzeczywistych}
+  conditions: a ≠ 0
+  description: 'Poprawna odpowiedź brzmi: „równanie nie ma rozwiązań”, a nie „Δ nie istnieje”.'
+- name: Równanie niezupełne z c = 0
+  latex_raw: ax^2+bx=0 \iff x(ax+b)=0 \iff x=0 \ \lor\ x=-\frac{b}{a}
+  conditions: a ≠ 0, b dowolne
+  description: Zawsze ma pierwiastek x = 0.
+- name: Równanie niezupełne z b = 0
+  latex_raw: ax^2+c=0 \iff x^2=-\frac{c}{a}
+  conditions: a ≠ 0; rozwiązania x=\pm\sqrt{-c/a} istnieją tylko gdy −c/a ≥ 0
+  description: Dla −c/a < 0 brak rozwiązań; dla −c/a = 0 jedno rozwiązanie x = 0.
+- name: Postać iloczynowa
+  latex_raw: ax^2+bx+c = a(x-x_1)(x-x_2)
+  conditions: 'gdy Δ > 0 i x₁, x₂ są pierwiastkami; dla Δ = 0: a(x−x₀)²'
+  description: Nie istnieje, gdy Δ < 0.
+- name: Postać kanoniczna
+  latex_raw: ax^2+bx+c = a\left(x+\frac{b}{2a}\right)^2 - \frac{\Delta}{4a}
+  conditions: a ≠ 0
+  description: 'Wierzchołek paraboli: p = −b/(2a), q = −Δ/(4a).'
+- name: Wzory Viète'a
+  latex_raw: x_1+x_2 = -\frac{b}{a},\qquad x_1\cdot x_2 = \frac{c}{a}
+  conditions: a ≠ 0 oraz Δ ≥ 0 (pierwiastki muszą istnieć)
+  description: Dla Δ = 0 przyjmujemy x₁ = x₂.
+- name: Suma kwadratów pierwiastków
+  latex_raw: x_1^2+x_2^2 = (x_1+x_2)^2 - 2x_1x_2
+  conditions: gdy pierwiastki istnieją (Δ ≥ 0)
+  description: Podstawowe narzędzie w zadaniach z parametrem.
+- name: Suma odwrotności pierwiastków
+  latex_raw: \frac{1}{x_1}+\frac{1}{x_2} = \frac{x_1+x_2}{x_1x_2}
+  conditions: Δ ≥ 0 oraz x₁ ≠ 0 i x₂ ≠ 0, czyli c ≠ 0
+- name: Kwadrat różnicy pierwiastków
+  latex_raw: (x_1-x_2)^2 = (x_1+x_2)^2 - 4x_1x_2 = \frac{\Delta}{a^2}
+  conditions: Δ ≥ 0
+- name: Wzory skróconego mnożenia użyteczne przy rozkładzie
+  latex_raw: x^2 - k^2 = (x-k)(x+k),\qquad x^2 \pm 2kx + k^2 = (x \pm k)^2
+  conditions: k — dowolna liczba rzeczywista
+  description: Pozwalają rozwiązać wiele równań bez liczenia delty.
+- name: Podstawienie w równaniu dwukwadratowym
+  latex_raw: ax^4+bx^2+c=0,\quad t=x^2 \ (t\ge 0)\ \Rightarrow\ at^2+bt+c=0
+  conditions: a ≠ 0; po wyznaczeniu t odrzucamy t < 0 i wracamy do x = ±√t
+methods:
+- name: Rozwiązywanie równania kwadratowego metodą wyróżnika (delty)
+  when_to_use: Metoda uniwersalna — gdy równanie jest zupełne (b ≠ 0 i c ≠ 0) i nie widać wygodnego rozkładu
+    na czynniki.
+  steps:
+  - 'Uporządkuj równanie do postaci ax² + bx + c = 0: przenieś wszystko na jedną stronę, wykonaj mnożenia,
+    zredukuj wyrazy podobne.'
+  - Sprawdź, że a ≠ 0, i wypisz a, b, c wraz ze znakami.
+  - Oblicz Δ = b² − 4ac, podstawiając współczynniki w nawiasach.
+  - 'Jeśli Δ < 0 — zapisz odpowiedź: równanie nie ma rozwiązań rzeczywistych i zakończ.'
+  - Jeśli Δ = 0 — oblicz jedno rozwiązanie x₀ = −b/(2a).
+  - Jeśli Δ > 0 — oblicz √Δ, następnie x₁ = (−b − √Δ)/(2a) i x₂ = (−b + √Δ)/(2a).
+  - Skróć ułamki, zapisz odpowiedź i (jeśli masz czas) sprawdź jeden z pierwiastków przez podstawienie.
+- name: Rozwiązywanie równań niezupełnych
+  when_to_use: Gdy brakuje wyrazu wolnego (c = 0) albo wyrazu liniowego (b = 0) — szybciej niż deltą.
+  steps:
+  - 'Rozpoznaj typ: ax² + bx = 0 czy ax² + c = 0.'
+  - 'Dla ax² + bx = 0: wyłącz x przed nawias, x(ax + b) = 0, skąd x = 0 lub x = −b/a.'
+  - 'Dla ax² + c = 0: przenieś c na prawą stronę i podziel przez a, otrzymując x² = k.'
+  - Jeśli k > 0, to x = √k lub x = −√k; jeśli k = 0, to x = 0; jeśli k < 0, to brak rozwiązań.
+  - Nigdy nie dziel obu stron przez x — stracisz rozwiązanie x = 0.
+- name: Rozwiązywanie przez rozkład na czynniki
+  when_to_use: Gdy widać wspólny czynnik, wzór skróconego mnożenia, albo gdy łatwo zgadnąć rozkład x²
+    + bx + c = (x − x₁)(x − x₂) dla całkowitych pierwiastków.
+  steps:
+  - Przenieś wszystko na lewą stronę tak, by po prawej było 0.
+  - 'Rozłóż lewą stronę na czynniki: wyłączanie wspólnego czynnika, wzory skróconego mnożenia lub dobór
+    dwóch liczb o sumie −b i iloczynie c (dla a = 1).'
+  - 'Skorzystaj z własności iloczynu równego zeru: przyrównaj każdy czynnik do zera.'
+  - Rozwiąż otrzymane równania liniowe i zbierz wszystkie rozwiązania.
+- name: Wyznaczanie liczby rozwiązań (także z parametrem)
+  when_to_use: Gdy pytanie dotyczy tylko liczby rozwiązań albo doboru parametru tak, by rozwiązań było
+    0, 1 lub 2.
+  steps:
+  - Sprowadź równanie do postaci ax² + bx + c = 0, gdzie współczynniki mogą zależeć od parametru.
+  - Rozpatrz osobno przypadek a = 0 (równanie przestaje być kwadratowe) — jeśli zadanie tego nie wyklucza.
+  - Dla a ≠ 0 zapisz Δ jako wyrażenie z parametrem i uprość je.
+  - 'Ułóż i rozwiąż odpowiedni warunek: Δ > 0 (dwa różne rozwiązania), Δ = 0 (jedno), Δ < 0 (brak).'
+  - Wynik zestaw z założeniem a ≠ 0 (część wspólna) i zapisz odpowiedź jako zbiór wartości parametru.
+- name: Wykorzystanie wzorów Viète'a
+  when_to_use: Gdy trzeba obliczyć wyrażenie symetryczne pierwiastków lub dobrać parametr do warunku o
+    pierwiastkach, bez ich wyznaczania.
+  steps:
+  - 'Sprawdź warunek istnienia pierwiastków: Δ ≥ 0 (lub Δ > 0 przy dwóch różnych) — rozwiąż tę nierówność
+    względem parametru.'
+  - Zapisz S = x₁ + x₂ = −b/a oraz P = x₁·x₂ = c/a.
+  - Przekształć badane wyrażenie tak, by zawierało wyłącznie S i P (np. x₁²+x₂² = S² − 2P).
+  - Podstaw S i P, ułóż równanie lub nierówność z warunku zadania i rozwiąż je.
+  - Sprawdź, które otrzymane wartości parametru spełniają warunek z kroku 1 — pozostałe odrzuć.
+- name: Rozwiązywanie równania dwukwadratowego
+  when_to_use: 'Gdy w równaniu występują tylko parzyste potęgi x: x⁴ i x² (lub ogólnie kwadrat pewnego
+    wyrażenia i to wyrażenie).'
+  steps:
+  - Uporządkuj równanie do postaci ax⁴ + bx² + c = 0.
+  - Wprowadź podstawienie t = x² z zastrzeżeniem t ≥ 0 i zapisz równanie at² + bt + c = 0.
+  - Rozwiąż to równanie względem t (delta lub rozkład).
+  - Odrzuć wartości t < 0 jako sprzeczne z t = x² ≥ 0.
+  - 'Dla każdego pozostałego t: jeśli t > 0, to x = ±√t; jeśli t = 0, to x = 0.'
+  - Zbierz wszystkie rozwiązania i podaj ich liczbę.
+- name: Rozwiązywanie prostego równania wymiernego prowadzącego do kwadratowego
+  when_to_use: Gdy niewiadoma występuje w mianowniku.
+  steps:
+  - 'Wyznacz dziedzinę: przyrównaj każdy mianownik do zera i wyklucz te wartości x.'
+  - Sprowadź obie strony do wspólnego mianownika lub pomnóż równanie stronami przez iloczyn mianowników.
+  - Uporządkuj otrzymane równanie do postaci kwadratowej i rozwiąż je.
+  - Porównaj rozwiązania z dziedziną i odrzuć te, które do niej nie należą.
+  - Zapisz odpowiedź.
+examples:
+- statement: 'Rozwiąż równania: a) 3x² − 12x = 0, b) 2x² − 50 = 0, c) x² + 9 = 0.'
+  worked_solution: |-
+    a) To równanie niezupełne (c = 0). Wyłączamy x przed nawias: 3x(x − 4) = 0. Iloczyn jest równy zeru, gdy jeden z czynników jest zerem: 3x = 0 lub x − 4 = 0, czyli x = 0 lub x = 4. Uwaga: gdybyśmy podzielili obie strony przez x, zgubilibyśmy rozwiązanie x = 0.
+    b) Równanie niezupełne (b = 0): 2x² = 50, więc x² = 25, skąd x = 5 lub x = −5. (Alternatywnie: 2(x−5)(x+5) = 0.)
+    c) x² = −9. Kwadrat liczby rzeczywistej nie może być ujemny, więc równanie nie ma rozwiązań. Sprawdzenie deltą: a = 1, b = 0, c = 9, Δ = 0² − 4·1·9 = −36 < 0 — brak rozwiązań.
+  difficulty: 1
+- statement: Rozwiąż równanie 2x² − 5x − 3 = 0 i zapisz trójmian w postaci iloczynowej.
+  worked_solution: |-
+    Współczynniki: a = 2, b = −5, c = −3.
+    Δ = (−5)² − 4·2·(−3) = 25 + 24 = 49 > 0, więc są dwa różne pierwiastki. √Δ = 7.
+    x₁ = (5 − 7)/(2·2) = (−2)/4 = −1/2,  x₂ = (5 + 7)/4 = 12/4 = 3.
+    Sprawdzenie wzorami Viète'a: x₁ + x₂ = −1/2 + 3 = 5/2 = −b/a = 5/2 ✓; x₁·x₂ = −3/2 = c/a = −3/2 ✓.
+    Postać iloczynowa: 2x² − 5x − 3 = 2(x + 1/2)(x − 3). Można też zapisać jako (2x + 1)(x − 3).
+    Uwaga: pominięcie czynnika a = 2 byłoby błędem — sprawdź, mnożąc: (x+1/2)(x−3) = x² − 2,5x − 1,5, a to nie jest nasz trójmian.
+  difficulty: 2
+- statement: Rozwiąż równanie (x − 1)(x + 4) = 2x + 8.
+  worked_solution: |-
+    Nie wolno przyrównywać czynników do liczby 2x + 8 — prawa strona nie jest zerem. Najpierw porządkujemy.
+    Lewa strona: x² + 4x − x − 4 = x² + 3x − 4.
+    Równanie: x² + 3x − 4 = 2x + 8, czyli x² + 3x − 4 − 2x − 8 = 0, stąd x² + x − 12 = 0.
+    Δ = 1² − 4·1·(−12) = 1 + 48 = 49, √Δ = 7.
+    x₁ = (−1 − 7)/2 = −4,  x₂ = (−1 + 7)/2 = 3.
+    Sprawdzenie dla x = 3: (3−1)(3+4) = 2·7 = 14 oraz 2·3+8 = 14 ✓.
+    Odpowiedź: x = −4 lub x = 3.
+  difficulty: 2
+- statement: Rozwiąż równanie x⁴ − 13x² + 36 = 0 oraz równanie 1/x + 1/(x+1) = 5/6.
+  worked_solution: |-
+    CZĘŚĆ 1. Podstawiamy t = x², gdzie t ≥ 0. Otrzymujemy t² − 13t + 36 = 0.
+    Δ = 169 − 144 = 25, √Δ = 5, więc t₁ = (13 − 5)/2 = 4, t₂ = (13 + 5)/2 = 9. Obie wartości są nieujemne, więc obie akceptujemy.
+    Wracamy do x: x² = 4 daje x = 2 lub x = −2; x² = 9 daje x = 3 lub x = −3.
+    Równanie ma cztery rozwiązania: −3, −2, 2, 3.
+
+    CZĘŚĆ 2. Dziedzina: x ≠ 0 i x + 1 ≠ 0, czyli x ≠ 0 i x ≠ −1.
+    Mnożymy obie strony przez 6x(x+1):
+    6(x+1) + 6x = 5x(x+1)
+    6x + 6 + 6x = 5x² + 5x
+    12x + 6 = 5x² + 5x
+    5x² − 7x − 6 = 0.
+    Δ = (−7)² − 4·5·(−6) = 49 + 120 = 169, √Δ = 13.
+    x₁ = (7 − 13)/10 = −6/10 = −3/5,  x₂ = (7 + 13)/10 = 2.
+    Obie liczby należą do dziedziny, więc rozwiązania to x = −3/5 lub x = 2.
+  difficulty: 4
+- statement: Dane jest równanie x² − 2(m + 1)x + m² = 0 z parametrem m. a) Wyznacz wszystkie m, dla których
+    równanie ma dwa różne rozwiązania. b) Dla takich m wyznacz m, dla których suma kwadratów rozwiązań
+    jest równa 10.
+  worked_solution: |-
+    a) Tu a = 1 (zawsze różne od zera), b = −2(m+1), c = m².
+    Δ = [−2(m+1)]² − 4·1·m² = 4(m+1)² − 4m² = 4(m² + 2m + 1) − 4m² = 8m + 4.
+    Warunek dwóch różnych rozwiązań: Δ > 0, czyli 8m + 4 > 0, stąd m > −1/2.
+
+    b) Ze wzorów Viète'a: S = x₁ + x₂ = 2(m+1), P = x₁x₂ = m².
+    x₁² + x₂² = S² − 2P = [2(m+1)]² − 2m² = 4(m² + 2m + 1) − 2m² = 2m² + 8m + 4.
+    Warunek: 2m² + 8m + 4 = 10, czyli 2m² + 8m − 6 = 0, po podzieleniu przez 2: m² + 4m − 3 = 0.
+    Δ_m = 16 + 12 = 28, √28 = 2√7, więc m = (−4 ± 2√7)/2 = −2 ± √7.
+    Sprawdzamy warunek m > −1/2: √7 ≈ 2,65, więc −2 + √7 ≈ 0,65 > −1/2 ✓, natomiast −2 − √7 ≈ −4,65 < −1/2 ✗ (dla tej wartości równanie w ogóle nie ma pierwiastków).
+    Odpowiedź: m = −2 + √7.
+  difficulty: 5
+objectives:
+- statement: Rozpoznać równanie kwadratowe, doprowadzić je do postaci ogólnej ax² + bx + c = 0 i poprawnie
+    odczytać współczynniki wraz ze znakami.
+  bloom_level: Zrozumienie
+- statement: Rozwiązać równanie kwadratowe niezupełne (ax² + bx = 0 oraz ax² + c = 0) metodą wyłączania
+    czynnika lub pierwiastkowania, bez utraty rozwiązań.
+  bloom_level: Zastosowanie
+- statement: Obliczyć wyróżnik Δ = b² − 4ac i na podstawie jego znaku określić liczbę rozwiązań rzeczywistych
+    równania kwadratowego.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać dowolne równanie kwadratowe za pomocą wzorów na pierwiastki i sprawdzić poprawność
+    wyniku (przez podstawienie lub wzory Viète'a).
+  bloom_level: Zastosowanie
+- statement: Rozwiązać równanie kwadratowe metodą rozkładu na czynniki (wspólny czynnik, wzory skróconego
+    mnożenia, rozkład trójmianu) i zapisać trójmian w postaci iloczynowej.
+  bloom_level: Zastosowanie
+- statement: Wybrać najefektywniejszą metodę rozwiązania danego równania kwadratowego i uzasadnić ten
+    wybór.
+  bloom_level: Analiza
+- statement: Zastosować wzory Viète'a do obliczenia wyrażeń symetrycznych pierwiastków (sumy kwadratów,
+    sumy odwrotności) bez wyznaczania samych pierwiastków.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć wartości parametru, dla których równanie kwadratowe ma zadaną liczbę rozwiązań
+    lub pierwiastki spełniają dany warunek, uwzględniając założenia a ≠ 0 i Δ ≥ 0.
+  bloom_level: Analiza
+- statement: 'Rozwiązać równanie sprowadzalne do kwadratowego: dwukwadratowe (podstawienie t = x², t ≥
+    0) oraz proste równanie wymierne (z wyznaczeniem dziedziny i weryfikacją rozwiązań).'
+  bloom_level: Zastosowanie
+- statement: Powiązać rozwiązania równania kwadratowego z miejscami zerowymi funkcji kwadratowej i położeniem
+    paraboli względem osi OX.
+  bloom_level: Zrozumienie
+- statement: Ocenić poprawność cudzego rozwiązania równania kwadratowego, wskazując miejsce błędu (znak
+    w delcie, zgubione rozwiązanie, brak dziedziny, brak powrotu z podstawienia).
+  bloom_level: Ocena
+misconceptions:
+- name: Dzielenie obu stron przez x
+  incorrect_reasoning: W równaniu 3x² = 12x uczeń dzieli obie strony przez x i otrzymuje 3x = 12, czyli
+    jedno rozwiązanie x = 4.
+  correct_reasoning: 'Dzielenie przez x jest dozwolone tylko przy założeniu x ≠ 0, a więc gubi ewentualne
+    rozwiązanie x = 0. Poprawnie: 3x² − 12x = 0, 3x(x − 4) = 0, skąd x = 0 lub x = 4. Zawsze przenosimy
+    wszystko na jedną stronę i wyłączamy czynnik.'
+  severity: 4
+- name: „Delta ujemna, więc pierwiastek z Δ liczymy inaczej”
+  incorrect_reasoning: Przy Δ = −16 uczeń pisze √Δ = 4 (ignorując minus) albo √Δ = −4 i wyznacza „rozwiązania”.
+  correct_reasoning: 'Dla Δ < 0 pierwiastek kwadratowy z Δ nie istnieje w liczbach rzeczywistych. Poprawna
+    i pełna odpowiedź brzmi: równanie nie ma rozwiązań rzeczywistych — nic więcej nie liczymy.'
+  severity: 5
+- name: Błąd znaku we wzorze na pierwiastki
+  incorrect_reasoning: 'Uczeń pisze x = (b ± √Δ)/(2a) albo dzieli przez 2a tylko √Δ: x = −b ± √Δ/(2a).'
+  correct_reasoning: 'Obowiązuje x = (−b ± √Δ)/(2a) — minus przed b oraz kreska ułamkowa pod całym licznikiem.
+    Dobry nawyk: najpierw zapisz kreskę ułamkową i mianownik 2a, dopiero potem licznik.'
+  severity: 4
+- name: Zły znak przy liczeniu Δ, gdy c jest ujemne
+  incorrect_reasoning: Dla 2x² − 5x − 3 uczeń liczy Δ = 25 − 4·2·3 = 1 (pomijając minus przy c).
+  correct_reasoning: 'c = −3, więc −4ac = −4·2·(−3) = +24 i Δ = 25 + 24 = 49. Podstawiaj współczynniki
+    w nawiasach: Δ = (−5)² − 4·2·(−3).'
+  severity: 4
+- name: Stosowanie własności iloczynu do liczby różnej od zera
+  incorrect_reasoning: Z równania (x − 2)(x + 3) = 6 uczeń wnioskuje x − 2 = 6 lub x + 3 = 6.
+  correct_reasoning: 'Reguła „iloczyn = 0” działa wyłącznie dla zera. Trzeba wymnożyć: x² + x − 6 = 6,
+    czyli x² + x − 12 = 0, i rozwiązać deltą: x = −4 lub x = 3.'
+  severity: 5
+- name: Pierwiastkowanie x² = k tylko z jednym znakiem
+  incorrect_reasoning: Z x² = 49 uczeń pisze x = 7 i kończy.
+  correct_reasoning: 'Równanie x² = k dla k > 0 ma dwa rozwiązania: x = √k oraz x = −√k. Zatem x = 7 lub
+    x = −7. (Sam symbol √49 oznacza 7, ale rozwiązań równania są dwa.)'
+  severity: 4
+- name: Używanie wzorów Viète'a bez sprawdzenia istnienia pierwiastków
+  incorrect_reasoning: Uczeń od razu pisze x₁ + x₂ = −b/a, x₁x₂ = c/a i wyznacza parametr, nie sprawdzając
+    Δ ≥ 0; w odpowiedzi zostawia wartości parametru, dla których pierwiastków w ogóle nie ma.
+  correct_reasoning: Wzory Viète'a dotyczą pierwiastków, które istnieją. Najpierw rozwiąż warunek Δ ≥
+    0 (lub Δ > 0), a na końcu weź część wspólną z wynikiem otrzymanym z warunku zadania.
+  severity: 5
+- name: Zapominanie o współczynniku a w postaci iloczynowej
+  incorrect_reasoning: Dla 2x² − 5x − 3 = 0 z pierwiastkami −1/2 i 3 uczeń pisze postać iloczynową (x
+    + 1/2)(x − 3).
+  correct_reasoning: 'Postać iloczynowa to a(x − x₁)(x − x₂), czyli 2(x + 1/2)(x − 3). Weryfikacja: współczynnik
+    przy x² musi wyjść równy a.'
+  severity: 3
+- name: Zakończenie równania dwukwadratowego na zmiennej t
+  incorrect_reasoning: Po rozwiązaniu t² − 13t + 36 = 0 uczeń podaje odpowiedź x = 4 i x = 9.
+  correct_reasoning: 't to tylko podstawienie t = x². Trzeba wrócić: x² = 4 → x = ±2, x² = 9 → x = ±3.
+    Rozwiązania to −3, −2, 2, 3. Dodatkowo należy odrzucić ujemne wartości t, bo x² ≥ 0.'
+  severity: 5
+- name: Pomijanie dziedziny w równaniu wymiernym
+  incorrect_reasoning: Uczeń mnoży równanie przez mianowniki, otrzymuje pierwiastki i wszystkie zapisuje
+    jako odpowiedź.
+  correct_reasoning: Mnożenie przez wyrażenie zawierające x może wprowadzić rozwiązania obce. Dziedzinę
+    ustalamy na początku, a na końcu odrzucamy te pierwiastki, które zerują którykolwiek mianownik.
+  severity: 4
+- name: Mylenie liczby rozwiązań przy Δ = 0
+  incorrect_reasoning: „Δ = 0, więc x₁ = x₂ = −b/(2a), czyli równanie ma dwa rozwiązania.”
+  correct_reasoning: Zbiór rozwiązań ma wtedy jeden element — mówimy o jednym rozwiązaniu (pierwiastku
+    podwójnym). Parabola jest styczna do osi OX w dokładnie jednym punkcie.
+  severity: 3
+- name: Zapominanie o przypadku a = 0 w zadaniu z parametrem
+  incorrect_reasoning: W równaniu (m − 2)x² + 3x + 1 = 0 uczeń od razu liczy Δ i rozwiązuje Δ > 0, nie
+    zauważając, że dla m = 2 równanie jest liniowe.
+  correct_reasoning: Najpierw sprawdzamy, kiedy współczynnik przy x² się zeruje. Dla m = 2 mamy 3x + 1
+    = 0, czyli jedno rozwiązanie. Warunki z delty rozpatrujemy tylko dla m ≠ 2.
+  severity: 4

@@ -1,0 +1,370 @@
+section: kula
+name: Kula
+scope: Volume and surface area of a sphere; plane cross-sections; a sphere inscribed in or circumscribed
+  about a prism, pyramid, cylinder or cone.
+requirements:
+- X.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T19:12:03.253421'
+  approved_at: '2026-08-28T19:39:38.231732'
+  approved_by: reviewer
+concepts:
+- name: Kula i sfera
+  description: Kula o środku O i promieniu R to zbiór wszystkich punktów przestrzeni, których odległość
+    od O jest nie większa niż R. Sfera to zbiór punktów, których odległość od O jest dokładnie równa R
+    (czyli powierzchnia kuli).
+  explanation: 'Myśl o kuli jak o pełnym ''jabłku'', a o sferze jak o samej skórce. Dlatego mówimy ''objętość
+    kuli'', ale ''pole powierzchni kuli'' oznacza pole sfery. W zadaniach maturalnych obie nazwy występują
+    zamiennie, ale wzory są różne: V dotyczy wnętrza, S dotyczy powierzchni.'
+  difficulty: 1
+- name: Promień, średnica i środek kuli
+  description: Środek O to punkt równo oddalony od wszystkich punktów sfery; promień R to ta wspólna odległość;
+    średnica d = 2R to najdłuższy odcinek o końcach na sferze, przechodzący przez środek.
+  explanation: 'Prawie każde zadanie o kuli sprowadza się do wyznaczenia R. Uważaj na treść: jeśli podana
+    jest średnica, najpierw podziel ją przez 2. Kula ma nieskończenie wiele płaszczyzn i osi symetrii
+    — każda płaszczyzna przez O dzieli ją na dwie przystające półkule.'
+  difficulty: 1
+- name: Przekrój płaski kuli
+  description: Częścią wspólną kuli i płaszczyzny, która przecina ją w więcej niż jednym punkcie, jest
+    koło. Jeżeli d jest odległością środka kuli od płaszczyzny i d < R, to promień tego koła wynosi r
+    = √(R² − d²).
+  explanation: 'Klucz to trójkąt prostokątny: R jest przeciwprostokątną, d i r przyprostokątnymi (d mierzymy
+    wzdłuż prostopadłej ze środka O do płaszczyzny, r od spodka tej prostopadłej do punktu na okręgu przekroju).
+    Im dalej płaszczyzna od środka, tym mniejsze koło.'
+  difficulty: 2
+- name: Koło wielkie
+  description: Przekrój kuli płaszczyzną przechodzącą przez jej środek (d = 0). Jego promień jest równy
+    promieniowi kuli, a pole wynosi πR².
+  explanation: To największy możliwy przekrój kuli. Warto zapamiętać, że pole sfery 4πR² to dokładnie
+    cztery pola koła wielkiego — dobra kontrola poprawności wzoru.
+  difficulty: 1
+- name: Płaszczyzna styczna do kuli
+  description: Płaszczyzna mająca z kulą dokładnie jeden punkt wspólny; zachodzi wtedy d = R, a promień
+    poprowadzony do punktu styczności jest prostopadły do tej płaszczyzny.
+  explanation: 'To warunek, którego używamy przy kuli wpisanej w bryłę: odległość środka kuli od każdej
+    ściany musi być równa R. Zależność ''promień ⟂ płaszczyzna styczna'' pozwala przenieść rachunki do
+    przekroju płaskiego.'
+  difficulty: 2
+- name: Wzajemne położenie płaszczyzny i kuli
+  description: 'Dla odległości d środka od płaszczyzny: d < R — przekrój jest kołem; d = R — płaszczyzna
+    styczna (jeden punkt); d > R — brak punktów wspólnych.'
+  explanation: Trzy przypadki analogiczne do prostej i okręgu na płaszczyźnie. Przy rachunkach zawsze
+    sprawdź, czy R² − d² wychodzi dodatnie — ujemna wartość pod pierwiastkiem oznacza błąd lub brak przekroju.
+  difficulty: 2
+- name: Półkula
+  description: Część kuli odcięta płaszczyzną przechodzącą przez środek. Jej powierzchnia całkowita składa
+    się z połowy sfery (2πR²) i koła wielkiego (πR²), a objętość to połowa objętości kuli.
+  explanation: 'Częsty błąd to policzenie tylko czaszy 2πR² i zapomnienie o ''denku''. Zawsze zapytaj:
+    czy bryła jest zamknięta (np. lita półkula) czy to sama czasza (np. kopuła)?'
+  difficulty: 2
+- name: Kula opisana na wielościanie lub bryle obrotowej
+  description: Kula, na której sferze leżą wszystkie wierzchołki wielościanu (lub wszystkie punkty obu
+    okręgów podstaw walca / okręgu podstawy i wierzchołka stożka). Jej środek jest równo oddalony od tych
+    punktów.
+  explanation: 'Środek leży na osi symetrii bryły. Standardowy sposób: oznacz R, zapisz twierdzenie Pitagorasa
+    dla odcinka od środka do wierzchołka podstawy i rozwiąż równanie. W bryle o osi symetrii środek zawsze
+    leży na tej osi, ale nie musi leżeć wewnątrz bryły (np. w bardzo płaskim stożku wypada poniżej podstawy).'
+  difficulty: 3
+- name: Kula wpisana w bryłę
+  description: 'Kula styczna do wszystkich ścian wielościanu (odpowiednio: do obu podstaw i powierzchni
+    bocznej walca, do podstawy i powierzchni bocznej stożka). Jej środek jest równo oddalony od wszystkich
+    ścian, a ta odległość równa się R.'
+  explanation: 'Nie w każdą bryłę da się wpisać kulę: w graniastosłup prosty tylko wtedy, gdy w podstawę
+    można wpisać okrąg o promieniu ρ i wysokość wynosi H = 2ρ. W stożku i ostrosłupie prawidłowym zadanie
+    sprowadza się do wpisania okręgu w odpowiedni przekrój.'
+  difficulty: 3
+- name: Przekrój osiowy jako narzędzie
+  description: Przekrój bryły obrotowej (walca, stożka) płaszczyzną zawierającą oś obrotu; dla stożka
+    jest to trójkąt równoramienny o podstawie 2r i ramionach l, dla walca prostokąt o bokach 2r i H.
+  explanation: 'Najważniejsza technika tego działu: kula wpisana w stożek daje w przekroju osiowym okrąg
+    wpisany w trójkąt, a kula opisana na stożku — okrąg opisany na tym trójkącie. Zadanie przestrzenne
+    zamienia się w planimetryczne.'
+  difficulty: 3
+- name: Skala podobieństwa dla kul
+  description: Wszystkie kule są podobne. Jeśli promień rośnie k razy, to pole powierzchni rośnie k² razy,
+    a objętość k³ razy.
+  explanation: 'Pozwala szybko odpowiadać na pytania typu ''ile razy większa jest objętość, gdy promień
+    podwoimy'' (8 razy) bez liczenia. Odwrotnie: jeśli objętość wzrosła 27 razy, to promień wzrósł 3 razy.'
+  difficulty: 2
+- name: Wykorzystanie trygonometrii w zadaniach o kuli
+  description: 'Brakujące wymiary bryły (wysokość, promień podstawy, tworząca, krawędź boczna) wyznacza
+    się z kątów: kąta nachylenia tworzącej lub krawędzi bocznej do podstawy, kąta rozwarcia przekroju
+    osiowego, kąta dwuściennego przy podstawie.'
+  explanation: 'Schemat: z kąta i jednego wymiaru odtwórz trójkąt prostokątny w przekroju (sin, cos, tg),
+    dopiero potem stosuj wzory na R kuli wpisanej lub opisanej. Zapamiętaj wartości funkcji dla 30°, 45°,
+    60°.'
+  difficulty: 3
+formulas:
+- name: Objętość kuli
+  latex_raw: V = \frac{4}{3}\pi R^{3}
+  conditions: R — promień kuli, R > 0
+  description: 'Przy średnicy d: V = \frac{\pi d^{3}}{6}.'
+- name: Pole powierzchni kuli (sfery)
+  latex_raw: S = 4\pi R^{2}
+  conditions: R — promień kuli
+  description: Równe czterem polom koła wielkiego; równe też polu powierzchni bocznej walca opisanego
+    na kuli.
+- name: Promień z objętości
+  latex_raw: R = \sqrt[3]{\dfrac{3V}{4\pi}}
+  conditions: V — dana objętość kuli
+- name: Promień z pola powierzchni
+  latex_raw: R = \sqrt{\dfrac{S}{4\pi}}
+  conditions: S — dane pole powierzchni sfery
+- name: Promień przekroju płaskiego
+  latex_raw: r = \sqrt{R^{2}-d^{2}},\qquad P_{przekroju} = \pi\left(R^{2}-d^{2}\right)
+  conditions: d — odległość środka kuli od płaszczyzny, 0 ≤ d < R
+- name: Półkula
+  latex_raw: V = \frac{2}{3}\pi R^{3},\qquad S_{c} = 2\pi R^{2}+\pi R^{2}=3\pi R^{2}
+  conditions: dla litej półkuli (czasza + koło wielkie jako podstawa)
+- name: Kula wpisana w sześcian i opisana na sześcianie
+  latex_raw: R_{wpis} = \frac{a}{2},\qquad R_{opis} = \frac{a\sqrt{3}}{2}
+  conditions: a — krawędź sześcianu
+  description: R_opis to połowa przekątnej sześcianu.
+- name: Kula opisana na prostopadłościanie
+  latex_raw: R = \frac{1}{2}\sqrt{a^{2}+b^{2}+c^{2}}
+  conditions: a, b, c — krawędzie prostopadłościanu
+  description: Średnica kuli jest przekątną prostopadłościanu; środek to środek przekątnej.
+- name: Kula opisana na graniastosłupie prostym
+  latex_raw: R = \sqrt{R_{p}^{2}+\left(\frac{H}{2}\right)^{2}}
+  conditions: graniastosłup prosty, na którego podstawie można opisać okrąg o promieniu R_p; H — wysokość
+  description: Środek kuli leży w połowie odcinka łączącego środki okręgów opisanych na podstawach.
+- name: Kula wpisana w graniastosłup prosty
+  latex_raw: R = \rho = \frac{H}{2}
+  conditions: istnieje tylko wtedy, gdy w podstawę można wpisać okrąg o promieniu ρ oraz H = 2ρ
+- name: Kula wpisana w walec
+  latex_raw: R = r = \frac{H}{2}
+  conditions: tylko dla walca, w którym H = 2r (przekrój osiowy jest kwadratem)
+  description: 'Wtedy V_kuli : V_walca = 2 : 3 oraz S_kuli : S_walca = 2 : 3 (twierdzenie Archimedesa).'
+- name: Kula opisana na walcu
+  latex_raw: R = \sqrt{r^{2}+\left(\frac{H}{2}\right)^{2}}
+  conditions: r — promień podstawy walca, H — wysokość; środek kuli to środek osi walca
+- name: Kula opisana na stożku
+  latex_raw: R = \frac{l^{2}}{2H}
+  conditions: stożek o promieniu podstawy r, wysokości H i tworzącej l, gdzie l² = r² + H²
+  description: Wynika z równania R² = r² + (H − R)²; dla H < r środek wypada poza stożkiem.
+- name: Kula wpisana w stożek
+  latex_raw: R = \frac{rH}{r+l} = r\,\mathrm{tg}\frac{\alpha}{2}
+  conditions: stożek o promieniu r, wysokości H, tworzącej l; α — kąt nachylenia tworzącej do podstawy
+  description: 'To promień okręgu wpisanego w trójkąt równoramienny będący przekrojem osiowym: R = P/p.'
+- name: Kula opisana na ostrosłupie prawidłowym
+  latex_raw: R = \frac{b^{2}}{2H}
+  conditions: b — krawędź boczna, H — wysokość ostrosłupa prawidłowego (środek podstawy jest środkiem
+    okręgu opisanego na podstawie)
+  description: 'Ten sam schemat co dla stożka: R² = R_p² + (H − R)², gdzie b² = R_p² + H².'
+- name: Kula wpisana w ostrosłup prawidłowy
+  latex_raw: R = \frac{\rho_{p}H}{\rho_{p}+m} = \rho_{p}\,\mathrm{tg}\frac{\beta}{2}
+  conditions: ρ_p — promień okręgu wpisanego w podstawę, m — wysokość ściany bocznej (apotema), β — kąt
+    dwuścienny między ścianą boczną a podstawą
+  description: Okrąg wpisany w trójkąt równoramienny o podstawie 2ρ_p i wysokości H.
+- name: Zależności skali
+  latex_raw: \frac{S_{2}}{S_{1}} = k^{2},\qquad \frac{V_{2}}{V_{1}} = k^{3}
+  conditions: k = R₂/R₁ — stosunek promieni dwóch kul
+methods:
+- name: Obliczanie V i S kuli oraz wyznaczanie R z danej V lub S
+  when_to_use: Gdy dany jest promień, średnica, objętość albo pole powierzchni kuli i trzeba wyznaczyć
+    pozostałe wielkości.
+  steps:
+  - Odczytaj z treści, czy podano promień, czy średnicę; jeśli średnicę — podziel przez 2.
+  - 'Jeśli dana jest objętość: z równania V = (4/3)πR³ wyznacz R³ = 3V/(4π) i wyciągnij pierwiastek trzeciego
+    stopnia.'
+  - 'Jeśli dane jest pole: z równania S = 4πR² wyznacz R² = S/(4π) i wyciągnij pierwiastek kwadratowy
+    (bierzemy wartość dodatnią).'
+  - Podstaw R do wzoru na szukaną wielkość, pilnując potęg (R³ przy objętości, R² przy polu).
+  - 'Zapisz wynik z jednostkami: pole w j², objętość w j³; jeśli treść nie wymaga przybliżenia, zostaw
+    π w wyniku.'
+- name: Przekrój kuli płaszczyzną
+  when_to_use: Gdy w zadaniu pojawia się płaszczyzna przecinająca kulę i podana jest jej odległość od
+    środka lub promień/pole/obwód przekroju.
+  steps:
+  - Wykonaj rysunek przekroju kuli płaszczyzną przechodzącą przez środek O i prostopadłą do danej płaszczyzny
+    — powstanie koło wielkie z cięciwą.
+  - Zaznacz trójkąt prostokątny o przeciwprostokątnej R (promień do punktu na okręgu przekroju) i przyprostokątnych
+    d (odległość środka od płaszczyzny) oraz r (promień przekroju).
+  - Zapisz zależność R² = d² + r² i wyznacz szukaną wielkość.
+  - 'Policz to, o co pyta zadanie: pole przekroju πr², obwód 2πr lub odległość d = √(R² − r²).'
+  - 'Sprawdź sensowność: musi być r < R oraz d < R.'
+- name: Kula opisana na bryle (schemat 'równe odległości od wierzchołków')
+  when_to_use: Gdy szukamy promienia kuli przechodzącej przez wszystkie wierzchołki graniastosłupa, ostrosłupa,
+    przez okręgi podstaw walca lub przez wierzchołek i okrąg podstawy stożka.
+  steps:
+  - Znajdź oś symetrii bryły (prosta przez środki okręgów opisanych na podstawach lub oś obrotu) — środek
+    kuli leży na tej osi.
+  - Wyznacz promień R_p okręgu opisanego na podstawie (dla walca/stożka jest to promień podstawy r).
+  - 'Oznacz przez R promień kuli i wyraź odległość środka od płaszczyzny podstawy: dla bryły z dwiema
+    podstawami jest to H/2, dla ostrosłupa/stożka jest to |H − R|.'
+  - 'Zapisz twierdzenie Pitagorasa: R² = R_p² + (odległość)² i rozwiąż równanie względem R (dla ostrosłupa
+    i stożka otrzymasz R = b²/(2H) lub R = l²/(2H)).'
+  - Podstaw R do wzorów na objętość lub pole powierzchni kuli.
+- name: Kula wpisana w bryłę (schemat 'okrąg wpisany w przekrój')
+  when_to_use: 'Gdy kula jest styczna do wszystkich ścian bryły: do podstaw i pobocznicy walca, do podstawy
+    i pobocznicy stożka, do wszystkich ścian graniastosłupa lub ostrosłupa prawidłowego.'
+  steps:
+  - 'Sprawdź warunek istnienia: w graniastosłupie prostym i walcu kula wpisana istnieje tylko przy H =
+    2ρ (ρ — promień okręgu wpisanego w podstawę).'
+  - Wykonaj przekrój bryły płaszczyzną zawierającą oś symetrii i prostopadłą do ścian bocznych (przekrój
+    osiowy stożka/walca, przekrój ostrosłupa przez apotemy przeciwległych ścian).
+  - Zauważ, że kula przecina się w tym przekroju wzdłuż okręgu wpisanego w otrzymaną figurę.
+  - Policz promień okręgu wpisanego, np. w trójkącie ze wzoru R = P/p (pole przez połowę obwodu) lub z
+    trygonometrii R = ρ·tg(połowy kąta przy podstawie).
+  - Podstaw otrzymane R do wzorów na V i S kuli; w razie potrzeby porównaj z objętością/polem bryły.
+- name: Uzupełnianie brakujących wymiarów za pomocą trygonometrii
+  when_to_use: 'Gdy zamiast wysokości lub promienia podano kąt: nachylenia tworzącej lub krawędzi bocznej
+    do podstawy, rozwarcia przekroju osiowego, kąt dwuścienny przy podstawie.'
+  steps:
+  - Narysuj przekrój zawierający dany kąt i wskaż w nim trójkąt prostokątny.
+  - 'Nazwij boki: promień podstawy (lub jego odpowiednik: R_p albo ρ_p), wysokość H, tworząca l lub krawędź
+    b.'
+  - 'Zapisz odpowiednie zależności: H = r·tg α, l = r/cos α, r = l·cos α, H = l·sin α (α — kąt tworzącej
+    z podstawą).'
+  - Wyznacz wszystkie potrzebne wymiary bryły w postaci dokładnej (z pierwiastkami, bez zaokrągleń).
+  - Dopiero teraz zastosuj wzór na promień kuli wpisanej lub opisanej i policz V lub S.
+- name: Porównywanie kul i brył (stosunki, skala)
+  when_to_use: Gdy zadanie pyta, ile razy zmieni się objętość lub pole po zmianie promienia, albo o stosunek
+    objętości kuli do objętości bryły wpisanej/opisanej.
+  steps:
+  - Wyraź promienie obu obiektów przez jedną wspólną zmienną (np. przez a, r lub R).
+  - Zapisz wzory na obie objętości (lub oba pola) i utwórz iloraz.
+  - Skróć wspólne czynniki (π i potęgi zmiennej) — zmienna powinna się zredukować, jeśli figury są podobne
+    lub wymiary powiązane.
+  - 'Podaj wynik jako liczbę lub stosunek liczb naturalnych (np. 2 : 3 dla kuli wpisanej w walec).'
+  - 'Dla samych kul możesz od razu użyć reguł: S rośnie k², a V rośnie k³ razy.'
+examples:
+- statement: Pole powierzchni kuli jest równe 144π cm². Oblicz jej objętość oraz pole przekroju kuli płaszczyzną
+    przechodzącą przez środek kuli.
+  worked_solution: |-
+    Krok 1. Ze wzoru S = 4πR² mamy 4πR² = 144π, czyli R² = 36, a stąd R = 6 cm.
+    Krok 2. Objętość: V = (4/3)πR³ = (4/3)π·6³ = (4/3)π·216 = 288π cm³.
+    Krok 3. Płaszczyzna przechodząca przez środek wyznacza koło wielkie o promieniu R = 6, więc jego pole to πR² = 36π cm².
+    Odpowiedź: V = 288π cm³, pole koła wielkiego = 36π cm².
+  difficulty: 1
+- statement: Kulę o promieniu 13 cm przecięto płaszczyzną odległą od środka kuli o 5 cm. Oblicz promień,
+    obwód i pole otrzymanego koła.
+  worked_solution: |-
+    Krok 1. Rysujemy przekrój przez środek O prostopadły do danej płaszczyzny. Powstaje trójkąt prostokątny o przeciwprostokątnej R = 13 (promień kuli poprowadzony do punktu okręgu przekroju) i przyprostokątnych d = 5 oraz r.
+    Krok 2. Z twierdzenia Pitagorasa: r² = R² − d² = 169 − 25 = 144, więc r = 12 cm.
+    Krok 3. Obwód koła przekroju: 2πr = 24π cm.
+    Krok 4. Pole koła przekroju: πr² = 144π cm².
+    Sprawdzenie: r = 12 < R = 13 — wynik sensowny.
+  difficulty: 2
+- statement: W walec, którego przekrój osiowy jest kwadratem o boku 10, wpisano kulę. Oblicz objętość
+    i pole powierzchni tej kuli oraz stosunek objętości kuli do objętości walca.
+  worked_solution: |-
+    Krok 1. Przekrój osiowy jest kwadratem o boku 10, więc 2r = 10 i H = 10, czyli r = 5, H = 10 (rzeczywiście H = 2r, więc kulę można wpisać).
+    Krok 2. Kula wpisana jest styczna do pobocznicy i do obu podstaw, więc jej promień R = r = H/2 = 5.
+    Krok 3. Objętość kuli: V_k = (4/3)π·5³ = 500π/3.
+    Krok 4. Pole kuli: S_k = 4π·5² = 100π.
+    Krok 5. Objętość walca: V_w = πr²H = π·25·10 = 250π.
+    Krok 6. Stosunek: V_k : V_w = (500π/3) : 250π = 500/(3·250) = 2/3.
+    Odpowiedź: V_k = 500π/3, S_k = 100π, a kula wypełnia dokładnie 2/3 objętości walca (twierdzenie Archimedesa).
+  difficulty: 2
+- statement: W stożek o promieniu podstawy r = 6 i wysokości H = 8 wpisano kulę. Oblicz objętość tej kuli
+    oraz jaką część objętości stożka ona stanowi.
+  worked_solution: |-
+    Krok 1. Tworząca: l = √(r² + H²) = √(36 + 64) = √100 = 10.
+    Krok 2. Przekrój osiowy stożka to trójkąt równoramienny o podstawie 2r = 12 i ramionach l = 10, o wysokości H = 8. Kula wpisana daje w tym przekroju okrąg wpisany w ten trójkąt.
+    Krok 3. Promień okręgu wpisanego: R = P/p, gdzie P = (1/2)·12·8 = 48, a p = (12 + 10 + 10)/2 = 16. Zatem R = 48/16 = 3. (Ten sam wynik ze wzoru R = rH/(r + l) = 6·8/(6 + 10) = 48/16 = 3.)
+    Krok 4. Objętość kuli: V_k = (4/3)π·3³ = 36π.
+    Krok 5. Objętość stożka: V_s = (1/3)πr²H = (1/3)π·36·8 = 96π.
+    Krok 6. Stosunek: 36π/96π = 3/8.
+    Odpowiedź: V_k = 36π, co stanowi 3/8 objętości stożka.
+  difficulty: 3
+- statement: Dany jest ostrosłup prawidłowy czworokątny o krawędzi podstawy a = 6, którego krawędź boczna
+    tworzy z płaszczyzną podstawy kąt 60°. Oblicz objętość kuli opisanej na tym ostrosłupie.
+  worked_solution: |-
+    Krok 1. Promień okręgu opisanego na podstawie (kwadrat o boku 6) to połowa przekątnej: R_p = (6√2)/2 = 3√2.
+    Krok 2. Krawędź boczna nachylona pod kątem 60° do podstawy: wysokość H = R_p·tg60° = 3√2·√3 = 3√6, a krawędź boczna b = R_p/cos60° = 3√2/(1/2) = 6√2.
+    Krok 3. Środek S kuli opisanej leży na wysokości ostrosłupa. Jeżeli R jest promieniem kuli, to odległość S od podstawy wynosi H − R, a z twierdzenia Pitagorasa dla trójkąta o wierzchołkach: środek podstawy, wierzchołek podstawy, S:
+    R² = R_p² + (H − R)².
+    Krok 4. R² = 18 + H² − 2HR + R², czyli 2HR = 18 + H² = 18 + 54 = 72, a więc R = 72/(2·3√6) = 72/(6√6) = 12/√6 = 2√6.
+    (Kontrola wzorem R = b²/(2H) = 72/(6√6) = 2√6.)
+    Krok 5. Objętość kuli: V = (4/3)πR³ = (4/3)π(2√6)³ = (4/3)π·8·6√6 = (4/3)·48√6·π = 64√6·π.
+    Odpowiedź: V = 64√6 π.
+  difficulty: 4
+objectives:
+- statement: Odróżnić kulę od sfery oraz wskazać środek, promień, średnicę i koło wielkie na rysunku i
+    w opisie słownym.
+  bloom_level: Zrozumienie
+- statement: Obliczyć objętość i pole powierzchni kuli z danego promienia lub średnicy oraz wyznaczyć
+    promień z danej objętości albo danego pola.
+  bloom_level: Zastosowanie
+- statement: Wyznaczyć promień, obwód i pole przekroju kuli płaszczyzną odległą o d od środka, a także
+    odległość płaszczyzny od środka przy danym przekroju, korzystając z zależności R² = d² + r².
+  bloom_level: Zastosowanie
+- statement: Rozstrzygnąć wzajemne położenie płaszczyzny i kuli (przekrój, styczność, brak punktów wspólnych)
+    na podstawie porównania d i R.
+  bloom_level: Analiza
+- statement: Obliczyć promień kuli opisanej na sześcianie, prostopadłościanie, graniastosłupie prostym,
+    walcu, stożku i ostrosłupie prawidłowym, konstruując odpowiednie równanie z twierdzenia Pitagorasa.
+  bloom_level: Zastosowanie
+- statement: Obliczyć promień kuli wpisanej w walec, stożek, sześcian, graniastosłup prosty i ostrosłup
+    prawidłowy, sprowadzając zadanie do okręgu wpisanego w odpowiedni przekrój, oraz sprawdzić warunek
+    istnienia takiej kuli.
+  bloom_level: Analiza
+- statement: Wykorzystać funkcje trygonometryczne kąta nachylenia tworzącej, krawędzi bocznej lub kąta
+    dwuściennego do wyznaczenia brakujących wymiarów bryły, a następnie promienia kuli wpisanej lub opisanej.
+  bloom_level: Zastosowanie
+- statement: Porównywać objętości i pola powierzchni kuli oraz bryły z nią związanej (np. kula wpisana
+    w walec lub stożek) i wyrażać wynik jako stosunek lub część całości.
+  bloom_level: Analiza
+- statement: Ocenić poprawność otrzymanego wyniku pod względem jednostek, rzędu wielkości i warunków geometrycznych
+    (np. r < R, R < H dla środka wewnątrz bryły).
+  bloom_level: Ocena
+misconceptions:
+- name: Mylenie wzorów na pole i objętość kuli
+  incorrect_reasoning: Uczeń zapisuje S = 4/3 πR² albo V = 4πR³, mieszając współczynniki i wykładniki
+    obu wzorów.
+  correct_reasoning: 'Pole jest wielkością dwuwymiarową, więc występuje R²: S = 4πR² (cztery koła wielkie).
+    Objętość jest trójwymiarowa, więc występuje R³ ze współczynnikiem 4/3: V = (4/3)πR³. Kontrola jednostek
+    (cm² vs cm³) natychmiast wykrywa pomyłkę.'
+  severity: 4
+- name: Podstawianie średnicy zamiast promienia
+  incorrect_reasoning: '''Kula ma średnicę 10, więc V = (4/3)π·10³ = 4000π/3.'''
+  correct_reasoning: 'We wzorach występuje promień. Dla d = 10 mamy R = 5 i V = (4/3)π·125 = 500π/3. Błąd
+    ten zawyża objętość aż ośmiokrotnie, więc zawsze wypisuj osobno: ''R = d/2 = ...''.'
+  severity: 4
+- name: Utożsamianie kuli ze sferą przy powierzchni półkuli
+  incorrect_reasoning: '''Pole powierzchni całkowitej litej półkuli to połowa pola kuli, czyli 2πR².'''
+  correct_reasoning: Powierzchnia całkowita litej półkuli to czasza 2πR² plus koło wielkie πR², razem
+    3πR². Połowa sfery to tylko powierzchnia zakrzywiona; trzeba sprawdzić, czy bryła ma jeszcze płaską
+    podstawę.
+  severity: 3
+- name: Traktowanie przekroju kuli jako koła o promieniu R
+  incorrect_reasoning: '''Przekrój kuli płaszczyzną to koło o promieniu równym promieniowi kuli, więc
+    pole zawsze wynosi πR².'''
+  correct_reasoning: Tylko przekrój przechodzący przez środek (koło wielkie) ma promień R. Dla płaszczyzny
+    odległej o d od środka promień przekroju to r = √(R² − d²) < R, a pole π(R² − d²).
+  severity: 4
+- name: Założenie, że środek kuli opisanej leży w połowie wysokości ostrosłupa lub stożka
+  incorrect_reasoning: '''Środek kuli opisanej dzieli wysokość na pół, więc R = √(R_p² + (H/2)²).'''
+  correct_reasoning: Podział wysokości na pół obowiązuje dla brył z dwiema równoległymi podstawami (graniastosłup,
+    walec). W stożku i ostrosłupie środek jest równo oddalony od wierzchołka i od wierzchołków podstawy,
+    co daje R² = R_p² + (H − R)², a stąd R = l²/(2H) (lub b²/(2H)) — na ogół R ≠ H/2.
+  severity: 5
+- name: Wpisywanie kuli w dowolny walec lub graniastosłup
+  incorrect_reasoning: '''W każdy walec można wpisać kulę o promieniu równym promieniowi podstawy.'''
+  correct_reasoning: Kula wpisana musi dotykać obu podstaw i pobocznicy, co wymusza jednocześnie R = r
+    i R = H/2, czyli H = 2r. Jeśli H ≠ 2r, kula wpisana nie istnieje (istnieje tylko kula największa mieszcząca
+    się w bryle, ale nie jest styczna do wszystkich ścian). Analogicznie graniastosłup prosty musi mieć
+    podstawę z okręgiem wpisanym o promieniu ρ i wysokość H = 2ρ.
+  severity: 4
+- name: Mylenie promienia kuli wpisanej w stożek z promieniem podstawy lub z połową wysokości
+  incorrect_reasoning: '''Kula wpisana w stożek dotyka podstawy i pobocznicy, więc jej promień to H/2
+    albo r/2.'''
+  correct_reasoning: 'Promień kuli wpisanej w stożek to promień okręgu wpisanego w trójkąt osiowy: R =
+    P/p = rH/(r + l). Np. dla r = 6, H = 8, l = 10 wychodzi R = 3, a nie 4 ani 3 przez przypadek — trzeba
+    policzyć, nie zgadywać.'
+  severity: 4
+- name: Skalowanie liniowe objętości
+  incorrect_reasoning: '''Promień kuli zwiększono dwukrotnie, więc objętość też wzrosła dwa razy.'''
+  correct_reasoning: 'Objętość zależy od R³, więc rośnie 2³ = 8 razy, a pole powierzchni 2² = 4 razy.
+    Ogólnie przy skali k: S rośnie k², V rośnie k³ razy.'
+  severity: 3
+- name: Zaokrąglanie w trakcie obliczeń trygonometrycznych
+  incorrect_reasoning: Uczeń zamienia √3 na 1,73 już przy liczeniu wysokości, a potem podnosi wynik do
+    trzeciej potęgi, otrzymując wynik znacząco różny od dokładnego.
+  correct_reasoning: Prowadź rachunki w postaci dokładnej (pierwiastki, ułamki, π) i zaokrąglaj dopiero
+    na końcu, jeśli zadanie tego wymaga. Przy potęgowaniu błąd zaokrąglenia rośnie.
+  severity: 2

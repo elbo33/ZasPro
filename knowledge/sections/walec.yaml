@@ -1,0 +1,369 @@
+section: walec
+name: Walec
+scope: Volume and surface area of a right cylinder; the axial cross-section; cases where the cylinder
+  is given via an inscribed or circumscribed solid or a rotation.
+requirements:
+- X.5
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T19:06:11.157330'
+  approved_at: '2026-08-28T19:39:37.630051'
+  approved_by: reviewer
+concepts:
+- name: Walec (walec kołowy prosty)
+  description: Bryła obrotowa powstała przez obrót prostokąta wokół prostej zawierającej jeden z jego
+    boków; ograniczona dwoma równoległymi, przystającymi kołami (podstawami) o promieniu r oraz powierzchnią
+    boczną.
+  explanation: Myśl o walcu jak o „kole przesuniętym prostopadle w górę o wysokość H”. Wszystkie przekroje
+    płaszczyznami równoległymi do podstawy są kołami przystającymi do podstawy. W zakresie podstawowym
+    zawsze chodzi o walec prosty (oś prostopadła do podstaw).
+  difficulty: 1
+- name: Promień podstawy r i wysokość H
+  description: r to promień koła będącego podstawą, H to odległość między płaszczyznami podstaw, równa
+    długości tworzącej walca prostego.
+  explanation: To dwie jedyne wielkości, od których zależą wszystkie miary walca. Każde zadanie sprowadza
+    się do wyznaczenia pary (r, H), a dopiero potem do podstawienia do wzorów.
+  difficulty: 1
+- name: Tworząca walca
+  description: Odcinek łączący punkt okręgu jednej podstawy z odpowiadającym mu punktem okręgu drugiej
+    podstawy, prostopadły do podstaw; jego długość to l = H.
+  explanation: W walcu prostym tworząca i wysokość to to samo (inaczej niż w stożku, gdzie l ≠ H). Powierzchnia
+    boczna jest „utkana” z tworzących.
+  difficulty: 1
+- name: Oś walca
+  description: Prosta przechodząca przez środki obu podstaw, prostopadła do nich; walec jest bryłą obrotową
+    względem tej prostej.
+  explanation: 'Oś jest osią symetrii obrotowej: obrót walca wokół niej o dowolny kąt przeprowadza go
+    na siebie. Dlatego wszystkie przekroje osiowe są przystające.'
+  difficulty: 1
+- name: Przekrój osiowy walca
+  description: Przekrój walca płaszczyzną zawierającą jego oś; jest to prostokąt o wymiarach 2r × H.
+  explanation: 'Najważniejsza figura pomocnicza w zadaniach: pozwala przenieść dane (przekątna, kąt, pole,
+    obwód) na zależności między r i H. Uwaga: bok przy podstawie to średnica 2r, a nie promień.'
+  difficulty: 2
+- name: Walec równoboczny
+  description: Walec, którego przekrój osiowy jest kwadratem, czyli taki, że H = 2r.
+  explanation: Jedna informacja („przekrój osiowy jest kwadratem”) natychmiast daje związek H = 2r i redukuje
+    zadanie do jednej niewiadomej. Wtedy V = 2πr³, P_c = 6πr².
+  difficulty: 2
+- name: Przekrój płaszczyzną równoległą do osi
+  description: Przekrój walca płaszczyzną równoległą do osi, oddaloną od niej o d < r; jest to prostokąt
+    o wymiarach c × H, gdzie c = 2√(r² − d²) jest cięciwą podstawy.
+  explanation: 'Rysuj podstawę „z góry”: cięciwa, promień i odległość od środka tworzą trójkąt prostokątny.
+    Dla d = 0 otrzymujemy przekrój osiowy.'
+  difficulty: 3
+- name: Siatka walca
+  description: Figura płaska złożona z dwóch kół o promieniu r oraz prostokąta o wymiarach 2πr × H (rozwinięcie
+    powierzchni bocznej).
+  explanation: Powierzchnia boczna „rozwija się” w prostokąt, którego jeden bok to obwód podstawy 2πr,
+    a drugi to wysokość H. Stąd natychmiast P_b = 2πrH.
+  difficulty: 2
+- name: Pole powierzchni całkowitej
+  description: 'Suma pól obu podstaw i pola powierzchni bocznej: P_c = 2πr² + 2πrH.'
+  explanation: 'Sprawdzaj kontekst: walec zamknięty ma dwie podstawy, „rura” bez den ma tylko pole boczne,
+    a otwarty pojemnik (kubek) — jedną podstawę.'
+  difficulty: 2
+- name: Objętość walca
+  description: 'Iloczyn pola podstawy i wysokości: V = P_p · H = πr²H.'
+  explanation: Zasada „pole podstawy razy wysokość” jest wspólna dla graniastosłupów i walca — walec to
+    „graniastosłup o podstawie kołowej”.
+  difficulty: 1
+- name: Kąt nachylenia przekątnej przekroju osiowego do podstawy
+  description: Kąt α między przekątną prostokąta 2r × H a bokiem długości 2r; spełnia tg α = H/(2r).
+  explanation: 'To standardowe „wejście trygonometrii” do zadań o walcu: z przekątnej d i kąta α mamy
+    2r = d cos α oraz H = d sin α.'
+  difficulty: 3
+- name: Walec wpisany w graniastosłup
+  description: Walec, którego podstawa jest okręgiem wpisanym w podstawę graniastosłupa prawidłowego,
+    a wysokość równa jest wysokości graniastosłupa.
+  explanation: 'Wysokość „przechodzi” bez zmian; cała praca to znalezienie promienia okręgu wpisanego
+    w wielokąt podstawy (w kwadrat o boku a: r = a/2; w trójkąt równoboczny o boku a: r = a√3/6; w sześciokąt
+    foremny o boku a: r = a√3/2).'
+  difficulty: 3
+- name: Walec opisany na graniastosłupie
+  description: Walec, którego podstawa jest okręgiem opisanym na podstawie graniastosłupa prawidłowego,
+    a wysokość równa wysokości graniastosłupa.
+  explanation: 'Tu potrzebny jest promień okręgu opisanego (w kwadracie o boku a: R = a√2/2; w trójkącie
+    równobocznym: R = a√3/3; w sześciokącie foremnym: R = a). Wierzchołki graniastosłupa leżą wtedy na
+    powierzchni bocznej walca.'
+  difficulty: 3
+- name: Kula opisana na walcu / walec wpisany w kulę
+  description: Kula o środku w środku osi walca, przechodząca przez wszystkie punkty obu okręgów podstaw;
+    jej promień spełnia R² = r² + (H/2)².
+  explanation: 'Zrób przekrój osiowy: prostokąt 2r × H wpisany w koło o promieniu R, przekątna prostokąta
+    jest średnicą koła, więc (2R)² = (2r)² + H².'
+  difficulty: 4
+- name: Walec jako bryła obrotowa
+  description: Obrót prostokąta o bokach a i b wokół prostej zawierającej jeden z boków daje walec, w
+    którym promieniem jest bok prostopadły do osi obrotu, a wysokością — bok leżący na osi.
+  explanation: 'Kluczowe pytanie: „wokół którego boku obracamy?”. Bok obrotu staje się wysokością, drugi
+    bok — promieniem. Ten sam prostokąt daje dwa różne walce o różnych objętościach.'
+  difficulty: 2
+formulas:
+- name: Objętość walca
+  latex_raw: V = \pi r^2 H
+  conditions: r — promień podstawy, H — wysokość walca prostego
+  description: Ogólniej V = P_p·H, gdzie P_p = πr².
+- name: Pole podstawy
+  latex_raw: P_p = \pi r^2
+  conditions: r > 0
+- name: Pole powierzchni bocznej
+  latex_raw: P_b = 2\pi r H
+  conditions: walec prosty; wynika z rozwinięcia w prostokąt 2πr × H
+- name: Pole powierzchni całkowitej
+  latex_raw: P_c = 2\pi r^2 + 2\pi r H = 2\pi r (r + H)
+  conditions: walec zamknięty (z dwiema podstawami)
+- name: Pole przekroju osiowego
+  latex_raw: P_{os} = 2rH
+  conditions: przekrój płaszczyzną zawierającą oś walca
+- name: Przekątna przekroju osiowego
+  latex_raw: d = \sqrt{(2r)^2 + H^2} = \sqrt{4r^2 + H^2}
+  conditions: z twierdzenia Pitagorasa w prostokącie 2r × H
+- name: Zależności trygonometryczne w przekroju osiowym
+  latex_raw: 2r = d\cos\alpha,\qquad H = d\sin\alpha,\qquad \operatorname{tg}\alpha = \frac{H}{2r}
+  conditions: α — kąt między przekątną przekroju osiowego a płaszczyzną podstawy, d — długość tej przekątnej
+- name: Walec równoboczny
+  latex_raw: H = 2r,\quad V = 2\pi r^3,\quad P_b = 4\pi r^2,\quad P_c = 6\pi r^2
+  conditions: przekrój osiowy jest kwadratem
+- name: Przekrój równoległy do osi
+  latex_raw: c = 2\sqrt{r^2 - d^2},\qquad P = cH = 2H\sqrt{r^2-d^2}
+  conditions: d — odległość płaszczyzny przekroju od osi, 0 ≤ d < r
+- name: Promień kuli opisanej na walcu
+  latex_raw: R^2 = r^2 + \left(\frac{H}{2}\right)^2
+  conditions: kula opisana na walcu / walec wpisany w kulę
+- name: Promienie okręgu wpisanego i opisanego w podstawie (walec wpisany/opisany)
+  latex_raw: \text{kwadrat }a:\ r=\tfrac{a}{2},\ R=\tfrac{a\sqrt2}{2};\quad \triangle\text{ równoboczny
+    }a:\ r=\tfrac{a\sqrt3}{6},\ R=\tfrac{a\sqrt3}{3};\quad \text{6-kąt foremny }a:\ r=\tfrac{a\sqrt3}{2},\
+    R=a
+  conditions: podstawa graniastosłupa prawidłowego o krawędzi podstawy a
+- name: 'Stosunek objętości: walec wpisany w sześcian'
+  latex_raw: \frac{V_{walca}}{V_{sześcianu}} = \frac{\pi (a/2)^2 a}{a^3} = \frac{\pi}{4}
+  conditions: walec wpisany w sześcian o krawędzi a (podstawa — okrąg wpisany w ścianę)
+methods:
+- name: Obliczanie objętości i pól walca z danych podstawowych
+  when_to_use: Gdy bezpośrednio dane są r (lub średnica, lub obwód podstawy) i H.
+  steps:
+  - Zapisz dane i, jeśli trzeba, przelicz je na r (np. z 2r, z obwodu 2πr = L, z pola podstawy πr² = P).
+  - Sprawdź zgodność jednostek (wszystko w tych samych; objętość w jednostkach sześciennych, pole w kwadratowych).
+  - Podstaw do V = πr²H oraz P_c = 2πr(r + H).
+  - Zdecyduj, czy bryła ma dwie podstawy, jedną, czy zero (kubek, rura) i odpowiednio zmodyfikuj wzór
+    na pole.
+  - Zapisz wynik w postaci dokładnej (z π) lub przybliżonej, zgodnie z poleceniem.
+- name: Odczytywanie danych z przekroju osiowego
+  when_to_use: 'Gdy dane dotyczą przekroju osiowego: jego pole, obwód, przekątna, kąt lub informacja,
+    że jest kwadratem.'
+  steps:
+  - 'Narysuj prostokąt i opisz jego boki: poziomy 2r, pionowy H.'
+  - 'Przetłumacz dane na równanie: pole → 2rH = P; obwód → 4r + 2H = L; kwadrat → H = 2r; przekątna →
+    4r² + H² = d².'
+  - Jeśli występuje kąt α między przekątną a podstawą, użyj tg α = H/(2r) albo 2r = d cos α, H = d sin
+    α.
+  - Rozwiąż układ/równanie i wyznacz r oraz H (odrzuć rozwiązania niedodatnie).
+  - Podstaw r i H do wzorów na V i P.
+- name: Walec jako bryła obrotowa prostokąta
+  when_to_use: Gdy w treści pojawia się obrót prostokąta (lub kwadratu) wokół boku, wokół prostej zawierającej
+    bok albo wokół osi symetrii.
+  steps:
+  - Narysuj prostokąt i zaznacz oś obrotu.
+  - Wysokością walca jest bok leżący na osi obrotu (lub do niej równoległy), promieniem — odległość przeciwległego
+    boku od osi.
+  - Przy obrocie wokół osi symetrii prostokąta promień to połowa boku prostopadłego do osi.
+  - Wypisz r i H, następnie oblicz V i P.
+  - Jeśli zadanie porównuje dwa obroty tego samego prostokąta, wykonaj obliczenia osobno dla każdego przypadku
+    i porównaj wyniki.
+- name: Walec wpisany w graniastosłup lub opisany na graniastosłupie
+  when_to_use: Gdy walec jest związany z graniastosłupem prawidłowym (sześcianem, prostopadłościanem,
+    graniastosłupem trójkątnym lub sześciokątnym).
+  steps:
+  - 'Ustal, że wysokości obu brył są równe: H_walca = H_graniastosłupa.'
+  - Narysuj samą podstawę (wielokąt) z okręgiem wpisanym (walec wpisany) lub opisanym (walec opisany).
+  - 'Wyznacz promień: dla okręgu wpisanego — odległość środka od boku, dla opisanego — odległość środka
+    od wierzchołka; skorzystaj z własności wielokąta foremnego.'
+  - Oblicz żądane wielkości walca, a jeśli trzeba — także graniastosłupa.
+  - Przy pytaniu o stosunek objętości uprość wyrażenie; zwykle skraca się krawędź i zostaje liczba z π.
+- name: Walec i kula (wpisanie/opisanie)
+  when_to_use: Gdy walec jest wpisany w kulę, kula opisana na walcu albo kula wpisana w walec.
+  steps:
+  - 'Wykonaj przekrój osiowy: kula daje koło o promieniu R, walec — prostokąt 2r × H wpisany w to koło.'
+  - Zapisz zależność (2R)² = (2r)² + H², czyli R² = r² + (H/2)².
+  - Dla kuli wpisanej w walec (kula styczna do obu podstaw i powierzchni bocznej) zapisz R = r oraz H
+    = 2r.
+  - Wyznacz brakujące wielkości i podstaw do wzorów na V i P walca (ewentualnie kuli).
+  - 'Sprawdź sensowność: musi zachodzić r < R oraz H < 2R.'
+- name: Przekrój równoległy do osi
+  when_to_use: Gdy walec przecinamy płaszczyzną równoległą do osi, oddaloną od niej o d, i pytamy o pole
+    przekroju lub o odległość.
+  steps:
+  - 'Narysuj podstawę: okrąg o promieniu r, cięciwę i odcinek długości d od środka prostopadły do cięciwy.'
+  - 'Z twierdzenia Pitagorasa: (c/2)² + d² = r², więc c = 2√(r² − d²).'
+  - Przekrój jest prostokątem o wymiarach c × H, jego pole to P = cH.
+  - 'Jeśli dane jest pole przekroju, odwróć rachunek: wyznacz c, potem d = √(r² − c²/4).'
+- name: Zadania „na zmianę wymiarów” i porównywanie walców
+  when_to_use: Gdy pytamy, jak zmieni się objętość lub pole po zmianie promienia lub wysokości k-krotnie.
+  steps:
+  - Zapisz V₁ = πr²H dla wielkości wyjściowych.
+  - 'Podstaw nowe wymiary, np. r → kr, H → mH, i uprość: V₂ = πk²r²·mH = k²m·V₁.'
+  - 'Wyciągnij wniosek: objętość zależy od kwadratu promienia i pierwszej potęgi wysokości.'
+  - Analogicznie dla pola bocznego P_b = 2πrH (zmienia się km-krotnie) i pola podstaw (k²-krotnie).
+examples:
+- statement: Walec ma promień podstawy r = 3 i wysokość H = 5. Oblicz jego objętość i pole powierzchni
+    całkowitej.
+  worked_solution: |-
+    Objętość: V = πr²H = π·3²·5 = 45π.
+    Pole podstawy: P_p = πr² = 9π, więc oba koła dają 18π.
+    Pole boczne: P_b = 2πrH = 2π·3·5 = 30π.
+    Pole całkowite: P_c = 18π + 30π = 48π (można też od razu P_c = 2πr(r+H) = 2π·3·8 = 48π).
+    Odp. V = 45π, P_c = 48π.
+  difficulty: 1
+- statement: Przekrój osiowy walca jest kwadratem o polu 36. Oblicz objętość i pole powierzchni całkowitej
+    tego walca.
+  worked_solution: |-
+    Przekrój osiowy to prostokąt 2r × H. Skoro jest kwadratem, to H = 2r, a jego pole wynosi (2r)² = 36, więc 2r = 6.
+    Stąd r = 3 oraz H = 6.
+    V = πr²H = π·9·6 = 54π.
+    P_c = 2πr(r + H) = 2π·3·(3 + 6) = 54π.
+    Odp. V = 54π, P_c = 54π. (Zgodnie ze wzorami dla walca równobocznego: V = 2πr³ = 54π, P_c = 6πr² = 54π.)
+  difficulty: 2
+- statement: Prostokąt o bokach 4 i 6 obracamy raz wokół prostej zawierającej krótszy bok, a raz wokół
+    prostej zawierającej dłuższy bok. Oblicz objętości obu otrzymanych walców i podaj ich stosunek.
+  worked_solution: |-
+    Obrót wokół krótszego boku (długości 4): oś zawiera bok 4, więc H = 4, a promieniem jest bok prostopadły do osi: r = 6.
+    V₁ = π·6²·4 = 144π.
+    Obrót wokół dłuższego boku (długości 6): H = 6, r = 4.
+    V₂ = π·4²·6 = 96π.
+    Stosunek: V₁ : V₂ = 144π : 96π = 3 : 2.
+    Odp. V₁ = 144π, V₂ = 96π, stosunek 3 : 2. Widać, że korzystniej (większa objętość) jest obracać wokół krótszego boku, bo promień wchodzi do wzoru w kwadracie.
+  difficulty: 2
+- statement: Przekątna przekroju osiowego walca ma długość 10 i tworzy z płaszczyzną podstawy kąt 60°.
+    Oblicz objętość walca.
+  worked_solution: |-
+    Przekrój osiowy to prostokąt o bokach 2r (poziomy) i H (pionowy), a jego przekątna d = 10 tworzy z bokiem 2r kąt α = 60°.
+    Z trójkąta prostokątnego:
+    2r = d·cos 60° = 10·(1/2) = 5, więc r = 2,5 = 5/2.
+    H = d·sin 60° = 10·(√3/2) = 5√3.
+    Objętość: V = πr²H = π·(5/2)²·5√3 = π·(25/4)·5√3 = (125√3/4)π.
+    Odp. V = (125√3/4)π ≈ 170,1.
+    Sprawdzenie: 4r² + H² = 25 + 75 = 100 = 10² ✓.
+  difficulty: 3
+- statement: Walec jest wpisany w kulę o promieniu R = 5 tak, że wysokość walca wynosi 8. Oblicz objętość
+    walca oraz pole jego powierzchni bocznej. Ile wynosi pole przekroju walca płaszczyzną równoległą do
+    osi, oddaloną od niej o 1,8?
+  worked_solution: |-
+    Krok 1. Przekrój osiowy: prostokąt 2r × H wpisany w koło o promieniu R = 5, jego przekątna jest średnicą, czyli 2R = 10.
+    Z zależności R² = r² + (H/2)²: 25 = r² + 4² = r² + 16, więc r² = 9, r = 3.
+    Krok 2. V = πr²H = π·9·8 = 72π.
+    P_b = 2πrH = 2π·3·8 = 48π.
+    Krok 3. Przekrój równoległy do osi w odległości d = 1,8: cięciwa podstawy
+    c = 2√(r² − d²) = 2√(9 − 3,24) = 2√5,76 = 2·2,4 = 4,8.
+    Przekrój jest prostokątem o wymiarach 4,8 × 8, więc P = 4,8·8 = 38,4.
+    Odp. V = 72π, P_b = 48π, pole przekroju = 38,4.
+  difficulty: 4
+- statement: W graniastosłup prawidłowy sześciokątny o krawędzi podstawy a = 4 i wysokości H = 9 wpisano
+    walec (podstawą walca jest koło wpisane w sześciokąt). Oblicz objętość walca oraz stosunek objętości
+    walca do objętości graniastosłupa.
+  worked_solution: |-
+    Krok 1. Promień koła wpisanego w sześciokąt foremny o boku a to apotema: r = a√3/2 = 4√3/2 = 2√3.
+    Wysokość walca jest równa wysokości graniastosłupa: H = 9.
+    Krok 2. V_walca = πr²H = π·(2√3)²·9 = π·12·9 = 108π.
+    Krok 3. Pole sześciokąta foremnego: P = 6·(a²√3/4) = 6·(16√3/4) = 24√3.
+    V_graniastosłupa = 24√3·9 = 216√3.
+    Krok 4. Stosunek: V_w/V_g = 108π/(216√3) = π/(2√3) = π√3/6 ≈ 0,907.
+    Odp. V_walca = 108π ≈ 339,3; stosunek objętości wynosi π√3/6 ≈ 0,91.
+  difficulty: 4
+objectives:
+- statement: 'Wskazać i nazwać elementy walca: podstawy, powierzchnię boczną, oś, tworzącą, wysokość,
+    promień; narysować siatkę walca i podać wymiary jej części.'
+  bloom_level: Rozumienie
+- statement: Obliczać objętość, pole podstawy, pole powierzchni bocznej i całkowitej walca na podstawie
+    danych r i H (także gdy dana jest średnica, obwód lub pole podstawy).
+  bloom_level: Zastosowanie
+- statement: Wyznaczać r i H z informacji o przekroju osiowym (pole, obwód, przekątna, kwadratowy kształt)
+    i na tej podstawie liczyć objętość i pola.
+  bloom_level: Zastosowanie
+- statement: Stosować funkcje trygonometryczne kąta ostrego w przekroju osiowym walca (kąt nachylenia
+    przekątnej do podstawy) do wyznaczania brakujących wymiarów.
+  bloom_level: Zastosowanie
+- statement: Rozpoznać walec jako bryłę powstałą z obrotu prostokąta i poprawnie przyporządkować promień
+    i wysokość w zależności od wybranej osi obrotu.
+  bloom_level: Analiza
+- statement: Rozwiązywać zadania o walcu wpisanym w graniastosłup prawidłowy lub opisanym na nim, korzystając
+    z promienia okręgu wpisanego/opisanego w podstawę, oraz porównywać objętości obu brył.
+  bloom_level: Analiza
+- statement: Wykorzystywać zależność R² = r² + (H/2)² w zadaniach o walcu wpisanym w kulę i kuli opisanej
+    na walcu, uzasadniając ją przekrojem osiowym.
+  bloom_level: Analiza
+- statement: Obliczać pole przekroju walca płaszczyzną równoległą do osi oraz odwrotnie — wyznaczać odległość
+    płaszczyzny od osi z danego pola przekroju.
+  bloom_level: Zastosowanie
+- statement: Analizować wpływ zmiany promienia lub wysokości na objętość i pole powierzchni walca oraz
+    porównywać dwa walce o różnych wymiarach.
+  bloom_level: Analiza
+- statement: Rozwiązywać praktyczne zadania o pojemnikach walcowych (pojemność w litrach, zużycie materiału
+    na powierzchnię), poprawnie dobierając wzór i jednostki.
+  bloom_level: Zastosowanie
+- statement: 'Oceniać poprawność rozwiązania: sprawdzać zgodność wymiarów, warunki istnienia (r > 0, d
+    < r, H < 2R) i sensowność wyniku liczbowego.'
+  bloom_level: Ocenianie
+misconceptions:
+- name: Bok przekroju osiowego mylony z promieniem
+  incorrect_reasoning: „Przekrój osiowy ma boki r i H”, więc np. z pola przekroju 24 uczeń pisze rH =
+    24.
+  correct_reasoning: 'Przekrój osiowy przechodzi przez oś, więc jego poziomy bok to cała średnica: prostokąt
+    ma wymiary 2r × H, a pole 2rH. Z pola 24 wynika 2rH = 24, czyli rH = 12.'
+  severity: 5
+- name: „Przekrój osiowy jest kwadratem, więc r = H”
+  incorrect_reasoning: Kwadrat ma równe boki, więc promień równa się wysokości.
+  correct_reasoning: Równe są boki prostokąta 2r i H, zatem H = 2r (walec równoboczny). Promień jest połową
+    wysokości.
+  severity: 4
+- name: Traktowanie tworzącej walca jak tworzącej stożka
+  incorrect_reasoning: Uczeń stosuje l = √(r² + H²) albo P_b = πrl, przenosząc wzory ze stożka.
+  correct_reasoning: 'W walcu prostym tworząca jest prostopadła do podstaw, więc l = H, a powierzchnia
+    boczna rozwija się w prostokąt: P_b = 2πrH. Wzór πrl dotyczy wyłącznie stożka.'
+  severity: 4
+- name: Zapominanie o drugiej podstawie (lub doliczanie jej niepotrzebnie)
+  incorrect_reasoning: 'P_c = 2πrH + πr² — „bo podstawa jest jedna”, albo odwrotnie: liczenie dwóch podstaw
+    dla rury/kubka.'
+  correct_reasoning: 'Walec zamknięty: P_c = 2πr² + 2πrH. Otwarty pojemnik: πr² + 2πrH. Rura bez den:
+    tylko 2πrH. Trzeba przeczytać treść i policzyć, ile powierzchni faktycznie występuje.'
+  severity: 3
+- name: Zły bok jako promień przy obrocie prostokąta
+  incorrect_reasoning: „Obracamy wokół boku długości 6, więc r = 6”.
+  correct_reasoning: Bok leżący na osi obrotu staje się wysokością, a bok do niego prostopadły — promieniem.
+    Obrót wokół boku 6 prostokąta 4×6 daje H = 6 i r = 4.
+  severity: 4
+- name: Podstawianie średnicy zamiast promienia
+  incorrect_reasoning: 'Dane: średnica 10, uczeń liczy V = π·10²·H.'
+  correct_reasoning: 'Wzory zawierają promień: r = 10/2 = 5, więc V = π·25·H. Zawsze najpierw wypisz r,
+    dopiero potem podstawiaj.'
+  severity: 4
+- name: Błędne rozwinięcie powierzchni bocznej
+  incorrect_reasoning: Prostokąt rozwinięcia ma boki πr i H (mylenie obwodu koła z połową obwodu albo
+    z polem).
+  correct_reasoning: Bok rozwinięcia równa się obwodowi podstawy, czyli 2πr; drugi bok to H. Stąd P_b
+    = 2πrH.
+  severity: 3
+- name: 'Kula opisana na walcu: R = r albo R = H/2'
+  incorrect_reasoning: „Kula obejmuje walec, więc jej promień to promień podstawy” lub „to połowa wysokości”.
+  correct_reasoning: 'Środek kuli leży w środku osi, a punkt okręgu podstawy jest odległy od niego o √(r²
+    + (H/2)²). Zatem R² = r² + (H/2)² i R jest większe od r oraz od H/2. Zależność najlepiej odczytać
+    z przekroju osiowego: przekątna prostokąta jest średnicą koła.'
+  severity: 4
+- name: Mylenie walca wpisanego z opisanym
+  incorrect_reasoning: Dla walca wpisanego w graniastosłup prawidłowy czworokątny o krawędzi podstawy
+    a uczeń bierze r = a√2/2 (promień okręgu opisanego).
+  correct_reasoning: 'Walec wpisany ma podstawę będącą kołem wpisanym w wielokąt: dla kwadratu o boku
+    a mamy r = a/2. Promień a√2/2 to okrąg opisany, czyli przypadek walca opisanego na graniastosłupie.'
+  severity: 4
+- name: Zły wpływ skalowania na objętość
+  incorrect_reasoning: „Podwajam promień, więc objętość się podwaja”.
+  correct_reasoning: 'V = πr²H zależy od kwadratu promienia: podwojenie r czterokrotnie zwiększa objętość.
+    Podwojenie samej wysokości podwaja objętość.'
+  severity: 3
+- name: Niespójność jednostek objętości i pojemności
+  incorrect_reasoning: Uczeń podaje objętość w cm² albo zapomina, że 1 dm³ = 1 l = 1000 cm³.
+  correct_reasoning: Objętość ma jednostki sześcienne, pole — kwadratowe. Przy zamianie na litry korzystaj
+    z 1 l = 1 dm³ = 1000 cm³, a jednostki długości ujednolicaj przed podstawieniem.
+  severity: 3

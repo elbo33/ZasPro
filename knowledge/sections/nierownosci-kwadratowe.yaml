@@ -1,0 +1,317 @@
+section: nierownosci-kwadratowe
+name: Nierówności kwadratowe
+scope: Solving quadratic inequalities from the roots and the sign of the parabola; writing the solution
+  set; the edge cases where the discriminant is zero or negative.
+requirements:
+- III.4
+spec:
+  agent: claude
+  model: claude-opus-5
+  prompt_version: m4-sec-v1
+  written_at: '2026-08-28T19:00:25.376817'
+  approved_at: '2026-08-28T19:39:37.100783'
+  approved_by: reviewer
+concepts:
+- name: Nierówność kwadratowa
+  description: Nierówność, którą można równoważnie zapisać w jednej z postaci ax² + bx + c > 0, ax² +
+    bx + c ≥ 0, ax² + bx + c < 0, ax² + bx + c ≤ 0, gdzie a, b, c są liczbami rzeczywistymi i a ≠ 0.
+  explanation: 'Kluczowe jest słowo „można zapisać”: nierówność typu (x−1)(x+4) ≤ 2x+8 też jest kwadratowa
+    — wystarczy przenieść wszystko na jedną stronę i uporządkować. Warunek a ≠ 0 odróżnia ją od nierówności
+    liniowej.'
+  difficulty: 1
+- name: Funkcja kwadratowa i jej wykres (parabola)
+  description: Funkcja f(x) = ax² + bx + c, a ≠ 0. Jej wykresem jest parabola o ramionach skierowanych
+    w górę, gdy a > 0, i w dół, gdy a < 0.
+  explanation: 'Rozwiązanie nierówności kwadratowej to odpowiedź na pytanie: dla jakich x wykres funkcji
+    f leży nad osią OX (f(x) > 0), pod osią (f(x) < 0), albo nad/pod osią razem z punktami przecięcia
+    (≥, ≤). Dlatego szkic paraboli — nawet bardzo zgrubny — jest właściwym narzędziem, a nie ozdobnikiem.'
+  difficulty: 2
+- name: Miejsca zerowe trójmianu
+  description: Liczby x, dla których ax² + bx + c = 0; są to punkty przecięcia paraboli z osią OX.
+  explanation: Miejsca zerowe dzielą oś liczbową na przedziały, wewnątrz których trójmian ma stały znak.
+    Znak może się zmienić tylko w miejscu zerowym — to jest cała idea metody.
+  difficulty: 2
+- name: Wyróżnik (delta) trójmianu kwadratowego
+  description: 'Liczba Δ = b² − 4ac, decydująca o liczbie miejsc zerowych: Δ > 0 — dwa miejsca zerowe,
+    Δ = 0 — jedno (podwójne), Δ < 0 — brak miejsc zerowych.'
+  explanation: 'Delta jest pierwszym krokiem rachunkowym, ale sama nie rozstrzyga o odpowiedzi: dopiero
+    para (znak a, znak Δ) mówi, jak parabola leży względem osi OX.'
+  difficulty: 2
+- name: Znak trójmianu kwadratowego
+  description: Informacja, dla których x wartość ax² + bx + c jest dodatnia, ujemna lub równa zeru.
+  explanation: 'Reguła do zapamiętania: dla Δ > 0 trójmian ma znak przeciwny do znaku a *pomiędzy* miejscami
+    zerowymi, a znak zgodny ze znakiem a *na zewnątrz* nich („na zewnątrz — jak a, w środku — przeciwnie”).'
+  difficulty: 3
+- name: Postać iloczynowa trójmianu
+  description: 'Dla Δ > 0: ax² + bx + c = a(x − x₁)(x − x₂); dla Δ = 0: ax² + bx + c = a(x − x₀)². Dla
+    Δ < 0 postaci iloczynowej nie ma.'
+  explanation: 'Bywa krótszą drogą: jeśli nierówność jest już podana w postaci iloczynowej albo trójmian
+    łatwo rozłożyć (np. wyłączyć x przed nawias, użyć wzoru skróconego mnożenia), delty liczyć nie trzeba
+    — miejsca zerowe widać od razu.'
+  difficulty: 3
+- name: Zbiór rozwiązań nierówności
+  description: Zbiór wszystkich liczb rzeczywistych spełniających nierówność; przy nierównościach kwadratowych
+    jest to przedział, suma dwóch przedziałów, cały zbiór R, zbiór jednoelementowy albo zbiór pusty.
+  explanation: Odpowiedź musi być zapisana jako zbiór (przedział lub suma przedziałów), a nie jako „x
+    > 2 i x < 3” wypisane obok siebie. Zapis x ∈ (−∞, 2) ∪ (3, +∞) jest wzorcowy.
+  difficulty: 2
+- name: Nierówność ostra i nieostra a końce przedziałów
+  description: W nierównościach ostrych (>, <) miejsca zerowe nie należą do zbioru rozwiązań — nawiasy
+    okrągłe; w nieostrych (≥, ≤) należą — nawiasy ostre (domknięte).
+  explanation: 'Miejsce zerowe daje wartość 0: zero nie jest ani dodatnie, ani ujemne, więc spełnia ≥
+    0 i ≤ 0, ale nie spełnia > 0 ani < 0. Symbol ∞ zawsze z nawiasem okrągłym.'
+  difficulty: 1
+- name: Przypadek brzegowy Δ = 0
+  description: Parabola jest styczna do osi OX w punkcie x₀ = −b/(2a); trójmian ma znak a dla wszystkich
+    x ≠ x₀ i wartość 0 w x₀.
+  explanation: 'Dla a > 0 dostajemy cztery różne odpowiedzi: > 0 → R \ {x₀}, ≥ 0 → R, < 0 → ∅, ≤ 0 → {x₀}.
+    To jedyny przypadek, w którym rozwiązaniem może być zbiór jednopunktowy lub „prosta bez punktu”.'
+  difficulty: 4
+- name: Przypadek brzegowy Δ < 0
+  description: Parabola nie ma punktów wspólnych z osią OX; trójmian ma stały znak — znak a — dla każdej
+    liczby rzeczywistej.
+  explanation: 'Wtedy odpowiedź jest zerojedynkowa: albo R (gdy kierunek nierówności zgadza się ze znakiem
+    a), albo ∅ (gdy nie). Żadnych przedziałów tu nie ma i nie należy ich wymyślać.'
+  difficulty: 4
+- name: Przekształcenia równoważne nierówności
+  description: Dodawanie/odejmowanie tego samego wyrażenia do obu stron zachowuje kierunek nierówności;
+    mnożenie lub dzielenie obu stron przez liczbę dodatnią zachowuje kierunek, przez liczbę ujemną — odwraca
+    go.
+  explanation: 'Stąd bierze się popularny chwyt: nierówność z a < 0 mnożymy stronami przez −1, otrzymując
+    równoważną nierówność z a > 0 i odwróconym znakiem — dalej pracujemy tylko z ramionami w górę.'
+  difficulty: 2
+formulas:
+- name: Wyróżnik trójmianu
+  latex_raw: \Delta = b^2 - 4ac
+  conditions: dla trójmianu ax^2+bx+c, a \neq 0
+  description: 'Uwaga na znaki: przy ujemnym c iloczyn −4ac jest dodatni.'
+- name: Miejsca zerowe dla Δ > 0
+  latex_raw: x_1 = \frac{-b-\sqrt{\Delta}}{2a}, \qquad x_2 = \frac{-b+\sqrt{\Delta}}{2a}
+  conditions: Δ > 0
+  description: Przy a > 0 tak wyznaczone x₁ < x₂; przy a < 0 warto po prostu uporządkować otrzymane liczby
+    rosnąco.
+- name: Podwójne miejsce zerowe dla Δ = 0
+  latex_raw: x_0 = \frac{-b}{2a}
+  conditions: Δ = 0
+- name: Postać iloczynowa
+  latex_raw: ax^2+bx+c = a(x-x_1)(x-x_2) \quad\text{lub}\quad ax^2+bx+c = a(x-x_0)^2
+  conditions: pierwsza dla Δ > 0, druga dla Δ = 0; dla Δ < 0 rozkład nie istnieje
+- name: 'Zbiory rozwiązań: a > 0, Δ > 0, x₁ < x₂'
+  latex_raw: \begin{aligned} ax^2+bx+c>0 &\Leftrightarrow x\in(-\infty,x_1)\cup(x_2,+\infty)\\ ax^2+bx+c\ge
+    0 &\Leftrightarrow x\in(-\infty,x_1\rangle\cup\langle x_2,+\infty)\\ ax^2+bx+c<0 &\Leftrightarrow
+    x\in(x_1,x_2)\\ ax^2+bx+c\le 0 &\Leftrightarrow x\in\langle x_1,x_2\rangle \end{aligned}
+  conditions: a > 0 oraz Δ > 0
+- name: 'Zbiory rozwiązań: a < 0, Δ > 0, x₁ < x₂'
+  latex_raw: \begin{aligned} ax^2+bx+c>0 &\Leftrightarrow x\in(x_1,x_2)\\ ax^2+bx+c<0 &\Leftrightarrow
+    x\in(-\infty,x_1)\cup(x_2,+\infty) \end{aligned}
+  conditions: a < 0 oraz Δ > 0; wersje nieostre — z nawiasami domkniętymi w miejscach zerowych
+  description: Zamiast pamiętać ten wiersz, można pomnożyć nierówność przez −1 i odwrócić jej znak.
+- name: 'Zbiory rozwiązań: Δ = 0, a > 0 (x₀ = −b/2a)'
+  latex_raw: \;>0:\ \mathbb{R}\setminus\{x_0\}\quad \ge 0:\ \mathbb{R}\quad <0:\ \emptyset\quad \le 0:\
+    \{x_0\}
+  conditions: Δ = 0, a > 0
+  description: 'Dla a < 0 role się zamieniają: > 0 → ∅, ≥ 0 → {x₀}, < 0 → R \ {x₀}, ≤ 0 → R.'
+- name: 'Zbiory rozwiązań: Δ < 0'
+  latex_raw: a>0:\ \ (>0,\ \ge 0)\Rightarrow \mathbb{R},\ \ (<0,\ \le 0)\Rightarrow \emptyset; \qquad
+    a<0:\ \ (<0,\ \le 0)\Rightarrow \mathbb{R},\ \ (>0,\ \ge 0)\Rightarrow \emptyset
+  conditions: Δ < 0
+  description: Trójmian ma wtedy stały znak równy znakowi a.
+- name: Wzory skróconego mnożenia przydatne przy rozkładzie
+  latex_raw: x^2-a^2=(x-a)(x+a), \qquad x^2\pm 2ax+a^2=(x\pm a)^2
+  conditions: zawsze
+  description: Pozwalają odczytać miejsca zerowe bez liczenia delty.
+methods:
+- name: Podstawowy algorytm rozwiązywania nierówności kwadratowej
+  when_to_use: Zawsze, gdy nierówność da się sprowadzić do postaci ax² + bx + c ⋛ 0 z a ≠ 0.
+  steps:
+  - Przenieś wszystkie wyrazy na lewą stronę i zredukuj wyrazy podobne, tak aby po prawej stronie zostało
+    0.
+  - Odczytaj współczynniki a, b, c i zapisz, czy a > 0 (ramiona w górę), czy a < 0 (ramiona w dół).
+  - Oblicz Δ = b² − 4ac.
+  - Jeśli Δ > 0 — wyznacz x₁ i x₂ ze wzorów i uporządkuj je rosnąco; jeśli Δ = 0 — wyznacz x₀ = −b/(2a);
+    jeśli Δ < 0 — przejdź od razu do kroku 6.
+  - 'Naszkicuj parabolę: ramiona zgodnie ze znakiem a, przecięcia (lub styczność) z osią OX w znalezionych
+    punktach.'
+  - Zaznacz na szkicu tę część wykresu, która spełnia warunek (nad osią dla > i ≥, pod osią dla < i ≤),
+    i odczytaj odpowiadające jej x-y z osi OX.
+  - Zapisz odpowiedź jako przedział lub sumę przedziałów; nawiasy domknięte tylko przy nierównościach
+    nieostrych, przy ±∞ zawsze okrągłe.
+- name: Sprowadzanie przypadku a < 0 do a > 0
+  when_to_use: Gdy współczynnik przy x² jest ujemny i chcemy pracować wyłącznie z parabolą o ramionach
+    w górę.
+  steps:
+  - Pomnóż obie strony nierówności przez −1.
+  - Odwróć znak nierówności (> na <, ≥ na ≤ i odwrotnie).
+  - Rozwiąż powstałą nierówność standardowym algorytmem (teraz a > 0).
+  - Zapisz otrzymany zbiór jako odpowiedź — jest on zbiorem rozwiązań nierówności wyjściowej, bo przekształcenie
+    było równoważne.
+- name: Rozwiązywanie przez rozkład na czynniki (bez delty)
+  when_to_use: Gdy trójmian jest niepełny (brak wyrazu wolnego lub brak wyrazu z x) albo widoczny jest
+    wzór skróconego mnożenia, np. 3x² − 12x, x² − 25, x² + 6x + 9.
+  steps:
+  - Zapisz nierówność w postaci „coś ⋛ 0”.
+  - 'Rozłóż lewą stronę: wyłącz wspólny czynnik przed nawias lub zastosuj wzór skróconego mnożenia.'
+  - Odczytaj miejsca zerowe z czynników (x − p = 0 daje x = p; czynnik ax daje x = 0).
+  - Naszkicuj parabolę o ramionach zgodnych ze znakiem współczynnika przy x² i odczytaj zbiór rozwiązań
+    jak w algorytmie podstawowym.
+- name: Postępowanie w przypadkach brzegowych Δ = 0 i Δ < 0
+  when_to_use: Gdy po obliczeniu delty okaże się, że Δ = 0 albo Δ < 0.
+  steps:
+  - 'Dla Δ < 0: stwierdź, że parabola w całości leży nad osią OX (a > 0) albo pod nią (a < 0), więc trójmian
+    ma stały znak równy znakowi a.'
+  - 'Porównaj ten stały znak z żądanym kierunkiem nierówności: zgodny → rozwiązaniem jest R, niezgodny
+    → zbiór pusty ∅.'
+  - 'Dla Δ = 0: oblicz x₀ = −b/(2a) i zauważ, że trójmian ma znak a wszędzie poza x₀, a w x₀ przyjmuje
+    wartość 0.'
+  - 'Rozstrzygnij, czy punkt x₀ spełnia nierówność (spełnia tylko przy ≥ i ≤), i zapisz jedną z odpowiedzi:
+    R, R \ {x₀}, {x₀} albo ∅.'
+- name: Sprawdzanie poprawności odpowiedzi metodą punktu próbnego
+  when_to_use: Po zakończeniu rozwiązywania, gdy nie mamy pewności co do kierunku przedziałów.
+  steps:
+  - Wybierz jedną wygodną liczbę leżącą wewnątrz otrzymanego zbioru (np. 0, jeśli należy do zbioru).
+  - Wstaw ją do wyjściowej nierówności i sprawdź, czy zachodzi.
+  - Wybierz liczbę spoza zbioru i sprawdź, że nierówność dla niej nie zachodzi.
+  - Jeśli któryś test wypadnie źle, najpewniej pomylono „w środku” z „na zewnątrz” — popraw kierunek przedziałów.
+examples:
+- statement: Rozwiąż nierówność x² − 5x + 6 > 0.
+  worked_solution: |-
+    Prawa strona to już 0, a = 1 > 0 (ramiona w górę), b = −5, c = 6.
+    Δ = (−5)² − 4·1·6 = 25 − 24 = 1 > 0, √Δ = 1.
+    x₁ = (5 − 1)/2 = 2, x₂ = (5 + 1)/2 = 3.
+    Parabola o ramionach w górę przecina oś OX w punktach 2 i 3, więc leży nad osią na zewnątrz tych punktów.
+    Nierówność jest ostra, więc końce wykluczamy.
+    Odpowiedź: x ∈ (−∞, 2) ∪ (3, +∞).
+    Sprawdzenie: dla x = 0 mamy 6 > 0 (prawda), dla x = 2,5 mamy 6,25 − 12,5 + 6 = −0,25 > 0 (fałsz) — zgadza się.
+  difficulty: 1
+- statement: Rozwiąż nierówność −2x² + 4x + 6 ≥ 0.
+  worked_solution: |-
+    Sposób I (bez przekształcania): a = −2 < 0, b = 4, c = 6.
+    Δ = 16 − 4·(−2)·6 = 16 + 48 = 64, √Δ = 8.
+    x = (−4 ± 8)/(2·(−2)) = (−4 ± 8)/(−4): x = (−4 − 8)/(−4) = 3 oraz x = (−4 + 8)/(−4) = −1.
+    Miejsca zerowe uporządkowane: −1 i 3. Ramiona w dół, więc parabola jest nad osią (lub na niej) między miejscami zerowymi.
+    Nierówność nieostra → końce należą do zbioru.
+    Odpowiedź: x ∈ ⟨−1, 3⟩.
+
+    Sposób II (mnożenie przez −1): −2x² + 4x + 6 ≥ 0 | ·(−1) daje 2x² − 4x − 6 ≤ 0, czyli po podzieleniu przez 2: x² − 2x − 3 ≤ 0. Δ = 4 + 12 = 16, x₁ = −1, x₂ = 3, a > 0, znak ≤ → przedział między pierwiastkami: ⟨−1, 3⟩. Ten sam wynik.
+  difficulty: 2
+- statement: Rozwiąż nierówność 3x² − 12x < 0, a następnie x² ≥ 25.
+  worked_solution: |-
+    (a) 3x² − 12x < 0. Wyłączamy czynnik: 3x(x − 4) < 0. Miejsca zerowe: x = 0 i x = 4, współczynnik przy x² równy 3 > 0, więc parabola jest pod osią między miejscami zerowymi. Nierówność ostra:
+    Odpowiedź: x ∈ (0, 4). (Delty liczyć nie było trzeba.)
+
+    (b) x² ≥ 25. Przenosimy: x² − 25 ≥ 0, czyli (x − 5)(x + 5) ≥ 0. Miejsca zerowe −5 i 5, a = 1 > 0, więc wartości nieujemne są na zewnątrz pierwiastków, wraz z nimi:
+    Odpowiedź: x ∈ (−∞, −5⟩ ∪ ⟨5, +∞).
+    Uwaga: odpowiedź „x ≥ 5” jest niepełna — liczby takie jak −7 też spełniają nierówność.
+  difficulty: 2
+- statement: 'Rozwiąż każdą z nierówności: (a) 4x² − 12x + 9 > 0, (b) 4x² − 12x + 9 ≤ 0, (c) 4x² − 12x
+    + 9 ≥ 0, (d) 4x² − 12x + 9 < 0.'
+  worked_solution: |-
+    a = 4 > 0, b = −12, c = 9.
+    Δ = (−12)² − 4·4·9 = 144 − 144 = 0 — przypadek brzegowy.
+    x₀ = −b/(2a) = 12/8 = 3/2. (Można też zauważyć, że 4x² − 12x + 9 = (2x − 3)².)
+    Parabola ma ramiona w górę i jest styczna do osi OX w punkcie 3/2: przyjmuje wartość 0 tylko dla x = 3/2, a dla wszystkich pozostałych x wartości dodatnie.
+    (a) > 0: wszystkie x poza punktem styczności → x ∈ R \ {3/2}, czyli (−∞, 3/2) ∪ (3/2, +∞).
+    (b) ≤ 0: wartość niedodatnia występuje tylko w punkcie styczności → x = 3/2, zbiór {3/2}.
+    (c) ≥ 0: trójmian nigdy nie jest ujemny → x ∈ R.
+    (d) < 0: trójmian nigdy nie jest ujemny → zbiór pusty, brak rozwiązań.
+  difficulty: 3
+- statement: Rozwiąż nierówność (x − 1)(x + 4) ≤ 2x + 8, a następnie zbadaj nierówność −x² + 2x − 5 ≥
+    0.
+  worked_solution: |-
+    (a) Najpierw postać ogólna. Lewa strona: (x − 1)(x + 4) = x² + 3x − 4.
+    x² + 3x − 4 ≤ 2x + 8 ⇔ x² + 3x − 4 − 2x − 8 ≤ 0 ⇔ x² + x − 12 ≤ 0.
+    a = 1 > 0, b = 1, c = −12, Δ = 1 + 48 = 49, √Δ = 7.
+    x₁ = (−1 − 7)/2 = −4, x₂ = (−1 + 7)/2 = 3.
+    Ramiona w górę, znak ≤ → przedział domknięty między pierwiastkami.
+    Odpowiedź: x ∈ ⟨−4, 3⟩. Sprawdzenie dla x = 0: lewa strona (−1)·4 = −4, prawa 8, istotnie −4 ≤ 8.
+
+    (b) −x² + 2x − 5 ≥ 0: a = −1 < 0, b = 2, c = −5.
+    Δ = 4 − 4·(−1)·(−5) = 4 − 20 = −16 < 0.
+    Brak miejsc zerowych, ramiona w dół → cała parabola leży pod osią OX, więc −x² + 2x − 5 < 0 dla każdego x.
+    Warunek ≥ 0 nie jest spełniony przez żadną liczbę.
+    Odpowiedź: zbiór pusty (∅). Dla porównania nierówność −x² + 2x − 5 < 0 miałaby zbiór rozwiązań R.
+  difficulty: 4
+objectives:
+- statement: Rozpoznać nierówność kwadratową i sprowadzić ją do postaci ax² + bx + c ⋛ 0 przez przeniesienie
+    wyrazów i redukcję.
+  bloom_level: Zastosowanie
+- statement: Obliczyć wyróżnik Δ i, gdy istnieją, miejsca zerowe trójmianu kwadratowego.
+  bloom_level: Zastosowanie
+- statement: Wyjaśnić związek między znakiem współczynnika a, położeniem paraboli względem osi OX a znakiem
+    trójmianu.
+  bloom_level: Zrozumienie
+- statement: Naszkicować parabolę na podstawie znaku a i miejsc zerowych oraz odczytać z niej zbiór rozwiązań
+    nierówności.
+  bloom_level: Zastosowanie
+- statement: Rozwiązać nierówność kwadratową o dodatnim i o ujemnym współczynniku a, w wersji ostrej i
+    nieostrej, i zapisać odpowiedź jako przedział lub sumę przedziałów z poprawnymi nawiasami.
+  bloom_level: Zastosowanie
+- statement: 'Rozstrzygnąć przypadki brzegowe Δ = 0 i Δ < 0, podając poprawnie jedną z odpowiedzi: R,
+    R \ {x₀}, {x₀}, ∅.'
+  bloom_level: Analiza
+- statement: 'Wybrać efektywniejszą drogę rozwiązania: obliczenie delty, rozkład na czynniki (wyłączenie
+    x, wzór skróconego mnożenia) lub pomnożenie nierówności przez −1.'
+  bloom_level: Analiza
+- statement: Zweryfikować otrzymany zbiór rozwiązań, podstawiając liczby należące i nienależące do niego,
+    oraz wskazać źródło ewentualnego błędu.
+  bloom_level: Ocena
+misconceptions:
+- name: Mylenie „w środku” z „na zewnątrz” pierwiastków
+  incorrect_reasoning: „x² − 5x + 6 > 0, pierwiastki 2 i 3, znak >, więc rozwiązaniem jest przedział (2,
+    3).”
+  correct_reasoning: Dla a > 0 parabola jest POD osią między pierwiastkami, a NAD osią na zewnątrz. Zatem
+    > 0 daje (−∞, 2) ∪ (3, +∞), a < 0 daje (2, 3). Szkic paraboli albo test punktem (np. x = 0) natychmiast
+    to rozstrzyga.
+  severity: 5
+- name: Zapominanie o odwróceniu znaku przy mnożeniu przez liczbę ujemną
+  incorrect_reasoning: '„−x² + 4x − 3 ≥ 0, mnożę przez −1: x² − 4x + 3 ≥ 0, więc x ∈ (−∞,1⟩ ∪ ⟨3,+∞).”'
+  correct_reasoning: 'Mnożenie obu stron przez liczbę ujemną odwraca kierunek nierówności: x² − 4x + 3
+    ≤ 0, skąd x ∈ ⟨1, 3⟩. Kontrola: x = 2 daje −4 + 8 − 3 = 1 ≥ 0 — prawda, więc 2 musi należeć do zbioru
+    rozwiązań.'
+  severity: 5
+- name: Pomijanie znaku a przy odczycie rozwiązania
+  incorrect_reasoning: '„Zawsze: przy > rozwiązaniem są dwa przedziały, przy < jeden przedział — niezależnie
+    od tego, jaki jest współczynnik a.”'
+  correct_reasoning: 'Reguła zależy od kierunku ramion. Dla a < 0 jest odwrotnie: nierówność > 0 daje
+    przedział między pierwiastkami, a < 0 — sumę dwóch przedziałów. Bezpiecznie jest albo rysować parabolę,
+    albo najpierw mnożyć przez −1, by uzyskać a > 0.'
+  severity: 4
+- name: Zapis sumy przedziałów jako iloczynu (części wspólnej)
+  incorrect_reasoning: '„Odpowiedź: x < 2 i x > 3”, albo „x ∈ (−∞,2) ∩ (3,+∞)”, albo „3 < x < 2”.'
+  correct_reasoning: 'Rozwiązania po dwóch stronach pierwiastków tworzą SUMĘ zbiorów: x < 2 LUB x > 3,
+    czyli x ∈ (−∞, 2) ∪ (3, +∞). Część wspólna tych przedziałów jest pusta, więc zapis z „i”/∩ jest błędny.'
+  severity: 4
+- name: Złe nawiasy przy nierównościach nieostrych
+  incorrect_reasoning: '„x² − x − 6 ≤ 0, pierwiastki −2 i 3, odpowiedź: x ∈ (−2, 3).”'
+  correct_reasoning: 'Przy ≤ i ≥ miejsca zerowe spełniają nierówność (dają wartość 0), więc należą do
+    zbioru: x ∈ ⟨−2, 3⟩. Przy ∞ zawsze nawias okrągły, niezależnie od typu nierówności.'
+  severity: 3
+- name: „Δ < 0, więc nierówność nie ma rozwiązań”
+  incorrect_reasoning: „x² + x + 1 > 0 — delta jest ujemna, brak pierwiastków, więc brak rozwiązań.”
+  correct_reasoning: 'Δ < 0 oznacza tylko brak MIEJSC ZEROWYCH, a nie brak rozwiązań nierówności. Trójmian
+    ma wtedy stały znak równy znakowi a: tu a = 1 > 0, więc x² + x + 1 > 0 dla każdego x — zbiorem rozwiązań
+    jest R. Zbiór pusty otrzymalibyśmy dopiero dla x² + x + 1 < 0.'
+  severity: 5
+- name: Traktowanie Δ = 0 tak samo jak Δ > 0
+  incorrect_reasoning: „(x − 3)² > 0, jedno miejsce zerowe 3, więc odpowiedź x > 3.”
+  correct_reasoning: 'Przy Δ = 0 parabola dotyka osi tylko w jednym punkcie i poza nim ma znak a. Dla
+    a > 0: (x − 3)² > 0 zachodzi dla każdego x ≠ 3, czyli x ∈ R \ {3}. Analogicznie (x − 3)² ≤ 0 ma jedno
+    rozwiązanie x = 3, a (x − 3)² < 0 — żadnego.'
+  severity: 5
+- name: Dzielenie nierówności przez x
+  incorrect_reasoning: '„x² > 4x, dzielę obie strony przez x: x > 4.”'
+  correct_reasoning: 'Nie wolno dzielić przez x, bo nie znamy jego znaku (a dla x = 0 dzielenie jest niewykonalne).
+    Poprawnie: x² − 4x > 0, x(x − 4) > 0, pierwiastki 0 i 4, a > 0 → x ∈ (−∞, 0) ∪ (4, +∞). Rozwiązania
+    ujemne, np. x = −1, zostałyby przy dzieleniu zgubione.'
+  severity: 5
+- name: Nieuporządkowanie pierwiastków przy a < 0
+  incorrect_reasoning: „Ze wzorów wyszło x₁ = 3, x₂ = −1, więc zapisuję przedział ⟨3, −1⟩.”
+  correct_reasoning: 'W zapisie przedziału zawsze najpierw liczba mniejsza. Otrzymane miejsca zerowe należy
+    uporządkować rosnąco (tu −1 < 3) i dopiero potem odczytywać przedziały: ⟨−1, 3⟩.'
+  severity: 3
+- name: Rozwiązywanie nierówności bez przeniesienia wszystkiego na jedną stronę
+  incorrect_reasoning: '„x² + 3x ≤ 2x + 8: liczę deltę z x² + 3x, czyli Δ = 9, pierwiastki 0 i −3...”'
+  correct_reasoning: 'Metoda znaku trójmianu działa tylko dla postaci „trójmian ⋛ 0”. Trzeba najpierw
+    uporządkować: x² + x − 8 ≤ 0 i dopiero z tego trójmianu liczyć Δ. Porównywanie z niezerową prawą stroną
+    unieważnia całe rozumowanie o miejscach zerowych.'
+  severity: 4
