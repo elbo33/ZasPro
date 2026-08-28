@@ -213,8 +213,9 @@ def handle_write_section(session: Session, job: Job) -> dict:
 # --------------------------------------------------------------------------- #
 
 def _cleanup_stale(session: Session) -> None:
-    """Drop pre-0013 leftovers: topic-scoped KNOWLEDGE_SPEC review cards and
-    EXTRACT_KNOWLEDGE jobs whose payload predates section scoping."""
+    """Clear leftovers that only add noise: topic-scoped KNOWLEDGE_SPEC review
+    cards (pre-0013), and any not-succeeded EXTRACT_KNOWLEDGE job — a fresh run
+    supersedes them all."""
     from zaspro.db.models import ReviewDecision
 
     stale_ri = list(session.scalars(
@@ -230,14 +231,10 @@ def _cleanup_stale(session: Session) -> None:
         session.query(ReviewItem).filter(
             ReviewItem.id.in_(stale_ri)
         ).delete(synchronize_session=False)
-    for j in session.scalars(
-        select(Job).where(
-            Job.job_type == JobType.EXTRACT_KNOWLEDGE,
-            Job.status.in_([JobStatus.PENDING, JobStatus.RUNNING, JobStatus.FAILED]),
-        )
-    ):
-        if "section_id" not in (j.input or {}):
-            session.delete(j)
+    session.query(Job).filter(
+        Job.job_type == JobType.EXTRACT_KNOWLEDGE,
+        Job.status.in_([JobStatus.PENDING, JobStatus.RUNNING, JobStatus.FAILED]),
+    ).delete(synchronize_session=False)
     session.flush()
 
 

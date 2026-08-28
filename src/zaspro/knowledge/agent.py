@@ -12,17 +12,40 @@ The human approves every section spec in the dashboard — the only verification
 
 `StubSectionAgent` runs the whole path offline; `ClaudeSectionAgent`
 (`claude-opus-5`) is used only from a command the user runs. One call, one tool.
-If it fails, the job fails and the run notes it — nothing to retry.
+Transient server-side failures (overloaded_error / 429 / 5xx) are retried with
+exponential backoff — waiting genuinely fixes those. Anything else fails
+immediately; the job fails and the run notes it.
 """
 
 from __future__ import annotations
 
 import json
+import logging
+import random
+import time
 from typing import Protocol
 
 from pydantic import BaseModel, Field
 
+log = logging.getLogger("zaspro.knowledge.agent")
+
 PROMPT_VERSION = "m4-sec-v1"
+
+# The one retry case worth having: transient server-side failures where waiting
+# genuinely fixes it. Everything else fails immediately.
+_TRANSIENT_STATUS = {408, 409, 429, 500, 502, 503, 504, 529}
+_TRANSIENT_NAMES = {
+    "OverloadedError", "RateLimitError", "InternalServerError",
+    "ServiceUnavailableError", "APIConnectionError", "APITimeoutError",
+}
+
+
+def _is_transient(e: Exception) -> bool:
+    if getattr(e, "status_code", None) in _TRANSIENT_STATUS:
+        return True
+    if type(e).__name__ in _TRANSIENT_NAMES:
+        return True
+    return "overloaded" in str(e).lower()
 
 
 class RequirementCtx(BaseModel):
@@ -176,6 +199,11 @@ class ClaudeSectionAgent:
     name = "claude"
     prompt_version = PROMPT_VERSION
 
+    # exponential backoff for transient server-side failures only
+    MAX_RETRIES = 5
+    RETRY_BASE = 4.0   # seconds; delay = min(BASE * 2**attempt, CAP) + jitter
+    RETRY_CAP = 60.0
+
     def __init__(self, *, model: str = "claude-opus-5", max_tokens: int = 64000) -> None:
         self.model = model
         self.max_tokens = max_tokens
@@ -212,21 +240,37 @@ class ClaudeSectionAgent:
             lines.append(f"  {r.code}: {r.text}")
         return "\n".join(lines)
 
-    def write(self, request: SectionRequest) -> SectionSpecOut:
+    def _stream(self, request: SectionRequest):
         client = self._client_lazy()
         _cache = {"type": "ephemeral"}
-        try:
-            with client.messages.stream(
-                model=self.model,
-                max_tokens=self.max_tokens,
-                thinking={"type": "adaptive"},
-                system=[{"type": "text", "text": _SYSTEM, "cache_control": _cache}],
-                tools=[{**_TOOL, "cache_control": _cache}],
-                messages=[{"role": "user", "content": self._user_block(request)}],
-            ) as stream:
-                msg = stream.get_final_message()
-        except Exception as e:  # noqa: BLE001 - the run notes the failure and moves on
-            raise KnowledgeError(f"{request.slug}: API call failed ({type(e).__name__}): {e}") from e
+        with client.messages.stream(
+            model=self.model,
+            max_tokens=self.max_tokens,
+            thinking={"type": "adaptive"},
+            system=[{"type": "text", "text": _SYSTEM, "cache_control": _cache}],
+            tools=[{**_TOOL, "cache_control": _cache}],
+            messages=[{"role": "user", "content": self._user_block(request)}],
+        ) as stream:
+            return stream.get_final_message()
+
+    def write(self, request: SectionRequest) -> SectionSpecOut:
+        for attempt in range(self.MAX_RETRIES + 1):
+            try:
+                msg = self._stream(request)
+                break
+            except Exception as e:  # noqa: BLE001
+                if attempt < self.MAX_RETRIES and _is_transient(e):
+                    delay = min(self.RETRY_BASE * 2 ** attempt, self.RETRY_CAP)
+                    delay += random.uniform(0, delay * 0.25)
+                    log.warning(
+                        "%s: transient API error (%s), retry %d/%d in %.0fs",
+                        request.slug, type(e).__name__, attempt + 1, self.MAX_RETRIES, delay,
+                    )
+                    time.sleep(delay)
+                    continue
+                raise KnowledgeError(
+                    f"{request.slug}: API call failed ({type(e).__name__}): {e}"
+                ) from e
 
         u = getattr(msg, "usage", None)
         self.last_usage = {

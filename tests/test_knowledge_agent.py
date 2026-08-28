@@ -109,3 +109,65 @@ def test_api_exception_is_wrapped():
     a._client = types.SimpleNamespace(messages=_M())
     with pytest.raises(KnowledgeError):
         a.write(_req())
+
+
+def _flaky_agent(errors: list[Exception], then=None):
+    """stream() raises each error in `errors` in turn, then returns `then`."""
+    seq = list(errors)
+    calls = {"n": 0}
+
+    class _M:
+        def stream(self, **kw):
+            calls["n"] += 1
+            if seq:
+                raise seq.pop(0)
+            return _Stream(then or _msg(_OK))
+
+    a = ClaudeSectionAgent()
+    a.RETRY_BASE = 0  # no real sleeping
+    a._client = types.SimpleNamespace(messages=_M())
+    return a, calls
+
+
+class _Overloaded(Exception):
+    status_code = 529
+
+
+class _RateLimited(Exception):
+    status_code = 429
+
+
+class _ServerErr(Exception):
+    status_code = 503
+
+
+class _BadReq(Exception):
+    status_code = 400
+
+
+@pytest.mark.parametrize("err", [_Overloaded(), _RateLimited(), _ServerErr()])
+def test_transient_errors_are_retried_and_can_recover(err):
+    a, calls = _flaky_agent([err, err])  # two failures, then success
+    out = a.write(_req())
+    assert [c.name for c in out.concepts] == ["slope"]
+    assert calls["n"] == 3
+
+
+def test_transient_error_that_never_clears_fails_after_max_retries():
+    a, calls = _flaky_agent([_Overloaded()] * 20)
+    with pytest.raises(KnowledgeError):
+        a.write(_req())
+    assert calls["n"] == a.MAX_RETRIES + 1  # initial try + MAX_RETRIES
+
+
+def test_non_transient_error_fails_immediately_without_retry():
+    a, calls = _flaky_agent([_BadReq()] * 5)
+    with pytest.raises(KnowledgeError):
+        a.write(_req())
+    assert calls["n"] == 1
+
+
+def test_overloaded_by_message_is_transient_even_without_a_status():
+    a, calls = _flaky_agent([RuntimeError("Error: overloaded_error, please retry")])
+    a.write(_req())
+    assert calls["n"] == 2
