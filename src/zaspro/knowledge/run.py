@@ -1,9 +1,15 @@
 """Run knowledge extraction and hand back the review queue.
 
-    uv run python -m zaspro.knowledge.run --topics 5        # deliberate 5-topic yield check
-    uv run python -m zaspro.knowledge.run VIII.5 XII.2 ...   # named requirements
-    uv run python -m zaspro.knowledge.run --all             # every podstawowy requirement
-    uv run python -m zaspro.knowledge.run --all --force     # include already-frozen topics
+    uv run python -m zaspro.knowledge.run --topics 5         # deliberate 5-topic yield check
+    uv run python -m zaspro.knowledge.run VIII.5 XII.2 ...    # named requirements
+    uv run python -m zaspro.knowledge.run --all              # every podstawowy requirement
+    uv run python -m zaspro.knowledge.run --all --force      # include already-frozen topics
+    uv run python -m zaspro.knowledge.run --all --reset      # wipe M4 state first, extract clean
+
+Each topic is extracted in two agent calls (structure: concepts/formulas/methods,
+then pedagogy: examples/objectives/misconceptions) so no single response has to
+carry a large topic's whole spec. A call that hits max_tokens fails the job
+loudly — a partial spec is never persisted as complete.
 
 With no ANTHROPIC_API_KEY this uses `StubKnowledgeAgent`; with a key,
 `ClaudeKnowledgeAgent` (`claude-opus-5`). `--all` prints a cost estimate and
@@ -106,13 +112,47 @@ def _estimate(session, picks: list[tuple[str, int, str]]) -> tuple[int, int, flo
             requirement_text=topic.statement_latex or topic.description,
             exercises=[ctx for _, ctx in pairs],
         )
-        # system + tool prefix (~1.6k) + the user block
+        # TWO calls per topic (structure + pedagogy): the exercises block is
+        # resent for each, so input roughly doubles; output total is similar to
+        # a single call (~the same items, split across two responses).
         body = agent._user_block(req) if hasattr(agent, "_user_block") else ""
-        est_in += 1600 + len(body) // 4
-        est_out += min(_MAX_OUT, 8000 + 300 * len(pairs))
+        est_in += 2 * (1600 + len(body) // 4)
+        est_out += min(2 * _MAX_OUT, 9000 + 350 * len(pairs))
     lo = (est_in * OPUS5_IN + est_out * 0.7 * OPUS5_OUT) / 1e6
-    hi = (est_in * OPUS5_IN + est_out * 1.0 * OPUS5_OUT) / 1e6
+    hi = (est_in * OPUS5_IN + est_out * 1.1 * OPUS5_OUT) / 1e6
     return est_in, est_out, lo, hi
+
+
+def _reset_all(session) -> dict:
+    """Wipe every M4 knowledge row and its review cards, and clear dead
+    EXTRACT_KNOWLEDGE jobs. All of it is derived — regenerable from the
+    mappings + a fresh run. Used by `--reset` for a clean `--all`."""
+    from zaspro.db.models import (
+        Concept, Example, Formula, Job, JobStatus, KnowledgeExtraction,
+        KnowledgeFlag, LearningObjective, Method, Misconception, ReviewDecision,
+    )
+
+    counts: dict[str, int] = {}
+    ri_ids = list(session.scalars(
+        select(ReviewItem.id).where(ReviewItem.item_type == ReviewItemType.KNOWLEDGE_SPEC)
+    ))
+    if ri_ids:
+        session.query(ReviewDecision).filter(
+            ReviewDecision.review_item_id.in_(ri_ids)
+        ).delete(synchronize_session=False)
+        session.query(ReviewItem).filter(
+            ReviewItem.id.in_(ri_ids)
+        ).delete(synchronize_session=False)
+    counts["review_cards"] = len(ri_ids)
+    for model in (Example, Concept, Formula, Method, LearningObjective,
+                  Misconception, KnowledgeFlag, KnowledgeExtraction):
+        counts[model.__tablename__] = session.query(model).delete(synchronize_session=False)
+    counts["dead_jobs"] = session.query(Job).filter(
+        Job.job_type == JobType.EXTRACT_KNOWLEDGE,
+        Job.status.in_([JobStatus.FAILED, JobStatus.RUNNING, JobStatus.PENDING]),
+    ).delete(synchronize_session=False)
+    session.flush()
+    return counts
 
 
 def _queue_depth(session) -> dict:
@@ -148,7 +188,7 @@ def _queue_depth(session) -> dict:
 
 
 def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
-        force: bool = False, assume_yes: bool = False) -> int:
+        force: bool = False, assume_yes: bool = False, reset: bool = False) -> int:
     agent = get_agent()
     real = isinstance(agent, ClaudeKnowledgeAgent)
     print(f"agent: {type(agent).__name__} (model={agent.model!r})")
@@ -160,6 +200,18 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
             return 2
 
     with session_scope() as s:
+        if reset:
+            depth = _queue_depth(s)
+            print(f"\n--reset: {depth['open_knowledge_cards']} knowledge cards, "
+                  f"{depth['flagged_misconceptions']} flagged misconceptions and all "
+                  f"knowledge rows will be DELETED (they are derived, regenerable).")
+            if not assume_yes and sys.stdin.isatty():
+                if input("wipe M4 knowledge state? [y/N] ").strip().lower() not in ("y", "yes"):
+                    print("declined.")
+                    return 2
+            c = _reset_all(s)
+            print(f"  cleared: {c}")
+
         r = rebuild_exercise_topics(s)  # keep aggregation current with the mappings
         print(f"exercise_topics rebuilt: {r.primary_rows} primary + {r.secondary_rows} "
               f"secondary rows, {r.skipped_unsettled} skipped (unsettled)")
@@ -284,12 +336,16 @@ def run(topic_codes: list[str] | None, *, n: int = 5, all_topics: bool = False,
             print(f"tokens {ti:,} in / {tcr:,} cache-read / {to:,} out  ->  ${cost:,.2f} "
                   "(published claude-opus-5)")
 
+        if failed:
+            print(f"\n{failed} extraction(s) FAILED (truncation or API error) — "
+                  f"not persisted. Re-run just those topics by code.")
+
         depth = _queue_depth(s)
-        print("\nreview queue:")
-        print(f"  {depth['open_knowledge_cards']} open KNOWLEDGE_SPEC cards (one per topic)")
+        print("\nreview queue (whole database, not just this run):")
+        print(f"  {depth['open_knowledge_cards']} open KNOWLEDGE_SPEC cards (one per extracted topic)")
         print(f"  {depth['open_review_items_total']} open review items in total")
         print(f"  {depth['flagged_misconceptions']} flagged misconceptions "
-              f"(AGENT_INFERENCE / UNSOURCED) across all topics")
+              f"(AGENT_INFERENCE / UNSOURCED) across all extracted topics")
         print(f"  {depth['unresolved_knowledge_flags']} unresolved knowledge flags")
         print("\nReview in the dashboard (Knowledge tab), then export approved topics:")
         print("  uv run python -m zaspro.knowledge.export --all")
@@ -300,6 +356,7 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     all_topics = "--all" in args
     force = "--force" in args
+    reset = "--reset" in args
     assume_yes = "--yes" in args or "-y" in args
     n = 5
     codes = [a for a in args if not a.startswith("-")]
@@ -308,4 +365,5 @@ if __name__ == "__main__":
         n = int(v)
         if v in codes:
             codes.remove(v)
-    sys.exit(run(codes or None, n=n, all_topics=all_topics, force=force, assume_yes=assume_yes))
+    sys.exit(run(codes or None, n=n, all_topics=all_topics, force=force,
+                 assume_yes=assume_yes, reset=reset))

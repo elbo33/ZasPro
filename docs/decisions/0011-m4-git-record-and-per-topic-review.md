@@ -56,6 +56,31 @@ on the large topics; v3 asks for more).
 No run-to-run variance testing. Extraction happens once, is reviewed, and is
 frozen (§3). Variance does not matter if we never re-run.
 
+### 1a. Streaming, a two-call split, and a hard truncation check (`m4-know-v4`)
+
+The v3 yield check confirmed the approach — 45 misconceptions across five topics
+against v1's 18, I.1 from empty to 16 — but exposed two failures:
+
+* **The SDK refuses a non-streaming call whose worst case exceeds ten minutes**,
+  which `max_tokens=32000` triggers. `ClaudeKnowledgeAgent` now uses
+  `client.messages.stream()` + `get_final_message()`.
+* **A large topic still truncated and reported success.** III.1 (23 exercises)
+  emitted 11 concepts and then hit `max_tokens` mid-response; `{"concepts":[…]}`
+  alone is valid against the schema (every other field defaults to `[]`), so it
+  persisted as a complete spec. Two fixes: (a) `extract()` splits into **two
+  calls** — `record_structure` (concepts/formulas/methods) then `record_pedagogy`
+  (examples/objectives/misconceptions) — so neither response carries a large
+  topic's whole spec; (b) each call checks `stop_reason` and raises
+  `KnowledgeTruncated` on `max_tokens`, failing the job. `extract_topic` calls
+  the agent before `_clear_topic`, so a failed call never touches the stored
+  rows. Prompt `m4-know-v4`; the v3 instructions are unchanged, only split
+  across the two system prompts.
+
+`zaspro.knowledge.run` gains `--reset` (wipe all M4 knowledge rows + KNOWLEDGE_
+SPEC cards + dead EXTRACT_KNOWLEDGE jobs; everything M4 is derived) for a clean
+`--all`, and reports per-topic elapsed time and output tokens, names the
+slowest, and warns on any topic over eight minutes.
+
 ### 2. One `KNOWLEDGE_SPEC` review card per topic
 
 A single `ReviewItem` (`item_type = KNOWLEDGE_SPEC`, `ref_table = "topics"`,

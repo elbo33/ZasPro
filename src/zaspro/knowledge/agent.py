@@ -28,7 +28,7 @@ from pydantic import BaseModel, Field
 
 from zaspro.db.models import MisconceptionSource
 
-PROMPT_VERSION = "m4-know-v3"  # v3: stop suppressing misconceptions — emit + label + flag, never withhold
+PROMPT_VERSION = "m4-know-v4"  # v4: two-call split (structure / pedagogy) + hard truncation check; v3 instructions unchanged
 
 
 class ExerciseCtx(BaseModel):
@@ -124,8 +124,31 @@ class KnowledgeExtraction(BaseModel):
     flags: list[FlagOut] = Field(default_factory=list)
 
 
+# The real agent extracts in two calls so no single response has to carry a
+# large topic's whole spec (a 23-exercise topic truncated at 32k output under a
+# single call, and reported success with a partial result). Each half is a
+# subset of KnowledgeExtraction; `ClaudeKnowledgeAgent.extract` merges them.
+class _StructureExtraction(BaseModel):
+    concepts: list[ConceptOut] = Field(default_factory=list)
+    formulas: list[FormulaOut] = Field(default_factory=list)
+    methods: list[MethodOut] = Field(default_factory=list)
+    flags: list[FlagOut] = Field(default_factory=list)
+
+
+class _PedagogyExtraction(BaseModel):
+    examples: list[ExampleOut] = Field(default_factory=list)
+    objectives: list[ObjectiveOut] = Field(default_factory=list)
+    misconceptions: list[MisconceptionOut] = Field(default_factory=list)
+    flags: list[FlagOut] = Field(default_factory=list)
+
+
 class KnowledgeError(RuntimeError):
     pass
+
+
+class KnowledgeTruncated(KnowledgeError):
+    """The model hit max_tokens before finishing. The partial tool call is
+    discarded and the job fails — never persisted as a complete spec."""
 
 
 class KnowledgeAgent(Protocol):
@@ -191,13 +214,19 @@ class StubKnowledgeAgent:
 # --------------------------------------------------------------------------- #
 # Claude
 
-_SYSTEM = """\
+_SYSTEM_BASE = """\
 You extract a structured knowledge spec for ONE Polish Matura mathematics \
 curriculum requirement, from the material provided: the requirement text and a \
 set of exam exercises that test it, each with its marking scheme (Zasady \
 oceniania) where available.
 
-Hard rules for concepts, formulas, methods, examples, objectives:
+Extraction is done in two passes. THIS pass covers only {scope}. Do not emit \
+anything outside that set in this call — the other items are collected \
+separately.
+"""
+
+_SYSTEM_STRUCTURE = _SYSTEM_BASE.format(scope="concepts, formulas, methods") + """
+Hard rules:
 * Use only what is in the provided material. Do not add facts, formulas or \
 methods from your own knowledge that the material does not show.
 * Every item lists `from_exercises` (the Zadanie numbers it is drawn from) and \
@@ -206,6 +235,17 @@ a short `evidence` quote or paraphrase from that material.
 readings; do not choose.
 * If the material is missing something the requirement clearly needs, emit a \
 flag with kind "GAP"; do not fill it from memory.
+
+Call record_structure exactly once.
+"""
+
+_SYSTEM_PEDAGOGY = _SYSTEM_BASE.format(
+    scope="worked examples, learning objectives, misconceptions"
+) + """
+Hard rules for examples and objectives:
+* Use only what is in the provided material. Every item lists `from_exercises` \
+and a short `evidence` quote or paraphrase. Missing information -> a GAP flag, \
+not a filled gap; disagreement -> a CONFLICT flag.
 
 Misconceptions are different, and the rule is the opposite: do NOT suppress \
 them. Exam papers do not state student errors outright, so a "material-supported \
@@ -232,13 +272,18 @@ Never withhold a misconception because you cannot cite it. A missing item helps 
 nobody; a labelled inference gets reviewed. Only genuine non-errors should be \
 left out.
 
-Call record_knowledge exactly once.
+Call record_pedagogy exactly once.
 """
 
-_TOOL = {
-    "name": "record_knowledge",
-    "description": "Record the extracted knowledge spec for the requirement.",
-    "input_schema": KnowledgeExtraction.model_json_schema(),
+_TOOL_STRUCTURE = {
+    "name": "record_structure",
+    "description": "Record the concepts, formulas and methods for the requirement.",
+    "input_schema": _StructureExtraction.model_json_schema(),
+}
+_TOOL_PEDAGOGY = {
+    "name": "record_pedagogy",
+    "description": "Record the worked examples, objectives and misconceptions.",
+    "input_schema": _PedagogyExtraction.model_json_schema(),
 }
 
 
@@ -287,37 +332,64 @@ class ClaudeKnowledgeAgent:
                 lines.append(f"Zasady oceniania:\n{e.marking_scheme}")
         return "\n".join(lines)
 
-    def extract(self, request: KnowledgeRequest) -> KnowledgeExtraction:
+    def _add_usage(self, u) -> None:
+        if u is None:
+            return
+        self.last_usage["in"] += getattr(u, "input_tokens", 0) or 0
+        self.last_usage["out"] += getattr(u, "output_tokens", 0) or 0
+        self.last_usage["cache_read"] += getattr(u, "cache_read_input_tokens", 0) or 0
+        self.last_usage["cache_write"] += getattr(u, "cache_creation_input_tokens", 0) or 0
+
+    def _call(self, request: KnowledgeRequest, system: str, tool: dict, model_cls, tool_name: str):
         client = self._client_lazy()
         _cache = {"type": "ephemeral"}
-        # Stream, don't `create`: at max_tokens=32000 the worst-case response
-        # time exceeds 10 minutes and the SDK refuses a non-streaming call
-        # outright. `get_final_message()` accumulates the whole response —
-        # usage and tool_use block included — so the rest of this method is
-        # unchanged. Keep 32k: 16k was truncating the large topics.
+        # Stream, don't `create`: a large max_tokens pushes the worst-case
+        # response time past 10 minutes and the SDK refuses a non-streaming
+        # call outright. `get_final_message()` accumulates the whole response.
         with client.messages.stream(
             model=self.model,
             max_tokens=self.max_tokens,
             thinking={"type": "adaptive"},
-            system=[{"type": "text", "text": _SYSTEM, "cache_control": _cache}],
-            tools=[{**_TOOL, "cache_control": _cache}],
+            system=[{"type": "text", "text": system, "cache_control": _cache}],
+            tools=[{**tool, "cache_control": _cache}],
             messages=[{"role": "user", "content": self._user_block(request)}],
         ) as stream:
             msg = stream.get_final_message()
-        u = getattr(msg, "usage", None)
-        self.last_usage = {
-            "in": getattr(u, "input_tokens", 0) or 0,
-            "out": getattr(u, "output_tokens", 0) or 0,
-            "cache_read": getattr(u, "cache_read_input_tokens", 0) or 0,
-            "cache_write": getattr(u, "cache_creation_input_tokens", 0) or 0,
-        }
+        self._add_usage(getattr(msg, "usage", None))
+        # Fail loudly on truncation — never persist a partial spec as complete.
+        if getattr(msg, "stop_reason", None) == "max_tokens":
+            raise KnowledgeTruncated(
+                f"{tool_name} hit max_tokens ({self.max_tokens}) for "
+                f"{request.topic_code}; partial result discarded"
+            )
         for block in msg.content:
-            if getattr(block, "type", None) == "tool_use" and block.name == "record_knowledge":
+            if getattr(block, "type", None) == "tool_use" and block.name == tool_name:
                 data = block.input
                 if isinstance(data, str):
                     data = json.loads(data)
-                return KnowledgeExtraction.model_validate(data)
-        raise KnowledgeError("model did not call record_knowledge")
+                return model_cls.model_validate(data)
+        raise KnowledgeError(f"model did not call {tool_name} for {request.topic_code}")
+
+    def extract(self, request: KnowledgeRequest) -> KnowledgeExtraction:
+        # Two calls: structure (concepts/formulas/methods) then pedagogy
+        # (examples/objectives/misconceptions). Neither response has to carry a
+        # large topic's whole spec. Usage is summed across both.
+        self.last_usage = {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
+        struct: _StructureExtraction = self._call(
+            request, _SYSTEM_STRUCTURE, _TOOL_STRUCTURE, _StructureExtraction, "record_structure"
+        )
+        peda: _PedagogyExtraction = self._call(
+            request, _SYSTEM_PEDAGOGY, _TOOL_PEDAGOGY, _PedagogyExtraction, "record_pedagogy"
+        )
+        return KnowledgeExtraction(
+            concepts=struct.concepts,
+            formulas=struct.formulas,
+            methods=struct.methods,
+            examples=peda.examples,
+            objectives=peda.objectives,
+            misconceptions=peda.misconceptions,
+            flags=[*struct.flags, *peda.flags],
+        )
 
 
 def default_agent() -> KnowledgeAgent:
